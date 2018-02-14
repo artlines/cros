@@ -1,0 +1,99 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Конференция Российских Операторов Связи{% endblock %}
+
+{% block text_image %}_organize{% endblock %}
+
+{% block header_title %}Стать спонсором{% endblock %}
+
+{% block stylesheets %}{% endblock %}
+
+{% block javascripts %}{% endblock %}
+
+
+
+
+
+{% block body %}
+
+	{% if form %}
+		<h2>Описание партнерских пакетов и дополнительных возможностей</h2>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="row">&nbsp;</th>
+					<th scope="col">
+					<p dir="ltr">Золотой партнер</p>
+					</th>
+					<th scope="col">
+					<p dir="ltr">Серебряный партнер</p>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th scope="row">
+					<p dir="ltr">Круглый стол участников с представителями Партнера (1 час)</p>
+					</th>
+					<td style="text-align:center">+</td>
+					<td style="text-align:center">&nbsp;</td>
+				</tr>
+				<tr>
+					<th scope="row">
+					<p dir="ltr">Организация event-мероприятия от лица спонсора</p>
+					</th>
+					<td style="text-align:center">+</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<th scope="row">
+					<p dir="ltr">Размещение стенда/оборудования в экспозиции show-room</p>
+					</th>
+					<td style="text-align:center">+</td>
+					<td style="text-align:center">+</td>
+				</tr>
+				<tr>
+					<th scope="row">
+					<p dir="ltr">Размещение roll-up, предоставленного спонсором в конференц-зале</p>
+					</th>
+					<td style="text-align:center">+</td>
+					<td style="text-align:center">+</td>
+				</tr>
+				<tr>
+					<th scope="row">
+					<p dir="ltr">Участие в голосовании за доклады в большом конференц зале</p>
+					</th>
+					<td style="text-align:center">+</td>
+					<td style="text-align:center">+</td>
+				</tr>
+				<tr>
+					<th scope="row">
+					<p dir="ltr">Аккредитация и размещение 2-х представителей Партнера на Конференции (двухместное размещение категории СТАНДАРТ+)</p>
+					</th>
+					<td style="text-align:center">+</td>
+					<td style="text-align:center">+</td>
+				</tr>
+				<tr>
+					<th scope="row">
+					<p dir="ltr">Стоимость пакета</p>
+					</th>
+					<td style="text-align:center">700 000</td>
+					<td style="text-align:center">350 000</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<h2>Заполните форму</h2>
+
+		{{ form_start(form) }}
+		{{ form_widget(form) }}
+		{{ form_end(form) }}
+	{% endif %}
+
+	{% if data %}
+		<h2>Данные отправлены</h2>
+	{% endif %}
+
+{% endblock %}
+
