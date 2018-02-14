@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Конференция Российских Операторов Связи{% endblock %}
+
+{% block header_title %}Докладчики{% endblock %}
+
+{% block page_image %}info_terms{% endblock %}
+
+{% block body %}
+    <style>
+        .btmtxt{
+            padding: 15px 5px;
+        }
+        .topimg img{
+            width: 100%;
+        }
+    </style>
+    {% set yearcount = 0 %}
+    <nav class="navbar navbar-default yearselect">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav">
+                {% for year in conferences %}
+                    {% if year.year >= 2017 %}
+                        <li {% if year.year == selectedyear %}class="active"{% endif %}>
+                            <a href="{{ path('speakers', {'year': year.year}) }}">{{ year.year }}</a>
+                        </li>
+                        {% set yearcount = yearcount + 1 %}
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </nav>
+    {% if yearcount < 2 %}
+        <style>nav.yearselect{display: none;}</style>
+    {% endif %}
+    {% if list is empty %}
+        <h3>Докладчики еще не добавлены</h3>
+    {% else %}
+        <div class="row text-center">
+            {% for speaker in list %}
+                {% set user = speaker.user %}
+                <div class="col-sm-4">
+                    <div class="thumbnail" style="height: 475px;">
+                        <div class="topimg">
+                            <img src="/uploads/speakers/{% if speaker.avatar %}{{ speaker.avatar }}{% else %}no_photo.jpg{% endif %}" alt="{{ user.lastname }} {{ user.firstname }}" width="400">
+                        </div>
+                        <div class="btmtxt">
+                        <p>
+                            <strong>{{ user.firstname }} {{ user.lastname }}</strong>
+                        </p>
+                        <p style="min-height: 40px; max-height: 90px; overflow-y: auto;">{% if speaker.report %}"{{ speaker.report }}"{% else %}Нет доклада{% endif %}</p>
+                        <a href="{{ path('speaker', {'id': speaker.id}) }}" class="btn btn-default">Профайл</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}

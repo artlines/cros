@@ -1,0 +1,100 @@
+{% extends 'admin.html.twig' %}
+{% block body %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Доклады</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <button class="btn btn-success" id='refreshLectures' onclick="refreshLectures()">Обновить</button>
+            <div class="row" id='refresh-result'>
+                
+            </div>
+			<table id='lecture-table' class="table">
+		            <thead><tr>
+		                <th>Дата начала</th>
+						<th>Время начала</th>
+						<th>Время окончания</th>
+						<th>Зал</th>
+						<th>Докладчик</th>
+						<th>Компания</th>
+						<th>Модератор</th>
+						<th>Наименование доклада</th>
+						<th>Тезисы</th>
+		            </tr></thead>
+				<tbody>
+					{% if tbody is empty %}
+				    	
+				    {% else %}
+				       	{{ tbody|raw|nl2br }}
+				    {% endif %}
+				</tbody>
+			</table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function refreshLectures() {
+            $('#refresh-result').html('');
+            $('#refreshLectures').attr("disabled", true);
+            $.ajax({
+                dataType: 'json',
+                url: '{{ url('admin-lectures-refresh') }}',
+                type: 'ajax'
+            }).done(function(data) {
+                if (data.code == 'NO_PARAMETERS') {
+                    $('#refresh-result').html(data.html);
+                    $('#refreshLectures').attr("disabled", false);
+                }
+                else if (data.code == 'NO_CLIENT_SECRET') {
+                    $('#refresh-result').html(data.html);
+                    $('#refreshLectures').attr("disabled", false);
+                }
+                else if (data.code == 'NO_CREDENTIALS') {
+                    $('#refresh-result').html(data.html);
+                    $('#googleAuthModal').modal();
+                    
+                    $('#googleAuthModal').on('hidden.bs.modal', function() {
+                        $('#refreshLectures').attr("disabled", false);
+                    });
+                }
+                else if (data.code == 'SUCCESS') {
+		    		t_body = '';
+                    data.values.forEach(function(row) {
+                        t_body += '<tr>';
+                        row.forEach(function(cell) {
+                            t_body += '<td>'+cell.replace(/(\r\n|\n|\r)/gm, "<br>")+'</td>';
+                        });
+                        t_body += '</tr>';
+                    });
+                    
+                    $('#lecture-table tbody').html(t_body);
+                    $('#refreshLectures').attr("disabled", false);
+                };
+            });
+            
+        };
+        
+        function updateAuthKey() {
+            authKey = $('#googleAuthModal input[name="authKey"]').val();
+            $.ajax({
+                dataType: 'json',
+                url: '{{ url('admin-lectures-refresh') }}',
+                type: 'post',
+                data: {
+                    authKey: authKey
+                }
+            }).done(function(data) {
+                if (data.result == 'success') {
+                    refreshLectures();
+                };
+            });
+        };
+    </script>
+{% endblock %}

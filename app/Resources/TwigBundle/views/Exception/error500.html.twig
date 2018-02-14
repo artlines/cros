@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block header_title %}Ошибка!{% endblock %}
+
+{% block page_image %}info_terms{% endblock %}
+
+{% block stylesheets %}
+    .inline-title{ background: #a94442 !important; color: white !important; }
+{% endblock %}
+
+{% block body %}
+
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    {% endif %}
+
+    <p class="text-danger">
+        Страница перестала работать, но Вы можете вернуться <a href="{{ path('homepage') }}">на главную</a> или написать нам на почту <a href="mailto:web@nag.ru">web@nag.ru</a> о случившейся неприятности.
+    </p>
+{% endblock %}

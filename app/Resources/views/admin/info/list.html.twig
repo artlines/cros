@@ -1,0 +1,23 @@
+{% if info is empty %}
+{% else %}
+    {% for text in info %}
+        <li style="position: relative;">
+            <a href="{{ path('admin-text-edit', {'id': text.id}) }}" class="txt-p-edit">{{ text.title }}</a>
+            <a href="{{ path('admin-text-remove', {'id': text.id}) }}" class="remove-txt bg-danger" role="button">
+                <i class="fa fa-remove fa-fw"></i>
+            </a>
+        </li>
+    {% endfor %}
+    <style>
+        .txt-p-edit{
+            margin-right: 38px !important;
+        }
+        .remove-txt{
+            position: absolute !important;
+            padding: 10px !important;
+            width: 38px;
+            right: 0;
+            top: 0;
+        }
+    </style>
+{% endif %}

@@ -1,0 +1,92 @@
+html, body, .container{
+    height: 100%;
+}
+.container{
+    position: relative;
+    min-height: 510px;
+}
+
+.logo{
+    position: absolute;
+    top: calc(50% - 88px);
+    left: calc(50% - 135px);
+}
+@font-face{
+    font-family: 'HelveticaLight';
+    src: url('/assets/fonts/HelveticaLight.ttf');
+}
+@font-face{
+    font-family: 'HelveticaBold';
+    src: url('/assets/fonts/HelveticaBold.ttf');
+}
+.logo-dates{
+    position: absolute;
+    /*top: calc(50% + 58px);*/
+    bottom: calc(50% - 90px);
+    left: calc(50% - 87px);
+    display: inline-block;
+    width: 177px;
+    text-align: center;
+    font-family: 'HelveticaBold';
+    color: #2963ae;
+    font-size: 18px;
+}
+.menu{
+    position: absolute;
+    height: 500px;
+    left:50%;
+    margin-left:-250px;
+    top: 50%;
+    margin-top: -260px;
+}
+.elements{
+    position: relative;
+    width:500px;
+    height:500px;
+    border-radius: 50%;
+    font-family: 'HelveticaLight';
+}
+
+.circle{
+    position: absolute;
+    width:100px;
+    height:100px;
+    font-size: 16px;
+    text-align:center;
+    vertical-align:middle;
+    margin-top: -50px;
+    margin-left: -50px;
+    left: 50%;
+    top: 50%;
+    line-height: 100px;
+}
+
+
+.menu_text {
+    position: absolute;
+    color: #095aa5;
+    font-size: 14px;
+}
+
+.menu_left+.menu_text {
+    right: 95px;
+    text-align: right;
+}
+.menu_right+.menu_text {
+    text-align: left;
+    left: 95px;
+}
+.menu_bottom+.menu_text{
+    text-align: center;
+    top: 54px;
+    left: 0px;
+}
+.menu_top+.menu_text{
+    text-align: center;
+    left: -5px;
+    top: -10px;
+}
+.twostr{
+    line-height: 20px;
+    top: 32px;
+}

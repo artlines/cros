@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1">
+                <source>Question</source>
+                <target>Вопрос</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>Answer</source>
+                <target>Ответ</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>On</source>
+                <target>Включено</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>Save</source>
+                <target>Сохранить</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>Start registration</source>
+                <target>Начало регистрации</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>Finish registration</source>
+                <target>Конец регистрации</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>Start event</source>
+                <target>Начало мероприятия</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>Finish event</source>
+                <target>Конец мероприятия</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>Price</source>
+                <target>Цена</target>
+            </trans-unit>
+            <trans-unit id="10">
+                <source>Number title</source>
+                <target>Название номера</target>
+            </trans-unit>
+            <trans-unit id="11">
+                <source>Code</source>
+                <target>Англоязычный код номера</target>
+            </trans-unit>
+            <trans-unit id="12">
+                <source>Description</source>
+                <target>Описание</target>
+            </trans-unit>
+            <trans-unit id="13">
+                <source>Places</source>
+                <target>Мест в номере</target>
+            </trans-unit>
+            <trans-unit id="14">
+                <source>Count</source>
+                <target>Количество</target>
+            </trans-unit>
+            <trans-unit id="15">
+                <source>Organisation name</source>
+                <target>Название компании</target>
+            </trans-unit>
+            <trans-unit id="16">
+                <source>City</source>
+                <target>Город</target>
+            </trans-unit>
+            <trans-unit id="17">
+                <source>Requisites</source>
+                <target>Реквизиты для выставления счета</target>
+            </trans-unit>
+            <trans-unit id="18">
+                <source>Address</source>
+                <target>Адрес</target>
+            </trans-unit>
+            <trans-unit id="19">
+                <source>Mobile phone</source>
+                <target>Мобильный</target>
+            </trans-unit>
+            <trans-unit id="20">
+                <source>Last name</source>
+                <target>Фамилия</target>
+            </trans-unit>
+            <trans-unit id="21">
+                <source>First name</source>
+                <target>Имя</target>
+            </trans-unit>
+            <trans-unit id="22">
+                <source>Middle name</source>
+                <target>Отчество</target>
+            </trans-unit>
+            <trans-unit id="23">
+                <source>Post</source>
+                <target>Должность</target>
+            </trans-unit>
+            <trans-unit id="24">
+                <source>E-mail</source>
+                <target>E-mail</target>
+            </trans-unit>
+            <trans-unit id="25">
+                <source>This text will be displayed before questions and answers list</source>
+                <target>Текст будет отображаться перед выводом вопросов и ответов</target>
+            </trans-unit>
+            <trans-unit id="26">
+                <source>Event</source>
+                <target>Событие</target>
+            </trans-unit>
+            <trans-unit id="27">
+                <source>Date</source>
+                <target>Дата</target>
+            </trans-unit>
+            <trans-unit id="28">
+                <source>Start</source>
+                <target>Начало</target>
+            </trans-unit>
+            <trans-unit id="29">
+                <source>Finish</source>
+                <target>Конец</target>
+            </trans-unit>
+            <trans-unit id="30">
+                <source>Text will be displayed in footer</source>
+                <target>Текст будет отображаться в футере</target>
+            </trans-unit>
+            <trans-unit id="31">
+                <source>Alias</source>
+                <target>Alias</target>
+            </trans-unit>
+            <trans-unit id="32">
+                <source>Title</source>
+                <target>Заголовок</target>
+            </trans-unit>
+            <trans-unit id="33">
+                <source>Text</source>
+                <target>Текст</target>
+            </trans-unit>
+            <trans-unit id="34">
+                <source>Password</source>
+                <target>Пароль</target>
+            </trans-unit>
+            <trans-unit id="35">
+                <source>Confirm password</source>
+                <target>Подтвердите пароль</target>
+            </trans-unit>
+            <trans-unit id="36">
+                <source>Manager</source>
+                <target>Менеджер</target>
+            </trans-unit>
+            <trans-unit id="37">
+                <source>Without manager</source>
+                <target>Без менеджера</target>
+            </trans-unit>
+            <trans-unit id="38">
+                <source>Email</source>
+                <target>E-mail</target>
+            </trans-unit>
+            <trans-unit id="39">
+                <source>Telegram</source>
+                <target>Telegram</target>
+            </trans-unit>
+            <trans-unit id="40">
+                <source>Apartament</source>
+                <target>Тип номера</target>
+            </trans-unit>
+            <trans-unit id="41">
+                <source>Photo</source>
+                <target>Фото</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

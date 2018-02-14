@@ -1,0 +1,45 @@
+{% block body %}
+Код;Компания;Комментарий;Статус;ИНН;КПП;Группа;Участник;Должность;Ник;Телефон;EMail;Номер Машины;Класс Размещения;{#
+#}Стоимость;Номер;Заселение;Счет;Оплата;
+{% if fulltable is empty %}
+{% else %}
+{% for organization in organizations %}
+{% if organization.users|length >= 1 %}
+{% for user in organization.users %}
+{{ organization.id }};" {{ organization.name|raw }} ";" {{ organization.ourcomment }} ";" {{ organization.txtstatus.title }} ";{#
+#}="{{ organization.inn }}";="{{ organization.kpp }}";{#
+#}{% if organization.managers is not null %}"{{ organization.managers.title }}"{% else %}-{% endif %};{#
+#}"{{ user.lastname }} {{ user.firstname }} {{ user.middlename }}";{#
+#}{% if user.post %} {{ user.post|raw }}{% else %}-{% endif %};{#
+#}{% if user.nickname %}"Ник: {{ user.nickname|raw }}" {% else %}-{% endif %};{#
+#}="{{ user.username }}";{#
+#}{{ user.email }};{#
+#}{% if user.carnumber %}="{{ user.carnumber }}"{% endif %};{#
+#}{% if user.utoas is empty %}не заселен;;;;{% else %}
+{% for toa in user.utoas %}
+"{{ toa.apartamentsid }}:{{ toa.apartament.apartament.title }}";{{ toa.apartament.apartament.price }};{#
+#}{% if toa.apartament.flats1 is not empty %}{% for flat in toa.apartament.flats1 %}{{ flat.realid }}:{{ flat.type.id }}:{{ flat.type.title }};{% endfor %}
+{% elseif toa.apartament.flats2 is not empty %}
+{% for flat in toa.apartament.flats2 %}{{ flat.realid }}:{{ flat.type.id }}:{{ flat.type.title }};{% endfor %}
+{% elseif toa.apartament.flats3 is not empty %}
+{% for flat in toa.apartament.flats3 %}{{ flat.realid }}:{{ flat.type.id }}:{{ flat.type.title }};{% endfor %}
+{% elseif toa.apartament.flats4 is not empty %}
+{% for flat in toa.apartament.flats4 %}{{ flat.realid }}:{{ flat.type.id }}:{{ flat.type.title }};{% endfor %}
+{% elseif toa.apartament.flats5 is not empty %}
+{% for flat in toa.apartament.flats5 %}{{ flat.realid }}:{{ flat.type.id }}:{{ flat.type.title }};{% endfor %}
+{% else %};{% endif %}
+{% if toa.approved == 1 %}заселен{% else %}не заселен{% endif %};{% endfor %}
+{% endif %}{% set psh = 0 %}{% for otc in organization.otc %}{% if psh == 0 %}{% if otc.invoice %}="Счет №{{ otc.invoice }}" {% else %}Счет не выставлен{% endif %};{% set psh = 1 %}
+{% if otc.paid == 1 %}Оплачено{% elseif otc.paid == 2 %}Частично оплачено{% else %}Не оплачено{% endif %};{#
+#}{% endif %}{% endfor %}
+
+{% endfor %}
+{% else %}
+{{ organization.id }};" {{ organization.name|raw }} ";" {{ organization.txtstatus.title }} ";
+{% endif %}{# /if organization.users #}
+{% endfor %}
+{% endif %}
+{% endblock %}
+
+
+

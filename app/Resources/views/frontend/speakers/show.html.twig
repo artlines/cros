@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Конференция Российских Операторов Связи{% endblock %}
+
+{% block header_title %}Докладчики{% endblock %}
+
+{% block page_image %}info_terms{% endblock %}
+
+{% block body %}
+    <h2>{{ speaker.user.firstname }} {{ speaker.user.lastname }}</h2>
+    <p>{{ speaker.description|raw }}</p>
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}

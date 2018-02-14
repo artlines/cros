@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Печать таблицы</title>
+    <style type="text/css">
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+        }
+
+        h4 {
+            margin: 0;
+        }
+
+        tr {
+            page-break-inside: avoid;
+        }
+
+        td, th {
+            vertical-align: top;
+        }
+
+        td {
+            border-top: 1px solid silver;
+            padding-top: 5px;
+        }
+
+        .room {
+            margin-bottom: -1px;
+            margin-right: -4px;
+            display: inline-block;
+            width: calc(50% - 12px);
+            padding: 5px;
+            vertical-align: top;
+        }
+
+        .nag {
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        @media print {
+            textarea {
+                border: 0;
+                resize: none;
+            }
+
+            @page {
+                size: landscape;
+            }
+        }
+    </style>
+</head>
+<body>
+<table>
+    <tbody>
+    {% set orgc = 0 %}
+    {% set vipc = 0 %}
+    {% set othc = 0 %}
+    {% for utc in userstoconf %}
+        {% set post = utc.user.post %}
+        {% set bg = "#b1b6ff" %}
+
+        {% if utc.user.organization.id == 1 %}
+            {% set bg = "#86e886" %}
+            {% set orgc = orgc + 1 %}
+        {% elseif utc.user.organization.sponsor == 1 or utc.user.organization.status == 3 %}
+            {% set bg = "#fcffb1" %}
+            {% set vipc = vipc + 1 %}
+        {% else %}
+            {% set othc = othc + 1 %}
+        {% endif %}
+
+        <tr style="background: {{ bg }};">
+            <td>{{ utc.user.organization.name }}</td>
+            <td>{{ utc.user.lastname }} {{ utc.user.firstname }} {{ utc.user.middlename }}</td>
+            <td>{{ post }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<br>
+<span style="background: #86e886;">Организаторов:</span> {{ orgc }}<br>
+<span style="background: #fcffb1;">Важные:</span> {{ vipc }}<br>
+<span style="background: #b1b6ff;">Остальные:</span> {{ othc }}<br>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</body>

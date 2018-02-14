@@ -1,0 +1,8 @@
+{% if text %}
+	<div>{{ text }}</div>
+{% endif %}
+
+{% if countdown_date %}
+	<div data-reg_countdown="{{ countdown_date|date("Y/m/d H:i:s") }}"></div>
+{% endif %}
+

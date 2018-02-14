@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}{% endblock %} {{ "now"|date("Y") }} - NAG.ru</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="keywords" content="">
+        <meta name="description" content="">
+        <meta name="author" content="shop.nag.ru">
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/bootstrap/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/door.css') }}">
+        <style>{% block stylesheets %}{% endblock %}</style>
+        <script src="{{ asset('assets/js/jquery/jquery.min.js') }}"></script>
+        <script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
+        <script src="{{ asset('assets/js/door.js') }}"></script>
+        <script src="{{ asset('assets/js/jquery/lettering.js') }}"></script>
+        <script src="{{ asset('assets/js/jquery/circleType.js') }}"></script>
+    </head>
+    <body>
+        <div class="container">
+            {% block body %}{% endblock %}
+        </div>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

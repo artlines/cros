@@ -1,0 +1,43 @@
+{% extends 'Emails/base.html.twig' %}
+{% block title %}Здравствуйте.{% endblock %}
+
+{% block message %}
+    <p>
+        {{ group.title }}, уведомляем Вас об отсутствии оплаты у следующих Ваших клиентов:<br><br>
+        {% set nopacl = true %}
+        {% for org in group.managed %}
+            {% if org.users|length != 0 %}
+                {% for otc in org.otc %}
+                    {% if otc.conferenceid == conf %}
+                        {% if otc.paid != 1 %}
+                            {% if otc.invoice != null %}
+                                <b>{{ org.name }}</b>,<br>
+                                {% set nopacl = false %}
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+        {% if nopacl %}
+            Поздравляем, все счета оплачены!
+        {% endif %}<br><br>
+        Также, необходимо выставить счета:<br><br>
+        {% set nopacl = true %}
+        {% for org in group.managed %}
+            {% if org.users|length != 0 %}
+                {% for otc in org.otc %}
+                    {% if otc.conferenceid == conf %}
+                        {% if otc.invoice == null %}
+                            <b>{{ org.name }}</b>,<br>
+                            {% set nopacl = false %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+        {% if nopacl %}
+        Поздравляем, все счета выставлены!
+        {% endif %}<br><br>
+    </p>
+{% endblock %}

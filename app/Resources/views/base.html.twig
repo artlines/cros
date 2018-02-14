@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %} {{ "now"|date("Y") }} - NAG.ru</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="author" content="shop.nag.ru">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/lightbox.min.css') }}">
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+<div class="container page">
+    <div class="row header">
+        <div class="col-sm-2 logo-col">
+            <a href="{{ url('homepage') }}"><img src="{{ asset('assets/images/cros.png') }}" class="logo"></a>
+        </div>
+        <div class="col-sm-6 col-xs-12">
+            <h1 class="inline-title">{% block header_title %}{% endblock %}</h1>
+        </div>
+        <div class="col-sm-1 middle-header">
+            <img src="{{ asset('assets/images/') }}{% block page_image %}{{ app.request.attributes.get('_route') }}{% block text_image %}{% endblock %}{% endblock %}.png" class="selected-menu-icon">
+        </div>
+        <div class="col-sm-3">
+            {{ render(controller('AppBundle:Security:login')) }}
+        </div>
+    </div>
+    <div class="row" style="padding-bottom: 10px; margin: 0px 0 15px; border-bottom: 1px solid #eee;">
+		<div class="col-md-4 text-center">
+			{{ render(controller('AppBundle:Default:countdown')) }}
+		</div>
+		<div class="col-md-8 text-center">
+			<a class="btn btn-default" href="{{ url('registration') }}" role="button">Принять участие</a>
+			<a class="btn btn-default" href="#" role="button">Стать докладчиком</a>
+			<a class="btn btn-default" href="#" role="button">Стать спонсором</a>
+		</div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2">
+            <ul class="list-group">
+                <li class="list-group-item"><a href="{{ path('info', {'alias': 'targets'}) }}">1. О КРОСе</a></li>
+                <li class="list-group-item"><a href="{{ url('program') }}">2. Программа</a></li>
+                <li class="list-group-item"><a href="{{ path('info', {'alias': 'sponsors'}) }}">3. Спонсоры</a></li>
+                <li class="list-group-item"><a href="{{ url('members') }}">4. Участники</a></li>
+                <li class="list-group-item"><a href="{{ url('price') }}">5. Стоимость участия</a></li>
+                <li class="list-group-item"><a href="{{ url('registration') }}">6. Регистрация</a></li>
+                <li class="list-group-item"><a href="{{ path('info', {'alias': 'organize'}) }}">7. Место проведения</a></li>
+                <li class="list-group-item"><a href="{{ url('faq') }}">8. FAQ</a></li>
+                <li class="list-group-item"><a href="{{ url('archive') }}">9. Архив</a></li>
+            </ul>
+            <ul class="list-group">
+                <li class="list-group-item"><a href="http://forum.nag.ru/index.php?showtopic=125262" target="_blank" data-toggle="tooltip" title="Ссылка откроется в новом окне">Форум <span class="glyphicon glyphicon-new-window"></span></a></li>
+                <li class="list-group-item"><a href="http://academy.nag.ru" target="_blank" data-toggle="tooltip" title="Ссылка откроется в новом окне">Академия НАГ <span class="glyphicon glyphicon-new-window"></span></a></li>
+            </ul>
+        </div>
+        <div class="col-sm-10" id="main-content">
+            {% block body %}{% endblock %}
+        </div>
+    </div>
+</div>
+<footer class="container-fluid text-center">
+    {{ render(controller('AppBundle:Default:footer')) }}
+</footer>
+<script src="{{ asset('assets/js/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('assets/js/jquery/jquery.countdown.min.js') }}"></script>
+<script src="{{ asset('assets/js/jquery/migrate.js') }}"></script>
+<script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
+<script src="{{ asset('assets/js/lightbox.min.js') }}"></script>
+<script src="{{ asset('assets/js/login_form.js') }}"></script>
+{% block javascripts %}{% endblock %}
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').each(function(){
+            $(this).tooltip();
+        });
+    });
+
+	$('[data-reg_countdown]')
+		.countdown($('[data-reg_countdown]').attr('data-reg_countdown'), function(event) {
+			$(this).text(
+			  event.strftime('%D дней %H часов %M минут %S секунд')
+			);
+		});
+</script>
+</body>
+</html>
+

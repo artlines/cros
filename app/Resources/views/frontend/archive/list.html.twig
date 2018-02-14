@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Конференция Российских Операторов Связи{% endblock %}
+
+{% block header_title %}Архив{% endblock %}
+{% block body %}
+    {% if conferences is empty %}
+        <h3>Нет истории</h3>
+    {% else %}
+        {% set content = '' %}
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    {% for year in conferences %}
+                        <li {% if year.year == selectedyear %}class="active"{% for info in year.infotoconfs %}{% set content = info.info %}{% endfor %}{% endif %}><a href="{{ path('archive', {'year': year.year}) }}">{{ year.year }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </nav>
+        <div class="col-lg-12">
+            <h2>{{ content.title }}</h2>
+            {{ content.content|raw }}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}

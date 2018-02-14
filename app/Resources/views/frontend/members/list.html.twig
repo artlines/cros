@@ -1,0 +1,224 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Конференция Российских Операторов Связи{% endblock %}
+
+{% block header_title %}Участники{% endblock %}
+
+{% block body %}
+    {% if list is empty %}
+        <h3>Нет зарегистрированных участников</h3>
+    {% else %}
+        {% if sendauth == null %}
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#sendauth" style="float: right; position: relative; z-index: 9;">Хочу связаться с участниками</button>
+            <div id="sendauth" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            Авторизация для отправки сообщения участникам КРОС-2.0-17
+                        </div>
+                        <form method="post">
+                            <div class="modal-body">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-phone"></i></span>
+                                        <input type="text" id="phone" name="phone" required="required" pattern="[\+][0-9]{11,}" title="Номер телефона в федеральном формате (+79990009999), без пробелов" placeholder="+79990009999" class="form-control">
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                        <input type="password" id="password" name="password" required="required" title="Пароль, который Вы получили в СМС" placeholder="******" class="form-control">
+                                    </div>
+                                    <div class="send_pas_result"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default pull-left" id="send_get_pass">Нет пароля?</button> <button type="submit" class="btn btn-success">Авторизоваться</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            Вы авторизованы как {{ app.session.get('sendfrom') }}. <a href="{{ url('members-logout') }}"><i class="glyphicon glyphicon-log-out"></i> Выйти</a>
+        {% endif %}
+        <table class="table" id="fulltable">
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Организация</th>
+                    <th>Город</th>
+                    <th>Статус</th>
+                    {% if sendauth %}
+                        <th>Связь</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+            {% if showlist %}
+                {% set oi = 1 %}
+                {% for organization in list %}
+                    {% if organization.users is not empty %}
+                        <tr>
+                            <td>{{ oi }}{% set oi = oi + 1 %}</td>
+                            <td>{{ organization.name }}</td>
+                            <td>{{ organization.city }}</td>
+                            <td>{{ organization.txtstatus.title }}</td>
+                            {% if sendauth %}
+                                <td><button type="button" class="btn btn-default send_to_org_button" data-toggle="modal" data-orgid="{{ organization.id }}" data-orgname="{{ organization.name }}" data-target="#sendToOrg">Отправить сообщение</button></td>
+                            {% endif %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td>ООО "НАГ"</td>
+                    <td>Екатеринбург</td>
+                    <td>Организатор</td>
+                </tr>
+            {% endif %}
+            </tbody>
+        </table>
+        {% if sendauth %}
+            <div id="sendToOrg" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Отправить сообщение всем участникам компании <span class="send_org_name"></span></h4>
+                        </div>
+                            <div class="modal-body">
+                                <textarea class="sendtext form-control" placeholder="Текст сообщения"></textarea>
+                                <div class="send_result"></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-default" id="send_sms_for_org">Отправить</button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        var connection = {
+            org_name: '',
+            org_id: '',
+            text: '',
+            from: '{{ app.session.get('sendfrom') }}',
+        };
+
+        var timer = 0;
+        var timer_id;
+
+        function sendtimer() {
+            if(timer === 300){
+                timer_id = setInterval(sendtimer, 1000);
+                timer--;
+            }
+            if(timer > 0){
+                $('#send_get_pass').text('Отправить пароль повторно через ' + timer + ' секунд');
+                timer--;
+            }
+            else{
+                $('#send_get_pass').text('Отправить пароль повторно');
+                clearInterval(timer_id);
+            }
+        }
+
+        $(function() {
+
+            $('#fulltable').dataTable({
+                paging: false,
+                "language": {
+                    "processing": "Подождите...",
+                    "search": "Поиск:",
+                    "lengthMenu": "Показать _MENU_ записей",
+                    "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+                    "infoEmpty": "Записи с 0 до 0 из 0 записей",
+                    "infoFiltered": "(отфильтровано из _MAX_ записей)",
+                    "infoPostFix": "",
+                    "loadingRecords": "Загрузка записей...",
+                    "zeroRecords": "Записи отсутствуют.",
+                    "emptyTable": "В таблице отсутствуют данные",
+                    "paginate": {
+                        "first": "Первая",
+                        "previous": "Предыдущая",
+                        "next": "Следующая",
+                        "last": "Последняя"
+                    },
+                    "aria": {
+                        "sortAscending": ": активировать для сортировки столбца по возрастанию",
+                        "sortDescending": ": активировать для сортировки столбца по убыванию"
+                    }
+                }
+            });
+
+            $('#send_get_pass').on('click', function(){
+                $('.send_pas_result').html('<span class="text-info">Подождите...</span>');
+                if(timer === 0) {
+                    if ($('#phone')[0].checkValidity()) {
+                        $('#send_get_pass').text('Отправить пароль повторно через 300 секунд');
+                        timer = 300;
+                        sendtimer();
+
+                        var phone = $('#phone').val();
+
+                        $.ajax({
+                            url: "{{ url('sms-password') }}",
+                            type: "post",
+                            method: "post",
+                            data: {phone: phone},
+                            success: function (data) {
+                                $('.send_pas_result').html(data);
+                            }
+                        });
+                    }
+                    else {
+                        $('.send_pas_result').html('<span class="text-danger">Введите корректный номер телефона</span>');
+                    }
+                }
+                else{
+                    $('.send_pas_result').html('<span class="text-danger">Пароль уже выслан, для повторной отправки дождитесь окончания действия таймера</span>');
+                }
+            });
+
+
+            {% if sendauth %}
+            $('.send_to_org_button').on('click', function(){
+                connection.org_name = $(this).attr('data-orgname');
+                connection.org_id = $(this).attr('data-orgid');
+                $('.send_org_name').html(connection.org_name);
+            });
+
+            $('#send_sms_for_org').on('click', function () {
+                var st = $('.sendtext').val();
+                if(st != '') {
+                    $('.send_result').html('<span class="text-info">Подождите...</span>');
+                    connection.text = st;
+                    $.ajax({
+                        url: "{{ url('sms') }}",
+                        type: "post",
+                        method: "post",
+                        data: {connection: JSON.stringify(connection)},
+                        success: function (data) {
+                            $('.sendtext').val('');
+                            $('.send_result').html(data);
+                        }
+                    });
+                }
+                else{
+                    $('.send_result').html('<span class="text-danger">Введите текст сообщения</span>');
+                }
+            });
+            {% endif %}
+        });
+    </script>
+    <script src="{{ asset('assets/js/jquery/dataTables.min.js') }}"></script>
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        body{
+            min-width: 500px;
+        }
+    </style>
+{% endblock %}

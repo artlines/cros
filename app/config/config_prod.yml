@@ -1,0 +1,29 @@
+imports:
+    - { resource: config.yml }
+
+#doctrine:
+#    orm:
+#        metadata_cache_driver: apc
+#        result_cache_driver: apc
+#        query_cache_driver: apc
+
+monolog:
+    handlers:
+        main:
+            type:         fingers_crossed
+            action_level: error
+            handler:      nested
+        nested:
+            type:  stream
+            path:  "%kernel.logs_dir%/%kernel.environment%.log"
+            level: debug
+        console:
+            type:  console
+        swift:
+            type:   swift_mailer
+            from_email: "cros@nag.ru"
+            to_email: "xvanok@nag.ru"
+            subject: "Ошибка на сайте КРОС"
+            level: critical
+            formatter: monolog.formatter.html
+            content_type: text/html

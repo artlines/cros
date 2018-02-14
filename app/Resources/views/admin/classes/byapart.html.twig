@@ -1,0 +1,458 @@
+{% extends 'admin.html.twig' %}
+{% block body %}
+    <div class="row">
+        <div class="col-sm-6">
+            <h2>Классы</h2>
+            {#<select class="form-control" id="filter">
+                <option value="all" {% if signed == 'all' %}selected{% endif %}>Показать все номера</option>
+                <option value="empty" {% if signed == 'empty' %}selected{% endif %}>Показать незаселенные</option>
+                <option value="partial" {% if signed == 'partial' %}selected{% endif %} disabled>Показать частично заселенные</option>
+            </select><br>#}
+            {% set lived = 0 %}
+            {% for pair in pairs %}
+                <div class="panel-group">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a data-toggle="collapse" href="#pair{{ pair.id }}">{{ pair.title }}</a>
+                            </h4>
+                        </div>
+                        <div id="pair{{ pair.id }}" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                {% for type in pair.apartamentTypes %}
+                                    <div class="panel-group">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h4 class="panel-title">
+                                                    <a data-toggle="collapse" href="#type{{ type.id }}">{{ type.title }}, {{ type.flats.first.maxroom }}к ({{ type.flats|length }})</a>
+                                                </h4>
+                                            </div>
+                                            <div id="type{{ type.id }}" class="panel-collapse collapse">
+                                                <div class="panel-body">
+                                                    {% for flat in type.flats %}
+                                                        <div class="drag_field">
+                                                            <h4><strong>(id: {{ flat.id }})</strong> Номер <input id="num_id_{{ flat.id }}" type="number" class="form-control" value="{{ flat.realid }}" style="width: 75px; display: inline-block;"><button class="btn btn-default set-number" data-number="{{ flat.id }}">Сохранить</button> <button type="button" class="btn btn-{% if flat.finished == 1 %}danger{% else %}default{% endif %} finished" data-flatid="{{ flat.id }}" data-finished="{{ flat.finished }}"><i class="fa fa-key fa-fw"></i></button> </h4>
+                                                            <div id="apartament{{ flat.id }}" ondrop="drop(event)" ondragover="allowDrop(event)" class="real_drag" data-places="{{ flat.maxroom }}" data-pair="{{ pair.id }}" data-room1="{{ flat.room1 }}" data-room2="{{ flat.room2 }}" data-room3="{{ flat.room3 }}" data-room4="{{ flat.room4 }}" data-room5="{{ flat.room5 }}" data-id="{{ flat.id }}">
+                                                                {% if flat.realroom1 is not null %}
+                                                                    <div draggable="{% if flat.finished == 0 %}true{% else %}false{% endif %}" ondragstart="drag(event)" id="room{{ flat.realroom1.id }}" width="88" height="31" class="draggable_room" data-id="{{ flat.realroom1.id }}" data-pair="{{ flat.realroom1.apartament.pair }}">
+                                                                        id:{{ flat.realroom1.id }} {{ flat.realroom1.apartament.title }}
+                                                                        {% for uta in flat.realroom1.atoais %}
+                                                                            {% if uta.approved == 1 %}
+                                                                            <div>
+                                                                                {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} - {{ uta.user.organization.name }}{% if uta.user.organization.sponsor %} - СПОНСОР{% endif %} - {% if uta.user.organization.managers is empty %}Нет менеджера{% else %}{{ uta.user.organization.managers.title }}{% endif %}
+                                                                            </div>
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                {% endif %}
+                                                                {% if flat.realroom2 is not null %}
+                                                                    <div draggable="{% if flat.finished == 0 %}true{% else %}false{% endif %}" ondragstart="drag(event)" id="room{{ flat.realroom2.id }}" width="88" height="31" class="draggable_room" data-id="{{ flat.realroom2.id }}" data-pair="{{ flat.realroom2.apartament.pair }}">
+                                                                        id:{{ flat.realroom2.id }} {{ flat.realroom2.apartament.title }}
+                                                                        {% for uta in flat.realroom2.atoais %}
+                                                                        {% if uta.approved == 1 %}
+                                                                            <div>
+                                                                                {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} - {{ uta.user.organization.name }}{% if uta.user.organization.sponsor %} - СПОНСОР{% endif %} - {% if uta.user.organization.managers is empty %}Нет менеджера{% else %}{{ uta.user.organization.managers.title }}{% endif %}
+                                                                            </div>
+                                                                        {% endif %}
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                {% endif %}
+                                                                {% if flat.realroom3 is not null %}
+                                                                    <div draggable="{% if flat.finished == 0 %}true{% else %}false{% endif %}" ondragstart="drag(event)" id="room{{ flat.realroom3.id }}" width="88" height="31" class="draggable_room" data-id="{{ flat.realroom3.id }}" data-pair="{{ flat.realroom3.apartament.pair }}">
+                                                                        id:{{ flat.realroom3.id }} {{ flat.realroom3.apartament.title }}
+                                                                        {% for uta in flat.realroom3.atoais %}
+                                                                        {% if uta.approved == 1 %}
+                                                                            <div>
+                                                                                {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} - {{ uta.user.organization.name }}{% if uta.user.organization.sponsor %} - СПОНСОР{% endif %} - {% if uta.user.organization.managers is empty %}Нет менеджера{% else %}{{ uta.user.organization.managers.title }}{% endif %}
+                                                                            </div>
+                                                                        {% endif %}
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                {% endif %}
+                                                                {% if flat.realroom4 is not null %}
+                                                                    <div draggable="{% if flat.finished == 0 %}true{% else %}false{% endif %}" ondragstart="drag(event)" id="room{{ flat.realroom4.id }}" width="88" height="31" class="draggable_room" data-id="{{ flat.realroom4.id }}" data-pair="{{ flat.realroom4.apartament.pair }}">
+                                                                        id:{{ flat.realroom4.id }} {{ flat.realroom4.apartament.title }}
+                                                                        {% for uta in flat.realroom4.atoais %}
+                                                                        {% if uta.approved == 1 %}
+                                                                            <div>
+                                                                                {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} - {{ uta.user.organization.name }}{% if uta.user.organization.sponsor %} - СПОНСОР{% endif %} - {% if uta.user.organization.managers is empty %}Нет менеджера{% else %}{{ uta.user.organization.managers.title }}{% endif %}
+                                                                            </div>
+                                                                        {% endif %}
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                {% endif %}
+                                                                {% if flat.realroom5 is not null %}
+                                                                    <div draggable="{% if flat.finished == 0 %}true{% else %}false{% endif %}" ondragstart="drag(event)" id="room{{ flat.realroom5.id }}" width="88" height="31" class="draggable_room" data-id="{{ flat.realroom5.id }}" data-pair="{{ flat.realroom5.apartament.pair }}">
+                                                                        id:{{ flat.realroom5.id }} {{ flat.realroom5.apartament.title }}
+                                                                        {% for uta in flat.realroom5.atoais %}
+                                                                        {% if uta.approved == 1 %}
+                                                                            <div>
+                                                                                {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} - {{ uta.user.organization.name }}{% if uta.user.organization.sponsor %} - СПОНСОР{% endif %} - {% if uta.user.organization.managers is empty %}Нет менеджера{% else %}{{ uta.user.organization.managers.title }}{% endif %}
+                                                                            </div>
+                                                                        {% endif %}
+                                                                        {% endfor %}
+                                                                    </div>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-sm-6">
+            <div class="drag_field" data-spy="affix" data-offset-top="30">
+                <h4>Комнаты</h4>
+                <div id="free_rooms" ondrop="drop(event)" ondragover="allowDrop(event)" class="real_drag">
+                    {% for nif in nifs %}
+                        {% if nif.flats1|length != 0 %}
+                        {% elseif nif.flats2|length != 0 %}
+                        {% elseif nif.flats3|length != 0 %}
+                        {% elseif nif.flats4|length != 0 %}
+                        {% elseif nif.flats5|length != 0 %}
+                        {% else %}
+                            <div draggable="true" ondragstart="drag(event)" id="room{{ nif.id }}" width="88" height="31" class="draggable_room" data-id="{{ nif.id }}" data-pair="{{ nif.apartament.pair }}">
+                                id:{{ nif.id }} {{ nif.apartament.title }}
+                                {% for uta in nif.atoais %}
+                                    <div>
+                                        {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} - {{ uta.user.organization.name }}{% if uta.user.organization.sponsor %} - СПОНСОР{% endif %} - {% if uta.user.organization.managers is empty %}Нет менеджера{% else %}{{ uta.user.organization.managers.title }}{% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <button id="save" type="button" class="btn btn-default">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg_load"></div>
+    <div class="wrapper">
+        <div class="inner">
+            <span>З</span>
+            <span>а</span>
+            <span>г</span>
+            <span>р</span>
+            <span>у</span>
+            <span>з</span>
+            <span>к</span>
+            <span>а</span>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+    <style>
+        .drag_field{
+            width: 100%;
+            margin: 10px;
+            border: 3px solid #bfbfbf;
+        }
+        .drag_field h4{
+            padding:10px;
+            border-bottom: 3px dashed #bfbfbf;
+            margin: 0;
+        }
+        .drag_field .real_drag{
+            width: 100%;
+            height: 100%;
+            padding: 10px 10px 30px 10px;
+            min-height: 70px;
+            max-height: 400px;
+            overflow: auto;
+        }
+        .draggable_room{
+            cursor: move;
+            width: auto;
+            float: left;
+            clear: both;
+            margin-bottom: 5px;
+            border: 1px dashed silver;
+            padding: 5px;
+        }
+        .draggable_room .draggable_room{
+            background: #f2dede;
+        }
+        .draggable_room .draggable_room:after{
+            content: ' - Комната перемещена некорректно, повторите попытку';
+        }
+        .drag_field.affix {
+            top: 20px;
+            width: calc(50% - 155px);
+        }
+
+        .bg_load {
+            display: none;
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            background: #EEE;
+        }
+
+        .wrapper {
+            display: none;
+            /* Size and position */
+            font-size: 25px; /* 1em */
+            width: 9em;
+            height: 9em;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            margin-top: -100px;
+            margin-left: -100px;
+
+            /* Styles */
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: 1em dashed rgba(138,189,195,0.5);
+            box-shadow:
+                    inset 0 0 2em rgba(255,255,255,0.3),
+                    0 0 0 0.7em rgba(255,255,255,0.3);
+            animation: rota 3.5s linear infinite;
+
+            /* Font styles */
+            font-family: 'Racing Sans One', sans-serif;
+
+            color: #444;
+            text-align: center;
+            text-transform: uppercase;
+            text-shadow: 0 .04em rgba(255,255,255,0.9);
+            line-height: 7em;
+        }
+
+        .wrapper:before,
+        .wrapper:after {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            border-radius: inherit;
+            box-shadow: inset 0 0 2em rgba(255,255,255,0.3);
+            border: 1em dashed;
+        }
+
+        .wrapper:before {
+            border-color: rgba(138,189,195,0.2);
+            top: 0; right: 0; bottom: 0; left: 0;
+        }
+
+        .wrapper:after {
+            border-color: rgba(138,189,195,0.4);
+            top: 1em; right: 1em; bottom: 1em; left: 1em;
+        }
+
+        .wrapper .inner {
+            width: 100%;
+            height: 100%;
+            animation: rota 3.5s linear reverse infinite;
+        }
+
+        .wrapper span {
+            display: inline-block;
+            animation: placeholder 1.5s ease-out infinite;
+        }
+
+        .wrapper span:nth-child(1)  { animation-name: loading-1;  }
+        .wrapper span:nth-child(2)  { animation-name: loading-2;  }
+        .wrapper span:nth-child(3)  { animation-name: loading-3;  }
+        .wrapper span:nth-child(4)  { animation-name: loading-4;  }
+        .wrapper span:nth-child(5)  { animation-name: loading-5;  }
+        .wrapper span:nth-child(6)  { animation-name: loading-6;  }
+        .wrapper span:nth-child(7)  { animation-name: loading-7;  }
+        .wrapper span:nth-child(8)  { animation-name: loading-8;  }
+
+        @keyframes rota {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes loading-1 {
+            12.5% { opacity: 0.3; }
+        }
+
+        @keyframes loading-2 {
+            25% { opacity: 0.3; }
+        }
+
+        @keyframes loading-3 {
+            37.5% { opacity: 0.3; }
+        }
+
+        @keyframes loading-4 {
+            50% { opacity: 0.3; }
+        }
+
+        @keyframes loading-5 {
+            62.5% { opacity: 0.3; }
+        }
+
+        @keyframes loading-6 {
+            75% { opacity: 0.3; }
+        }
+
+        @keyframes loading-7 {
+            87.5% { opacity: 0.3; }
+        }
+
+        @keyframes loading-8 {
+            100% { opacity: 0.3; }
+        }
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/admin.js') }}"></script>
+    <script>
+        var save = {};
+
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+            $('#' + ev.target.id).addClass('bg-warning');
+            $('.real_drag').addClass('bg-success');
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            if($(ev.target).hasClass('real_drag')) {
+                var data = ev.dataTransfer.getData("text");
+                var el = document.getElementById(data);
+                if(($(ev.target).attr('data-places') > $(ev.target).children().length && $(ev.target).attr('data-pair') == $(el).attr('data-pair')) || $(ev.target).attr('id') == "free_rooms"){
+                    ev.target.appendChild(el);
+                    if($(ev.target).attr('id') == "free_rooms"){
+                        $('[data-room1=' + $(el).attr('data-id') + ']').attr('data-room1', "");
+                        $('[data-room2=' + $(el).attr('data-id') + ']').attr('data-room2', "");
+                        $('[data-room3=' + $(el).attr('data-id') + ']').attr('data-room3', "");
+                        $('[data-room4=' + $(el).attr('data-id') + ']').attr('data-room4', "");
+                        $('[data-room5=' + $(el).attr('data-id') + ']').attr('data-room5', "");
+                    }
+                    else {
+                        if ($(ev.target).attr('data-room1') == $(el).attr('data-id') ||
+                            $(ev.target).attr('data-room2') == $(el).attr('data-id') ||
+                            $(ev.target).attr('data-room3') == $(el).attr('data-id') ||
+                            $(ev.target).attr('data-room4') == $(el).attr('data-id') ||
+                            $(ev.target).attr('data-room5') == $(el).attr('data-id')) {
+                        }
+                        else {
+                            $('[data-room1=' + $(el).attr('data-id') + ']').attr('data-room1', "");
+                            $('[data-room2=' + $(el).attr('data-id') + ']').attr('data-room2', "");
+                            $('[data-room3=' + $(el).attr('data-id') + ']').attr('data-room3', "");
+                            $('[data-room4=' + $(el).attr('data-id') + ']').attr('data-room4', "");
+                            $('[data-room5=' + $(el).attr('data-id') + ']').attr('data-room5', "");
+                            if ($(ev.target).attr('data-room1') == "") {
+                                $(ev.target).attr('data-room1', $(el).attr('data-id'));
+                            }
+                            else if ($(ev.target).attr('data-room2') == "") {
+                                $(ev.target).attr('data-room2', $(el).attr('data-id'));
+                            }
+                            else if ($(ev.target).attr('data-room3') == "") {
+                                $(ev.target).attr('data-room3', $(el).attr('data-id'));
+                            }
+                            else if ($(ev.target).attr('data-room4') == "") {
+                                $(ev.target).attr('data-room4', $(el).attr('data-id'));
+                            }
+                            else if ($(ev.target).attr('data-room5') == "") {
+                                $(ev.target).attr('data-room5', $(el).attr('data-id'));
+                            }
+                            else {
+
+                            }
+                        }
+                    }
+                }
+                else {
+                }
+            }
+            $('.real_drag').removeClass('bg-success');
+            $('#' + data).removeClass('bg-warning');
+        }
+        
+        $('#save').on('click', function () {
+            $('.real_drag').not("#free_rooms").each(function(){
+                save[$(this).attr('data-id')] = {'room1': $(this).attr('data-room1'), 'room2': $(this).attr('data-room2'), 'room3': $(this).attr('data-room3'), 'room4': $(this).attr('data-room4'), 'room5': $(this).attr('data-room5')};
+            });
+
+            $(".bg_load").fadeIn("slow");
+            $(".wrapper").fadeIn("slow");
+            $.ajax({
+                url: "{{ url('save-apart-to-classes') }}",
+                type: "post",
+                method: "post",
+                data: {save: JSON.stringify(save)},
+                success: function(){
+                    location.reload();
+                }
+            });
+
+        });
+
+        $('#filter').on('change', function(){
+            var val = $(this).val();
+            window.location = "{{ path('admin-classes', {'year': year}) }}/" + val;
+        });
+
+        $('.set-number').on('click', function(){
+            var $btn = $(this);
+            $(this).text('Подождите...');
+            var id = $(this).attr('data-number');
+            var real_id = $('#num_id_' + id).val();
+            $.ajax({
+                url: "{{ url('admin-set-number') }}",
+                type: "post",
+                method: "post",
+                data: {id: id, real_id: real_id},
+                success: function(data){
+                    $btn.text('Сохранить');
+                }
+            });
+        });
+
+        $('.finished').on('click', function () {
+            var $keybtn = $(this);
+            $($keybtn).children('i').removeClass('fa-key').addClass('fa-clock-o');
+            var flat_id = $keybtn.attr('data-flatid');
+            var finished = $keybtn.attr('data-finished') == 1 ? 0 : 1;
+            $.ajax({
+                url: "{{ url('admin-class-block') }}",
+                type: "post",
+                method: "post",
+                data: {flat: flat_id, finished: finished},
+                success: function(data){
+                    var result = $.parseJSON(data);
+                    if(result.success == 'true'){
+                        $keybtn.attr('data-finished', result.result.finished);
+                        if(result.result.finished == 0){
+                            $keybtn.removeClass('btn-danger').addClass('btn-default');
+                            $keybtn.parent('h4').next('div').children('div').each(function () {
+                                $(this).attr('draggable', true);
+                            });
+                        }
+                        else{
+                            $keybtn.removeClass('btn-default').addClass('btn-danger');
+                            $keybtn.parent('h4').next('div').children('div').each(function () {
+                                $(this).attr('draggable', false);
+                            });
+                        }
+                    }
+                    else{
+                        alert(result.result);
+                    }
+                    $($keybtn).children('i').removeClass('fa-clock-o').addClass('fa-key');
+                }
+            })
+        });
+    </script>
+{% endblock %}

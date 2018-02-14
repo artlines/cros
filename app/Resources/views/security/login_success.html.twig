@@ -1,0 +1,17 @@
+Добро пожаловать,
+{% if app.user.firstname is defined %}{{ app.user.firstname }} {{ app.user.middlename }}
+{% else %}{{ app.user.name }}
+{% endif %}!<br>
+
+<a href="{{ url('logout') }}"><i class="glyphicon glyphicon-log-out"></i> Выйти</a>
+
+{% if is_granted('ROLE_ADMIN') %}<a href="{{ url('admin-history') }}"><i class="glyphicon glyphicon-log-in"></i> CMS</a>
+{% else %}
+    {% if is_granted('ROLE_MANAGER') %}<a href="{{ url('admin-table') }}"><i class="glyphicon glyphicon-log-in"></i> CMS</a>
+    {% endif %}
+{% endif %}
+
+
+
+{% if is_granted('ROLE_ORG') %}<a href="{{ url('registration-3') }}"><i class="glyphicon glyphicon-user"></i> Личный кабинет</a>
+{% endif %}

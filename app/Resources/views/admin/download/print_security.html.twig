@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Печать таблицы</title>
+    <style type="text/css">
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+        }
+
+        h4 {
+            margin: 0;
+        }
+
+        tr {
+            page-break-inside: avoid;
+        }
+
+        td, th {
+            vertical-align: top;
+        }
+
+        td {
+            border-top: 1px solid silver;
+            padding-top: 5px;
+        }
+
+        .room {
+            margin-bottom: -1px;
+            margin-right: -4px;
+            display: inline-block;
+            width: calc(50% - 12px);
+            padding: 5px;
+            vertical-align: top;
+        }
+
+        .nag {
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        @media print {
+            textarea {
+                border: 0;
+                resize: none;
+            }
+
+            @page {
+                size: landscape;
+            }
+        }
+    </style>
+</head>
+<body>
+<table>
+    <tbody>
+    {% for utc in userstoconf %}
+            <tr>
+                <td>{{ utc.user.lastname }} {{ utc.user.firstname }} {{ utc.user.middlename }}</td>
+                <td>{{ utc.user.organization.name }}</td>
+                <td>{% if utc.user.carnumber %}{{ utc.user.carnumber }}{% else %}-{% endif %}</td>
+                <td>{% if utc.user.arrival %}{{ utc.user.arrival|date("d.m.Y") }}{% else %}Дата заезда неизвестна{% endif %}</td>
+            </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</body>

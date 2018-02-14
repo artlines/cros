@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+{% block header_title %}Личный кабинет{% endblock %}
+
+{% block page_image %}info_terms{% endblock %}
+
+{% block body %}
+    <h2>Редактирование информации о Компании <a href="{{ path('profile', {'page':'security'}) }}" class="btn btn-default">Сменить пароль</a></h2>
+    {% block content %}
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+        <span style="color: #a94442;">*</span> - поля обязательны к заполнению
+    {% endblock %}
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(function () {
+            $('*[data-helper]').each(function () {
+                $(this).after('<span class="text-muted">' + $(this).attr('data-helper') + '</span>');
+            });
+
+            $('#form_name, #form_inn, #form_email').parent('.form-group').css('margin-right', '2%');
+            $('#form_name, #form_city, #form_inn, #form_kpp, #form_email, #form_email_confirm').parent('.form-group').css('width', '49%').css('display', 'inline-block').css('vertical-align', 'top');
+
+            $('#form_email_confirm').bind('paste', function(e){
+                e.preventDefault();
+            });
+
+            {% if result is defined %}
+            {% if result.element is defined %}
+            var $input = $('#form_{{ result.element }}');
+            $input.after('<span class="bg-error">{{ result.text }}</span><br>');
+            $input.focus();
+            {% endif %}
+            {% endif %}
+        });
+    </script>
+{% endblock %}

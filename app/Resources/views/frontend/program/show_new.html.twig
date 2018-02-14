@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Конференция Российских Операторов Связи{% endblock %}
+
+{% block header_title %}Программа{% endblock %}
+{% block body %}
+    {% if lectures is empty %}
+        <h3>Нет данных</h3>
+    {% else %}
+	<table class="table">
+	    <thead>
+		<tr>
+		    <td>Дата начала</td><td>Время начала</td><td>Время окончания</td><td>Зал</td><td>Докладчик</td>
+		    <td>Компания</td><td>Модератор</td><td>Наименование доклада</td><td>Тезисы</td>
+		</tr>
+	    </thead>
+	    <tbody>
+		{% for row in lectures %}
+		    <tr>
+		    <td>{{ row.date|date("d.m.Y") }}</td>
+		    <td>{{ row.startTime|date("H:i") }}</td>
+		    <td>{{ row.endTime|date("H:i") }}</td>
+		    <td>{{ row.hall }}</td>
+		    <td>{{ row.speaker }}</td>
+		    <td>{{ row.company }}</td>
+		    <td>{{ row.moderator }}</td>
+		    <td>{{ row.title }}</td>
+		    <td>{{ row.theses|nl2br }}</td>
+		    </tr>
+		{% endfor %}
+		</tr>
+	    </tbody>
+	</table>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/spoiler.js') }}"></script>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/spoiler.css') }}">
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'admin.html.twig' %}
+{% block body %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Настройки</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {% if form is empty %}
+            Нет настроек
+            {% else %}
+                <div class="row">
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/admin.js') }}"></script>
+
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+    <script src="{{ asset('assets/js/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery/md5.js') }}"></script>
+    <script>
+        CKEDITOR.replace('form_footer_text');
+
+        $sendpass = $('#form_send_pass');
+
+        $('<span id="sendpassmd5"></span>').insertAfter($sendpass);
+
+        function md5pass($pass) {
+            $('#sendpassmd5').html('<a href="{{ url('members') }}/' + $.md5($pass) + '" target="_blank">{{ url('members') }}/' + $.md5($pass) + '</a>');
+        }
+
+        md5pass($sendpass.val());
+        $sendpass.on('change input paste', function () {
+            md5pass($(this).val());
+        });
+    </script>
+{% endblock %}

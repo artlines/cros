@@ -1,0 +1,17 @@
+{% if events is empty %}
+{% else %}
+    {% for event in events %}
+        <li>
+            <a href="#">
+                <div>
+                    <strong>{{ event.entity }} {{ event.elementid }}</strong>
+                    <span class="pull-right text-muted">
+                                        <em>{{ event.date.date|date('H:i') }} {% if event.date.date|date('d.m.Y') == 'now'|date('d.m.Y') %}Сегодня{% else %}{{ event.date.date|date('d.m.Y') }}{% endif %}</em>
+                                    </span>
+                </div>
+                <div>{{ event.event }}</div>
+            </a>
+        </li>
+        <li class="divider"></li>
+    {% endfor %}
+{% endif %}
