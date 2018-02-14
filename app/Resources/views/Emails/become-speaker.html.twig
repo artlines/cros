@@ -1,0 +1,18 @@
+{% extends 'Emails/base.html.twig' %}
+{% block title %}Здравствуйте.{% endblock %}
+
+{% block message %}
+
+	<p>
+		<b>ФИО:</b> {{ speaker|raw }}
+		<br/>
+		<b>E-mail:</b> {{ email|raw }}
+		<br/>
+		<b>Телефон:</b> {{ mobile|raw }}
+		<br/><br/>
+		<b>Название доклада:</b><br/>{{ title|raw }}
+		<br/><br/>
+		<b>Тезисы:</b><br/>{{ theses|raw|nl2br }}
+	</p>
+
+{% endblock %}
