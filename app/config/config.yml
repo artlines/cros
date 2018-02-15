@@ -75,3 +75,9 @@ vich_uploader:
             delete_on_update: false
             delete_on_remove: false
 
+# reCAPTCHA
+vihuvac_recaptcha:
+    site_key:   6LcCcEYUAAAAAIUTbUWnxgBb1u8DGKNc3G4A-waZ
+    secret_key: 6LcCcEYUAAAAAGXPP9ZV9wetVqrerN_8qM8V4kVc
+    locale_key: kernel.default_locale
+

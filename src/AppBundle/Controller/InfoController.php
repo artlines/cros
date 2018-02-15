@@ -31,6 +31,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 use Symfony\Component\Form\FormError;
 
+use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType as RecaptchaType;
+use Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
+
 class InfoController extends Controller
 {
     /**
@@ -81,6 +84,8 @@ class InfoController extends Controller
 			$defaultData = array(
 				//'theses' => 'asd'
 				);
+			$good_extens = array('pdf', 'txt', 'rtf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx');
+			$mimeMsg = 'Допустимые расширения файлов: '.implode(', ', $good_extens);
 			$form = $this->createFormBuilder($defaultData)
 				->add('speaker', TextType::class, array('label' => 'ФИО'))
 				->add('email', EmailType::class, array('label' => 'E-mail'))
@@ -94,10 +99,18 @@ class InfoController extends Controller
 										new Assert\All(array(
 											new Assert\File(array(
 												'maxSize' => '20M',
-												//'mimeTypesMessage' => 'Допустимые расширения файлов: .pdf .doc .docx .xml .xmlx'
+												'mimeTypesMessage' => $mimeMsg
 											)),
 										)),
 									),
+				))
+				->add("recaptcha", RecaptchaType::class, array(
+															"mapped"      => false,
+															"constraints" => array(
+																new RecaptchaTrue(array(
+																	'message' => '',
+																)),
+															)
 				))
 				->add('send', SubmitType::class, array('label' => 'Отправить'))
 				->getForm();
@@ -105,17 +118,16 @@ class InfoController extends Controller
 			$form->handleRequest($request);
 
 			/* check files extensions */
-			$bad_extens = array('bin', 'exe');
 			$_files_valid = true;
 			if ($form->isSubmitted()) {
 				$files = $form->get('files')->getData();
 				$_tmp = array();
 				foreach ($files as $file) {
 					$_exten = $file->getClientOriginalExtension();
-					if (in_array($_exten, $bad_extens)) {
+					if (!in_array($_exten, $good_extens)) {
 						if ($_files_valid) {
 							$_files_valid = false;
-							$form->get('files')->addError(new FormError('Недопустимое расширение файла(ов)'));
+							$form->get('files')->addError(new FormError($mimeMsg));
 						};
 						break;
 					};
@@ -176,15 +188,23 @@ class InfoController extends Controller
 				->add('company', TextType::class, array('label' => 'Компания'))
 				->add('email', EmailType::class, array('label' => 'E-mail'))
 				->add('mobile', TextType::class, array('label' => 'Телефон'))
+				->add("recaptcha", RecaptchaType::class, array(
+															"mapped"      => false,
+															"constraints" => array(
+																new RecaptchaTrue(array(
+																	'message' => '',
+																)),
+															)
+				))
 				->add('send', SubmitType::class, array('label' => 'Отправить'))
 				->getForm();
-
-			//var_dump($request); exit();
 
 			$form->handleRequest($request);
 
 			if ($form->isSubmitted() && $form->isValid()) {
 				$data = $form->getData();
+
+				//var_dump($form->get('recaptcha')); exit();
 
 					$message = \Swift_Message::newInstance()
                         ->setSubject('КРОС-2.0-18: Заявка на добавление спонсора')
