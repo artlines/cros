@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Lecture
@@ -83,6 +84,19 @@ class Lecture
      * @ORM\Column(name="theses", type="text")
      */
     private $theses;
+
+    /**
+     * Many Lectures have Many Chats
+     *
+     * @ORM\ManyToMany(targetEntity="TgChat", mappedBy="lectures")
+     */
+    private $chats;
+
+
+    public function __construct()
+    {
+        $this->chats = new ArrayCollection();
+    }
 
 
     /**

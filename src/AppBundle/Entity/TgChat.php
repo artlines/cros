@@ -5,6 +5,8 @@ namespace AppBundle\Entity;
 
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Annotations\Annotation;
+use Doctrine\Common\Collections\ArrayCollection;
 
 
 /**
@@ -37,6 +39,19 @@ class TgChat
      * @ORM\Column(name="is_active", type="boolean")
      */
     private $isActive;
+
+    /**
+     * Many Chats have many Lectures
+     *
+     * @ORM\ManyToMany(targetEntity="Lecture", inversedBy="chats")
+     * @ORM\JoinTable(name="chats_lectures")
+     */
+    private $lectures;
+
+    public function __construct()
+    {
+        $this->lectures = new ArrayCollection();
+    }
 
     /**
      * @return int
