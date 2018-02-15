@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "afd8bc1a378ced16748dd32cec7b0ce3",
+    "content-hash": "945b7bda96ab38e28b3bf4d1b70cfc20",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -833,6 +833,43 @@
                 "orm"
             ],
             "time": "2017-12-17T02:57:51+00:00"
+        },
+        {
+            "name": "eleirbag89/telegrambotphp",
+            "version": "1.3.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Eleirbag89/TelegramBotPHP.git",
+                "reference": "aec5bc4f5873595d1b4f03fd0d955549ba4cfab3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Eleirbag89/TelegramBotPHP/zipball/aec5bc4f5873595d1b4f03fd0d955549ba4cfab3",
+                "reference": "aec5bc4f5873595d1b4f03fd0d955549ba4cfab3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "Telegram.php",
+                    "TelegramErrorLogger.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gabriele Grillo",
+                    "email": "gabry.grillo@alice.it"
+                }
+            ],
+            "description": "A very simple PHP Telegram Bot API",
+            "time": "2017-12-27T13:46:04+00:00"
         },
         {
             "name": "fig/link-util",
