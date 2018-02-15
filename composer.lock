@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "332815469db8bfb4f59bde91d7aad687",
+    "content-hash": "99fe03db7e0df3478afc6912aa939c15",
     "packages": [
         {
             "name": "composer/ca-bundle",
@@ -1535,57 +1535,6 @@
                 "random"
             ],
             "time": "2017-09-27T21:40:39+00:00"
-        },
-        {
-            "name": "phpmob/recaptcha-bundle",
-            "version": "1.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpmob/recaptcha-bundle.git",
-                "reference": "3a434fe770b3eabba1ca0f0affdc1371c3f92c0b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpmob/recaptcha-bundle/zipball/3a434fe770b3eabba1ca0f0affdc1371c3f92c0b",
-                "reference": "3a434fe770b3eabba1ca0f0affdc1371c3f92c0b",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^5.5.9|^7.0.8",
-                "symfony/config": "^3.4",
-                "symfony/dependency-injection": "^3.4",
-                "symfony/form": "^3.4",
-                "symfony/http-foundation": "^3.4",
-                "symfony/http-kernel": "^3.4",
-                "symfony/validator": "^3.4"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^6.5"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "PhpMob\\ReCaptchaBundle\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ishmael Doss",
-                    "email": "nukboon@gmail.com"
-                }
-            ],
-            "description": "Spam protect with google reCAPTCHA",
-            "homepage": "http://github.com/phpmob/recaptcha-bundle",
-            "keywords": [
-                "google",
-                "recaptcha",
-                "spam-protect"
-            ],
-            "time": "2018-02-05T10:26:27+00:00"
         },
         {
             "name": "phpseclib/phpseclib",
