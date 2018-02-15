@@ -29,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-use AppBundle\Validator\Constraints as CustAssert;
+use Symfony\Component\Form\FormError;
 
 class InfoController extends Controller
 {
@@ -92,33 +92,10 @@ class InfoController extends Controller
 									'multiple' => true,
 									'constraints' => array(
 										new Assert\All(array(
-/*
 											new Assert\File(array(
 												'maxSize' => '20M',
-												'mimeTypes' => array(
-													'application/pdf',
-													'application/x-pdf',
-													'application/rtf',
-													'application/vnd.oasis.opendocument.text',
-													'application/vnd.oasis.opendocument.spreadsheet',
-													'application/vnd.oasis.opendocument.presentation',
-													'application/vnd.oasis.opendocument.graphics',
-													'application/vnd.ms-excel',
-													'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-													'application/vnd.ms-powerpoint',
-													'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-													'application/msword',
-													'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-													'application/vnd.ms-powerpoint',
-													'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-													'application/vnd.openxmlformats-officedocument.presentationml.slideshow'
-												),
-												'mimeTypesMessage' => 'Доступные расширения файлов: .pdf .doc .docx .xml .xmlx'
+												//'mimeTypesMessage' => 'Допустимые расширения файлов: .pdf .doc .docx .xml .xmlx'
 											)),
-*/
-											new CustAssert\FileNotThisExtension(
-												
-											)
 										)),
 									),
 				))
@@ -127,12 +104,29 @@ class InfoController extends Controller
 
 			$form->handleRequest($request);
 
-			if ($form->isSubmitted() && $form->isValid()) {
+			/* check files extensions */
+			$bad_extens = array('bin', 'exe');
+			$_files_valid = true;
+			if ($form->isSubmitted()) {
+				$files = $form->get('files')->getData();
+				$_tmp = array();
+				foreach ($files as $file) {
+					$_exten = $file->getClientOriginalExtension();
+					if (in_array($_exten, $bad_extens)) {
+						if ($_files_valid) {
+							$_files_valid = false;
+							$form->get('files')->addError(new FormError('Недопустимое расширение файла(ов)'));
+						};
+						break;
+					};
+				};
+			};
+			/* end check */
+
+			if ($form->isSubmitted() && $form->isValid() && $_files_valid) {
 				$data = $form->getData();
 
 					$files = $data['files'];
-
-			var_dump($files); exit();
 
 					$message = \Swift_Message::newInstance()
                         ->setSubject('КРОС-2.0-18: Заявка на добавление докладчика')
