@@ -104,13 +104,14 @@ class InfoController extends Controller
 										)),
 									),
 				))
-				->add("recaptcha", RecaptchaType::class, array(
-															"mapped"      => false,
-															"constraints" => array(
-																new RecaptchaTrue(array(
-																	'message' => '',
-																)),
-															)
+				->add('recaptcha', RecaptchaType::class, array(
+									'label' => false, 
+									'mapped' => false,
+									'constraints' => array(
+										new RecaptchaTrue(array(
+											'message' => '',
+										)),
+									)
 				))
 				->add('send', SubmitType::class, array('label' => 'Отправить'))
 				->getForm();
@@ -188,13 +189,14 @@ class InfoController extends Controller
 				->add('company', TextType::class, array('label' => 'Компания'))
 				->add('email', EmailType::class, array('label' => 'E-mail'))
 				->add('mobile', TextType::class, array('label' => 'Телефон'))
-				->add("recaptcha", RecaptchaType::class, array(
-															"mapped"      => false,
-															"constraints" => array(
-																new RecaptchaTrue(array(
-																	'message' => '',
-																)),
-															)
+				->add('recaptcha', RecaptchaType::class, array(
+									'label' => false, 
+									'mapped' => false,
+									'constraints' => array(
+										new RecaptchaTrue(array(
+											'message' => '',
+										)),
+									)
 				))
 				->add('send', SubmitType::class, array('label' => 'Отправить'))
 				->getForm();
