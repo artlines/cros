@@ -5,7 +5,6 @@ namespace AppBundle\Entity;
 
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Annotations\Annotation;
 use Doctrine\Common\Collections\ArrayCollection;
 
 
@@ -41,6 +40,13 @@ class TgChat
     private $isActive;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    protected $createdAt;
+
+    /**
      * Many Chats have many Lectures
      *
      * @ORM\ManyToMany(targetEntity="Lecture", inversedBy="chats")
@@ -48,9 +54,14 @@ class TgChat
      */
     private $lectures;
 
+
+
+
+
     public function __construct()
     {
         $this->lectures = new ArrayCollection();
+        $this->createdAt = new \DateTime();
     }
 
     /**
@@ -80,7 +91,7 @@ class TgChat
     /**
      * @return bool
      */
-    public function isActive()
+    public function getIsActive()
     {
         return $this->isActive;
     }
@@ -91,6 +102,30 @@ class TgChat
     public function setIsActive($isActive)
     {
         $this->isActive = $isActive;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLectures()
+    {
+        return $this->lectures;
+    }
+
+    /**
+     * @param mixed $lectures
+     */
+    public function setLectures($lectures)
+    {
+        $this->lectures = $lectures;
     }
 
 
