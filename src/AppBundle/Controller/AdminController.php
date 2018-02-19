@@ -42,6 +42,73 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdminController extends Controller
 {
+    /**
+     * @Route("/admin/test-view")
+     */
+    public function testViewAction()
+    {
+        return $this->render('admin/test.html.twig', array(
+            'base_dir' => realpath($this->container->getParameter('kernel.root_dir') . '/..') . DIRECTORY_SEPARATOR,
+
+        ));
+    }
+
+    /**
+     * @Route("/admin/send-test-email")
+     */
+    public function sendTestEmailAction()
+    {
+        //var_dump($this->getUser()->getName()); exit();
+
+        $orgName = 'Рога и Ко';
+        $userName = 'Тестов Тест Тестович';
+        $email = 'e.nachuychenko@nag.ru';
+        $email_to = array(
+            'e.nachuychenko@nag.ru',
+            'a.gazetdinov@nag.ru'
+        );
+
+        $message_org = \Swift_Message::newInstance()
+            ->setSubject('Регистрация КРОС-2.0-18: '.$orgName.' Доступ в личный кабинет')
+            ->setFrom('cros@nag.ru')
+            ->setTo($email_to)
+            ->setBody(
+                $this->renderView(
+                    'Emails/org_registration.html.twig',
+                    array(
+                        'email' => $email,
+                        'password' => 'test-pass',
+                        'org' => $orgName,
+                    )
+                ),
+                'text/html'
+            );
+
+        $user = new User();
+
+        $message_user = \Swift_Message::newInstance()
+            ->setSubject('Регистрация КРОС-2.0-18: ' . $orgName . ' - ' . $userName)
+            ->setFrom('cros@nag.ru')
+            ->setTo($email_to)
+            ->setBody(
+                $this->renderView(
+                    'Emails/registration.html.twig',
+                    array(
+                        'fio' => $userName,
+                        'org' => $orgName,
+                        'user' => $user,
+                        'password' => 'test-pass',
+                    )
+                ),
+                'text/html'
+            );
+
+        //$result = $this->get('mailer')->send($message_org);
+        //$result = $this->get('mailer')->send($message_user);
+        //var_dump($result);
+
+        return new Response('ok', 200);
+    }
 
     /**
      * История
@@ -62,6 +129,7 @@ class AdminController extends Controller
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir') . '/..') . DIRECTORY_SEPARATOR,
             'history' => $history,
         ));
+
     }
 
     /**
