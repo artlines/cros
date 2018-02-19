@@ -213,10 +213,10 @@ class RegistrationController extends Controller
                     $event->setReaded(0);
 
                     $message = \Swift_Message::newInstance()
-                        ->setSubject('Регистрация КРОС-2.0-17: '.$org->getName().' Доступ в личный кабинет')
+                        ->setSubject('Регистрация КРОС-2.0-18: '.$org->getName().' Доступ в личный кабинет')
                         ->setFrom('cros@nag.ru')
                         ->setTo($org->getEmail())
-                        ->setBcc(array('xvanok@nag.ru', 'esuzev@nag.ru'))
+                        ->setBcc(array('e.nachuychenko@nag.ru')) //'cros@nag.ru'
                         ->setBody(
                             $this->renderView(
                                 'Emails/org_registration.html.twig',
@@ -286,7 +286,7 @@ class RegistrationController extends Controller
             /** @var Conference $conf */
             $conf = $this->getDoctrine()
                 ->getRepository('AppBundle:Conference')
-                ->findOneBy(array('year' => '2017' /*$year*/ ));
+                ->findOneBy(array('year' => date("Y") /*$year*/ ));
 
             /** @var Apartament $apartaments */
             $apartaments = $this->getDoctrine()
@@ -350,7 +350,6 @@ class RegistrationController extends Controller
 
 
             /** @var Apartament $apartament */
-	    //echo "<pre>"; var_dump($apartaments);
             foreach ($apartaments as $apartament){
                 $freenum = 0;
                 $rfn = 0;
@@ -737,10 +736,10 @@ class RegistrationController extends Controller
                 if($user->getPassword() != 'not') {
                     $full_name = $user->getLastName() . ' ' . $user->getFirstName() . ' ' . $user->getMiddleName();
                     $message = \Swift_Message::newInstance()
-                        ->setSubject('Регистрация КРОС-2.0-17: ' . $org->getName())
+                        ->setSubject('Регистрация КРОС-2.0-18: ' . $org->getName())
                         ->setFrom('cros@nag.ru')
                         ->setTo($user->getEmail())
-                        ->setBcc(array('xvanok@nag.ru', 'cros@nag.ru', 'esuzev@nag.ru'))
+                        ->setBcc(array('e.nachuychenko@nag.ru')) //'cros@nag.ru'
                         ->setBody(
                             $this->renderView(
                                 'Emails/edit_user.html.twig',
@@ -778,10 +777,10 @@ class RegistrationController extends Controller
                     $full_name = $user->getLastName().' '.$user->getFirstName().' '.$user->getMiddleName();
 
                     $message = \Swift_Message::newInstance()
-                        ->setSubject('Регистрация КРОС-2.0-17: ' . $this->getUser()->getName())
+                        ->setSubject('Регистрация КРОС-2.0-18: ' . $this->getUser()->getName())
                         ->setFrom('cros@nag.ru')
                         ->setTo($user->getEmail())
-                        ->setBcc(array('xvanok@nag.ru', 'cros@nag.ru', 'esuzev@nag.ru'))
+                        ->setBcc(array('e.nachuychenko@nag.ru')) //'cros@nag.ru'
                         ->setBody(
                             $this->renderView(
                                 'Emails/registration.html.twig',
@@ -801,7 +800,7 @@ class RegistrationController extends Controller
             }
         }
 
-        $sysmail = array('xvanok@nag.ru', 'cros@nag.ru', 'esuzev@nag.ru');
+        $sysmail = array('e.nachuychenko@nag.ru'); //'cros@nag.ru'
 
         if($org->getManager() != null){
             /** @var User $managers_foremail */
@@ -818,7 +817,7 @@ class RegistrationController extends Controller
 
         if($sendall){
             $message = \Swift_Message::newInstance()
-                ->setSubject('Регистрация КРОС-2.0-17: ' . $this->getUser()->getName())
+                ->setSubject('Регистрация КРОС-2.0-18: ' . $this->getUser()->getName())
                 ->setFrom('cros@nag.ru')
                 ->setTo($this->getUser()->getEmail())
                 ->setBcc($sysmail)
