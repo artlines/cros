@@ -362,7 +362,10 @@ class RegistrationController extends Controller
                     foreach($useraps as $userap){
                         $usap++;
                     }
-                    if($usap < $apartament->getPlaces()){
+                    if($usap === 0){
+                        $freenum += $apartament->getPlaces();
+                    }
+                    elseif($usap < $apartament->getPlaces()){
                         $freenum++;
                     }
                     if(count($useraps) == 0){
