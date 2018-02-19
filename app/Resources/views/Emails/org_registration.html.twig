@@ -3,29 +3,42 @@
 
 {% block message %}
     <p>
-        Ваша Компания <b>{{ org }}</b> зарегистрирована на конференцию российских операторов связи КРОС-2.0-17.<br>
-        Изменить данные участников можно в личном кабинете: <a href="http://cros.nag.ru">cros.nag.ru</a><br><br>
-        Для доступа используйте следующие данные:<br><br>
-        Login: {{ email }}<br>
-        Пароль: {{ password }}<br><br>
-        Более подробную информацию можно получить на официальном сайте конференции: <a href="http://cros.nag.ru">cros.nag.ru</a><br><br>
-        Если произошла какая-либо ошибка, просим Вас сообщить об этом по адресу: <a href="mailto:cros@nag.ru">cros@nag.ru</a><br><br>
-        <table>
+        Ваша Компания <b>{{ org }}</b> зарегистрирована на Конференцию российских операторов связи КРОС-2.0-18.<br><br>
+        Добавить участников или изменить данные вы можете
+        <a href="{{ absolute_url('/') }}">в личном кабинете</a>.
+        <br>
+        <div
+            style="
+                padding: 10px 15px;
+                background-color: rgba(232, 246, 253, 0.86);
+                margin: 0px 20px;
+            ">
+            Сохраните ваши данные для авторизации:<br><br>
+            Логин: {{ email }}<br>
+            Пароль: {{ password }}
+        </div>
+        <br>
+        Чтобы быть в курсе последних новостей о КРОС,
+        легко решать бытовые и организационные вопросы,
+        а также общаться с другими участниками конференции,
+        присоединяйтесь к нам в Telegram
+        <br><br>
+        <table width="680px" style="width: 680px; font-size: 16px; font-family: arial;">
             <tbody>
-            <tr>
-                <td>Официальный информационный канал КРОС-2.0-17</td>
-                <td>Общение участников КРОС-2.0-17</td>
-            </tr>
-            <td>
-                <a href="https://t.me/cros2017"><img src="http://cros.nag.ru/assets/images/croschannel.jpg" alt="Telegram-канал"></a>
-            </td>
-            <td>
-                <a href="https://t.me/joinchat/AAAAAD8Ll_zQJjIrIv136Q"><img src="http://cros.nag.ru/assets/images/croschat.jpg" alt="Telegram-чат"></a>
-            </td>
+                <tr>
+                    <td style="text-align: center;">
+                        <img
+                            src="{{ absolute_url(asset('temp/telegram-logo-56x56.png')) }}"
+                            alt="Telegram" />
+                    </td>
+                    <td style="text-align: left;">
+                        <a href="https://t.me/joinchat/AAAAAD8Ll_zQJjIrIv136Q"><b>Группа участников КРОС в Telegram</b></a><br>
+                        <a href="https://t.me/cros2017"><b>Информационный канал в Telegram</b></a>
+                    </td>
+                </tr>
             </tbody>
         </table>
-        {#Рекоммендуем Вам установить наше полезное приложение.
-        <a href="#"><img src="" alt="Google Play"></a>
-        <a href="#"><img src="" alt="iTunes"></a>#}
+        <br>
+        Если произошла какая-либо ошибка, просим Вас сообщить об этом по адресу: <a href="mailto:cros@nag.ru">cros@nag.ru</a><br>
     </p>
 {% endblock %}
