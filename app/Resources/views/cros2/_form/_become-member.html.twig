@@ -1,0 +1,66 @@
+<div class="cs-pos-rel cs-height-400--md u-shadow-v23">
+    <div class="cs-pos-abs--md cs-top-0 cs-left-0 w-100 cs-height-100x--md">
+        <div id="become-member" class="row h-100 mx-0 cs-bg-yellow_block">
+            <div class="col-md-12 align-self-center w-100">
+                <div class="u-heading-v8-2">
+                    <h3 class="text-uppercase cs-font-weight-700 cs-font-size-15 cs-color-black cs-mb-10 text-center">
+                        Стать участником КРОС-2.0-18
+                    </h3>
+                </div>
+                <p class="cs-color-black cs-pt-20 cs-font-size-14">Хотите получить персональное приглашение на КРОС и промо-код на скидку?
+                    Подайте заявку, чтобы не пропустить начало продаж билетов на конференцию. </a>
+                </p>
+            </div>
+            <!-- <div class="col-md-4 align-self-center w-100">
+               &nbsp;
+               </div> -->
+            <!--
+            <div class="col-md-6 align-self-center w-100">
+                <form>
+                    <div class="form-group cs-mb-20">
+                        <input id="inputGroup1_1" class="form-control cs-font-size-13 cs-theme-color-dark-grey-v2 cs-placeholder-inherit cs-bg-light-opacity-0_8 cs-bg-light-v1--focus cs-brd-none rounded-0 cs-pa-20" type="text" placeholder="* Фамилия, Имя">
+                    </div>
+                    <div class="form-group cs-mb-20">
+                        <input id="inputGroup1_2" class="form-control cs-font-size-13 cs-theme-color-dark-grey-v2 cs-placeholder-inherit cs-bg-light-opacity-0_8 cs-bg-light-v1--focus cs-brd-none rounded-0 cs-pa-20" type="email" placeholder="Компания">
+                    </div>
+                    <div class="form-group cs-mb-20">
+                        <input id="inputGroup1_2" class="form-control cs-font-size-13 cs-theme-color-dark-grey-v2 cs-placeholder-inherit cs-bg-light-opacity-0_8 cs-bg-light-v1--focus cs-brd-none rounded-0 cs-pa-20" type="email" placeholder="Должность">
+                    </div>
+            </div>
+            <div class="col-md-6 align-self-center w-100">
+                <div class="form-group cs-mb-20">
+                    <input id="inputGroup1_1" class="form-control cs-font-size-13 cs-theme-color-dark-grey-v2 cs-placeholder-inherit cs-bg-light-opacity-0_8 cs-bg-light-v1--focus cs-brd-none rounded-0 cs-pa-20" type="text" placeholder="* E-mail">
+                </div>
+                <div class="form-group cs-mb-20">
+                    <input id="inputGroup1_2" class="form-control cs-font-size-13 cs-theme-color-dark-grey-v2 cs-placeholder-inherit cs-bg-light-opacity-0_8 cs-bg-light-v1--focus cs-brd-none rounded-0 cs-pa-20" type="email" placeholder="* Контактный телефон">
+                </div>
+                <div class="form-group text-left cs-mb-20">
+                    <button class="btn u-btn-primary btn-lg text-uppercase cs-font-weight-700 cs-font-size-12 rounded-0 cs-px-20 cs-py-20 mb-0 " type="submit" role="button">Подать заявку</button>
+                    <!-- Place for captcha or invisible captcha -->
+            <!--</div>
+            </form>
+        </div>
+        -->
+            <form name="form" onsubmit="alert('submit');return false" class="col-md-12 align-self-center w-100">
+                <div class="row">
+
+                    <div class="col-md-6 w-100">
+                        {{ form_row(form.fio) }}
+                        {{ form_row(form.company) }}
+                        {{ form_row(form.position) }}
+                    </div>
+
+                    <div class="col-md-6 w-100">
+                        {{ form_row(form.email) }}
+                        {{ form_row(form.mobile) }}
+                        {{ form_row(form.pd_pk_accept) }}
+                        {{ form_row(form.send) }}
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
