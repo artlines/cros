@@ -34,6 +34,17 @@ class DefaultController extends Controller
         $this->client = static::createClient();
     }
 
+
+    /**
+     * @Route("/new", name="cros2-main")
+     */
+    public function newMainAction()
+    {
+        return $this->render('cros2/base.html.twig', array(
+            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
+        ));
+    }
+
     /**
      * @Route("/", name="homepage")
      */
