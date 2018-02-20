@@ -1,0 +1,243 @@
+/* ----- DEFAULT COLOR ----- */
+/* ----- Green ----- */
+ a {
+    color: #212121;
+  }
+
+  a:focus, a:hover {
+    color: #f61f45;
+  }
+
+
+  h1, h2, .h2, h3, h4 {
+    color: #f73859;
+  }
+  h2:after {
+    background: #f73859;
+  }
+  .nav-link:focus, .nav-link:hover {
+    color: #f73859;
+  }
+
+  .icon-set {
+    filter: gray; 
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1); 
+    opacity: 0.8;
+   
+  }
+  ::-moz-selection {
+    color: #fff;
+    background-color: #f73859;
+  }
+  .u-go-to-v1:hover {
+    color: #fff;
+    background-color: #f73859;
+  }
+
+  .light-theme .nav-item .nav-link {
+    color: rgba(255, 255, 255, .8) !important;
+  }
+  
+  .light-theme .nav-item .nav-link:hover, .light-theme .nav-item.active .nav-link {
+    color: #f73859 !important;
+  }
+  
+.dark-theme .nav-item .nav-link {
+  color: rgba(0, 0, 0, .8) !important;
+}
+
+.dark-theme .nav-item .nav-link:hover, .dark-theme .nav-item.active .nav-link {
+  color: #f73859 !important;
+  
+}  
+
+.u-btn-primary {
+  color: #fff;
+  background-color: #f73859;
+}
+
+.u-btn-primary:hover {
+  border-color: #4180a8;
+  background-color: #4180a8;
+}
+
+.u-btn-primary:hover, .u-btn-primary:focus {
+  color: #fff;
+}
+
+.u-btn-white {
+  color: #555;
+  background-color: #fff;
+}
+
+.u-btn-white:hover {
+  border-color: #87d37c;
+  background-color: #87d37c;
+}
+
+.u-btn-white:hover, .u-btn-white:focus {
+  color: #fff;
+}
+
+.u-btn-yellow {
+  color: #fff !important;
+  background-color: #f73859;
+}
+
+.u-btn-yellow:hover {
+  border-color: #f73859 !important;
+  background-color: #14776e !important;
+}
+
+.u-btn-yellow:hover, .u-btn-yellow:focus {
+  color: #fff;
+}
+
+.u-btn-green {
+  color: #fff;
+  background-color: #f73859;
+}
+
+.u-btn-green:hover {
+  border-color: #0ae4ff;
+  background-color: #0ae4ff;
+}
+
+.u-btn-green:hover, .u-btn-green:focus {
+  color: #fff;
+}
+  
+.form-control {
+  border-color: #ccc;
+}
+
+.form-control, .form-control:focus {
+  color: #eeefef;
+}
+
+.form-control:focus {
+  border-color: #f73859;
+}
+/* ----- MAIN COLORS ----- */
+.cs-color-primary:focus {
+  color: #f73859;
+}
+
+.cs-bg-gray-dark-v1--focus:focus {
+  background-color: #111!important;
+}
+
+.cs-bg-light-v1--focus:focus {
+  background-color: #fff!important;
+}
+
+.cs-bg-secondary_block {
+  background-color: #f5f5f5!important;
+}
+
+.cs-bg-primary_block {
+  background-color: #fff!important;
+}
+
+.cs-bg-yellow_block {
+  background-color: rgba(25, 34, 47, 1) !important;
+}
+.cs-bg-yellow_block h3, .cs-bg-yellow_block p {
+    color: #fff !important;
+}
+.cs-bg-primary--hover:hover {
+  background-color: #f73859!important;
+}
+
+.cs-bg-white {
+  background-color: #fff!important;
+}
+
+.cs-bg-white--hover:hover {
+  background-color: #fff!important;
+}
+
+.cs-bg-white-opacity-0_9 {
+  background-color: rgba(255, 255, 255, .9)!important;
+}
+
+.cs-color-primary {
+  color: #f73859!important;
+}
+
+.cs-color-primary--hover:hover {
+  color: #f73859!important;
+}
+
+.cs-color-black {
+  color: #000!important;
+}
+
+.cs-color-white {
+  color: #eeefef!important;
+}
+
+.cs-color-white--hover:hover {
+  color: #fff!important;
+}
+
+.cs-color-gray-dark-v4 {
+  color: #777!important;
+}
+
+.cs-color-gray-dark-v5 {
+  color: #999!important;
+}
+
+.cs-color-lightblue-v1 {
+  color: #212121 !important;
+}
+
+.cs-color-lightblue-v1:hover {
+  color:#f73859!important;
+}
+
+.cs-theme-color-gray-dark-v1 {
+  color: #eeefef !important;
+}
+
+.cs-theme-color-gray-dark-v2 {
+  color: #7c7e89 !important;
+}
+
+.cs-theme-color-black-v2 {
+  color: #212121 !important;
+}
+
+.cs-theme-color-dark-grey-v2 {
+  color: #a5a5a5 !important;
+}
+
+.cs-theme-bg-blue-dark-v2 {
+  background-color: rgba(25, 34, 47, 0.8) !important
+}
+
+.cs-bg-darkblue-opacity-0_5 {
+  background-color: rgba(22, 26, 39, .5)!important;
+}
+
+.cs-bg-darkblue-opacity-0_5--after:after {
+  background-color: rgba(22, 26, 39, .5)!important;
+}
+
+.cs-bg-darkblue-opacity-0_5--after::after {
+  background-color: rgba(22, 26, 39, .5)!important;
+}
+
+.cs-bg-light-opacity-0_8 {
+  background-color: rgba(255, 255, 255, .8)!important;
+}
+
+.ccs-bg-light-opacity-0_8--after:after {
+  background-color: rgba(255, 255, 255, .8)!important;
+}
+
+.cs-bg-light-opacity-0_8--after::after {
+  background-color: rgba(255, 255, 255, .8)!important;
+}

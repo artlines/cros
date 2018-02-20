@@ -1,0 +1,239 @@
+/* ----- DEFAULT COLOR ----- */
+/* ----- Boyz Blue ----- */
+  a {
+    color: #5c97bf;
+  }
+  
+  h1, h2, .h2, h3, h4 {
+    color: #5c97bf;
+  }
+  h2:after {
+    background: #5c97bf;
+  }
+  .nav-link:focus, .nav-link:hover {
+    color: #6ca0dc;
+  }
+
+  ::-moz-selection {
+    color: #fff;
+    background-color: #5c97bf;
+  }
+  .u-go-to-v1:hover {
+    color: #fff;
+    background-color: #5c97bf;
+  }
+
+  .light-theme .nav-item .nav-link {
+    color: rgba(255, 255, 255, .8) !important;
+  }
+  
+  .light-theme .nav-item .nav-link:hover, .light-theme .nav-item.active .nav-link {
+    color: #5c97bf !important;
+  }
+  .dark-theme .nav-item {
+	margin-top: 10px;
+	margin-bottom: 10px !important;
+
+  }
+
+  .dark-theme .navbar-nav {
+    /*height: 40px !important;*/
+  }
+
+  .dark-theme .nav-item .nav-link {
+	color: rgba(255, 255, 255, .9) !important;
+	
+	vertical-align: middle!important;
+  }
+  .dark-theme .nav-item .nav-link:hover, .dark-theme .nav-item.active .nav-link {
+    color: #212121 !important;
+  }  
+
+.u-btn-primary {
+  color: #fff;
+  background-color: #5c97bf;
+}
+
+.u-btn-primary:hover {
+  border-color: #4180a8;
+  background-color: #4180a8;
+}
+
+.u-btn-primary:hover, .u-btn-primary:focus {
+  color: #fff;
+}
+
+.u-btn-white {
+  color: #555;
+  background-color: #fff;
+}
+
+.u-btn-white:hover {
+  border-color: #87d37c;
+  background-color: #87d37c;
+}
+
+.u-btn-white:hover, .u-btn-white:focus {
+  color: #fff;
+}
+
+.u-btn-yellow {
+  color: #555;
+  background-color: #f4b251;
+}
+
+.u-btn-yellow:hover {
+  border-color: #efd34c;
+  background-color: #efd34c;
+}
+
+.u-btn-yellow:hover, .u-btn-yellow:focus {
+  color: #555;
+}
+
+.u-btn-green {
+  color: #fff;
+  background-color: #87d37b;
+}
+
+.u-btn-green:hover {
+  border-color: #0ae4ff;
+  background-color: #0ae4ff;
+}
+
+.u-btn-green:hover, .u-btn-green:focus {
+  color: #fff;
+}
+  
+.form-control {
+  border-color: #ccc;
+}
+
+.form-control, .form-control:focus {
+  color: #eeefef;
+}
+
+.form-control:focus {
+  border-color: #5c97bf;
+}
+/* ----- MAIN COLORS ----- */
+.cs-color-primary:focus {
+  color: #5c97bf;
+}
+
+.cs-bg-gray-dark-v1--focus:focus {
+  background-color: #111!important;
+}
+
+.cs-bg-light-v1--focus:focus {
+  background-color: #fff!important;
+}
+
+.cs-bg-secondary_block {
+  background-color: #f5f5f5!important;
+}
+
+.cs-bg-primary_block {
+  background-color: #fff!important;
+}
+
+.cs-bg-yellow_block {
+  background-color: #f4b251!important;
+}
+
+.cs-bg-primary--hover:hover {
+  background-color: #5c97bf!important;
+}
+
+.cs-bg-white {
+  background-color: #fff!important;
+}
+
+.cs-bg-white--hover:hover {
+  background-color: #fff!important;
+}
+
+.cs-bg-white-opacity-0_9 {
+  /*background-color: rgba(255, 255, 255, .9)!important;*/
+  background-color: #87B1E2 !important;
+}
+
+.cs-color-primary {
+  color: #5c97bf!important;
+}
+
+.cs-color-primary--hover:hover {
+  color: #5c97bf!important;
+}
+
+.cs-color-black {
+  color: #000!important;
+}
+
+.cs-color-white {
+  color: #fff!important;
+}
+
+.cs-color-white--hover:hover {
+  color: #fff!important;
+}
+
+.cs-color-gray-dark-v4 {
+  color: #777!important;
+}
+
+.cs-color-gray-dark-v5 {
+  color: #999!important;
+}
+
+.cs-color-lightblue-v1 {
+  color: #5c97bf!important;
+}
+
+.cs-color-lightblue-v1:hover {
+  color: #87d37c!important;
+}
+
+.cs-theme-color-gray-dark-v1 {
+  color: #eeefef!important;
+}
+
+.cs-theme-color-gray-dark-v2 {
+  color: #7c7e89!important;
+}
+
+.cs-theme-color-black-v2 {
+  color: #212121!important;
+}
+
+.cs-theme-color-dark-grey-v2 {
+  color: #a5a5a5!important;
+}
+
+.cs-theme-bg-blue-dark-v2 {
+  background-color: #6ca0dc;
+}
+
+.cs-bg-darkblue-opacity-0_5 {
+  background-color: rgba(22, 26, 39, .5)!important;
+}
+
+.cs-bg-darkblue-opacity-0_5--after:after {
+  background-color: rgba(22, 26, 39, .5)!important;
+}
+
+.cs-bg-darkblue-opacity-0_5--after::after {
+  background-color: rgba(22, 26, 39, .5)!important;
+}
+
+.cs-bg-light-opacity-0_8 {
+  background-color: rgba(255, 255, 255, .8)!important;
+}
+
+.ccs-bg-light-opacity-0_8--after:after {
+  background-color: rgba(255, 255, 255, .8)!important;
+}
+
+.cs-bg-light-opacity-0_8--after::after {
+  background-color: rgba(255, 255, 255, .8)!important;
+}
