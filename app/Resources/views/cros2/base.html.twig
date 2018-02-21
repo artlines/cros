@@ -31,7 +31,7 @@
     <link href="{{ asset('assets/cros2/assets/css/dark-green.css') }}" rel="alternate stylesheet" title="Darkgreen color">
     <link href="{{ asset('assets/cros2/assets/css/gray.css') }}" rel="alternate stylesheet" title="Gray color">
     <meta name="theme-color" content="#6ca0dc">
-    <link rel="icon" sizes="192x192" href="nice-highres.png">
+    <link rel="icon" sizes="192x192" href="{{ asset('temp/cros-logo_192px.png') }}">
 </head>
 <body>
 <main>
@@ -105,7 +105,7 @@
         <div class="container u-bg-overlay__inner cs-color-white mb-0 ">
             <!-- Countdown v4 -->
             <div class="js-countdown text-center text-uppercase u-countdown-v4"
-                 data-end-date="2018/02/27"
+                 data-end-date="{{ reg_start|date("Y/m/d H:i:s") }}"
                  data-month-format="%m"
                  data-days-format="%D"
                  data-hours-format="%H"
@@ -132,7 +132,11 @@
             <div class="row cs-mb-0 cs-mt-100">
                 <div class="col-md-6  text-left">
                     <p class="cs-font-size-20 mb-0 cs-color-white">
+                        <a href="https://drive.google.com/file/d/1jAAVwQfM30xtm3dwOMSf-MLHVTz8tatR/preview" class="js-fancybox nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
+
+                        <!--
                         <a href="http://www.youtube.com/embed/XEfDYMngJeE?autoplay=1" class="js-fancybox nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
+                        -->
                     </p>
                 </div>
                 <div class="col-md-6">
@@ -282,14 +286,19 @@
             </div>
         </div>
     </section>
-    <section id="ourguests" class=" cs-bg-primary_block cs-bg-img-layer-middle cs-pt-30 cs-mb-100" style="background-image: url({{ asset('assets/cros2/img/blue_bg_middle.png') }} );">
+    <section id="ourguests" class="cs-pt-30 cs-mb-100 cs-bg-img-layer-middle" style="background-image: url({{ asset('assets/cros2/img/blue_bg_middle.png') }});">
         <div class="container">
-            <div class="row">
-                <div class="align-self-center w-100">
-                    <h2 class="h2-white text-uppercase cs-font-weight-700 cs-font-size-23 cs-color-white cs-mb-10 text-center">
-                        К нам приезжают снова и снова
-                    </h2>
-                    <p class="cs-pt-20 cs-font-size-14 cs-color-white text-center">За 13 лет конференция КРОС стала для многих интернет-провайдеров, интеграторов, представителей промышленности и бизнеса одним из важнейших околопрофессиональных событий.
+            <div class="align-self-center w-100 cs-mb-30">
+                <h2 class="h2-white text-uppercase cs-font-weight-700 cs-font-size-23 cs-color-white cs-mb-10 text-center">
+                    К нам приезжают снова и снова
+                </h2>
+            </div>
+            <div class="row no-gutters text-center cs-pb-30">
+                <div class="col-sm-4 col-lg-4">
+                    <img src="{{ asset('assets/cros2/img/guests.jpg') }}" class="img-fluid" alt="" title="Участники КРОС"/>
+                </div>
+                <div class="col-sm-8 col-lg-8 w-100">
+                    <p class="cs-font-size-14 cs-color-white text-center">За 13 лет конференция КРОС стала для многих интернет-провайдеров, интеграторов, представителей промышленности и бизнеса одним из важнейших околопрофессиональных событий.
                         Компании НАГ доверяют как эксперту.
                         Перед каждой конференцией мы не только изучаем современные тенденции рынка, но и опрашиваем будущих участников КРОС. Нам важно, чтобы Вы получили актуальную и полезную информацию.
                     </p>
@@ -377,7 +386,7 @@
                         <div class="d-flex mr-4">
                             <span class="u-icon-main icon-set" data-position="-17px -14px"></span>
                         </div>
-                        <div class="media-body">
+                        <div class="media-body cs-mt-15">
                             <h3 class="cs-color-black cs-font-size-17">
                                 <a class="cs-color-black cs-color-primary--hover cs-text-underline--none--hover" href="javascript:void(0);">
                                     Юридические аспекты
@@ -392,7 +401,7 @@
                         <div class="d-flex mr-4">
                             <span class="u-icon-main icon-set" data-position="-17px -68px"></span>
                         </div>
-                        <div class="media-body">
+                        <div class="media-body cs-mt-15">
                             <h3 class="cs-color-black cs-font-size-17">
                                 <a class="cs-color-black cs-color-primary--hover cs-text-underline--none--hover" href="javascript:void(0);">
                                     Актуальные вопросы
@@ -408,7 +417,7 @@
                         <div class="d-flex mr-4">
                             <span class="u-icon-main icon-set" data-position="-17px -124px"></span>
                         </div>
-                        <div class="media-body">
+                        <div class="media-body cs-mt-15">
                             <h3 class="cs-color-black cs-font-size-17">
                                 <a class="cs-color-black cs-color-primary--hover cs-text-underline--none--hover" href="javascript:void(0);">
                                     Обзор новинок и достижений
@@ -423,7 +432,7 @@
                         <div class="d-flex mr-4">
                             <span class="u-icon-main icon-set" data-position="-17px -180px"></span>
                         </div>
-                        <div class="media-body">
+                        <div class="media-body cs-mt-15">
                             <h3 class="cs-color-black cs-font-size-17">
                                 <a class="cs-color-black cs-color-primary--hover cs-text-underline--none--hover" href="javascript:void(0);">
                                     Проводные
@@ -440,7 +449,7 @@
                         <div class="d-flex mr-4">
                             <span class="u-icon-main icon-set" data-position="-17px -236px"></span>
                         </div>
-                        <div class="media-body">
+                        <div class="media-body cs-mt-15">
                             <h3 class="cs-color-black cs-font-size-17">
                                 <a class="cs-color-black cs-color-primary--hover cs-text-underline--none--hover" href="javascript:void(0);">
                                     Возможности маркетинга
@@ -457,7 +466,7 @@
                         <div class="d-flex mr-4">
                             <span class="u-icon-main icon-set" data-position="-77px -14px"></span>
                         </div>
-                        <div class="media-body">
+                        <div class="media-body cs-mt-15">
                             <h3 class="cs-color-black cs-font-size-17">
                                 <a class="cs-color-black cs-color-primary--hover cs-text-underline--none--hover" href="javascript:void(0);">
                                     Вопросы построения
@@ -473,7 +482,7 @@
                         <div class="d-flex mr-4">
                             <span class="u-icon-main icon-set" data-position="-77px -70px"></span>
                         </div>
-                        <div class="media-body">
+                        <div class="media-body cs-mt-15">
                             <h3 class="cs-color-black cs-font-size-17">
                                 <a class="cs-color-black cs-color-primary--hover cs-text-underline--none--hover" href="javascript:void(0);" title="Look here">
                                     Современные системы видеонаблюдения
@@ -488,7 +497,7 @@
                         <div class="d-flex mr-4">
                             <span class="u-icon-main icon-set" data-position="-77px -126px"></span>
                         </div>
-                        <div class="media-body">
+                        <div class="media-body cs-mt-15">
                             <h3 class="cs-color-black cs-font-size-17">
                                 <a class="cs-color-black cs-color-primary--hover cs-text-underline--none--hover" href="javascript:void(0);">
                                     Вопросы взаимодействия
@@ -504,7 +513,7 @@
                         <div class="d-flex mr-4">
                             <span class="u-icon-main icon-set" data-position="-77px -182px"></span>
                         </div>
-                        <div class="media-body">
+                        <div class="media-body cs-mt-15">
                             <h3 class="cs-color-black cs-font-size-17">
                                 <a class="cs-color-black cs-color-primary--hover cs-text-underline--none--hover" href="javascript:void(0);">
                                     Оптимизация процессов управления
@@ -519,7 +528,7 @@
                         <div class="d-flex mr-4">
                             <span class="u-icon-main icon-set" data-position="-77px -238px"></span>
                         </div>
-                        <div class="media-body">
+                        <div class="media-body cs-mt-15">
                             <h3 class="cs-color-black cs-font-size-17">
                                 <a class="cs-color-black cs-color-primary--hover cs-text-underline--none--hover" href="javascript:void(0);">
                                     Удаленный мониторинг параметров,
@@ -572,11 +581,6 @@
             </div>
         </div>
         <div class="container">
-            <div class="cs-mt-minus-200 cs-mb-60">
-                <!-- Forms [custom] -->
-                {{ render(controller('AppBundle:Default:preReg')) }}
-                <!-- End Forms [custom] -->
-            </div>
             <div class="row text-left">
                 <div class="col-sm-6 col-lg-3 cs-mb-30 text-center">
                     <a class="d-inline-block mb-4" href="#">

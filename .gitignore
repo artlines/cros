@@ -47,3 +47,4 @@
 # custom
 /.idea/
 /app/google_sheets/cros.google-sheets.credentials.json
+/web/uploads
