@@ -54,6 +54,21 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
 
     }
 
+    public function findByConf($conf_id){
+        $query = $this->getEntityManager()
+            ->createQuery('
+                SELECT u FROM AppBundle:User u
+                LEFT JOIN u.utocs utocs
+                WHERE utocs.id = :conf
+            ')->setParameter('conf', $conf_id);
+
+        try {
+            return $query->getResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
+
     public function findManagers($conf_id, $year)
     {
         $query = $this->getEntityManager()
