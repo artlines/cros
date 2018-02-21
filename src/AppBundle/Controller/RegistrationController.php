@@ -61,7 +61,7 @@ class RegistrationController extends Controller
             /** @var User $users_yet */
             $users_yet = $this->getDoctrine()
                 ->getRepository('AppBundle:User')
-                ->findAll();
+                ->findByConf($conf->getId());
             $uc = count($users_yet);
 
             // Получаем разрешенные даты регистрации

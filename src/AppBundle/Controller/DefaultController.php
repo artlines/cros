@@ -46,8 +46,15 @@ class DefaultController extends Controller
      */
     public function newMainAction()
     {
+        $reg_time = $this->getDoctrine()->getRepository('AppBundle:Conference')
+            ->findOneBy(array('year' => date("Y")));
+
+        $reg_start = $reg_time->getRegistrationStart()->getTimestamp();
+
         return $this->render('cros2/base.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
+            'reg_start' => $reg_start,
+
         ));
     }
 
@@ -140,111 +147,4 @@ class DefaultController extends Controller
 			'text' => $text
         ));
 	}
-
-	/**
-     * @Route("/pre-reg", name="pre-reg")
-     */
-	public function preRegAction(Request $request)
-    {
-        $_input_class = 'form-control cs-font-size-13 cs-theme-color-dark-grey-v2 cs-placeholder-inherit cs-bg-light-opacity-0_8 cs-bg-light-v1--focus cs-brd-none rounded-0 cs-pa-20';
-        $form = $this->createFormBuilder()
-            ->add('fio', TextType::class, array(
-                'attr' => array(
-                    'placeholder' => '* Фамилия, Имя',
-                    'class' => $_input_class
-                ),
-                'label' => false,
-            ))
-            ->add('company', TextType::class, array(
-                'attr' => array(
-                    'placeholder' => 'Компания',
-                    'class' => $_input_class
-                ),
-                'label' => false,
-                'required' => false
-            ))
-            ->add('position', TextType::class, array(
-                'attr' => array(
-                    'placeholder' => 'Должность',
-                    'class' => $_input_class
-                ),
-                'label' => false,
-                'required' => false
-            ))
-            ->add('email', EmailType::class, array(
-                'attr' => array(
-                    'placeholder' => '* E-mail',
-                    'class' => $_input_class
-                ),
-                'label' => false
-            ))
-            ->add('mobile', TextType::class, array(
-                'attr' => array(
-                    'placeholder' => '* Контактный телефон',
-                    'class' => $_input_class
-                ),
-                'label' => false
-            ))
-            ->add('pd_pk_accept', CheckboxType::class, array(
-                'label'    => 'Согласие на обработку ПД, согласие с ПК'
-            ))
-            ->add('send', SubmitType::class, array(
-                'label' => 'Подать заявку',
-                'attr' => array(
-                    'class' => 'btn u-btn-primary btn-lg text-uppercase cs-font-weight-700 cs-font-size-12 rounded-0 cs-px-20 cs-py-20 mb-0',
-                ),
-            ))
-            ->getForm();
-
-
-        if ($request->isMethod('AJAX')) {
-
-            /**
-             * TODO: Here manual submit form
-             */
-            //$form->submit($request->request->get($form->getName()));
-
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                $data = $form->getData();
-
-                $message = \Swift_Message::newInstance()
-                    ->setSubject('КРОС-2.0-18: Заявка на становление участником')
-                    ->setFrom('cros@nag.ru')
-                    ->setTo('e.nachuychenko@nag.ru')
-                    ->setBody(
-                        $this->renderView(
-                            'Emails/become-member.html.twig',
-                            array(
-                                'fio' => $data['fio'],
-                                'email' => $data['email'],
-                                'company' => $data['company'],
-                                'mobile' => $data['mobile'],
-                                'position' => $data['position'],
-                            )
-                        ), 'text/html');
-
-                $arrResult = array(
-                    'success' => true
-                );
-
-                if ($this->get('mailer')->send($message))
-                {
-                    $arrResult['response'] = 'Заявка отправлена';
-                }
-                else
-                {
-                    $arrResult['response'] = 'В данный момент отправка заявки невозможна.';
-                    $arrResult['success'] = false;
-                }
-
-                return new JsonResponse($arrResult);
-            }
-        }
-
-        return $this->render('cros2/_form/_become-member.html.twig', array(
-            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-            'form' => $form->createView()
-        ));
-    }
 }

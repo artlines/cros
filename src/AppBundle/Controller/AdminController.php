@@ -58,6 +58,7 @@ class AdminController extends Controller
      */
     public function sendTestEmailAction()
     {
+        exit();
         //var_dump($this->getUser()->getName()); exit();
 
         $orgName = 'Рога и Ко';
