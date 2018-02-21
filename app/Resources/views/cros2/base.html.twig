@@ -47,40 +47,41 @@
                         <img class="u-header__logo-img u-header__logo-img--main d-block cs-width-80x" src="{{ asset('assets/cros2/img/logo-dark.png') }}" alt="Image description"
                              data-header-fix-moment-exclude="d-block"
                              data-header-fix-moment-classes="d-none">
-                        <!--  <img class="u-header__logo-img u-header__logo-img--main d-none cs-width-80x" src="{{ asset('assets/cros2/img/logo-dark.png') }}" alt="Image description"
-                           data-header-fix-moment-exclude="d-none"
-                           data-header-fix-moment-classes="d-block"> -->
+                        <!-- Temporary fix -->
+                        <img class="u-header__logo-img u-header__logo-img--main d-none cs-width-80x" src="{{ asset('assets/cros2/img/layer_height.png') }}" alt="Image description"
+                             data-header-fix-moment-exclude="d-none"
+                             data-header-fix-moment-classes="d-block">
                     </a>
                     <!-- End Logo -->
-                    <div class="collapse navbar-collapse align-items-center" id="navBar">
+                    <div class="collapse navbar-collapse align-items-center flex-sm-row" id="navBar">
                         <ul id="js-scroll-nav" class="navbar-nav text-uppercase cs-font-weight-700 cs-font-size-11 cs-pt-20 cs-pt-0--lg ml-auto">
-                            <li class="nav-item cs-mr-15--lg cs-mb-7 cs-mb-0--lg active">
+                            <li class="nav-item g-mr-15--lg g-mb-7 g-mb-0--lg active">
                                 <a href="#home" class="nav-link p-0">Главная <span class="sr-only">(current)</span></a>
                             </li>
-                            <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
+                            <li class="nav-item cs-mx-15--lg g-mb-7 g-mb-0--lg">
                                 <a href="#about" class="nav-link p-0">О Крос</a>
                             </li>
-                            <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
+                            <li class="nav-item cs-mx-15--lg g-mb-7 g-mb-0--lg">
                                 <a href="#why" class="nav-link p-0">Возможности</a>
                             </li>
-                            <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
+                            <li class="nav-item cs-mx-15--lg g-mb-7 g-mb-0--lg">
                                 <a href="#ourguests" class="nav-link p-0">Наши гости</a>
                             </li>
-                            <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
+                            <li class="nav-item cs-mx-15--lg g-mb-7 g-mb-0--lg">
                                 <a href="#testimonials" class="nav-link p-0">Отзывы</a>
                             </li>
-                            <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
+                            <li class="nav-item cs-mx-15--lg g-mb-7 g-mb-0--lg">
                                 <a href="#hottopics" class="nav-link p-0">Темы</a>
                             </li>
-                            <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
+                            <li class="nav-item cs-mx-15--lg g-mb-7 g-mb-0--lg">
                                 <a href="#contact" class="nav-link p-0">Контакты</a>
                             </li>
-                            <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
+                            <li class="nav-item cs-mx-15--lg g-mb-7 g-mb-0--lg">
                                 <a href="javascript:void(0)" class="nav-link p-0">+7 (343) 379 98 38</a>
                             </li>
                         </ul>
                     </div>
-                    <!-- End Navigation -->
+                    <!— End Navigation —>
                     <!-- Responsive Toggle Button -->
                     <button class="navbar-toggler btn cs-line-height-1 cs-brd-none cs-pa-0 cs-mt-15 ml-auto" type="button"
                             aria-label="Toggle navigation"
@@ -103,6 +104,7 @@
     <section id="home" class="cs-bg-img-hero cs-pos-rel u-bg-overlay cs-bg-darkblue-opacity-0_5--after cs-pt-150" style="background-image: url({{ asset('assets/cros2/img/cros_main_1920.jpg') }});">
         <!-- cs-max-width-750  -->
         <div class="container u-bg-overlay__inner cs-color-white mb-0 ">
+            <div style="text-align: center;text-transform: uppercase;" class="cs-font-size-23">До начала регистрации</div>
             <!-- Countdown v4 -->
             <div class="js-countdown text-center text-uppercase u-countdown-v4"
                  data-end-date="{{ reg_start|date("Y/m/d H:i:s") }}"
@@ -132,10 +134,14 @@
             <div class="row cs-mb-0 cs-mt-100">
                 <div class="col-md-6  text-left">
                     <p class="cs-font-size-20 mb-0 cs-color-white">
-                        <a href="https://drive.google.com/file/d/1jAAVwQfM30xtm3dwOMSf-MLHVTz8tatR/preview" class="js-fancybox nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
+
+                        <a href="{{ asset('uploads/files/promo_cros_2018.mp4') }}" class="js-fancybox nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
 
                         <!--
-                        <a href="http://www.youtube.com/embed/XEfDYMngJeE?autoplay=1" class="js-fancybox nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
+                        <a href="https://drive.google.com/file/d/1jAAVwQfM30xtm3dwOMSf-MLHVTz8tatR/preview" class="js-fancybox nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
+                        -->
+                        <!--
+                        <a href="https://www.youtube.com/embed/XEfDYMngJeE?autoplay=1" class="js-fancybox nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
                         -->
                     </p>
                 </div>
@@ -160,7 +166,7 @@
                             и решений для отрасли телекоммуникаций от компании “НАГ”, развлекательные мероприятия и много неформального общения.
                         </p>
                         <div class="text-center">
-                            <a class="btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 cs-py-18 mb-0 cs-mt-15" href="#become-member">Участвовать в КРОС 2.0-18</a>
+                            <a class="btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 cs-py-18 mb-0 cs-mt-15" href="{{ url('registration') }}">Участвовать в КРОС 2.0-18</a>
                             <a class="btn btn-lg text-uppercase u-btn-yellow cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 cs-py-18 mb-0 cs-mt-15" href="{{ path('info', {'alias': 'targets'}) }}">Узнать больше о КРОС</a>
                         </div>
                     </div>
@@ -179,12 +185,12 @@
                 </p>
             </div>
             <div class="row text-center cs-mb-70">
-                <div class="col-md-6 col-sm-4 col-lg-6">
+                <div class="col-md-6 col-sm-12 col-lg-6">
                     <div id="canvas-holder">
                         <canvas id="chartarea"></canvas>
                     </div>
                 </div>
-                <div class="col-md-6 col-sm-4 col-lg-6">
+                <div class="col-md-6 col-sm-12 col-lg-6">
                     <div id="canvas-holder">
                         <canvas id="chartarea2"></canvas>
                     </div>
@@ -545,7 +551,7 @@
     </section>
     <!-- Footer -->
     <footer class="text-center">
-        <div id="contact" class="cs-bg-img-hero cs-color-white cs-bg-darkblue-opacity-0_5--after cs-pt-40 cs-pb-200" style="background-image: url({{ asset('assets/cros2/img/blue_bg_contacts.png') }});">
+        <div id="contact" class="cs-bg-img-hero cs-color-white cs-bg-darkblue-opacity-0_5--after cs-pt-40 cs-pb-10" style="background-image: url({{ asset('assets/cros2/img/blue_bg_contacts.png') }});">
             <div class="u-bg-overlay__inner cs-width-780 mx-auto">
                 <!-- cs-width-780 -->
                 <div class="u-heading-v8-2">
@@ -581,7 +587,7 @@
             </div>
         </div>
         <div class="container">
-            <div class="row text-left">
+            <div class="row text-left cs-pt-100">
                 <div class="col-sm-6 col-lg-3 cs-mb-30 text-center">
                     <a class="d-inline-block mb-4" href="#">
                         <img class="" src="{{ asset('assets/cros2/img/logo-dark.png') }}" alt="Image Description">
@@ -591,13 +597,13 @@
                             <a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white--hover cs-bg-white cs-bg-primary--hover cs-transition-0_2 cs-transition--ease-in" href="#"><i class="fa fa-twitter"></i></a>
                         </li>
                         <li class="list-inline-item cs-mr-10">
-                            <a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white--hover cs-bg-white cs-bg-primary--hover cs-transition-0_2 cs-transition--ease-in" href="#"><i class="fa fa-pinterest"></i></a>
+                            <a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white--hover cs-bg-white cs-bg-primary--hover cs-transition-0_2 cs-transition--ease-in" target="_blank" href="https://vk.com/share.php?url={{ absolute_url('/') }}"><i class="fa fa-vk"></i></a>
                         </li>
                         <li class="list-inline-item cs-mr-10">
                             <a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white--hover cs-bg-white cs-bg-primary--hover cs-transition-0_2 cs-transition--ease-in" href="#"><i class="fa fa-facebook"></i></a>
                         </li>
                         <li class="list-inline-item">
-                            <a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white--hover cs-bg-white cs-bg-primary--hover cs-transition-0_2 cs-transition--ease-in" href="#"><i class="fa fa-linkedin"></i></a>
+                            <a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white--hover cs-bg-white cs-bg-primary--hover cs-transition-0_2 cs-transition--ease-in" href="#"><i class="fa fa-ok"></i></a>
                         </li>
                     </ul>
                     <!-- <p class="cs-color-gray-dark-v4 cs-font-size-13">2017 © All Rights Reserved.</p> -->
@@ -766,7 +772,7 @@
                 text: 'Распределение аудитории КРОС по видам деятельности'
             },
             animation: {
-                animateScale: true,
+                animateScale: false,
                 animateRotate: true
             }
         }
@@ -807,7 +813,7 @@
                 text: 'Распределение аудитории КРОС по видам деятельности'
             },
             animation: {
-                animateScale: true,
+                animateScale: false,
                 animateRotate: true
             }
         }
