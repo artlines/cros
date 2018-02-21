@@ -907,6 +907,11 @@ hr {
     padding: 1.42857rem!important;
   }
 
+  .cs-px-0 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
   .cs-px-5 {
     padding-left: 0.35714rem!important;
     padding-right: 0.35714rem!important;

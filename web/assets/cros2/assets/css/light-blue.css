@@ -30,15 +30,6 @@
   .light-theme .nav-item .nav-link:hover, .light-theme .nav-item.active .nav-link {
     color: #5c97bf !important;
   }
-  .dark-theme .nav-item {
-	margin-top: 10px;
-	margin-bottom: 10px !important;
-
-  }
-
-  .dark-theme .navbar-nav {
-    /*height: 40px !important;*/
-  }
 
   .dark-theme .nav-item .nav-link {
 	color: rgba(255, 255, 255, .9) !important;
