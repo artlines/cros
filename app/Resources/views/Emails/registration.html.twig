@@ -13,7 +13,6 @@
                     margin: 0px 20px;
                 ">
 
-            <!--
             <strong>Информация о регистрации:</strong><br>
             ФИО: {{ user.lastname }} {{ user.firstname }} {{ user.middlename }}<br>
             Должность: {{ user.post }}<br>
@@ -22,17 +21,6 @@
             Nickname: {{ user.nickname }}<br>
             Номер автомобиля: {{ user.carnumber }}<br>
             Класс участия: {% for toa in user.utoas  %}{{ toa.apartament.apartament.title }} ({{ toa.apartament.apartament.price }}.р){% endfor %}<br>
-            <br>
-            -->
-
-            <strong>Информация о регистрации:</strong><br>
-            ФИО: {{ fio }}<br>
-            Должность: tesst<br>
-            Телефон: +79089212112<br>
-            E-mail: j@nag.ru<br>
-            Nickname: jude<br>
-            Номер автомобиля: <br>
-            Класс участия: СТАНДАРТ Single (39000.р)
         </div>
         <br>
 
