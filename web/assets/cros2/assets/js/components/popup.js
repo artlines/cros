@@ -16,7 +16,7 @@
 			slideSpeedCoefficient: 1,
 			infobar: false,
 			slideShow: false,
-			fullScreen: true,
+			fullScreen: false,
 			thumbs: false,
 			closeBtn: true,
 			baseTpl	: '<div class="fancybox-container" role="dialog" tabindex="-1">' +
