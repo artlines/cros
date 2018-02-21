@@ -134,8 +134,11 @@
             <div class="row cs-mb-0 cs-mt-100">
                 <div class="col-md-6  text-left">
                     <p class="cs-font-size-20 mb-0 cs-color-white">
-
+                        <!--
                         <a href="{{ asset('uploads/files/promo_cros_2018.mp4') }}" class="js-fancybox nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
+                        -->
+
+                        <a id="cros-video" href="#" class="nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
 
                         <!--
                         <a href="https://drive.google.com/file/d/1jAAVwQfM30xtm3dwOMSf-MLHVTz8tatR/preview" class="js-fancybox nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
@@ -826,6 +829,30 @@
         var ctx2 = document.getElementById('chartarea2').getContext('2d');
         window.myDoughnut2 = new Chart(ctx2, config2);
     };
+
+
+
+    // Customize buttons
+    $( 'a#cros-video' ).fancybox({
+        btnTpl :
+            {
+                close : '<button data-fancybox-close class="fancybox-button fancybox-button--close" title="CLOSE">' +
+                '<svg viewBox="0 0 40 40">' +
+                '<path d="M10,10 L30,30 M30,10 L10,30" />' +
+                '</svg>' +
+                '</button>'
+            },
+
+        buttons : [ 'close' ]
+    });
+
+    $('#cros-video').click(function() {
+        $.fancybox
+            .open('<video style=\' width: 80%; \' autoplay="" name="media"> '
+                + '<source src="{{ asset('uploads/files/promo_cros_2018.mp4') }}" type="video/mp4"> '
+                + '<source src="{{ asset('uploads/files/promo_cros_2018.webm') }}" type="video/webm"> '
+                + ' </video>')
+    });
 
 </script>
 </body>
