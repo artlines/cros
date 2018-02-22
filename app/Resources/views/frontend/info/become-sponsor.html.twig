@@ -8,11 +8,6 @@
 
 {% block stylesheets %}{% endblock %}
 
-{% block javascripts %}{% endblock %}
-
-
-
-
 
 {% block body %}
 
@@ -87,8 +82,27 @@
 		<h2>Заполните форму</h2>
 
 		{{ form_start(form) }}
-		{{ form_widget(form) }}
+
+
+        {{ form_row(form.fio) }}
+        {{ form_row(form.company) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.mobile) }}
+        {{ form_row(form.recaptcha) }}
+
+
+        <div class="checkbox">
+            <label for="form_check" class="required">
+                <input type="checkbox" id="check" name="check" required="required" value="1">
+                Я согласен на обработку <a href="https://shop.nag.ru/article/reg-oferta" target="_blank">персональных данных</a>
+            </label>
+        </div>
+
+
+        {{ form_row(form.send) }}
+
 		{{ form_end(form) }}
+
 	{% endif %}
 
 	{% if data %}
@@ -97,3 +111,5 @@
 
 {% endblock %}
 
+
+{% block javascripts %}{% endblock %}

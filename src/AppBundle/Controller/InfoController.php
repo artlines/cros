@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 use Symfony\Component\HttpFoundation\Request;
 
@@ -91,8 +92,8 @@ class InfoController extends Controller
 				->add('email', EmailType::class, array('label' => 'E-mail'))
 				->add('mobile', TextType::class, array('label' => 'Телефон'))
 				->add('title', TextType::class, array('label' => 'Тема доклада'))
-				->add('theses', TextareaType::class, array('label' => 'Тезисы'))
-				->add('files', FileType::class, array(
+                ->add('theses', TextareaType::class, array('label' => 'Тезисы'))
+                ->add('files', FileType::class, array(
 									'label' => 'Файлы', 
 									'multiple' => true,
 									'constraints' => array(
@@ -113,7 +114,7 @@ class InfoController extends Controller
 										)),
 									)
 				))
-				->add('send', SubmitType::class, array('label' => 'Отправить'))
+                ->add('send', SubmitType::class, array('label' => 'Отправить'))
 				->getForm();
 
 			$form->handleRequest($request);
@@ -198,7 +199,8 @@ class InfoController extends Controller
 										)),
 									)
 				))
-				->add('send', SubmitType::class, array('label' => 'Отправить'))
+                //->add('check', CheckboxType::class, array('label' => 'Я согласен на обработку <a href="https://shop.nag.ru/article/reg-oferta" target="_blank">персональных данных</a>'))
+                ->add('send', SubmitType::class, array('label' => 'Отправить'))
 				->getForm();
 
 			$form->handleRequest($request);
