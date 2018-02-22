@@ -145,7 +145,8 @@ class InfoController extends Controller
 					$message = \Swift_Message::newInstance()
                         ->setSubject('КРОС-2.0-18: Заявка на добавление докладчика')
                         ->setFrom('cros@nag.ru')
-                        ->setTo('e.nachuychenko@nag.ru')
+                        ->setTo('cros@nag.ru')
+                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru'))
                         ->setBody(
                             $this->renderView(
                                 'Emails/become-speaker.html.twig',
@@ -213,7 +214,8 @@ class InfoController extends Controller
 					$message = \Swift_Message::newInstance()
                         ->setSubject('КРОС-2.0-18: Заявка на добавление спонсора')
                         ->setFrom('cros@nag.ru')
-                        ->setTo('e.nachuychenko@nag.ru')
+                        ->setTo('cros@nag.ru')
+                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru'))
                         ->setBody(
                             $this->renderView(
                                 'Emails/become-sponsor.html.twig',
