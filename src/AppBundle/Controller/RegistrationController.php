@@ -61,7 +61,7 @@ class RegistrationController extends Controller
             /** @var User $users_yet */
             $users_yet = $this->getDoctrine()
                 ->getRepository('AppBundle:User')
-                ->findByConf($conf->getId());
+                ->findAll();
             $uc = count($users_yet);
 
             // Получаем разрешенные даты регистрации
@@ -216,7 +216,7 @@ class RegistrationController extends Controller
                         ->setSubject('Регистрация КРОС-2.0-18: '.$org->getName().' Доступ в личный кабинет')
                         ->setFrom('cros@nag.ru')
                         ->setTo($org->getEmail())
-                        ->setBcc(array('e.nachuychenko@nag.ru')) //'cros@nag.ru'
+                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'cros@nag.ru'))
                         ->setBody(
                             $this->renderView(
                                 'Emails/org_registration.html.twig',
@@ -742,7 +742,7 @@ class RegistrationController extends Controller
                         ->setSubject('Регистрация КРОС-2.0-18: ' . $org->getName())
                         ->setFrom('cros@nag.ru')
                         ->setTo($user->getEmail())
-                        ->setBcc(array('e.nachuychenko@nag.ru')) //'cros@nag.ru'
+                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'cros@nag.ru')) //'cros@nag.ru'
                         ->setBody(
                             $this->renderView(
                                 'Emails/edit_user.html.twig',
@@ -783,7 +783,7 @@ class RegistrationController extends Controller
                         ->setSubject('Регистрация КРОС-2.0-18: ' . $this->getUser()->getName())
                         ->setFrom('cros@nag.ru')
                         ->setTo($user->getEmail())
-                        ->setBcc(array('e.nachuychenko@nag.ru')) //'cros@nag.ru'
+                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'cros@nag.ru')) //'cros@nag.ru'
                         ->setBody(
                             $this->renderView(
                                 'Emails/registration.html.twig',
@@ -803,7 +803,7 @@ class RegistrationController extends Controller
             }
         }
 
-        $sysmail = array('e.nachuychenko@nag.ru'); //'cros@nag.ru'
+        $sysmail = array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'cros@nag.ru'); //'cros@nag.ru'
 
         if($org->getManager() != null){
             /** @var User $managers_foremail */
