@@ -61,7 +61,7 @@ class RegistrationController extends Controller
             /** @var User $users_yet */
             $users_yet = $this->getDoctrine()
                 ->getRepository('AppBundle:User')
-                ->findAll();
+                ->findByConf($conf->getId());
             $uc = count($users_yet);
 
             // Получаем разрешенные даты регистрации
@@ -317,7 +317,7 @@ class RegistrationController extends Controller
                         ->findAll();
                     $uc = count($users_yet);
 
-                    if($uc >= 1558){
+                    if($uc >= 558){
                         return $this->redirectToRoute('registration-3');
                     }
                 }
@@ -343,7 +343,7 @@ class RegistrationController extends Controller
                     ->findAll();
                 $uc = count($users_yet);
 
-                if($uc >= 1558){
+                if($uc >= 558){
                     return $this->redirectToRoute('registration-3');
                 }
             }
