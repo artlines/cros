@@ -17,7 +17,7 @@
 <div class="container page">
     <div class="row header">
         <div class="col-sm-2 logo-col">
-            <a href="{{ url('homepage') }}"><img src="{{ asset('assets/images/cros.png') }}" class="logo"></a>
+            <a href="{{ url('homepage') }}"><img src="{{ asset('assets/cros2/img/logo-dark.png') }}" class="logo"></a>
         </div>
         <div class="col-sm-6 col-xs-12">
             <h1 class="inline-title">{% block header_title %}{% endblock %}</h1>
@@ -43,7 +43,9 @@
         <div class="col-sm-2">
             <ul class="list-group">
                 <li class="list-group-item"><a href="{{ path('info', {'alias': 'targets'}) }}">О КРОСе</a></li>
+                <!--
                 <li class="list-group-item"><a href="{{ url('program') }}">Программа</a></li>
+                -->
                 <li class="list-group-item"><a href="{{ path('info', {'alias': 'sponsors'}) }}">Спонсоры</a></li>
                 <li class="list-group-item"><a href="{{ url('members') }}">Участники</a></li>
                 <li class="list-group-item"><a href="{{ url('price') }}">Стоимость участия</a></li>

@@ -136,13 +136,13 @@
                     <p class="cs-font-size-20 mb-0 cs-color-white">
                         <!--
                         <a href="{{ asset('uploads/files/promo_cros_2018.mp4') }}" class="js-fancybox nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
-                        -->
-
-                        <a id="cros-video" href="#" class="nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
 
                         <!--
-                        <a href="https://drive.google.com/file/d/1jAAVwQfM30xtm3dwOMSf-MLHVTz8tatR/preview" class="js-fancybox nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
+                        <a id="cros-video" href="#" class="nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
                         -->
+
+                        <a href="https://www.youtube.com/embed/k5w08rgdPeY?rel=0&controls=0&showinfo=0&autoplay=1" class="js-fancybox nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
+
                         <!--
                         <a href="https://www.youtube.com/embed/XEfDYMngJeE?autoplay=1" class="js-fancybox nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
                         -->
@@ -562,13 +562,17 @@
                     </h2>
                 </div>
                 <p class="cs-color-white cs-pt-20">Компания НАГ берет на себя все вопросы, касающиеся проживания и питания участников.
-                    Зарегистрироваться и узнать подробности можно на сайте <a href="#" class="cs-color-white" >КРОС</a>
+                    Зарегистрироваться и узнать подробности можно <a href="{{ url('price') }}" class="cs-color-white"><u>на сайте КРОС</u></a><br>
+                    Регистрация участников стартует 5 марта 2018 г. в 9:00 (мск)
                 </p>
             </div>
             <div class="container">
                 <div class="row cs-mb-40">
                     <div class="col-md-6 "><img src="{{ asset('assets/cros2/img/hotel.jpg') }}" class="img-fluid"></div>
                     <div class="col-md-6">
+                        <p class="cs-font-size-15 text-left">Чтобы стать спонсором Конференции,
+                            <a href="{{ url('info', {'alias': 'become-sponsor'}) }}" class="cs-color-white"><u>отправьте заявку</u></a> или свяжитесь с нами прямо сейчас:
+                        </p>
                         <address class="text-uppercase cs-font-size-15 cs-overflow-x-hidden cs-py-5 text-left">
                             <div class="row cs-mx-minus-5 cs-mb-10">
                                 <div class="col-md-6 col-lg-6 cs-mb-20 cs-mb-0--lg cs-px-5"> Email:
@@ -579,11 +583,13 @@
                                 </div>
                             </div>
                             Место проведения:
-                            <strong>г. Сочи, Красная Поляна, отель Поляна 1389</strong><br />
+                            <strong>г. Сочи, <br/>Красная Поляна, отель Поляна 1389</strong><br />
                             Дата проведения:
                             <strong>16-18 мая 2018 г.</strong><br />
+                            <!--
                             <hr class="cs-hr-white">
                             <button class="btn u-btn-white btn-lg text-uppercase cs-font-weight-700 cs-font-size-12 rounded-0 cs-px-20 cs-py-15 mb-0" type="submit" role="button">Стать спонсором</button>
+                            -->
                         </address>
                     </div>
                 </div>
@@ -597,16 +603,10 @@
                     </a>
                     <ul class="list-inline d-inline-block mb-0">
                         <li class="list-inline-item cs-mr-10">
-                            <a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white--hover cs-bg-white cs-bg-primary--hover cs-transition-0_2 cs-transition--ease-in" href="#"><i class="fa fa-twitter"></i></a>
+                            <a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white--hover cs-bg-white cs-bg-primary--hover cs-transition-0_2 cs-transition--ease-in" target="_blank" href="https://vk.com/nag_ru"><i class="fa fa-vk"></i></a>
                         </li>
                         <li class="list-inline-item cs-mr-10">
-                            <a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white--hover cs-bg-white cs-bg-primary--hover cs-transition-0_2 cs-transition--ease-in" target="_blank" href="https://vk.com/share.php?url={{ absolute_url('/') }}"><i class="fa fa-vk"></i></a>
-                        </li>
-                        <li class="list-inline-item cs-mr-10">
-                            <a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white--hover cs-bg-white cs-bg-primary--hover cs-transition-0_2 cs-transition--ease-in" href="#"><i class="fa fa-facebook"></i></a>
-                        </li>
-                        <li class="list-inline-item">
-                            <a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white--hover cs-bg-white cs-bg-primary--hover cs-transition-0_2 cs-transition--ease-in" href="#"><i class="fa fa-ok"></i></a>
+                            <a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white--hover cs-bg-white cs-bg-primary--hover cs-transition-0_2 cs-transition--ease-in" href="https://www.facebook.com/groups/cros.nag/"><i class="fa fa-facebook"></i></a>
                         </li>
                     </ul>
                     <!-- <p class="cs-color-gray-dark-v4 cs-font-size-13">2017 © All Rights Reserved.</p> -->
@@ -632,9 +632,11 @@
                         <li class="my-3"><i class="mr-2 fa fa-angle-right"></i>
                             <a class="u-link-v5 cs-color-lightblue-v1 cs-font-weight-600 cs-color-primary--hover" href="{{ path('info', {'alias': 'sponsors'}) }}">Спонсоры</a>
                         </li>
+                        <!--
                         <li class="my-3"><i class="mr-2 fa fa-angle-right"></i>
                             <a class="u-link-v5 cs-color-lightblue-v1 cs-font-weight-600 cs-color-primary--hover" href="{{ url('program') }}">Программа</a>
                         </li>
+                        -->
                         <li class="my-3"><i class="mr-2 fa fa-angle-right"></i>
                             <a class="u-link-v5 cs-color-lightblue-v1 cs-font-weight-600 cs-color-primary--hover" href="{{ url('members') }}">Участники</a>
                         </li>
@@ -658,7 +660,7 @@
                 </div>
             </div>
             <div class="cs-py-10 cs-color-gray-dark-v5">
-                <p class="cs-mb-30 cs-font-size-13">&copy; 2013-2017 Общество с ограниченной ответственностью “Наг”. / Все права защищены.</p>
+                <p class="cs-mb-30 cs-font-size-13">&copy; 2013-2018 Общество с ограниченной ответственностью “Наг”. / Все права защищены.</p>
             </div>
         </div>
     </footer>
@@ -829,30 +831,6 @@
         var ctx2 = document.getElementById('chartarea2').getContext('2d');
         window.myDoughnut2 = new Chart(ctx2, config2);
     };
-
-
-
-    // Customize buttons
-    $( 'a#cros-video' ).fancybox({
-        btnTpl :
-            {
-                close : '<button data-fancybox-close class="fancybox-button fancybox-button--close" title="CLOSE">' +
-                '<svg viewBox="0 0 40 40">' +
-                '<path d="M10,10 L30,30 M30,10 L10,30" />' +
-                '</svg>' +
-                '</button>'
-            },
-
-        buttons : [ 'close' ]
-    });
-
-    $('#cros-video').click(function() {
-        $.fancybox
-            .open('<video style=\' width: 80%; \' autoplay="" name="media"> '
-                + '<source src="{{ asset('uploads/files/promo_cros_2018.mp4') }}" type="video/mp4"> '
-                + '<source src="{{ asset('uploads/files/promo_cros_2018.webm') }}" type="video/webm"> '
-                + ' </video>')
-    });
 
 </script>
 </body>
