@@ -238,16 +238,22 @@ class RegistrationController extends Controller
 
                     $em->persist($event);
                     $em->flush();*/
-
+                    /*
                     $token = new UsernamePasswordToken($org, $org->getPassword(), 'default', $org->getRoles());
                     $securityContext = $this->container->get('security.token_storage');
-                    $securityContext->setToken($token);
+                    $securityContext->setToken($token);*/
 
                     $result = array(
                         'status' => 'success',
                         'text' => 'Сохранено',
                     );
-                    return $this->redirectToRoute('registration-2');
+                    //return $this->redirectToRoute('registration-2');
+                    return $this->render('frontend/registration/registration_success.html.twig', array(
+                        'base_dir' => realpath($this->container->getParameter('kernel.root_dir') . '/..') . DIRECTORY_SEPARATOR,
+                        'company' => $org->getName(),
+                        'email' => $org->getEmail()
+                    ));
+
                 }
                 return $this->render('frontend/registration/registration.html.twig', array(
                     'base_dir' => realpath($this->container->getParameter('kernel.root_dir') . '/..') . DIRECTORY_SEPARATOR,

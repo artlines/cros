@@ -58,6 +58,12 @@
 
 {% block javascripts %}
 <script>
+    $(document).ready(function() {
+        $('.btn-danger').click(function() {
+            result = confirm('Подтвердите удаление участника');
+            console.log(result);
+        });
+    });
 </script>
 {% endblock %}
 
