@@ -4,8 +4,6 @@ html{
 body{
     min-width: 250px;
     background: #F8F8F8;
-    background-position: 100% calc(100% - 30px);
-    background-size: 15%;
 }
 footer{
     background: #b4cde4;
