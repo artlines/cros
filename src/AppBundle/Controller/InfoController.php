@@ -80,7 +80,6 @@ class InfoController extends Controller
 		};
 
 		/* BECOME-SPEAKER */
-		// ФИО, Телефон, E-mail, Тема доклада, Тезисы, Приложить файл
 		if ($alias == 'become-speaker') {
 			$defaultData = array(
 				//'theses' => 'asd'
@@ -88,9 +87,9 @@ class InfoController extends Controller
 			$good_extens = array('pdf', 'txt', 'rtf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx');
 			$mimeMsg = 'Допустимые расширения файлов: '.implode(', ', $good_extens);
 			$form = $this->createFormBuilder($defaultData)
-				->add('speaker', TextType::class, array('label' => 'ФИО'))
+				->add('speaker', TextType::class, array('label' => 'Имя'))
 				->add('email', EmailType::class, array('label' => 'E-mail'))
-				->add('mobile', TextType::class, array('label' => 'Телефон'))
+				->add('mobile', TextType::class, array('label' => 'Контактный телефон'))
 				->add('title', TextType::class, array('label' => 'Тема доклада'))
                 ->add('theses', TextareaType::class, array('label' => 'Тезисы'))
                 ->add('files', FileType::class, array(
@@ -187,10 +186,9 @@ class InfoController extends Controller
 				//'theses' => 'asd'
 				);
 			$form = $this->createFormBuilder($defaultData)
-				->add('fio', TextType::class, array('label' => 'ФИО'))
 				->add('company', TextType::class, array('label' => 'Компания'))
 				->add('email', EmailType::class, array('label' => 'E-mail'))
-				->add('mobile', TextType::class, array('label' => 'Телефон'))
+				->add('mobile', TextType::class, array('label' => 'Контактный телефон'))
 				->add('recaptcha', RecaptchaType::class, array(
 									'label' => false, 
 									'mapped' => false,
@@ -200,7 +198,6 @@ class InfoController extends Controller
 										)),
 									)
 				))
-                //->add('check', CheckboxType::class, array('label' => 'Я согласен на обработку <a href="https://shop.nag.ru/article/reg-oferta" target="_blank">персональных данных</a>'))
                 ->add('send', SubmitType::class, array('label' => 'Отправить'))
 				->getForm();
 
@@ -220,7 +217,6 @@ class InfoController extends Controller
                             $this->renderView(
                                 'Emails/become-sponsor.html.twig',
                                 array(
-                                    'fio' => $data['fio'],
                                     'email' => $data['email'],
                                     'company' => $data['company'],
                                     'mobile' => $data['mobile'],

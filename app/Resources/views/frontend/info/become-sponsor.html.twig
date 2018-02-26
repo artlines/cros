@@ -14,6 +14,15 @@
 	{% if form %}
 		<h2>Описание партнерских пакетов и дополнительных возможностей</h2>
 
+		<p>
+			Спонсоры КРОС получают отличную возможность представить свою компанию и свои решения на крупнейшей конференции для операторов связи в России:<br/>
+			- Целевая аудитория: более 650 участников<br/>
+			- Интересная деловая программа: 6 тематических секций<br/>
+			- Выставка решений и оборудования: 2 шоу-рум<br/>
+			- Размещение краткой информации о партнере в каталоге выставки<br/>
+			- Интернет аудитория nag.ru: регулярные e-mail рассылки и публикации по мероприятию среди постоянной аудитории портала nag.ru
+		</p>
+
 		<table class="table">
 			<thead>
 				<tr>
@@ -29,7 +38,14 @@
 			<tbody>
 				<tr>
 					<th scope="row">
-					<p dir="ltr">Круглый стол участников с представителями Партнера (1 час)</p>
+						<p dir="ltr">Общее количество пакетов</p>
+					</th>
+					<td style="text-align:center">3</td>
+					<td style="text-align:center">7</td>
+				</tr>
+				<tr>
+					<th scope="row">
+					<p dir="ltr">Круглый стол партнера с участниками в рамках деловой секции (1 час)</p>
 					</th>
 					<td style="text-align:center">+</td>
 					<td style="text-align:center">&nbsp;</td>
@@ -57,7 +73,7 @@
 				</tr>
 				<tr>
 					<th scope="row">
-					<p dir="ltr">Участие в голосовании за доклады в большом конференц зале</p>
+					<p dir="ltr">Размещение логотипа патрнера в программе мероприятия</p>
 					</th>
 					<td style="text-align:center">+</td>
 					<td style="text-align:center">+</td>
@@ -73,7 +89,7 @@
 					<th scope="row">
 					<p dir="ltr">Стоимость пакета</p>
 					</th>
-					<td style="text-align:center">700 000</td>
+					<td style="text-align:center">750 000</td>
 					<td style="text-align:center">350 000</td>
 				</tr>
 			</tbody>
@@ -84,19 +100,10 @@
 		{{ form_start(form) }}
 
 
-        {{ form_row(form.fio) }}
         {{ form_row(form.company) }}
         {{ form_row(form.email) }}
         {{ form_row(form.mobile) }}
         {{ form_row(form.recaptcha) }}
-
-
-        <div class="checkbox">
-            <label for="form_check" class="required">
-                <input type="checkbox" id="check" name="check" required="required" value="1">
-                Я согласен на обработку <a href="https://shop.nag.ru/article/reg-oferta" target="_blank">персональных данных</a>
-            </label>
-        </div>
 
 
         {{ form_row(form.send) }}
