@@ -23,6 +23,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class MembersController extends Controller
 {
@@ -47,6 +48,26 @@ class MembersController extends Controller
         return $this->redirectToRoute('members');
     }
 
+    /**
+     * @Route("/gen-password", name="genpassword")
+     *
+     * @param string|boolean $pass
+     * @param Request $request
+     *
+     * @return object
+     */
+    public function genPasswordAction(Request $request) {
+        $email = $request->get('email');
+        $password = $request->get('password');
+        $UserRepository = $this->getDoctrine()
+            ->getRepository('AppBundle:User');
+        $user = $UserRepository->findOneBy(array('email' => $email));
+        $encoder = $this->container->get('security.password_encoder');
+        $encoded = $encoder->encodePassword($user, $password);
+        return new Response($email . $password . '|' . $encoded);
+    }
+
+    
     /**
      * @Route("/members/{pass}", name="members")
      * @Route("/members")
