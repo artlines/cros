@@ -1,11 +1,13 @@
-{% extends 'base.html.twig' %}
+{% extends '@twig_views/Exception/base.html.twig' %}
 
 {% block header_title %}Ошибка!{% endblock %}
 
 {% block page_image %}info_terms{% endblock %}
 
 {% block stylesheets %}
-    .inline-title{ background: #a94442 !important; color: white !important; }
+    <style>
+        .inline-title{ background: #a94442 !important; color: white !important; }
+    </style>
 {% endblock %}
 
 {% block body %}
