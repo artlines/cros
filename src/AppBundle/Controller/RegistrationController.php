@@ -14,6 +14,8 @@ use AppBundle\Entity\User;
 use AppBundle\Entity\UserToApartament;
 use AppBundle\Entity\UserToConf;
 use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -216,7 +218,7 @@ class RegistrationController extends Controller
                         ->setSubject('Регистрация КРОС-2.0-18: '.$org->getName().' Доступ в личный кабинет')
                         ->setFrom('cros@nag.ru')
                         ->setTo($org->getEmail())
-                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru'))
+                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru', 'cros@nag.ru'))
                         ->setBody(
                             $this->renderView(
                                 'Emails/org_registration.html.twig',
@@ -410,6 +412,8 @@ class RegistrationController extends Controller
                     ->add('email', EmailType::class, array('label' => 'E-mail'))
                     ->add('username', TextType::class, array('label' => 'Mobile phone', 'attr' => array('data-helper' => 'Телефон для связи', 'pattern' => '[\+][0-9]{11,}', 'title' => "Номер телефона в федеральном формате (+79990009999), без пробелов", 'placeholder' => '+79990009999')))
                     ->add('nickname', TextType::class, array('label' => 'Nickname', 'required' => false))
+                    //->add('arrival', DateTimeType::class, array('label' => 'Дата заезда'))
+                    //->add('leaving', DateTimeType::class, array('label' => 'Дата выезда'))
                     ->add('car_number', TextType::class, array('label' => 'Если Вы приедете на личном транспорте, укажите его государственный номер', 'required' => false, 'attr' => array('placeholder' => 'А001АА 00', 'pattern' => '[А-Яа-яA-Za-z]{1,1}[0-9]{3,3}[А-Яа-яA-Za-z]{2,2}[ ][0-9]{2,3}', 'title' => 'А001АА 00')))
                     ->add('apartament', ChoiceType::class, array('label' => 'Класс участия', 'mapped' => false, 'attr' => array('data-helper' => $class_help), 'choices' => $numbers, 'choice_attr' => array('Выберите номер проживания' => array('disabled' => '')), 'data' => $apartament_id))
                     //->add('save_and_add', SubmitType::class, array('label' => 'Сохранить и добавить еще одного'))
@@ -427,6 +431,8 @@ class RegistrationController extends Controller
                     ->add('email', EmailType::class, array('label' => 'E-mail'))
                     ->add('username', TextType::class, array('label' => 'Mobile phone', 'attr' => array('data-helper' => 'Телефон для связи', 'pattern' => '[\+][0-9]{11,}', 'title' => "Номер телефона в федеральном формате (+79990009999), без пробелов", 'placeholder' => '+79990009999')))
                     ->add('nickname', TextType::class, array('label' => 'Nickname', 'required' => false))
+                    //->add('arrival', DateTimeType::class, array('label' => 'Дата заезда'))
+                    //->add('leaving', DateTimeType::class, array('label' => 'Дата выезда'))
                     ->add('car_number', TextType::class, array('label' => 'Если Вы приедете на личном транспорте, укажите его государственный номер', 'required' => false, 'attr' => array('placeholder' => 'А001АА 00', 'pattern' => '[А-Яа-яA-Za-z]{1,1}[0-9]{3,3}[А-Яа-яA-Za-z]{2,2}[ ][0-9]{2,3}', 'title' => 'А001АА 00')))
                     ->add('apartament', ChoiceType::class, array('label' => 'Класс участия', 'mapped' => false, 'choices' => $numbers, 'choice_attr' => array('Выберите номер проживания' => array('disabled' => '')), 'data' => $apartament_id))
                     //->add('save_and_add', SubmitType::class, array('label' => 'Сохранить и добавить еще одного'))
@@ -502,40 +508,6 @@ class RegistrationController extends Controller
                             'numberdesc' => json_encode($numberdesc),
                         ));
                     }
-                    /*
-                    'fname' => false,
-                    'lname' => false,
-                    'mname' => false,
-                    'post' => false,
-                    'phone' => false,
-                    'email' => false,
-                    'nickname' => false,
-                    'cnumber' => false,
-                     */
-                    /*if($check_usr->getFirstName() != $user->getFirstName()){
-                        $change_log['fname'] = true;
-                    }
-                    if($check_usr->getLastName() != $user->getLastName()){
-
-                    }
-                    if($check_usr->getMiddleName() != $user->getMiddleName()){
-
-                    }
-                    if($check_usr->getPost() != $user->getPost()){
-
-                    }
-                    if($check_usr->getUsername() != $user->getUsername()){
-
-                    }
-                    if($check_usr->getEmail() != $user->getEmail()){
-
-                    }
-                    if($check_usr->getNickname() != $user->getNickname()){
-
-                    }
-                    if($check_usr->getCarNumber() != $user->getCarNumber()){
-
-                    }*/
                 }
 
                 if(!$upd) {
@@ -748,7 +720,7 @@ class RegistrationController extends Controller
                         ->setSubject('Регистрация КРОС-2.0-18: ' . $org->getName())
                         ->setFrom('cros@nag.ru')
                         ->setTo($user->getEmail())
-                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru'))
+                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru', 'cros@nag.ru'))
                         ->setBody(
                             $this->renderView(
                                 'Emails/edit_user.html.twig',
@@ -789,7 +761,7 @@ class RegistrationController extends Controller
                         ->setSubject('Регистрация КРОС-2.0-18: ' . $this->getUser()->getName())
                         ->setFrom('cros@nag.ru')
                         ->setTo($user->getEmail())
-                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru'))
+                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru', 'cros@nag.ru'))
                         ->setBody(
                             $this->renderView(
                                 'Emails/registration.html.twig',
@@ -827,7 +799,7 @@ class RegistrationController extends Controller
                 ->setSubject('Регистрация КРОС-2.0-18: ' . $this->getUser()->getName())
                 ->setFrom('cros@nag.ru')
                 ->setTo($this->getUser()->getEmail())
-                ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru'))
+                ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru', 'cros@nag.ru'))
                 ->setBody(
                     $this->renderView(
                         'Emails/all_registration.html.twig',

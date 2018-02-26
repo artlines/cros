@@ -145,7 +145,7 @@ class InfoController extends Controller
                         ->setSubject('КРОС-2.0-18: Заявка на добавление докладчика')
                         ->setFrom('cros@nag.ru')
                         ->setTo('cros@nag.ru')
-                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru'))
+                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru', 'cros@nag.ru'))
                         ->setBody(
                             $this->renderView(
                                 'Emails/become-speaker.html.twig',
@@ -203,16 +203,29 @@ class InfoController extends Controller
 
 			$form->handleRequest($request);
 
+			/** LOG **/
+
+			$isValid = $form->isValid();
+			$isSubmitted = $form->isSubmitted();
+			$formErrors = $form->getErrors();
+
+            file_put_contents('/var/log/cros/become-sponsor_post.log', "***************\n".'['.date("H:i:s d.m.Y").']'."\n", FILE_APPEND);
+            file_put_contents('/var/log/cros/become-sponsor_post.log', 'isValid: '.($isValid ? 'true' : 'false')."\n", FILE_APPEND);
+            file_put_contents('/var/log/cros/become-sponsor_post.log', 'isSubmitted: '.($isSubmitted ? 'true' : 'false')."\n***************\n", FILE_APPEND);
+            file_put_contents('/var/log/cros/become-sponsor_post.log', print_r($request->request, true)."\n", FILE_APPEND);
+//            file_put_contents('/var/log/cros/become-sponsor_post.log', "form errors:\n".print_r($formErrors, true)."\n", FILE_APPEND);
+
+			/** END **/
+
+
 			if ($form->isSubmitted() && $form->isValid()) {
 				$data = $form->getData();
-
-				//var_dump($form->get('recaptcha')); exit();
 
 					$message = \Swift_Message::newInstance()
                         ->setSubject('КРОС-2.0-18: Заявка на добавление спонсора')
                         ->setFrom('cros@nag.ru')
                         ->setTo('cros@nag.ru')
-                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru'))
+                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru', 'cros@nag.ru'))
                         ->setBody(
                             $this->renderView(
                                 'Emails/become-sponsor.html.twig',
