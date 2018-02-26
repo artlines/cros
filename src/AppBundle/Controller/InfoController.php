@@ -145,7 +145,7 @@ class InfoController extends Controller
                         ->setSubject('КРОС-2.0-18: Заявка на добавление докладчика')
                         ->setFrom('cros@nag.ru')
                         ->setTo('cros@nag.ru')
-                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru'))
+                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru'))
                         ->setBody(
                             $this->renderView(
                                 'Emails/become-speaker.html.twig',
@@ -212,7 +212,7 @@ class InfoController extends Controller
                         ->setSubject('КРОС-2.0-18: Заявка на добавление спонсора')
                         ->setFrom('cros@nag.ru')
                         ->setTo('cros@nag.ru')
-                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru'))
+                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru'))
                         ->setBody(
                             $this->renderView(
                                 'Emails/become-sponsor.html.twig',
