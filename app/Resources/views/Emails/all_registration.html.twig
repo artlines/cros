@@ -18,7 +18,7 @@
             Класс участия: {% for toa in user.utoas  %}{{ toa.apartament.apartament.title }} ({{ toa.apartament.apartament.price }}.р){% set orgp = toa.apartament.apartament.price %}{% endfor %}<br>
             {% set fullprice = fullprice + orgp %}
             Ранний заезд: {% if user.arrival|date("H:i") == '14:00' %}нет{% else %}{{ user.arrival|date("H:i") }}{% endif %}
-            Поздний выезд: {% if user.leaving|date("H:i") == '14:00' %}нет{% else %}{{ user.leaving|date("H:i") }}{% endif %}
+            Поздний выезд: {% if user.leaving|date("H:i") == '12:00' %}нет{% else %}{{ user.leaving|date("H:i") }}{% endif %}
 
         {% endfor %}
         <h4>Сумма: {{ fullprice }}р.</h4>
