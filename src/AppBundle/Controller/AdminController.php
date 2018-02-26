@@ -48,6 +48,8 @@ class AdminController extends Controller
     public function testViewAction()
     {
         return $this->render('admin/test.html.twig', array(
+            'date' => new \DateTime('2018-05-16 14:00'),
+
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir') . '/..') . DIRECTORY_SEPARATOR,
 
         ));
@@ -58,7 +60,6 @@ class AdminController extends Controller
      */
     public function sendTestEmailAction()
     {
-        exit();
         //var_dump($this->getUser()->getName()); exit();
 
         $orgName = 'Рога и Ко';
@@ -66,9 +67,10 @@ class AdminController extends Controller
         $email = 'e.nachuychenko@nag.ru';
         $email_to = array(
             'e.nachuychenko@nag.ru',
-            'a.gazetdinov@nag.ru'
+            //'a.gazetdinov@nag.ru'
         );
 
+        /*
         $message_org = \Swift_Message::newInstance()
             ->setSubject('Регистрация КРОС-2.0-18: '.$orgName.' Доступ в личный кабинет')
             ->setFrom('cros@nag.ru')
@@ -103,10 +105,31 @@ class AdminController extends Controller
                 ),
                 'text/html'
             );
+        */
 
         //$result = $this->get('mailer')->send($message_org);
         //$result = $this->get('mailer')->send($message_user);
         //var_dump($result);
+
+        $repo = $this->getDoctrine()->getRepository("AppBundle:Organization");
+        $org = $repo->findOneById(15);
+
+//        var_dump($org->getUsers()); exit();
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('TEST Регистрация КРОС-2.0-18: ' . $org->getName())
+            ->setFrom('cros@nag.ru')
+            ->setTo('e.nachuychenko@nag.ru')
+            ->setBody(
+                $this->renderView(
+                    'Emails/all_registration.html.twig',
+                    array(
+                        'organization' => $org,
+                    )
+                ),
+                'text/html'
+            );
+        $this->get('mailer')->send($message);
 
         return new Response('ok', 200);
     }

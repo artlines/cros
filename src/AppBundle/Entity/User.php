@@ -158,11 +158,18 @@ class User implements UserInterface, \Serializable
     private $female;
 
     /**
-     * @var date
+     * @var \DateTime
      *
-     * @ORM\Column(name="arrival", type="date", nullable=true)
+     * @ORM\Column(name="arrival", type="datetime", options={"default": "2018-05-16 14:00"})
      */
     private $arrival;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="leaving", type="datetime", options={"default": "2018-05-19 12:00"})
+     */
+    private $leaving;
 
     /**
      * @ORM\ManyToOne(targetEntity="Apartament", inversedBy="users")
@@ -211,7 +218,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -234,7 +241,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get organizationId
      *
-     * @return integer 
+     * @return integer
      */
     public function getOrganizationId()
     {
@@ -257,7 +264,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get firstName
      *
-     * @return string 
+     * @return string
      */
     public function getFirstName()
     {
@@ -280,7 +287,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get lastName
      *
-     * @return string 
+     * @return string
      */
     public function getLastName()
     {
@@ -303,7 +310,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get middleName
      *
-     * @return string 
+     * @return string
      */
     public function getMiddleName()
     {
@@ -326,7 +333,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get post
      *
-     * @return string 
+     * @return string
      */
     public function getPost()
     {
@@ -349,7 +356,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get username
      *
-     * @return integer 
+     * @return integer
      */
     public function getUsername()
     {
@@ -372,7 +379,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -395,7 +402,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get isActive
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsActive()
     {
@@ -418,7 +425,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get password
      *
-     * @return string 
+     * @return string
      */
     public function getPassword()
     {
@@ -441,7 +448,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get telegram
      *
-     * @return string 
+     * @return string
      */
     public function getTelegram()
     {
@@ -928,5 +935,25 @@ class User implements UserInterface, \Serializable
     public function getArrival()
     {
         return $this->arrival;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getLeaving()
+    {
+        return $this->leaving;
+    }
+
+    /**
+     * @param date \DateTime
+     *
+     * @return User
+     */
+    public function setLeaving($leaving)
+    {
+        $this->leaving = $leaving;
+
+        return $this;
     }
 }

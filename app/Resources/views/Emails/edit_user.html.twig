@@ -13,22 +13,26 @@
         Nickname: {{ user.nickname }}<br>
         Номер автомобиля: {{ user.carnumber }}<br>
         Класс участия: {% for toa in user.utoas  %}{{ toa.apartament.apartament.title }} ({{ toa.apartament.apartament.price }}.р){% endfor %}<br>
-        <br>
+        Ранний заезд: {{ arrival }}<br>
+        Поздний выезд: {{ leaving }}<br>
 
         Более подробную информацию можно получить на официальном сайте конференции <a href="http://cros.nag.ru">cros.nag.ru</a><br><br>
     Не забудьте присоединиться к нашим каналам Telegram:<br>
-    <table>
+
+
+    <table width="680px" style="width: 680px; font-size: 16px; font-family: arial;">
         <tbody>
         <tr>
-            <td>Официальный информационный канал КРОС-2.0-18</td>
-            <td>Общение участников КРОС-2.0-18</td>
+            <td style="text-align: center;">
+                <img
+                        src="{{ absolute_url(asset('temp/telegram-logo-56x56.png')) }}"
+                        alt="Telegram" />
+            </td>
+            <td style="text-align: left;">
+                <a href="https://t.me/joinchat/AAAAAD8Ll_zQJjIrIv136Q"><b>Группа участников КРОС в Telegram</b></a><br>
+                <a href="https://t.me/cros2017"><b>Информационный канал в Telegram</b></a>
+            </td>
         </tr>
-        <td>
-            <a href="https://t.me/cros2017"><img src="http://cros.nag.ru/assets/images/croschannel.jpg" alt="Telegram-канал"></a>
-        </td>
-        <td>
-            <a href="https://t.me/joinchat/AAAAAD8Ll_zQJjIrIv136Q"><img src="http://cros.nag.ru/assets/images/croschat.jpg" alt="Telegram-чат"></a>
-        </td>
         </tbody>
     </table>
     <br><br>

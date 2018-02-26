@@ -21,6 +21,8 @@
             Nickname: {{ user.nickname }}<br>
             Номер автомобиля: {{ user.carnumber }}<br>
             Класс участия: {% for toa in user.utoas  %}{{ toa.apartament.apartament.title }} ({{ toa.apartament.apartament.price }}.р){% endfor %}<br>
+            Ранний заезд: {{ arrival }}<br>
+            Поздний выезд: {{ leaving }}
         </div>
         <br>
 

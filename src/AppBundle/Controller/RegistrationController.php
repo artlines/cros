@@ -14,8 +14,7 @@ use AppBundle\Entity\User;
 use AppBundle\Entity\UserToApartament;
 use AppBundle\Entity\UserToConf;
 use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -345,6 +344,9 @@ class RegistrationController extends Controller
             else{
                 $user = new User();
 
+                $user->setArrival(new \DateTime('14:00 16.05.2018'));
+                $user->setLeaving(new \DateTime('12:00 19.05.2018'));
+
                 /** @var User $users_yet */
                 $users_yet = $this->getDoctrine()
                     ->getRepository('AppBundle:User')
@@ -412,8 +414,14 @@ class RegistrationController extends Controller
                     ->add('email', EmailType::class, array('label' => 'E-mail'))
                     ->add('username', TextType::class, array('label' => 'Mobile phone', 'attr' => array('data-helper' => 'Телефон для связи', 'pattern' => '[\+][0-9]{11,}', 'title' => "Номер телефона в федеральном формате (+79990009999), без пробелов", 'placeholder' => '+79990009999')))
                     ->add('nickname', TextType::class, array('label' => 'Nickname', 'required' => false))
-                    //->add('arrival', DateTimeType::class, array('label' => 'Дата заезда'))
-                    //->add('leaving', DateTimeType::class, array('label' => 'Дата выезда'))
+                    ->add('arrival', TimeType::class, array(
+                        'label' => 'Ранний заезд',
+                        'input' => 'datetime',
+                    ))
+                    ->add('leaving', TimeType::class, array(
+                        'label' => 'Поздний выезд',
+                        'input' => 'datetime',
+                    ))
                     ->add('car_number', TextType::class, array('label' => 'Если Вы приедете на личном транспорте, укажите его государственный номер', 'required' => false, 'attr' => array('placeholder' => 'А001АА 00', 'pattern' => '[А-Яа-яA-Za-z]{1,1}[0-9]{3,3}[А-Яа-яA-Za-z]{2,2}[ ][0-9]{2,3}', 'title' => 'А001АА 00')))
                     ->add('apartament', ChoiceType::class, array('label' => 'Класс участия', 'mapped' => false, 'attr' => array('data-helper' => $class_help), 'choices' => $numbers, 'choice_attr' => array('Выберите номер проживания' => array('disabled' => '')), 'data' => $apartament_id))
                     //->add('save_and_add', SubmitType::class, array('label' => 'Сохранить и добавить еще одного'))
@@ -431,8 +439,14 @@ class RegistrationController extends Controller
                     ->add('email', EmailType::class, array('label' => 'E-mail'))
                     ->add('username', TextType::class, array('label' => 'Mobile phone', 'attr' => array('data-helper' => 'Телефон для связи', 'pattern' => '[\+][0-9]{11,}', 'title' => "Номер телефона в федеральном формате (+79990009999), без пробелов", 'placeholder' => '+79990009999')))
                     ->add('nickname', TextType::class, array('label' => 'Nickname', 'required' => false))
-                    //->add('arrival', DateTimeType::class, array('label' => 'Дата заезда'))
-                    //->add('leaving', DateTimeType::class, array('label' => 'Дата выезда'))
+                    ->add('arrival', TimeType::class, array(
+                        'label' => 'Ранний заезд',
+                        'input' => 'datetime',
+                    ))
+                    ->add('leaving', TimeType::class, array(
+                        'label' => 'Поздний выезд',
+                        'input' => 'datetime',
+                    ))
                     ->add('car_number', TextType::class, array('label' => 'Если Вы приедете на личном транспорте, укажите его государственный номер', 'required' => false, 'attr' => array('placeholder' => 'А001АА 00', 'pattern' => '[А-Яа-яA-Za-z]{1,1}[0-9]{3,3}[А-Яа-яA-Za-z]{2,2}[ ][0-9]{2,3}', 'title' => 'А001АА 00')))
                     ->add('apartament', ChoiceType::class, array('label' => 'Класс участия', 'mapped' => false, 'choices' => $numbers, 'choice_attr' => array('Выберите номер проживания' => array('disabled' => '')), 'data' => $apartament_id))
                     //->add('save_and_add', SubmitType::class, array('label' => 'Сохранить и добавить еще одного'))
@@ -718,7 +732,9 @@ class RegistrationController extends Controller
                     $full_name = $user->getLastName() . ' ' . $user->getFirstName() . ' ' . $user->getMiddleName();
                     $message = \Swift_Message::newInstance()
                         ->setSubject('Регистрация КРОС-2.0-18: ' . $org->getName())
+                        //->setSubject('TEST Регистрация КРОС-2.0-18: ' . $org->getName())
                         ->setFrom('cros@nag.ru')
+                        //->setTo('e.nachuychenko@nag.ru')
                         ->setTo($user->getEmail())
                         ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru', 'cros@nag.ru'))
                         ->setBody(
@@ -730,6 +746,8 @@ class RegistrationController extends Controller
                                     'org' => $this->getUser()->getName(),
                                     'email' => $user->getEmail(),
                                     'user' => $user,
+                                    'arrival' => $user->getArrival()->format('H:i') == '14:00' ? 'нет' : $user->getArrival()->format('H:i'),
+                                    'leaving' => $user->getLeaving()->format('H:i') == '12:00' ? 'нет' : $user->getLeaving()->format('H:i'),
                                 )
                             ),
                             'text/html'
@@ -759,7 +777,9 @@ class RegistrationController extends Controller
 
                     $message = \Swift_Message::newInstance()
                         ->setSubject('Регистрация КРОС-2.0-18: ' . $this->getUser()->getName())
+                        //->setSubject('TEST Регистрация КРОС-2.0-18: ' . $this->getUser()->getName())
                         ->setFrom('cros@nag.ru')
+                        //->setTo('e.nachuychenko@nag.ru')
                         ->setTo($user->getEmail())
                         ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru', 'cros@nag.ru'))
                         ->setBody(
@@ -772,6 +792,8 @@ class RegistrationController extends Controller
                                     'org' => $this->getUser()->getName(),
                                     'email' => $user->getEmail(),
                                     'user' => $user,
+                                    'arrival' => $user->getArrival()->format('H:i') == '14:00' ? 'нет' : $user->getArrival()->format('H:i'),
+                                    'leaving' => $user->getLeaving()->format('H:i') == '12:00' ? 'нет' : $user->getLeaving()->format('H:i'),
                                 )
                             ),
                             'text/html'
@@ -797,8 +819,10 @@ class RegistrationController extends Controller
         if($sendall){
             $message = \Swift_Message::newInstance()
                 ->setSubject('Регистрация КРОС-2.0-18: ' . $this->getUser()->getName())
+                //->setSubject('TEST Регистрация КРОС-2.0-18: ' . $this->getUser()->getName())
                 ->setFrom('cros@nag.ru')
                 ->setTo($this->getUser()->getEmail())
+                //->setTo('e.nachuychenko@nag.ru')
                 ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru', 'cros@nag.ru'))
                 ->setBody(
                     $this->renderView(

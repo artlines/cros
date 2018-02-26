@@ -16,13 +16,31 @@
         {% else %}<p class="bg-error">{{ result.text }}</p>
         {% endif %}
     {% endif %}
+
     {{ form_start(form) }}
+
     <div class="alert alert-info">
         <p>Обращаем ваше внимание на официальные даты заезда/выезда</p>
         <p><strong>Заезд:</strong> 14:00 16.05.2018</p>
         <p><strong>Выезд:</strong> 12:00 19.05.2018</p>
     </div>
+
+    {{ form_row(form.last_name) }}
+    {{ form_row(form.first_name) }}
+
+    {{ form_row(form.middle_name) }}
+    {{ form_row(form.post) }}
+
+    {{ form_row(form.email) }}
+    {{ form_row(form.username) }}
+
+    {{ form_row(form.nickname) }}
+
+    {{ form_row(form.arrival) }}
+    {{ form_row(form.leaving) }}
+
     {{ form_widget(form) }}
+
     {{ form_end(form) }}
     <span style="color: #a94442;">*</span> - поля обязательны к заполнению
 {% endblock %}
