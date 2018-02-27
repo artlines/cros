@@ -82,12 +82,16 @@ class InfoController extends Controller
 
 		/* BECOME-SPEAKER */
 		if ($alias == 'become-speaker') {
-			$defaultData = array(
-				//'theses' => 'asd'
-				);
 			$good_extens = array('pdf', 'txt', 'rtf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx');
 			$mimeMsg = 'Допустимые расширения файлов: '.implode(', ', $good_extens);
-			$form = $this->createFormBuilder($defaultData)
+
+            $defaultData = array(
+                //'theses' => 'asd'
+            );
+            $options = array(
+                'csrf_protection' => false
+            );
+			$form = $this->createFormBuilder($defaultData, $options)
 				->add('speaker', TextType::class, array('label' => 'Имя'))
 				->add('email', EmailType::class, array('label' => 'E-mail'))
 				->add('mobile', TextType::class, array('label' => 'Контактный телефон'))
@@ -182,10 +186,14 @@ class InfoController extends Controller
 		/* BECOME-SPONSOR */
 		// (ФИО, Компания, Телефон, E-mail)
 		if ($alias == 'become-sponsor') {
+
 			$defaultData = array(
 				//'theses' => 'asd'
 				);
-			$form = $this->createFormBuilder($defaultData)
+            $options = array(
+                'csrf_protection' => false
+            );
+			$form = $this->createFormBuilder($defaultData, $options)
 				->add('company', TextType::class, array('label' => 'Компания'))
 				->add('email', EmailType::class, array('label' => 'E-mail'))
 				->add('mobile', TextType::class, array('label' => 'Контактный телефон'))
@@ -202,22 +210,6 @@ class InfoController extends Controller
 				->getForm();
 
 			$form->handleRequest($request);
-
-			/** LOG **/
-
-			$isValid = $form->isValid();
-			$isSubmitted = $form->isSubmitted();
-			$formErrors = $form->getErrors();
-
-            file_put_contents('/var/log/cros/become-sponsor_post.log', "***************\n".'['.date("H:i:s d.m.Y").']'."\n", FILE_APPEND);
-            file_put_contents('/var/log/cros/become-sponsor_post.log', 'server: '.print_r($_SERVER, true)."\n", FILE_APPEND);
-            file_put_contents('/var/log/cros/become-sponsor_post.log', 'isValid: '.($isValid ? 'true' : 'false')."\n", FILE_APPEND);
-            file_put_contents('/var/log/cros/become-sponsor_post.log', 'isSubmitted: '.($isSubmitted ? 'true' : 'false')."\n***************\n", FILE_APPEND);
-            file_put_contents('/var/log/cros/become-sponsor_post.log', print_r($request->request, true)."\n", FILE_APPEND);
-//            file_put_contents('/var/log/cros/become-sponsor_post.log', "form errors:\n".print_r($formErrors, true)."\n", FILE_APPEND);
-
-			/** END **/
-
 
 			if ($form->isSubmitted() && $form->isValid()) {
 				$data = $form->getData();
