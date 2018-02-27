@@ -116,15 +116,17 @@ class AdminController extends Controller
         //$result = $this->get('mailer')->send($message_user);
         //var_dump($result);
 
-        $repo = $this->getDoctrine()->getRepository("AppBundle:Organization");
-        $org = $repo->findOneById(15);
+        $repo_org = $this->getDoctrine()->getRepository("AppBundle:Organization");
+        $org = $repo_org->findOneById(15);
+        $repo_user = $this->getDoctrine()->getRepository("AppBundle:User");
+        $user = $repo_user->findOneById(923);
 
 //        var_dump($org->getUsers()); exit();
 
-        $message = \Swift_Message::newInstance()
+        $message_all = \Swift_Message::newInstance()
             ->setSubject('TEST Регистрация КРОС-2.0-18: ' . $org->getName())
             ->setFrom('cros@nag.ru')
-            ->setTo('e.nachuychenko@nag.ru')
+            ->setTo(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru')) // , 'gz@nag.ru'
             ->setBody(
                 $this->renderView(
                     'Emails/all_registration.html.twig',
@@ -134,6 +136,28 @@ class AdminController extends Controller
                 ),
                 'text/html'
             );
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('TEST Регистрация КРОС-2.0-18: ' . $org->getName())
+            ->setFrom('cros@nag.ru')
+            ->setTo(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru')) // , 'gz@nag.ru'
+            ->setBody(
+                $this->renderView(
+                    'Emails/registration.html.twig',
+                    array(
+                        'fio' => "FULL_NAME",
+                        'phone' => $user->getUsername(),
+                        'password' => 'PASSWORD',
+                        'org' => $org->getName(),
+                        'email' => $user->getEmail(),
+                        'user' => $user,
+                        'arrival' => $user->getArrival()->format('H:i') == '14:00' ? 'нет' : $user->getArrival()->format('H:i'),
+                        'leaving' => $user->getLeaving()->format('H:i') == '12:00' ? 'нет' : $user->getLeaving()->format('H:i'),
+                    )
+                ),
+                'text/html'
+            );
+
         $this->get('mailer')->send($message);
 
         return new Response('ok', 200);
