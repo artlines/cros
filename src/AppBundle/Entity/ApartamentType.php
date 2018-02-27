@@ -44,6 +44,7 @@ class ApartamentType
 
     /**
      * @ORM\OneToMany(targetEntity="Flat", mappedBy="type")
+     * @ORM\OrderBy({"realId" = "ASC"})
      */
     private $flats;
 
