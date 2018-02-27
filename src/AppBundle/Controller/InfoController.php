@@ -33,7 +33,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\FormError;
 
 use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType as RecaptchaType;
-use AppBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
+use Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
+//use AppBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
 
 class InfoController extends Controller
 {
