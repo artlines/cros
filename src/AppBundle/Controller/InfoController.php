@@ -261,7 +261,7 @@ class InfoController extends Controller
 	    		/** @var Info $info */
 			$info = $this->getDoctrine()
 		    		->getRepository('AppBundle:Info')
-		    		->findOneBy(array('alias' => $alias));
+		    		->findOneBy(array('alias' => $alias), array('id' => 'DESC'));
 		}
         
         if($info){
