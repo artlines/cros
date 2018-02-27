@@ -217,7 +217,7 @@ class RegistrationController extends Controller
                         ->setSubject('Регистрация КРОС-2.0-18: '.$org->getName().' Доступ в личный кабинет')
                         ->setFrom('cros@nag.ru')
                         ->setTo($org->getEmail())
-                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru', 'cros@nag.ru'))
+                        ->setBcc($this->container->getParameter('cros_emails'))
                         ->setBody(
                             $this->renderView(
                                 'Emails/org_registration.html.twig',
@@ -732,11 +732,9 @@ class RegistrationController extends Controller
                     $full_name = $user->getLastName() . ' ' . $user->getFirstName() . ' ' . $user->getMiddleName();
                     $message = \Swift_Message::newInstance()
                         ->setSubject('Регистрация КРОС-2.0-18: ' . $org->getName())
-                        //->setSubject('TEST Регистрация КРОС-2.0-18: ' . $org->getName())
                         ->setFrom('cros@nag.ru')
-                        //->setTo('e.nachuychenko@nag.ru')
                         ->setTo($user->getEmail())
-                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru', 'cros@nag.ru'))
+                        ->setBcc($this->container->getParameter('cros_emails'))
                         ->setBody(
                             $this->renderView(
                                 'Emails/edit_user.html.twig',
@@ -777,11 +775,9 @@ class RegistrationController extends Controller
 
                     $message = \Swift_Message::newInstance()
                         ->setSubject('Регистрация КРОС-2.0-18: ' . $this->getUser()->getName())
-                        //->setSubject('TEST Регистрация КРОС-2.0-18: ' . $this->getUser()->getName())
                         ->setFrom('cros@nag.ru')
-                        //->setTo('e.nachuychenko@nag.ru')
                         ->setTo($user->getEmail())
-                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru', 'cros@nag.ru'))
+                        ->setBcc($this->container->getParameter('cros_emails'))
                         ->setBody(
                             $this->renderView(
                                 'Emails/registration.html.twig',
@@ -819,11 +815,9 @@ class RegistrationController extends Controller
         if($sendall){
             $message = \Swift_Message::newInstance()
                 ->setSubject('Регистрация КРОС-2.0-18: ' . $this->getUser()->getName())
-                //->setSubject('TEST Регистрация КРОС-2.0-18: ' . $this->getUser()->getName())
                 ->setFrom('cros@nag.ru')
                 ->setTo($this->getUser()->getEmail())
-                //->setTo('e.nachuychenko@nag.ru')
-                ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru', 'cros@nag.ru'))
+                ->setBcc($this->container->getParameter('cros_emails'))
                 ->setBody(
                     $this->renderView(
                         'Emails/all_registration.html.twig',

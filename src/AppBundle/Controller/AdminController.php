@@ -47,9 +47,14 @@ class AdminController extends Controller
      */
     public function testViewAction()
     {
+
+
+        $debug = $this->container->getParameter('emails');
+
+
         return $this->render('admin/test.html.twig', array(
             'date' => new \DateTime('2018-05-16 14:00'),
-
+            'debug' => $debug,
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir') . '/..') . DIRECTORY_SEPARATOR,
 
         ));

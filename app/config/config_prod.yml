@@ -27,3 +27,6 @@ monolog:
             level: critical
             formatter: monolog.formatter.html
             content_type: text/html
+
+parameters:
+    cros_emails: [ 'e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru', 'cros@nag.ru' ]

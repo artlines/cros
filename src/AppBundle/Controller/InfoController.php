@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\FormError;
 
 use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType as RecaptchaType;
-use Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
+use AppBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
 
 class InfoController extends Controller
 {
@@ -144,8 +144,7 @@ class InfoController extends Controller
 					$message = \Swift_Message::newInstance()
                         ->setSubject('КРОС-2.0-18: Заявка на добавление докладчика')
                         ->setFrom('cros@nag.ru')
-                        ->setTo('cros@nag.ru')
-                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru', 'cros@nag.ru'))
+                        ->setTo($this->container->getParameter('cros_emails'))
                         ->setBody(
                             $this->renderView(
                                 'Emails/become-speaker.html.twig',
@@ -225,8 +224,7 @@ class InfoController extends Controller
 					$message = \Swift_Message::newInstance()
                         ->setSubject('КРОС-2.0-18: Заявка на добавление спонсора')
                         ->setFrom('cros@nag.ru')
-                        ->setTo('cros@nag.ru')
-                        ->setBcc(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru', 'cros@nag.ru'))
+                        ->setTo($this->container->getParameter('cros_emails'))
                         ->setBody(
                             $this->renderView(
                                 'Emails/become-sponsor.html.twig',

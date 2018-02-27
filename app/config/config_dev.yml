@@ -30,3 +30,6 @@ monolog:
 
 #swiftmailer:
 #    delivery_address: me@example.com
+
+parameters:
+    cros_emails: [ 'e.nachuychenko@nag.ru' ]
