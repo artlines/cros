@@ -140,10 +140,10 @@ class AdminController extends Controller
         $message = \Swift_Message::newInstance()
             ->setSubject('TEST Регистрация КРОС-2.0-18: ' . $org->getName())
             ->setFrom('cros@nag.ru')
-            ->setTo(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru')) // , 'gz@nag.ru'
+            ->setTo(array('e.nachuychenko@nag.ru')) // , 'gz@nag.ru', 'a.gazetdinov@nag.ru'
             ->setBody(
                 $this->renderView(
-                    'Emails/registration.html.twig',
+                    'Emails/test.html.twig',
                     array(
                         'fio' => "FULL_NAME",
                         'phone' => $user->getUsername(),
