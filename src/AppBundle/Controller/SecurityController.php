@@ -8,6 +8,19 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class SecurityController extends Controller
 {
     /**
+     * @Route("/privacy", name="privacy")
+     */
+    public function privacyAction()
+    {
+        $content = file_get_contents('https://shop.nag.ru/policies/privacy');
+
+        return $this->render('security/privacy.html.twig', array(
+            'content' => $content,
+        ));
+    }
+
+
+    /**
      * @Route("/login", name="login")
      */
     public function loginAction()
