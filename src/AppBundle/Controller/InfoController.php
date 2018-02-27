@@ -210,6 +210,7 @@ class InfoController extends Controller
 			$formErrors = $form->getErrors();
 
             file_put_contents('/var/log/cros/become-sponsor_post.log', "***************\n".'['.date("H:i:s d.m.Y").']'."\n", FILE_APPEND);
+            file_put_contents('/var/log/cros/become-sponsor_post.log', 'server: '.print_r($_SERVER, true)."\n", FILE_APPEND);
             file_put_contents('/var/log/cros/become-sponsor_post.log', 'isValid: '.($isValid ? 'true' : 'false')."\n", FILE_APPEND);
             file_put_contents('/var/log/cros/become-sponsor_post.log', 'isSubmitted: '.($isSubmitted ? 'true' : 'false')."\n***************\n", FILE_APPEND);
             file_put_contents('/var/log/cros/become-sponsor_post.log', print_r($request->request, true)."\n", FILE_APPEND);
