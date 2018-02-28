@@ -14,6 +14,7 @@ use AppBundle\Entity\User;
 use AppBundle\Entity\UserToApartament;
 use AppBundle\Entity\UserToConf;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -187,6 +188,11 @@ class InfoController extends Controller
 		// (ФИО, Компания, Телефон, E-mail)
 		if ($alias == 'become-sponsor') {
 
+            $choices = array(
+                'Золотой партнер' => 'Золотой партнер',
+                'Серебрянный партнер' => 'Серебрянный партнер',
+            );
+
 			$defaultData = array(
 				//'theses' => 'asd'
 				);
@@ -196,7 +202,13 @@ class InfoController extends Controller
 			$form = $this->createFormBuilder($defaultData, $options)
 				->add('company', TextType::class, array('label' => 'Компания'))
 				->add('email', EmailType::class, array('label' => 'E-mail'))
-				->add('mobile', TextType::class, array('label' => 'Контактный телефон'))
+                ->add('mobile', TextType::class, array('label' => 'Контактный телефон'))
+                ->add('packet', ChoiceType::class, array(
+                    'label' => 'Тип пакета',
+                    'choices' => $choices,
+                    'choice_attr' => array('Выберите тип пакета' => array('disabled' => '')),
+                ))
+                ->add('present', TextAreaType::class, array('label' => 'Что будет представлено'))
 				->add('recaptcha', RecaptchaType::class, array(
 									'label' => false, 
 									'mapped' => false,
@@ -212,23 +224,26 @@ class InfoController extends Controller
 			$form->handleRequest($request);
 
 			if ($form->isSubmitted() && $form->isValid()) {
+
 				$data = $form->getData();
 
-					$message = \Swift_Message::newInstance()
-                        ->setSubject('КРОС-2.0-18: Заявка на добавление спонсора')
-                        ->setFrom('cros@nag.ru')
-                        ->setTo($this->container->getParameter('cros_emails'))
-                        ->setBody(
-                            $this->renderView(
-                                'Emails/become-sponsor.html.twig',
-                                array(
-                                    'email' => $data['email'],
-                                    'company' => $data['company'],
-                                    'mobile' => $data['mobile'],
-                                )
-                            ), 'text/html');
+                $message = \Swift_Message::newInstance()
+                    ->setSubject('КРОС-2.0-18: Заявка на добавление спонсора')
+                    ->setFrom('cros@nag.ru')
+                    ->setTo($this->container->getParameter('cros_emails'))
+                    ->setBody(
+                        $this->renderView(
+                            'Emails/become-sponsor.html.twig',
+                            array(
+                                'email' => $data['email'],
+                                'company' => $data['company'],
+                                'mobile' => $data['mobile'],
+                                'present' => $data['present'],
+                                'packet' => $data['packet'],
+                            )
+                        ), 'text/html');
 
-                    $this->get('mailer')->send($message);
+                $this->get('mailer')->send($message);
 
 				return $this->render('frontend/info/become-sponsor.html.twig', array(
 		            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
