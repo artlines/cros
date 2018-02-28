@@ -124,7 +124,7 @@ class AdminController extends Controller
 //        var_dump($org->getUsers()); exit();
 
         $message_all = \Swift_Message::newInstance()
-            ->setSubject('TEST Регистрация КРОС-2.0-18: ' . $org->getName())
+            ->setSubject('TEST Регистрация КРОС-2.0-18: ' . $org->getName() . '. Список участников')
             ->setFrom('cros@nag.ru')
             ->setTo(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru')) // , 'gz@nag.ru'
             ->setBody(
@@ -140,7 +140,7 @@ class AdminController extends Controller
         $message = \Swift_Message::newInstance()
             ->setSubject('TEST Регистрация КРОС-2.0-18: ' . $org->getName())
             ->setFrom('cros@nag.ru')
-            ->setTo(array('e.nachuychenko@nag.ru')) // , 'gz@nag.ru', 'a.gazetdinov@nag.ru'
+            ->setTo(array('e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru')) // , 'gz@nag.ru', 'a.gazetdinov@nag.ru'
             ->setBody(
                 $this->renderView(
                     'Emails/test.html.twig',
