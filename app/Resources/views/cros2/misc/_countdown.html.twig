@@ -1,0 +1,26 @@
+{% if countdown_date %}
+    <div class="js-countdown text-right u-countdown-v4"
+         data-end-date="{{ countdown_date|date("Y/m/d H:i:s") }}"
+         data-month-format="%m"
+         data-days-format="%D"
+         data-hours-format="%H"
+         data-minutes-format="%M"
+         data-seconds-format="%S">
+        <div class="d-inline-block cs-font-size-12 cs-px-10 cs-px-10--md cs-py-15">
+            <div class="js-cd-days cs-font-size-15 cs-font-size-20--md cs-font-weight-300 cs-line-height-1 cs-mb-5">12</div>
+            <span>Дней</span>
+        </div>
+        <div class="d-inline-block cs-font-size-12 cs-brd-left cs-px-10 cs-px-10--md cs-py-15">
+            <div class="js-cd-hours cs-font-size-15 cs-font-size-20--md cs-font-weight-300 cs-line-height-1 cs-mb-5">01</div>
+            <span>Часов</span>
+        </div>
+        <div class="d-inline-block cs-font-size-12 cs-brd-left cs-px-10 cs-px-10--md cs-py-15">
+            <div class="js-cd-minutes cs-font-size-15 cs-font-size-20--md cs-font-weight-300 cs-line-height-1 cs-mb-5">52</div>
+            <span>Минут</span>
+        </div>
+        <div class="d-inline-block cs-font-size-12 cs-brd-left cs-px-10 cs-px-10--md cs-py-15">
+            <div class="js-cd-seconds cs-font-size-15 cs-font-size-20--md cs-font-weight-300 cs-line-height-1 cs-mb-5">52</div>
+            <span>Секунд</span>
+        </div>
+    </div>
+{% endif %}
