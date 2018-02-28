@@ -814,7 +814,7 @@ class RegistrationController extends Controller
 
         if($sendall){
             $message = \Swift_Message::newInstance()
-                ->setSubject('Регистрация КРОС-2.0-18: ' . $this->getUser()->getName())
+                ->setSubject('Регистрация КРОС-2.0-18: ' . $this->getUser()->getName() . '. Список участников')
                 ->setFrom('cros@nag.ru')
                 ->setTo($this->getUser()->getEmail())
                 ->setBcc($this->container->getParameter('cros_emails'))
