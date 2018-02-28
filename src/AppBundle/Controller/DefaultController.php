@@ -51,7 +51,7 @@ class DefaultController extends Controller
 
         $reg_start = $reg_time->getRegistrationStart()->getTimestamp();
 
-        return $this->render('cros2/base.html.twig', array(
+        return $this->render('cros2/main/base.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
             'reg_start' => $reg_start,
 
@@ -119,32 +119,53 @@ class DefaultController extends Controller
      */
     public function countdownAction()
     {
-		$reg_time = $this->getDoctrine()->getRepository('AppBundle:Conference')
-					->findOneBy(array('year' => date("Y")));
+        $reg_time = $this->getDoctrine()->getRepository('AppBundle:Conference')
+            ->findOneBy(array('year' => date("Y")));
 
-		$reg_start = $reg_time->getRegistrationStart()->getTimestamp();
-		$reg_finish = $reg_time->getRegistrationFinish()->getTimestamp();
-		$now = time();
+        $reg_start = $reg_time->getRegistrationStart()->getTimestamp();
+        $reg_finish = $reg_time->getRegistrationFinish()->getTimestamp();
+        $now = time();
 
-		$countdown_date = false;
-		$text = false;
-		if ($now < $reg_start) {
-			// before reg
-			$countdown_date = $reg_start;
-			$text = "До начала регистрации";
-		} elseif ($now > $reg_start && $now < $reg_finish) {
-			// regtime
-			$countdown_date = $reg_finish;
-			$text = "До конца регистрации";
-		} elseif ($now > $reg_finish) {
-			// after reg
-			$text = "Регистрация окончена";
-		};
-		
-		return $this->render('default/countdown.html.twig', array(
+        $countdown_date = false;
+        $text = false;
+        if ($now < $reg_start) {
+            // before reg
+            $countdown_date = $reg_start;
+            $text = "До начала регистрации";
+        } elseif ($now > $reg_start && $now < $reg_finish) {
+            // regtime
+            $countdown_date = $reg_finish;
+            $text = "До конца регистрации";
+        } elseif ($now > $reg_finish) {
+            // after reg
+            $text = "Регистрация окончена";
+        };
+
+        return $this->render('default/countdown.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-			'countdown_date' => $countdown_date,
-			'text' => $text
+            'countdown_date' => $countdown_date,
+            'text' => $text
         ));
-	}
+    }
+
+    /**
+     */
+    public function newcountdownAction()
+    {
+        $reg_time = $this->getDoctrine()->getRepository('AppBundle:Conference')
+            ->findOneBy(array('year' => date("Y")));
+
+        $reg_start = $reg_time->getRegistrationStart()->getTimestamp();
+        $now = time();
+
+        $countdown_date = new \DateTime("1970-01-01 00:00");
+        if ($now < $reg_start) {
+            $countdown_date = $reg_start;
+        };
+
+        return $this->render('cros2/misc/_countdown.html.twig', array(
+            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
+            'countdown_date' => $countdown_date
+        ));
+    }
 }
