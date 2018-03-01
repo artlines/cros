@@ -90,7 +90,6 @@ class InfoController extends Controller
                 //'theses' => 'asd'
             );
             $options = array(
-                'csrf_protection' => false
             );
 			$form = $this->createFormBuilder($defaultData, $options)
 				->add('speaker', TextType::class, array('label' => 'Имя'))
@@ -197,7 +196,6 @@ class InfoController extends Controller
 				//'theses' => 'asd'
 				);
             $options = array(
-                'csrf_protection' => false
             );
 			$form = $this->createFormBuilder($defaultData, $options)
 				->add('company', TextType::class, array('label' => 'Компания'))
