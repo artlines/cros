@@ -131,15 +131,15 @@
         {% endif %}
 
         {% if is_granted('ROLE_ORG') %}
-            <div class="container text-right login-main" style="z-index: 1;">
-                <a href="{{ url('registration-3') }}" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+            <div class="container text-right login-main">
+                <a href="{{ url('registration-3') }}" class="cs-py-5 cs-font-size-11 cs-z-index-2 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
                     &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;ЛИЧНЫЙ КАБИНЕТ&nbsp;
                 </a>
             </div>
         {% endif %}
         {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER') %}
-            <div class="container text-right login-main" style="z-index: 1;">
-                <a href="{{ url('admin-history') }}" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+            <div class="container text-right login-main">
+                <a href="{{ url('admin-history') }}" class="cs-py-5 cs-font-size-11 cs-z-index-2 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
                     &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;CMS&nbsp;
                 </a>
             </div>
