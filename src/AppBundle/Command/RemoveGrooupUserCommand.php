@@ -55,10 +55,12 @@ class RemoveGrooupUserCommand extends ContainerAwareCommand
         foreach ($account as $key => $acc) {
             foreach ($acc as $email) {
                 echo "Переместили пользователя: ".$email." в группу: ".$key."\n";
+                $doctrine = $this->getContainer()->get('doctrine');
+                $em = $this->getContainer()->get('doctrine')->getEntityManager();
+                    $UserRepository = $em->getRepository('AppBundle:User');
                     $userdb = $UserRepository->findOneBy(array('email' => $email));
                     if(!is_null($userdb)){
                         $userdb->setManagerGroupId($key);
-                        $em = $this->getContainer()->get('doctrine')->getEntityManager();
                         $em->persist($userdb);
                         $em->flush();
 
