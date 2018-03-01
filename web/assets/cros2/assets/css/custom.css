@@ -4,6 +4,23 @@ a:hover, .login-main a:focus, .login-main a:hover {
     text-decoration: none;
 }
 
+/* LOGIN */
+.login-open {
+    padding: 14px;
+    box-shadow: 0 1px 3px #ddd;
+    min-width: initial;
+    right: -2.08999rem;
+    top: 47px;
+    display: none;
+    background: #fff; /* Old browsers */
+}
+
+@media (min-width: 992px) {
+    .login-open {
+        width: 400px;
+    }
+}
+
 .login-main a {
     background: #5c97bf;
     padding: 5px;
@@ -13,3 +30,4 @@ a:hover, .login-main a:focus, .login-main a:hover {
     position: relative;
     text-align: center;
 }
+
