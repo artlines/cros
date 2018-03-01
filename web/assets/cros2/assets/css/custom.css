@@ -1,6 +1,15 @@
 /* Add here all your css styles (customizations) */
 
-a:hover {
+a:hover, .login-main a:focus, .login-main a:hover {
     text-decoration: none;
 }
 
+.login-main a {
+    background: #5c97bf;
+    padding: 5px;
+    border-radius: 20px;
+    color: white;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+}
