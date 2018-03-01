@@ -14,7 +14,6 @@ framework:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: ~
     form:            ~
-    csrf_protection: ~
     validation:      { enable_annotations: true }
     #serializer:      { enable_annotations: true }
     templating:
@@ -82,4 +81,3 @@ vihuvac_recaptcha:
     site_key:   6LcCcEYUAAAAAIUTbUWnxgBb1u8DGKNc3G4A-waZ
     secret_key: 6LcCcEYUAAAAAGXPP9ZV9wetVqrerN_8qM8V4kVc
     locale_key: kernel.default_locale
-
