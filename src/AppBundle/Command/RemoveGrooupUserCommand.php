@@ -63,7 +63,7 @@ class RemoveGrooupUserCommand extends ContainerAwareCommand
                         $em->flush();
 
                     }else{
-                        echo "Пользователь ".$email." НЕ НАЙДЕН В БАЗЕ!!!\n"
+                        echo "Пользователь ".$email." НЕ НАЙДЕН В БАЗЕ!!!\n";
                     }
             }
         }
