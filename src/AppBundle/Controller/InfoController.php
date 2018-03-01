@@ -147,7 +147,8 @@ class InfoController extends Controller
 					$message = \Swift_Message::newInstance()
                         ->setSubject('КРОС-2.0-18: Заявка на добавление докладчика')
                         ->setFrom('cros@nag.ru')
-                        ->setTo($this->container->getParameter('cros_emails'))
+                        ->setTo($data['email'])
+                        ->setBcc($this->container->getParameter('cros_emails'))
                         ->setBody(
                             $this->renderView(
                                 'Emails/become-speaker.html.twig',
@@ -224,7 +225,8 @@ class InfoController extends Controller
                 $message = \Swift_Message::newInstance()
                     ->setSubject('КРОС-2.0-18: Заявка на добавление спонсора')
                     ->setFrom('cros@nag.ru')
-                    ->setTo($this->container->getParameter('cros_emails'))
+                    ->setTo($data['email'])
+                    ->setBcc($this->container->getParameter('cros_emails'))
                     ->setBody(
                         $this->renderView(
                             'Emails/become-sponsor.html.twig',
