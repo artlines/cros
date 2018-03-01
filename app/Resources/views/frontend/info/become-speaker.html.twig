@@ -68,7 +68,24 @@
 	{% endif %}
 
 	{% if data %}
-		<h2>Спасибо! Ваша заявка принята!</h2>
+			<h2>Спасибо! Ваша заявка принята!</h2>
+			<br/>
+
+		<p>
+			<strong>Докладчик:</strong> {{ data['speaker'] }}<br/>
+			<strong>Email:</strong> {{ data['email'] }}<br/>
+			<strong>Мобильный:</strong> {{ data['mobile'] }}<br/>
+			<br/>
+			<strong>Тема доклада:</strong> {{ data['title'] }}<br/>
+			<br/>
+			<strong>Тезисы:</strong><br/>
+            {{ data['theses']|nl2br }}
+			<br/><br/>
+			С уважением,<br/>
+			Оргкомитет КРОС-2.0-18<br/>
+			E-mail: cros@nag.ru<br/>
+			+7 (343) 379-98-38
+		</p>
 	{% endif %}
 
 {% endblock %}
