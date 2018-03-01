@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/custom.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/light-blue.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/bases.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/custom.css') }}">
     <meta name="theme-color" content="#6ca0dc">
     <link rel="icon" sizes="192x192" href="{{ asset('temp/cros-logo_192px.png') }}">
 </head>
@@ -94,15 +96,51 @@
     </header>
     <!-- Section Content -->
     <section id="home" class="cs-bg-img-hero cs-pos-rel u-bg-overlay cs-bg-darkblue-opacity-0_5--after cs-pt-100" style="background-image: url({{ asset('assets/cros2/img/cros_main_1920.jpg') }});">
+
+        {% if not app.user %}
+        <div class="container text-right login-main">
+            <a href="#" id="login" class="login-link cs-py-5 cs-z-index-9999 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+                &nbsp;<i class="login login-btn fa fa-key"></i>&nbsp;&nbsp;ВОЙТИ&nbsp;
+            </a>
+            <div class="login-open cs-pos-abs cs-pa-10 cs-z-index-9999"
+                 style="padding: 14px;
+                    display: none;
+                    box-shadow: rgb(221, 221, 221) 0px 1px 3px;
+                    min-width: initial;
+                    right: 15px;
+                    top: 50px;
+                    background: rgb(255, 255, 255);">
+                <div class="animated InDown">
+                    <!--<div class="media cs-font-weight-300 cs-font-size-11 cs-mb-5">
+                        <span class="u-label u-label-danger cs-color-white ">Ошибка, неверный пароль!</span>
+                    </div>-->
+                    <!-- Start form -->
+                    <form action="{{ url('login') }}" method="POST">
+                        <div class="form-group ">
+                            <input id="email-login" name="_username" class="form-control cs-font-size-12 cs-theme-color-gray-dark-v3 cs-placeholder-inherit rounded-0 cs-pa-10 w-100" name="email-login" type="email" placeholder="Email">
+                            {#<a href="javascript:void(0)" class="font-size-11">Забыли логин?</a>#}
+                        </div>
+                        <div class="form-group">
+                            <input id="pass" name="_password" class="form-control cs-font-size-12 cs-theme-color-gray-dark-v3 cs-placeholder-inherit rounded-0 cs-pa-10 w-100" name="pass" type="password" placeholder="Пароль">
+                            {#<a href="javascript:void(0)" class="font-size-11 ">Забыли пароль?</a>#}
+                        </div>
+                        <button class="btn btn-md btn-block u-btn-green cs-color-white s-color-white--hover cs-bg-primary--hover text-uppercase cs-font-weight-700 cs-font-size-11 rounded-0 cs-py-17 cs-px-20" type="submit">Войти</button>
+                        {#<p>Еще нет аккаунта, <a href="javascript:void(0)" class="font-size-11 ">легко исправить.</a></p>
+                    #}</form>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
         {% if is_granted('ROLE_ORG') %}
-            <div class="container text-right" style="z-index: 1;">
+            <div class="container text-right login-main" style="z-index: 1;">
                 <a href="{{ url('registration-3') }}" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
                     &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;ЛИЧНЫЙ КАБИНЕТ&nbsp;
                 </a>
             </div>
         {% endif %}
-        {% if is_granted('ROLE_ADMIN') %}
-            <div class="container text-right" style="z-index: 1;">
+        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER') %}
+            <div class="container text-right login-main" style="z-index: 1;">
                 <a href="{{ url('admin-history') }}" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
                     &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;CMS&nbsp;
                 </a>
@@ -681,6 +719,20 @@
             duration: 700,
             easing: 'easeOutExpo'
         });
+
+        handleLogin();
+        // Search Box (Header)
+        function handleLogin() {
+            jQuery('.login-link').on("click", function () {
+                if(jQuery('.login-btn').hasClass('login-form-open')){
+                    jQuery('.login-open').fadeOut(500);
+                    jQuery('.login-btn').removeClass('login-form-open');
+                } else {
+                    jQuery('.login-open').fadeIn(500);
+                    jQuery('.login-btn').addClass('login-form-open');
+                }
+            });
+        }
     });
 </script>
 <script>
