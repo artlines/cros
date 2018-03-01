@@ -324,7 +324,7 @@ body {
   background: #87d37b;
   color: #fff;
   display: inline-block;
-  width: 115px;
+  white-space: nowrap;
   position: relative;
   text-align: center;
 }
