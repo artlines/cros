@@ -89,9 +89,7 @@ class InfoController extends Controller
             $defaultData = array(
                 //'theses' => 'asd'
             );
-            $options = array(
-            );
-			$form = $this->createFormBuilder($defaultData, $options)
+			$form = $this->createFormBuilder($defaultData)
 				->add('speaker', TextType::class, array('label' => 'Имя'))
 				->add('email', EmailType::class, array('label' => 'E-mail'))
 				->add('mobile', TextType::class, array('label' => 'Контактный телефон'))
@@ -142,7 +140,7 @@ class InfoController extends Controller
 			/* end check */
 
 			if ($form->isSubmitted() && $form->isValid() && $_files_valid) {
-				$data = $form->getData();
+				    $data = $form->getData();
 
 					$files = $data['files'];
 
@@ -195,9 +193,7 @@ class InfoController extends Controller
 			$defaultData = array(
 				//'theses' => 'asd'
 				);
-            $options = array(
-            );
-			$form = $this->createFormBuilder($defaultData, $options)
+			$form = $this->createFormBuilder($defaultData)
 				->add('company', TextType::class, array('label' => 'Компания'))
 				->add('email', EmailType::class, array('label' => 'E-mail'))
                 ->add('mobile', TextType::class, array('label' => 'Контактный телефон'))
