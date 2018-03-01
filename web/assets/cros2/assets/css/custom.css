@@ -31,3 +31,6 @@ a:hover, .login-main a:focus, .login-main a:hover {
     text-align: center;
 }
 
+.cs-z-index-4 {
+    z-index: 4;
+}
