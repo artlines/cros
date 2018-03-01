@@ -1,6 +1,40 @@
 /* Add here all your css styles (customizations) */
 
-a:hover {
+a:hover, .login-main a:focus, .login-main a:hover {
     text-decoration: none;
 }
 
+/* LOGIN */
+.login-open {
+    padding: 14px;
+    box-shadow: 0 1px 3px #ddd;
+    min-width: initial;
+    right: -2.08999rem;
+    top: 47px;
+    display: none;
+    background: #fff; /* Old browsers */
+}
+
+@media (min-width: 992px) {
+    .login-open {
+        width: 400px;
+    }
+}
+
+.login-main a {
+    background: #5c97bf;
+    padding: 5px;
+    border-radius: 20px;
+    color: white;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+}
+
+.cs-z-index-4 {
+    z-index: 4;
+}
+
+.cs-theme-color-gray-dark-v3 {
+    color: #989ba7 !important;
+}

@@ -89,9 +89,7 @@ class InfoController extends Controller
             $defaultData = array(
                 //'theses' => 'asd'
             );
-            $options = array(
-            );
-			$form = $this->createFormBuilder($defaultData, $options)
+			$form = $this->createFormBuilder($defaultData)
 				->add('speaker', TextType::class, array('label' => 'Имя'))
 				->add('email', EmailType::class, array('label' => 'E-mail'))
 				->add('mobile', TextType::class, array('label' => 'Контактный телефон'))
@@ -142,14 +140,15 @@ class InfoController extends Controller
 			/* end check */
 
 			if ($form->isSubmitted() && $form->isValid() && $_files_valid) {
-				$data = $form->getData();
+				    $data = $form->getData();
 
 					$files = $data['files'];
 
 					$message = \Swift_Message::newInstance()
                         ->setSubject('КРОС-2.0-18: Заявка на добавление докладчика')
                         ->setFrom('cros@nag.ru')
-                        ->setTo($this->container->getParameter('cros_emails'))
+                        ->setTo($data['email'])
+                        ->setBcc($this->container->getParameter('cros_emails'))
                         ->setBody(
                             $this->renderView(
                                 'Emails/become-speaker.html.twig',
@@ -195,9 +194,7 @@ class InfoController extends Controller
 			$defaultData = array(
 				//'theses' => 'asd'
 				);
-            $options = array(
-            );
-			$form = $this->createFormBuilder($defaultData, $options)
+			$form = $this->createFormBuilder($defaultData)
 				->add('company', TextType::class, array('label' => 'Компания'))
 				->add('email', EmailType::class, array('label' => 'E-mail'))
                 ->add('mobile', TextType::class, array('label' => 'Контактный телефон'))
@@ -228,7 +225,8 @@ class InfoController extends Controller
                 $message = \Swift_Message::newInstance()
                     ->setSubject('КРОС-2.0-18: Заявка на добавление спонсора')
                     ->setFrom('cros@nag.ru')
-                    ->setTo($this->container->getParameter('cros_emails'))
+                    ->setTo($data['email'])
+                    ->setBcc($this->container->getParameter('cros_emails'))
                     ->setBody(
                         $this->renderView(
                             'Emails/become-sponsor.html.twig',
