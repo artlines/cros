@@ -39,7 +39,7 @@ a:hover, .login-main a:focus, .login-main a:hover {
     color: #989ba7 !important;
 }
 
-.collapse-header-link:focus, nav-link-2:focus, .cs-no-focus-underline:focus {
+.collapse-header-link:focus, .nav-link-2:focus, .cs-no-focus-underline:focus {
     text-decoration: none;
 }
 .collapse-header-link p {
