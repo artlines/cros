@@ -384,9 +384,9 @@ hr {
 }
 
 @media (min-width: 768px) {
-  .cs-mt-5--md {
-    margin-top: 0.07143rem !important;
+      @  -moz-document url-prefix() {
   }
+
   .cs-mt-15--md {
     margin-top: 1.07143rem !important;
   }
@@ -485,6 +485,7 @@ hr {
 }
 
 .cs-bg-img-layer-middle {
+  background-repeat: repeat-x;
   background-position: center bottom;
 }
 
@@ -594,10 +595,6 @@ hr {
 .cs-pos-rel {
   position: relative!important;
 }
-/* -- fix1 -- */
-.cs-pos-abs {
-  position: absolute!important;
-}
 
 @media (min-width: 768px) {
   .cs-pos-abs--md {
@@ -607,10 +604,6 @@ hr {
 /* ----- GLOBAL GROUND POSITIONS ----- */
 .cs-width-80x {
   max-width: 80%;
-}
-/* -- fix1 -- */
-.cs-width-100 {
-  width: 100%;
 }
 
 .cs-top-0 {
@@ -623,10 +616,6 @@ hr {
 
 .cs-bottom-minus-70 {
   bottom: -5rem;
-}
-/* -- fix1 -- */
-.cs-bottom-0 {
-  bottom: 0;
 }
 
 .cs-absolute-centered {
@@ -646,26 +635,18 @@ hr {
 .cs-cursor-pointer {
   cursor: pointer;
 }
-/* -- fix1 -- */
-.cs-overflow-hidden {
-  overflow: hidden;
-}
-/* -- fix1 -- */
-.cs-text-overflow-ellipsis {
-  text-overflow: ellipsis;
-}
 
 .cs-overflow-x-hidden {
   overflow-x: hidden;
 }
 
-[class*="cs-transition"] {
+[class*="g-transition"] {
   transition-property: all;
   transition-timing-function: ease;
   transition-delay: 0s;
 }
 
-[class*="cs-transition"]::before, [class*="cs-transition"]::after {
+[class*="g-transition"]::before, [class*="g-transition"]::after {
   transition-property: all;
   transition-timing-function: ease;
   transition-delay: 0s;
@@ -687,14 +668,6 @@ hr {
   transition-duration: .3s;
 }
 
-.cs-transition-2_3 {
-  transition-duration: 2.3s;
-}
-
-.cs-transition-2_3::before, .cs-transition-2_3::after {
-  transition-duration: 2.3s;
-}
-
 .cs-transition--ease-in {
   transition-timing-function: ease-in;
 }
@@ -702,14 +675,7 @@ hr {
 .cs-transition--ease-in::before, .cs-transition--ease-in::after {
   transition-timing-function: ease-in;
 }
-/* -- fix1 -- */
-.cs-z-index-2 {
-  z-index: 2;
-}
-/* -- fix1 -- */
-.cs-z-index-3 {
-  z-index: 3;
-}
+
 .cs-z-index-9999 {
   z-index: 9999;
 }
@@ -761,17 +727,6 @@ hr {
 .cs-height-35 {
   height: 35px!important;
 }
-/* -- fix1 -- */
-.cs-height-200 {
-  height: 200px!important;
-}
-.cs-height-100 {
-  height: 100px!important;
-}
-/* -- fix 1-- */
-.cs-height-330 {
-	height: 330px !important;
-}
 
 @media (min-width: 768px) {
   .cs-height-400--md {
@@ -795,9 +750,7 @@ hr {
   .cs-mb-0 {
     margin-bottom: 0!important;
   }
-  .cs-mt-5 {
-    margin-top: 0.07143rem !important;
-  }
+
   .cs-mt-15 {
     margin-top: 1.07143rem !important;
   }
@@ -883,12 +836,11 @@ hr {
   .cs-mb-60--sm {
     margin-bottom: 4.28571rem!important;
   }
-  .cs-mt-5--sm {
-    margin-top: 0.07143rem !important;
-  }
-  .cs-mt-15 {
+
+  .cs-mt-15--sm {
     margin-top: 1.07143rem !important;
   }
+
   .cs-pb-30--sm {
     padding-bottom: 2.14286rem !important;
   }
@@ -928,9 +880,6 @@ hr {
   .cs-mb-0--sm {
     margin-bottom: 0!important;
   }
-  .cs-mt-5--sm {
-    margin-top: 0.07143rem !important;
-  }
 }
 
 @media (min-width: 0) {
@@ -957,10 +906,12 @@ hr {
   .cs-pa-20 {
     padding: 1.42857rem!important;
   }
+
   .cs-px-0 {
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
+
   .cs-px-5 {
     padding-left: 0.35714rem!important;
     padding-right: 0.35714rem!important;
@@ -971,10 +922,10 @@ hr {
     padding-right: 0.71429rem!important;
   }
 
-  /* .cs-px-10 {
+  .cs-px-10 {
     padding-left: 0.71429rem!important;
     padding-right: 0.71429rem!important;
-  } */
+  }
 
   .cs-px-20 {
     padding-left: 1.42857rem!important;
@@ -1041,9 +992,6 @@ hr {
 
   .cs-pt-40 {
     padding-top: 2.85714rem!important;
-  }
-  .cs-pt-50 {
-    padding-top: 3.57143rem !important;
   }
 
   .cs-pt-100 {
@@ -1282,24 +1230,4 @@ hr {
 /* breadcrumbs */
 .cs-bg-gray-light-v5 {
   background-color: #f7f7f7 !important;
-}
-
-/* -- fix1 -- */
-.ellipsis {
-	background: -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0)), to(#fff));
-  background: -moz-linear-gradient(top, rgba(255,255,255,0), #fff);
-  background: -o-linear-gradient(top, rgba(255,255,255,0), #fff);
-  display:none;
-}
-/* -- fix1 -- */
-.onhover {
-  width: 100%;
-  bottom: 3px;
-  display: none;
-  z-index: 101;
-  position: relative;
-}
-.expand {
-  z-index: 100;
-  background: #fff !important;
 }

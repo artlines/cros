@@ -49,3 +49,7 @@ a:hover, .login-main a:focus, .login-main a:hover {
 input.cs-p-text-white--checked[type="radio"]:checked + * p {
     color: #fff !important;
 }
+
+h2 {
+    text-align: center;
+}
