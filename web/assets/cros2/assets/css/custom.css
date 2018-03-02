@@ -45,3 +45,7 @@ a:hover, .login-main a:focus, .login-main a:hover {
 .collapse-header-link p {
     margin: 0;
 }
+
+input.cs-p-text-white--checked[type="radio"]:checked + * p {
+    color: #fff !important;
+}
