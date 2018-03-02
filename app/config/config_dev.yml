@@ -33,3 +33,7 @@ monolog:
 
 parameters:
     cros_emails: [ 'e.nachuychenko@nag.ru' ]
+
+twig:
+    globals:
+        theme_template: 'base.html.twig'
