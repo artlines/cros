@@ -5,33 +5,59 @@
 {% block header_title %}Вопросы и ответы{% endblock %}
 {% block body %}
 
-
-    {% if append_text is not empty %}
-        {{ append_text.text|raw }}
-    {% endif %}
-    {% if faq is empty %}
-        <h3>Нет ответов</h3>
+    {% if theme_template == 'base.html.twig' %}
+        {% if append_text is not empty %}
+            {{ append_text.text|raw }}
+        {% endif %}
+        {% if faq is empty %}
+            <h3>Нет ответов</h3>
+        {% else %}
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                {% set first = 1 %}
+                {% for answer in faq %}
+                    <div class="card panel panel-default cs-mb-10">
+                        <div class="panel-heading card-header" role="tab" id="heading{{ answer.id }}">
+                            <h5 class="panel-title mb-0">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ answer.id }}"
+                                   aria-controls="collapse{{ answer.id }}" aria-expanded="false" class="collapse-header-link">
+                                    {{ answer.question|raw }}</a>
+                            </h5>
+                        </div>
+                        <div id="collapse{{ answer.id }}" role="tabpanel" aria-labelledby="heading{{ answer.id }}" aria-expanded="false"
+                             class="panel-collapse collapse{% if first == 1 %} show{% set first = 0 %}{% endif %}">
+                            <div class="panel-body card-block">{{ answer.answer|raw }}</div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
     {% else %}
-        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-            {% set first = 1 %}
-            {% for answer in faq %}
-                <div class="card panel panel-default cs-mb-10">
-                    <div class="panel-heading card-header" role="tab" id="heading{{ answer.id }}">
-                        <h5 class="panel-title mb-0">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ answer.id }}"
-                               aria-controls="collapse{{ answer.id }}" aria-expanded="false" class="collapse-header-link">
-                                {{ answer.question|raw }}</a>
-                        </h5>
+        {% if append_text is not empty %}
+            {{ append_text.text|raw }}
+        {% endif %}
+        {% if faq is empty %}
+            <h3>Нет ответов</h3>
+        {% else %}
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                {% set first = 1 %}
+                {% for answer in faq %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="heading{{ answer.id }}">
+                            <h5 class="panel-title mb-0">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ answer.id }}"
+                                   aria-controls="collapse{{ answer.id }}" aria-expanded="false">
+                                    {{ answer.question|raw }}</a>
+                            </h5>
+                        </div>
+                        <div id="collapse{{ answer.id }}" role="tabpanel" aria-labelledby="heading{{ answer.id }}" aria-expanded="false"
+                             class="panel-collapse collapse{% if first == 1 %} in{% set first = 0 %}{% endif %}">
+                            <div class="panel-body">{{ answer.answer|raw }}</div>
+                        </div>
                     </div>
-                    <div id="collapse{{ answer.id }}" role="tabpanel" aria-labelledby="heading{{ answer.id }}" aria-expanded="false"
-                         class="panel-collapse collapse{% if first == 1 %} in show{% set first = 0 %}{% endif %}">
-                        <div class="panel-body card-block">{{ answer.answer|raw }}</div>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
+                {% endfor %}
+            </div>
+        {% endif %}
     {% endif %}
-
 
 {% endblock %}
 
