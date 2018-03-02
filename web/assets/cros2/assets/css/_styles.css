@@ -659,13 +659,13 @@ hr {
   overflow-x: hidden;
 }
 
-[class*="cs-transition"] {
+[class*="g-transition"] {
   transition-property: all;
   transition-timing-function: ease;
   transition-delay: 0s;
 }
 
-[class*="cs-transition"]::before, [class*="cs-transition"]::after {
+[class*="g-transition"]::before, [class*="g-transition"]::after {
   transition-property: all;
   transition-timing-function: ease;
   transition-delay: 0s;
@@ -685,14 +685,6 @@ hr {
 
 .cs-transition-0_3::before, .cs-transition-0_3::after {
   transition-duration: .3s;
-}
-
-.cs-transition-2_3 {
-  transition-duration: 2.3s;
-}
-
-.cs-transition-2_3::before, .cs-transition-2_3::after {
-  transition-duration: 2.3s;
 }
 
 .cs-transition--ease-in {
@@ -765,12 +757,9 @@ hr {
 .cs-height-200 {
   height: 200px!important;
 }
-.cs-height-100 {
-  height: 100px!important;
-}
 /* -- fix 1-- */
 .cs-height-330 {
-	height: 330px !important;
+	height: 330px!important;
 }
 
 @media (min-width: 768px) {
@@ -957,10 +946,7 @@ hr {
   .cs-pa-20 {
     padding: 1.42857rem!important;
   }
-  .cs-px-0 {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
+
   .cs-px-5 {
     padding-left: 0.35714rem!important;
     padding-right: 0.35714rem!important;
@@ -971,10 +957,10 @@ hr {
     padding-right: 0.71429rem!important;
   }
 
-  /* .cs-px-10 {
+  .cs-px-10 {
     padding-left: 0.71429rem!important;
     padding-right: 0.71429rem!important;
-  } */
+  }
 
   .cs-px-20 {
     padding-left: 1.42857rem!important;
@@ -1041,9 +1027,6 @@ hr {
 
   .cs-pt-40 {
     padding-top: 2.85714rem!important;
-  }
-  .cs-pt-50 {
-    padding-top: 3.57143rem !important;
   }
 
   .cs-pt-100 {
@@ -1287,19 +1270,24 @@ hr {
 /* -- fix1 -- */
 .ellipsis {
 	background: -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0)), to(#fff));
-  background: -moz-linear-gradient(top, rgba(255,255,255,0), #fff);
-  background: -o-linear-gradient(top, rgba(255,255,255,0), #fff);
-  display:none;
+    background: -moz-linear-gradient(top, rgba(255,255,255,0), #fff);
+    background: -o-linear-gradient(top, rgba(255,255,255,0), #fff);
 }
 /* -- fix1 -- */
 .onhover {
-  width: 100%;
-  bottom: 3px;
-  display: none;
-  z-index: 101;
-  position: relative;
+	text-align: center;
+    width: 98%;
+    bottom: 3px;
+    margin-left: 3px;
+	  display:none;
+}
+div.show {
+	display:block !important;
 }
 .expand {
-  z-index: 100;
-  background: #fff !important;
+	/*width: 300% !important;
+    right: 0;
+    position: absolute !important;
+    z-index: 9999;
+    background: #ffffff;*/
 }
