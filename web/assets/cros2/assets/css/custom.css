@@ -53,3 +53,11 @@ input.cs-p-text-white--checked[type="radio"]:checked + * p {
 .container h2 {
     text-align: center;
 }
+
+.archive-nav .nav-link.active {
+    background: #6ea1e1;
+}
+
+.archive-nav .nav-link {
+    color: #6ca0dc;
+}
