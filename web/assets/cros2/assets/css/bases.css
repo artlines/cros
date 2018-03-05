@@ -1039,7 +1039,8 @@ input[type="radio"]:checked + * .cs-border-gray--checked {
             order: 2;
   }
 }
-.cs-theme-color-gray-dark-v3 {
+.cs-theme-color-gray-dark-v3,
+.cs-theme-color-gray-dark-v3 select {
   color: #989ba7 !important;
 }
 .cs-placeholder-inherit::-webkit-input-placeholder {
