@@ -38,8 +38,8 @@ class ProfileController extends Controller
         if($page == 'security'){
             /** @var Form $form */
             $form = $this->createFormBuilder($user)
-                ->add('password', PasswordType::class, array('label' => 'Password'))
-                ->add('confirm_password', PasswordType::class, array('label' => 'Confirm password', 'mapped' => false))
+                ->add('password', PasswordType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Password'))
+                ->add('confirm_password', PasswordType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Confirm password', 'mapped' => false))
                 ->add('save', SubmitType::class, array('label' => 'Save'))
                 ->getForm();
 
@@ -88,15 +88,15 @@ class ProfileController extends Controller
 
             /** @var Form $form */
             $form = $this->createFormBuilder($org)
-                ->add('name', TextType::class, array('label' => 'Название организации', 'attr' => array('placeholder' => 'Ёлки-телеком', 'data-helper' => 'Ваш основной Торговый знак, будет использоваться на бейджах и визитках')))
-                ->add('city', TextType::class, array('label' => 'City'))
-                ->add('email', EmailType::class, array('label' => 'E-mail', 'required' => true, 'attr' => array('data-helper' => 'Для общих уведомлений, будет использоваться в качестве логина для доступа в личный кабинет')))
-                ->add('username', TextType::class, array('label' => 'Телефон', 'attr' => array('data-helper' => 'Общий телефон для связи с Компанией', 'pattern' => '[\+][0-9]{11,}', 'title' => "Номер телефона в федеральном формате (+79990009999), без пробелов", 'placeholder' => '+79990009999')))
-                ->add('inn', TextType::class, array('label' => 'ИНН', 'required' => true))
-                ->add('kpp', TextType::class, array('label' => 'КПП', 'required' => true))
-                ->add('requisites', TextareaType::class, array('label' => 'Реквизиты', 'attr' => array('data-helper' => 'Для выставления счета')))
-                ->add('address', TextareaType::class, array('label' => 'Address', 'required' => false))
-                ->add('comment', TextareaType::class, array('label' => 'Комментарий', 'required' => false))
+                ->add('name', TextType::class, array('label' => 'Название организации', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'placeholder' => 'Ёлки-телеком', 'data-helper' => 'Ваш основной Торговый знак, будет использоваться на бейджах и визитках')))
+                ->add('city', TextType::class, array('label' => 'City', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3')))
+                ->add('email', EmailType::class, array('label' => 'E-mail', 'required' => true, 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'data-helper' => 'Для общих уведомлений, будет использоваться в качестве логина для доступа в личный кабинет')))
+                ->add('username', TextType::class, array('label' => 'Телефон', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'data-helper' => 'Общий телефон для связи с Компанией', 'pattern' => '[\+][0-9]{11,}', 'title' => "Номер телефона в федеральном формате (+79990009999), без пробелов", 'placeholder' => '+79990009999')))
+                ->add('inn', TextType::class, array('label' => 'ИНН', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => true))
+                ->add('kpp', TextType::class, array('label' => 'КПП', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => true))
+                ->add('requisites', TextareaType::class, array('label' => 'Реквизиты', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'data-helper' => 'Для выставления счета')))
+                ->add('address', TextareaType::class, array('label' => 'Address', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => false))
+                ->add('comment', TextareaType::class, array('label' => 'Комментарий', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => false))
                 ->add('save', SubmitType::class, array('label' => 'Save'))
                 ->getForm();
 

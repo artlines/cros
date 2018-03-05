@@ -137,9 +137,15 @@
                 </a>
             </div>
         {% endif %}
-        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER') %}
+        {% if is_granted('ROLE_ADMIN') %}
             <div class="container text-right login-main">
                 <a href="{{ url('admin-history') }}" class="cs-py-5 cs-font-size-11 cs-z-index-2 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+                    &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;CMS&nbsp;
+                </a>
+            </div>
+        {% elseif is_granted('ROLE_MANAGER') %}
+            <div class="container text-right login-main">
+                <a href="{{ url('admin-table') }}" class="cs-py-5 cs-font-size-11 cs-z-index-2 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
                     &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;CMS&nbsp;
                 </a>
             </div>

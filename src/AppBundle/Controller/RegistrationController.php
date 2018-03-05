@@ -407,54 +407,53 @@ class RegistrationController extends Controller
             if($ou > 1) {
                 /** @var Form $form */
                 $form = $this->createFormBuilder($user)
-                    ->add('last_name', TextType::class, array('label' => 'Last name'))
-                    ->add('first_name', TextType::class, array('label' => 'First name'))
-                    ->add('middle_name', TextType::class, array('label' => 'Middle name', 'required' => false))
-                    ->add('post', TextType::class, array('label' => 'Post', 'required' => true))
-                    ->add('email', EmailType::class, array('label' => 'E-mail'))
-                    ->add('username', TextType::class, array('label' => 'Mobile phone', 'attr' => array('data-helper' => 'Телефон для связи', 'pattern' => '[\+][0-9]{11,}', 'title' => "Номер телефона в федеральном формате (+79990009999), без пробелов", 'placeholder' => '+79990009999')))
-                    ->add('nickname', TextType::class, array('label' => 'Nickname', 'required' => false))
+                    ->add('last_name', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Last name'))
+                    ->add('first_name', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'First name'))
+                    ->add('middle_name', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Middle name', 'required' => false))
+                    ->add('post', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Post', 'required' => true))
+                    ->add('email', EmailType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'E-mail'))
+                    ->add('username', TextType::class, array('label' => 'Mobile phone', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'data-helper' => 'Телефон для связи', 'pattern' => '[\+][0-9]{11,}', 'title' => "Номер телефона в федеральном формате (+79990009999), без пробелов", 'placeholder' => '+79990009999')))
+                    ->add('nickname', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Nickname', 'required' => false))
                     ->add('arrival', TimeType::class, array(
+                        'attr' => array('class' => 'cs-theme-color-gray-dark-v3'),
                         'label' => 'Ранний заезд',
                         'input' => 'datetime',
                     ))
                     ->add('leaving', TimeType::class, array(
+                        'attr' => array('class' => 'cs-theme-color-gray-dark-v3'),
                         'label' => 'Поздний выезд',
                         'input' => 'datetime',
                     ))
-                    ->add('car_number', TextType::class, array('label' => 'Если Вы приедете на личном транспорте, укажите его государственный номер', 'required' => false, 'attr' => array('placeholder' => 'А001АА 00', 'pattern' => '[А-Яа-яA-Za-z]{1,1}[0-9]{3,3}[А-Яа-яA-Za-z]{2,2}[ ][0-9]{2,3}', 'title' => 'А001АА 00')))
-                    ->add('apartament', ChoiceType::class, array('label' => 'Класс участия', 'mapped' => false, 'attr' => array('data-helper' => $class_help), 'choices' => $numbers, 'choice_attr' => array('Выберите номер проживания' => array('disabled' => '')), 'data' => $apartament_id))
-                    //->add('save_and_add', SubmitType::class, array('label' => 'Сохранить и добавить еще одного'))
+                    ->add('car_number', TextType::class, array('label' => 'Если Вы приедете на личном транспорте, укажите его государственный номер', 'required' => false, 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'placeholder' => 'А001АА 00', 'pattern' => '[А-Яа-яA-Za-z]{1,1}[0-9]{3,3}[А-Яа-яA-Za-z]{2,2}[ ][0-9]{2,3}', 'title' => 'А001АА 00')))
+                    ->add('apartament', ChoiceType::class, array('label' => 'Класс участия', 'mapped' => false, 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'data-helper' => $class_help), 'choices' => $numbers, 'choice_attr' => array('Выберите номер проживания' => array('disabled' => '')), 'data' => $apartament_id))
                     ->add('save', SubmitType::class, array('label' => 'Продолжить'))
-                    //->add('continue', SubmitType::class, array('label' => 'Завершить без сохранения'))
                     ->getForm();
             }
             else{
                 /** @var Form $form */
                 $form = $this->createFormBuilder($user)
-                    ->add('last_name', TextType::class, array('label' => 'Last name'))
-                    ->add('first_name', TextType::class, array('label' => 'First name'))
-                    ->add('middle_name', TextType::class, array('label' => 'Middle name', 'required' => false))
-                    ->add('post', TextType::class, array('label' => 'Post', 'required' => true))
-                    ->add('email', EmailType::class, array('label' => 'E-mail'))
-                    ->add('username', TextType::class, array('label' => 'Mobile phone', 'attr' => array('data-helper' => 'Телефон для связи', 'pattern' => '[\+][0-9]{11,}', 'title' => "Номер телефона в федеральном формате (+79990009999), без пробелов", 'placeholder' => '+79990009999')))
-                    ->add('nickname', TextType::class, array('label' => 'Nickname', 'required' => false))
+                    ->add('last_name', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Last name'))
+                    ->add('first_name', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'First name'))
+                    ->add('middle_name', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Middle name', 'required' => false))
+                    ->add('post', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Post', 'required' => true))
+                    ->add('email', EmailType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'E-mail'))
+                    ->add('username', TextType::class, array('label' => 'Mobile phone', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'data-helper' => 'Телефон для связи', 'pattern' => '[\+][0-9]{11,}', 'title' => "Номер телефона в федеральном формате (+79990009999), без пробелов", 'placeholder' => '+79990009999')))
+                    ->add('nickname', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Nickname', 'required' => false))
                     ->add('arrival', TimeType::class, array(
+                        'attr' => array('class' => 'cs-theme-color-gray-dark-v3'),
                         'label' => 'Ранний заезд',
                         'input' => 'datetime',
                     ))
                     ->add('leaving', TimeType::class, array(
+                        'attr' => array('class' => 'cs-theme-color-gray-dark-v3'),
                         'label' => 'Поздний выезд',
                         'input' => 'datetime',
                     ))
-                    ->add('car_number', TextType::class, array('label' => 'Если Вы приедете на личном транспорте, укажите его государственный номер', 'required' => false, 'attr' => array('placeholder' => 'А001АА 00', 'pattern' => '[А-Яа-яA-Za-z]{1,1}[0-9]{3,3}[А-Яа-яA-Za-z]{2,2}[ ][0-9]{2,3}', 'title' => 'А001АА 00')))
-                    ->add('apartament', ChoiceType::class, array('label' => 'Класс участия', 'mapped' => false, 'choices' => $numbers, 'choice_attr' => array('Выберите номер проживания' => array('disabled' => '')), 'data' => $apartament_id))
-                    //->add('save_and_add', SubmitType::class, array('label' => 'Сохранить и добавить еще одного'))
+                    ->add('car_number', TextType::class, array('label' => 'Если Вы приедете на личном транспорте, укажите его государственный номер', 'required' => false, 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'placeholder' => 'А001АА 00', 'pattern' => '[А-Яа-яA-Za-z]{1,1}[0-9]{3,3}[А-Яа-яA-Za-z]{2,2}[ ][0-9]{2,3}', 'title' => 'А001АА 00')))
+                    ->add('apartament', ChoiceType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Класс участия', 'mapped' => false, 'choices' => $numbers, 'choice_attr' => array('Выберите номер проживания' => array('disabled' => '')), 'data' => $apartament_id))
                     ->add('save', SubmitType::class, array('label' => 'Продолжить'))
                     ->getForm();
-
             }
-
 
             $form->handleRequest($request);
 
