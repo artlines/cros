@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends Controller
 {
@@ -30,6 +31,7 @@ class SecurityController extends Controller
             ));
         }
         else {
+            /** @var AuthenticationUtils $authenticationUtils */
             $authenticationUtils = $this->get('security.authentication_utils');
 
             // get the login error if there is one
