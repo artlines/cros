@@ -6,6 +6,7 @@ use AppBundle\Entity\Apartament;
 use AppBundle\Entity\ApartamentId;
 use AppBundle\Entity\Conference;
 use AppBundle\Entity\Info;
+use AppBundle\Entity\Lecture;
 use AppBundle\Entity\Logs;
 use AppBundle\Entity\Organization;
 use AppBundle\Entity\Organizations;
@@ -24,6 +25,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ProgramController extends Controller
 {
+
+    const DEFAULT_HALL = 'Большой зал';
 
     /**
      * client
@@ -45,9 +48,31 @@ class ProgramController extends Controller
             ->getRepository('AppBundle:Lecture')
             ->findAll();
 
+        $all_halls = [self::DEFAULT_HALL];
+        $program = [];
+        /** @var Lecture $lecture */
+        foreach ($lectures as $lecture)
+        {
+            $_day_key = $lecture->getDate()->format('d.m.Y');
+            $_time_key = $lecture->getStartTime()->format("H:i")." - ".$lecture->getEndTime()->format("H:i");
+            $_hall_key = $lecture->getHall();
+
+            if (!$lecture->getSpeaker()) {
+                $program[$_day_key][$_time_key][self::DEFAULT_HALL] = $lecture;
+            } else {
+                $program[$_day_key][$_time_key][$_hall_key] = $lecture;
+                if (!in_array($_hall_key, $all_halls)) $all_halls[] = $_hall_key;
+            };
+        }
+
+        //var_dump($program); exit();
+
         return $this->render('frontend/program/show_new.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-            'lectures' => $lectures
+            'program' => $program,
+            'lectures' => $lectures,
+            'all_halls' => $all_halls,
+            'cars' => []
         ));
     }
 

@@ -20,8 +20,8 @@
     <link rel="stylesheet" href="{{ asset('assets/cros2/assets/cros/fancybox/jquery.fancybox.css') }}">
     <!-- CSS Template -->
     <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/styles.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/custom.css?t=20180301') }}">
     <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/light-blue.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/custom.css?t=2018030601') }}">
     <meta name="theme-color" content="#6ca0dc">
     <link rel="icon" sizes="192x192" href="{{ asset('temp/cros-logo_192px.png') }}">
 </head>
@@ -137,9 +137,15 @@
                 </a>
             </div>
         {% endif %}
-        {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_MANAGER') %}
+        {% if is_granted('ROLE_ADMIN') %}
             <div class="container text-right login-main">
                 <a href="{{ url('admin-history') }}" class="cs-py-5 cs-font-size-11 cs-z-index-2 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+                    &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;CMS&nbsp;
+                </a>
+            </div>
+        {% elseif is_granted('ROLE_MANAGER') %}
+            <div class="container text-right login-main">
+                <a href="{{ url('admin-table') }}" class="cs-py-5 cs-font-size-11 cs-z-index-2 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
                     &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;CMS&nbsp;
                 </a>
             </div>
@@ -657,6 +663,7 @@
 <script src="{{ asset('assets/cros2/assets/cros/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('assets/cros2/assets/cros/jquery-migrate/jquery-migrate.min.js') }}"></script>
 <script src="{{ asset('assets/cros2/assets/cros/jquery.easing/js/jquery.easing.min.js') }}"></script>
+<script src="{{ asset('assets/cros2/assets/cros/tether/tether.min.js') }}"></script>
 <script src="{{ asset('assets/cros2/assets/cros/bootstrap/bootstrap.min.js') }}"></script>
 <script src="{{ asset('assets/cros2/assets/cros/fancybox/jquery.fancybox.min.js') }}"></script>
 <script src="{{ asset('assets/cros2/assets/cros/jquery.countdown.min.js') }}"></script>

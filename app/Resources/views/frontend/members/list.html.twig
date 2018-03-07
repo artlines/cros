@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends theme_template %}
 
 {% block title %}Конференция Российских Операторов Связи{% endblock %}
 
@@ -10,6 +10,7 @@
     {% else %}
         {% if sendauth == null %}
             <!-- <button type="button" class="btn btn-info" data-toggle="modal" data-target="#sendauth" style="float: right; position: relative; z-index: 9;">Хочу связаться с участниками</button> -->
+            {#
             <div id="sendauth" class="modal fade" role="dialog">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -35,6 +36,7 @@
                     </div>
                 </div>
             </div>
+            #}
         {% else %}
             Вы авторизованы как {{ app.session.get('sendfrom') }}. <a href="{{ url('members-logout') }}"><i class="glyphicon glyphicon-log-out"></i> Выйти</a>
         {% endif %}
@@ -150,6 +152,11 @@
                         "sortDescending": ": активировать для сортировки столбца по убыванию"
                     }
                 }
+            });
+
+            $('#fulltable_wrapper').ready(function() {
+                $('#fulltable_wrapper').addClass('d-block');
+                $('#fulltable_filter').addClass('cs-theme-color-gray-dark-v3');
             });
 
             $('#send_get_pass').on('click', function(){

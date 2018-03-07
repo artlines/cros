@@ -1,5 +1,14 @@
 /* Add here all your css styles (customizations) */
 
+body {
+    color: #5f5f63;
+    font-size: 1rem;
+}
+
+.cs-theme-color-gray-dark-v3 {
+    color: #666 !important;
+}
+
 a:hover, .login-main a:focus, .login-main a:hover {
     text-decoration: none;
 }
@@ -35,6 +44,25 @@ a:hover, .login-main a:focus, .login-main a:hover {
     z-index: 4;
 }
 
-.cs-theme-color-gray-dark-v3 {
-    color: #989ba7 !important;
+.collapse-header-link:focus, .nav-link-2:focus, .cs-no-focus-underline:focus {
+    text-decoration: none;
+}
+.collapse-header-link p {
+    margin: 0;
+}
+
+input.cs-p-text-white--checked[type="radio"]:checked + * p {
+    color: #fff !important;
+}
+
+.container h2 {
+    text-align: center;
+}
+
+.archive-nav .nav-link.active {
+    background: #6ea1e1;
+}
+
+.archive-nav .nav-link {
+    color: #6ca0dc;
 }

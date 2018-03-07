@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends theme_template %}
 
 {% block title %}Конференция Российских Операторов Связи{% endblock %}
 
@@ -10,11 +10,21 @@
         {% set content = '' %}
         <nav class="navbar navbar-default">
             <div class="container-fluid">
-                <ul class="nav navbar-nav">
-                    {% for year in conferences %}
-                        <li {% if year.year == selectedyear %}class="active"{% for info in year.infotoconfs %}{% set content = info.info %}{% endfor %}{% endif %}><a href="{{ path('archive', {'year': year.year}) }}">{{ year.year }}</a></li>
-                    {% endfor %}
-                </ul>
+                {% if theme_template == 'base.html.twig' %}
+                    <ul class="nav nav-pills archive-nav row">
+                        {% for year in conferences %}
+                            <li class="nav-item">
+                                <a class="nav-link{% if year.year == selectedyear %} active{% for info in year.infotoconfs %}{% set content = info.info %}{% endfor %}{% endif %}" href="{{ path('archive', {'year': year.year}) }}">{{ year.year }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <ul class="nav navbar-nav">
+                        {% for year in conferences %}
+                            <li {% if year.year == selectedyear %}class="active"{% for info in year.infotoconfs %}{% set content = info.info %}{% endfor %}{% endif %}><a href="{{ path('archive', {'year': year.year}) }}">{{ year.year }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
             </div>
         </nav>
         <div class="col-lg-12">
