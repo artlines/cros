@@ -32,4 +32,4 @@ parameters:
     cros_emails: [ 'e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru', 'cros@nag.ru' ]
 twig:
     globals:
-        theme_template: 'base_2017.html.twig'
+        theme_template: 'base.html.twig'
