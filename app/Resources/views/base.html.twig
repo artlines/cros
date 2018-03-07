@@ -36,12 +36,11 @@
 <body>
 <main>
     <!-- Header -->
-    <header id="js-header" class="u-header u-header--static u-header--floating"
+    <header id="js-header" class="u-header u-header--static u-header--floating cs-transition-0_3"
             data-header-fix-moment-classes="cs-bg-white">
         <div class="container">
-            <div class="u-header__section u-header__section--light cs-bg-white cs-transition-0_3"
-                 data-header-fix-moment-exclude="cs-bg-white"
-                 data-header-fix-moment-classes="cs-py-5">
+            <div class="u-header__section u-header__section--light cs-bg-white"
+                 {#data-header-fix-moment-exclude="cs-bg-white"#} >
                 <nav class="navbar navbar-toggleable-md cs-py-0 cs-font-weight-300">
                     <!-- mx-auto -->
                     <div class="container">
@@ -176,8 +175,8 @@
                 <div class="col-md-6 text-right align-middle">
                     {{ render(controller('AppBundle:Default:newcountdown')) }}
                     <a class="btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ url('registration') }}">Принять участие</a>
-                    <a class="btn u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ path('info', {'alias': 'become-sponsor'}) }}">Стать докладчиком</a>
-                    <a class="btn u-btn-yellow cs-color-white cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ path('info', {'alias': 'become-speaker'}) }}">Стать спонсором</a>
+                    <a class="btn u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ path('info', {'alias': 'become-speaker'}) }}">Стать докладчиком</a>
+                    <a class="btn u-btn-yellow cs-color-white cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ path('info', {'alias': 'become-sponsor'}) }}">Стать спонсором</a>
                 </div>
             </div>
         </div>
@@ -185,106 +184,7 @@
     <!-- Section Content -->
     <section class="container-fluid cs-mb-100">
         <div class="container">
-            {#
-            <div class="text-center cs-mx-50">
-                <h1 class="text-uppercase cs-line-height-1 cs-font-weight-700 cs-font-size-23 cs-letter-spacincs-0 cs-color-header">
-                    СТОИМОСТЬ УЧАСТИЯ
-                </h1>
-            </div>
-            #}
-
             {% block body %}{% endblock %}
-            {#
-                        <div class="row cs-mb-100">
-
-                            <div class="col-lg-7 cs-order-1 cs-order-2--lg cs-mb-60">
-                                <form>
-                                    <!-- Pricing -->
-                                    <label class="u-check d-block cs-mb-20">
-                                        <input class="hidden-xs-up cs-pos-abs cs-top-10 cs-right-10" name="plan_1" type="radio" checked>
-                                        <div class="media d-block d-md-flex u-shadow-v18 cs-bg-primary--checked">
-                                            <div class="d-md-flex align-self-center cs-pa-30">
-                                                <div class="w-100">
-                                                    <h3 class="cs-line-height-1 cs-font-weight-700 cs-font-size-23 cs-color-primary cs-color-white--checked mb-0">34000 <span>Руб.</span></h3>
-                                                    <small class="cs-font-size-11 cs-theme-color-gray-dark-v1 cs-color-white--checked">за человека</small>
-                                                </div>
-                                            </div>
-                                            <div class="media-body cs-py-25 cs-px-30 cs-brd-top--dashed cs-brd-top-none--md cs-brd-left--dashed--md cs-border-gray">
-                                                <h4 class="h4 text-uppercase cs-font-weight-700 cs-font-size-14 cs-color-white--checked">ЭКОНОМ Twin</h4>
-                                                <p class="cs-font-size-14 cs-color-white--checked mb-0">Проживание в номере категории Аппартамент (2 или 3 спальных комнаты).
-                                                    Отдельная кухонная зона.
-                                                    Общая зона туалет/ душ.
-                                                    Двухместное размещение в комнате.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </label>
-                                    <!-- End Pricing -->
-                                    <!-- Pricing -->
-                                    <label class="u-check d-block cs-mb-20">
-                                        <input class="hidden-xs-up cs-pos-abs cs-top-10 cs-right-10" name="plan_1" type="radio">
-                                        <div class="media d-block d-md-flex u-shadow-v18 cs-bg-primary--checked">
-                                            <div class="d-md-flex align-self-center cs-pa-30">
-                                                <div class="w-100">
-                                                    <h3 class="cs-line-height-1 cs-font-weight-700 cs-font-size-23 cs-color-primary cs-color-white--checked mb-0">34000 <span>Руб.</span></h3>
-                                                    <small class="cs-font-size-11 cs-theme-color-gray-dark-v1 cs-color-white--checked">за человека</small>
-                                                </div>
-                                            </div>
-                                            <div class="media-body cs-py-25 cs-px-30 cs-brd-top--dashed cs-brd-top-none--md cs-brd-left--dashed--md cs-border-gray">
-                                                <h4 class="h4 text-uppercase cs-font-weight-700 cs-font-size-14 cs-color-white--checked">ЭКОНОМ Single</h4>
-                                                <p class="cs-font-size-14 cs-color-white--checked mb-0">Проживание в номере категории Аппартамент (2 или 3 спальных комнаты).
-                                                    Отдельная кухонная зона.
-                                                    Общая зона туалет/ душ.
-                                                    Одноместное размещение в комнате.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </label>
-                                    <!-- End Pricing -->
-                                    <!-- Pricing -->
-                                    <label class="u-check d-block cs-mb-20">
-                                        <input class="hidden-xs-up cs-pos-abs cs-top-10 cs-right-10" name="plan_1" type="radio">
-                                        <div class="media d-block d-md-flex u-shadow-v18 cs-bg-primary--checked">
-                                            <div class="d-md-flex align-self-center cs-pa-30">
-                                                <div class="w-100">
-                                                    <h3 class="cs-line-height-1 cs-font-weight-700 cs-font-size-23 cs-color-primary cs-color-white--checked mb-0">59000 <span>Руб.</span></h3>
-                                                    <small class="cs-font-size-11 cs-theme-color-gray-dark-v1 cs-color-white--checked">за человека</small>
-                                                </div>
-                                            </div>
-                                            <div class="media-body cs-py-25 cs-px-30 cs-brd-top--dashed cs-brd-top-none--md cs-brd-left--dashed--md cs-border-gray">
-                                                <h4 class="h4 text-uppercase cs-font-weight-700 cs-font-size-14 cs-color-white--checked">БИЗНЕС Single</h4>
-                                                <p class="cs-font-size-14 cs-color-white--checked mb-0">Проживание в номере категории Полулюкс или Шале.
-                                                    Одноместное размещение в комнате.
-                                                    https://polyana1389.ru/rooms-and-villas/
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </label>
-                                    <!-- End Pricing -->
-                                </form>
-                            </div>
-                            <div class="col-lg-5 cs-order-2 cs-order-2--lg">
-                                <form>
-                                    <div class="form-group cs-mb-20">
-                                        <input id="firstName" class="form-control u-shadow-v18 cs-font-size-12 cs-theme-color-gray-dark-v3 cs-placeholder-inherit cs-brd-none rounded-0 cs-pa-20" name="firstName" type="text" placeholder="Ваше Имя">
-                                    </div>
-                                    <div class="form-group cs-mb-20">
-                                        <input id="lastName" class="form-control u-shadow-v18 cs-font-size-12 cs-theme-color-gray-dark-v3 cs-placeholder-inherit cs-brd-none rounded-0 cs-pa-20" name="lastName" type="text" placeholder="Фамилия">
-                                    </div>
-                                    <div class="form-group cs-mb-20">
-                                        <input id="email" class="form-control u-shadow-v18 cs-font-size-12 cs-theme-color-gray-dark-v3 cs-placeholder-inherit cs-brd-none rounded-0 cs-pa-20" name="email" type="text" placeholder="E-mail">
-                                    </div>
-                                    <div class="form-group cs-mb-20">
-                                        <input id="address" class="form-control u-shadow-v18 cs-font-size-12 cs-theme-color-gray-dark-v3 cs-placeholder-inherit cs-brd-none rounded-0 cs-pa-20" name="address" type="text" placeholder="Адрес регистрации">
-                                    </div>
-                                    <div class="form-group cs-mb-20">
-                                        <textarea id="message" class="form-control u-shadow-v18 cs-font-size-12 cs-theme-color-gray-dark-v3 cs-placeholder-inherit cs-brd-none rounded-0 cs-pa-20" name="message" rows="6" placeholder="Выбраный план: БИЗНЕС SINGLE"></textarea>
-                                    </div>
-                                    <button class="btn btn-md btn-block u-btn-green cs-color-white s-color-white--hover cs-bg-primary--hover text-uppercase cs-font-weight-700 cs-font-size-11 rounded-0 cs-py-17 cs-px-20" type="submit">Отправить заявку</button>
-                                </form>
-                            </div>
-            </div>
-        #}
         </div>
     </section>
     <!-- End Section Content -->
@@ -352,13 +252,13 @@
             });
         }
         //microfix for to navbar
-        $(".navbar-toggler").on('click', function () {
+        /*$(".navbar-toggler").on('click', function () {
             if ($("#navBar").hasClass("show")) {
                 $("#navBar").removeClass("show");
             } else {
                 $("#navBar").addClass("show");
             }
-        });
+        });*/
         // init of countdowns
         var countdowns = $.MainCore.components.HSCountdown.init('.js-countdown', {
             yearsElSelector: '.js-cd-years',
