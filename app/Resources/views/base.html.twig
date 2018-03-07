@@ -36,12 +36,11 @@
 <body>
 <main>
     <!-- Header -->
-    <header id="js-header" class="u-header u-header--static u-header--floating"
+    <header id="js-header" class="u-header u-header--static u-header--floating cs-transition-0_3"
             data-header-fix-moment-classes="cs-bg-white">
         <div class="container">
-            <div class="u-header__section u-header__section--light cs-bg-white cs-transition-0_3"
-                 data-header-fix-moment-exclude="cs-bg-white"
-                 data-header-fix-moment-classes="cs-py-5">
+            <div class="u-header__section u-header__section--light cs-bg-white"
+                 {#data-header-fix-moment-exclude="cs-bg-white"#} >
                 <nav class="navbar navbar-toggleable-md cs-py-0 cs-font-weight-300">
                     <!-- mx-auto -->
                     <div class="container">
@@ -176,8 +175,8 @@
                 <div class="col-md-6 text-right align-middle">
                     {{ render(controller('AppBundle:Default:newcountdown')) }}
                     <a class="btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ url('registration') }}">Принять участие</a>
-                    <a class="btn u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ path('info', {'alias': 'become-sponsor'}) }}">Стать докладчиком</a>
-                    <a class="btn u-btn-yellow cs-color-white cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ path('info', {'alias': 'become-speaker'}) }}">Стать спонсором</a>
+                    <a class="btn u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ path('info', {'alias': 'become-speaker'}) }}">Стать докладчиком</a>
+                    <a class="btn u-btn-yellow cs-color-white cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ path('info', {'alias': 'become-sponsor'}) }}">Стать спонсором</a>
                 </div>
             </div>
         </div>
@@ -253,13 +252,13 @@
             });
         }
         //microfix for to navbar
-        $(".navbar-toggler").on('click', function () {
+        /*$(".navbar-toggler").on('click', function () {
             if ($("#navBar").hasClass("show")) {
                 $("#navBar").removeClass("show");
             } else {
                 $("#navBar").addClass("show");
             }
-        });
+        });*/
         // init of countdowns
         var countdowns = $.MainCore.components.HSCountdown.init('.js-countdown', {
             yearsElSelector: '.js-cd-years',
