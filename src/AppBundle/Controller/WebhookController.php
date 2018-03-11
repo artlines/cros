@@ -109,7 +109,7 @@ class WebhookController extends Controller
     private function _startCommand($args)
     {
         $bot = $this->init_bot();
-        $chat_id = $args['chat_id'] ? $args['chat_id'] : $this->update['message']['chat']['id'];
+        $chat_id = isset($args['chat_id']) ? $args['chat_id'] : $this->update['message']['chat']['id'];
         $username = $this->update['message']['from']['username'];
 
         $text = "Привет, $username! Я бот конференции КРОС 2018.\n"
@@ -142,12 +142,9 @@ class WebhookController extends Controller
         /**
          * Если чат найден, но был неактивен, активируем его
          */
-        if ($chat && $chat->getIsActive() === false)
+        if ($chat && false === $chat->getIsActive())
         {
             $chat->setIsActive(true);
-
-            $em->persist($chat);
-            $em->flush();
         }
         /**
          * Если чат не найден, то создадим его
@@ -157,12 +154,9 @@ class WebhookController extends Controller
             $chat = new TgChat();
             $chat->setChatId($chat_id);
             $chat->setIsActive(true);
-
-            $em->persist($chat);
-            $em->flush();
-
-
         };
+        $em->persist($chat);
+        $em->flush();
     }
 
 
