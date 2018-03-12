@@ -4,13 +4,9 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
 use AppBundle\Entity\TgChat;
-
-
 
 class WebhookController extends Controller
 {
@@ -18,6 +14,9 @@ class WebhookController extends Controller
     private $update;
 
 	private $token = 'c2hhbWJhbGEyMykxMiUh';
+	
+	//https://api.telegram.org/bot527782633:AAFPLooKU0KwINR_CwRj7R-1Z_nHv9b5t0o/setWebhook?url=https://test-cros.nag.ru/webhook/update/c2hhbWJhbGEyMykxMiUh
+	//
 	
 	
 	/**
@@ -78,7 +77,6 @@ class WebhookController extends Controller
                     /**
                      * TODO: Method to invalid enter
                      */
-                    //asd
                 }
             }
 
@@ -135,14 +133,14 @@ class WebhookController extends Controller
          * Проверяем, есть ли чат в базе
          */
         $em = $this->getDoctrine()->getManager();
-        $repoTgChat = $this->getDoctrine()->getRepository('AppBundle:TgChat');
+        $repo = $this->getDoctrine()->getRepository('AppBundle:TgChat');
 
-        $chat = $repoTgChat->findOneByChatId($chat_id);
+        $chat = $repo->findOneByChatId($chat_id);
 
         /**
          * Если чат найден, но был неактивен, активируем его
          */
-        if ($chat && false === $chat->getIsActive())
+        if ($chat && false === $chat->IsActive())
         {
             $chat->setIsActive(true);
         }
@@ -172,38 +170,6 @@ class WebhookController extends Controller
 
         return $bot;
     }
-
-	/**
-	 * @Route("/admin/tg/{chat_id}")
-	 */
-	public function testAction($chat_id)
-	{
-        $em = $this->getDoctrine()->getManager();
-        $repoTgChat = $this->getDoctrine()->getRepository('AppBundle:TgChat');
-
-        $chat = $repoTgChat->findOneByChatId($chat_id);
-
-        if ($chat)
-        {
-            $chat->setActive(1);
-
-            $em->persist($chat);
-            $em->flush();
-
-            return new Response('Yes', 200);
-        }
-        else
-        {
-            $chat = new TgChat();
-            $chat->setIsActive(1);
-            $chat->setChatId($chat_id);
-
-            $em->persist($chat);
-            $em->flush();
-
-            return new Response('No', 200);
-        };
-	}
 	
 }
 

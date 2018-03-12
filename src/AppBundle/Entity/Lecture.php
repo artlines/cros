@@ -84,20 +84,28 @@ class Lecture
      * @ORM\Column(name="theses", type="text")
      */
     private $theses;
-
+    
     /**
-     * Many Lectures have Many Chats
+     * @var ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="TgChat", mappedBy="lectures")
      */
     private $chats;
 
 
+
     public function __construct()
     {
         $this->chats = new ArrayCollection();
     }
-
+    
+    /**
+     * @return ArrayCollection
+     */
+    public function getChats()
+    {
+        return $this->chats;
+    }
 
     /**
      * Get id

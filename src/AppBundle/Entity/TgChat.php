@@ -8,8 +8,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Stage
  *
- * @ORM\Table(name="tg_chat")
+ * @ORM\Table(name="tgchat")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TgChatRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class TgChat
 {
@@ -25,29 +26,37 @@ class TgChat
     /**
      * @var int
      *
-     * @ORM\Column(name="chat_id", type="integer")
+     * @ORM\Column(name="chat_id", type="integer", unique=true, nullable=false)
      */
     private $chatId;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="is_active", type="boolean")
+     * @ORM\Column(name="is_active", type="boolean", nullable=false)
      */
     private $isActive;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="created_at", type="datetime", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(name="joined", type="datetime", options={"default": "CURRENT_TIMESTAMP"})
      */
-    protected $createdAt;
+    private $joined;
 
     /**
      * Many Chats have many Lectures
      *
      * @ORM\ManyToMany(targetEntity="Lecture", inversedBy="chats")
-     * @ORM\JoinTable(name="chats_lectures")
+     * @ORM\JoinTable(
+     *      name="tgchat_lecture",
+     *      joinColumns={
+     *          @ORM\JoinColumn(name="tgchat_id", referencedColumnName="id")
+     *      },
+     *      inverseJoinColumns={
+     *          @ORM\JoinColumn(name="lecture_id", referencedColumnName="id")
+     *      }
+     *  )
      */
     private $lectures;
 
@@ -58,7 +67,6 @@ class TgChat
     public function __construct()
     {
         $this->lectures = new ArrayCollection();
-        $this->createdAt = new \DateTime();
     }
 
     /**
@@ -104,9 +112,17 @@ class TgChat
     /**
      * @return \DateTime
      */
-    public function getCreatedAt()
+    public function getJoined()
     {
-        return $this->createdAt;
+        return $this->joined;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function setJoined()
+    {
+        $this->joined = new \DateTime();
     }
 
     /**
@@ -125,6 +141,5 @@ class TgChat
         $this->lectures = $lectures;
     }
 
-
-
 }
+
