@@ -2,7 +2,6 @@
 
 namespace AppBundle\Repository;
 
-
 class TgChatRepository extends \Doctrine\ORM\EntityRepository
 {
     /**

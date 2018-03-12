@@ -2,6 +2,11 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Lecture;
+use AppBundle\Repository\LectureRepository;
+use AppBundle\Repository\TgChatRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Criteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,21 +19,15 @@ class WebhookController extends Controller
     private $update;
 
 	private $token = 'c2hhbWJhbGEyMykxMiUh';
-	
+
+	// setWebhook
 	//https://api.telegram.org/bot527782633:AAFPLooKU0KwINR_CwRj7R-1Z_nHv9b5t0o/setWebhook?url=https://test-cros.nag.ru/webhook/update/c2hhbWJhbGEyMykxMiUh
-	//
-	
 	
 	/**
 	 * @Route("/webhook/update/{token}", name="webhook-update")
 	 */
 	public function updateAction($token)
 	{
-        /**
-         * Список доступных команд
-         */
-	    $availableCommands = array('/start', '/stop');
-
         /**
          * Проверяем get-переменную, с которой пришел запрос на вебхук
          */
@@ -38,46 +37,26 @@ class WebhookController extends Controller
 			// log
             file_put_contents('/home/cros/www/var/logs/tg_bot.log', "***\n[".date("d.m.Y H:i:s")."]\n".print_r($this->update, true)."\n\n", FILE_APPEND);
 
-            /**
-             * Определяем, что пришла команда, при том одна, возможно с аргументами
-             */
-            if (isset($this->update['message']['entities']) && count($this->update['message']['entities']) == 1
-                && $this->update['message']['entities'][0]['type'] == 'bot_command')
-            {
-                /**
-                 * Забираем весь текст сообщения, выделяем в нем команду
-                 */
-                $text = $this->update['message']['text'];
-                $command = substr($text, $this->update['message']['entities'][0]['offset'], $this->update['message']['entities'][0]['length']);
+            $text = trim($this->update['message']['text']);
 
-                /**
-                 * Проверяем, что команда есть в белом списке, он же список доступных команд
-                 *
-                 * TODO: А надо ли проверять по белому списку, если далее есть 'method_exists()'
-                 */
-                if (in_array($command, $availableCommands))
-                {
-                    /**
-                     * Выделяем аргументы команды в массив
-                     */
-                    $args = explode(' ', $text);
-                    $method = '_'.substr(array_shift($args), 1).'Command';
-
-                    file_put_contents('/home/cros/www/var/logs/tg_bot.log', "***\n[".date("d.m.Y H:i:s")."]\n".'Method: '.$method.' | Args: '.implode(', ',$args)."\n\n", FILE_APPEND);
-
-                    /**
-                     * Есть ли обработчик для команды
-                     */
-                    if (method_exists($this, $method)) {
-                        $this->{$method}($args);
-                    }
-                }
-                else
-                {
-                    /**
-                     * TODO: Method to invalid enter
-                     */
-                }
+            switch ($text) {
+                case '/start':
+                    $this->_start();
+                    break;
+                case 'МЕНЮ':
+                    $this->_menu();
+                    break;
+                case 'Посмотреть расписание':
+                    $this->_showLectures();
+                    break;
+                case 'Мое расписание':
+                    $this->_myLecturesCommand();
+                    break;
+                case 'Уведомлять о начале докладов':
+                    $this->_subscribeCommand();
+                    break;
+                default:
+                    break;
             }
 
             return new Response('ok', 200);
@@ -89,74 +68,140 @@ class WebhookController extends Controller
 	}
 
     /**
-     * /privet command
+     * Command: /privet
      */
-    private function _privetCommand($_chat_id = false)
+    private function _privet()
     {
         $bot = $this->init_bot();
-
-        $chat_id = $_chat_id ? $_chat_id : $this->update['chat']['id'];
-
-        $content = array('chat_id' => $chat_id, 'text' => 'PRIVET');
+        $content = array('chat_id' => $this->update['message']['chat']['id'], 'text' => 'PRIVET');
         $bot->sendMessage($content);
     }
 
     /**
-     * /start command
+     * Command: /start
      */
-    private function _startCommand($args)
+    private function _start()
     {
         $bot = $this->init_bot();
-        $chat_id = isset($args['chat_id']) ? $args['chat_id'] : $this->update['message']['chat']['id'];
+        $chat_id = $this->update['message']['chat']['id'];
         $username = $this->update['message']['from']['username'];
 
         $text = "Привет, $username! Я бот конференции КРОС 2018.\n"
                 ."Помогу следить за расписанием, быть в курсе событий.\n"
                 ."Если понадоблюсь - жми МЕНЮ. Продуктивного тебе время провождения!";
 
-        /**
-         * TODO: Нарисовать кнопку МЕНЮ
-         */
         $options = array(
-            array($bot->buildKeyboardButton("МЕНЮ"))
+            array(),
+            array($bot->buildKeyboardButton("МЕНЮ")),
+            array()
         );
-        $keyBoard = $bot->buildKeyBoard($options, false);
+        $keyBoard = $bot->buildKeyBoard($options, false, true);
 
-        /**
-         * Собираем ответ в $content и отсылаем
-         */
         $content = array('chat_id' => $chat_id, 'text' => $text, 'reply_markup' => $keyBoard);
         $bot->sendMessage($content);
-
-
-        /**
-         * Проверяем, есть ли чат в базе
-         */
+        
         $em = $this->getDoctrine()->getManager();
+
+        /** @var TgChatRepository $repo */
         $repo = $this->getDoctrine()->getRepository('AppBundle:TgChat');
 
+        /** @var TgChat $chat */
         $chat = $repo->findOneByChatId($chat_id);
 
-        /**
-         * Если чат найден, но был неактивен, активируем его
-         */
-        if ($chat && false === $chat->IsActive())
+        if ($chat)
         {
-            $chat->setIsActive(true);
+            if (false === $chat->getIsActive())
+            {
+                $chat->setIsActive(true);
+                $em->persist($chat);
+                $em->flush();
+            }
         }
-        /**
-         * Если чат не найден, то создадим его
-         */
         else
         {
             $chat = new TgChat();
             $chat->setChatId($chat_id);
-            $chat->setIsActive(true);
+            $em->persist($chat);
+            $em->flush();
         };
-        $em->persist($chat);
-        $em->flush();
     }
 
+    /**
+     * Command: "МЕНЮ"
+     */
+    private function _menu()
+    {
+        $bot = $this->init_bot();
+
+        $options = array(
+            array($bot->buildKeyboardButton("Посмотреть расписание")),
+            array($bot->buildKeyboardButton("Мое расписание")),
+            array($bot->buildKeyboardButton("Уведомлять о начале докладов"))
+        );
+        $keyBoard = $bot->buildKeyBoard($options, true, true);
+
+        $content = array(
+            'chat_id' => $this->update['message']['chat']['id'],
+            'text' => 'ping',
+            'reply_markup' => $keyBoard
+        );
+
+        $bot->sendMessage($content);
+    }
+
+    /**
+     * Command: "Посмотреть расписание"
+     */
+    private function _showLectures($page = 1)
+    {
+        /** @var \Telegram $bot */
+        $bot = $this->init_bot();
+
+        /** @var ArrayCollection $lectures */
+        $lectureRepository = $this->getDoctrine()->getRepository("AppBundle:Lecture");
+
+        $all_halls = $lectureRepository->findHall();
+        $program = array();
+
+        if (false)
+        {
+
+        }
+        else
+        {
+            /** MISTAKE HERE **/
+            /** @var  $lecture */
+            foreach ($lectureRepository->findAll()->toArray() as $lecture)
+            {
+                $_day_key = $lecture->getDate()->format('d.m.Y');
+                $_time_key = $lecture->getStartTime()->format("H:i")." - ".$lecture->getEndTime()->format("H:i");
+                $_hall_key = $lecture->getHall();
+
+                if (!$lecture->getSpeaker()) {
+                    $program[$_day_key][$_time_key][Lecture::class::DEFAULT_HALL] = $lecture;
+                } else {
+                    $program[$_day_key][$_time_key][$_hall_key] = $lecture;
+                    if (!in_array($_hall_key, $all_halls)) $all_halls[] = $_hall_key;
+                };
+            }
+        }
+    }
+
+    /**
+     * Command: "Мое расписание"
+     */
+    private function _myLecturesCommand()
+    {
+
+    }
+
+    /**
+     * Command: "Уведомлять о начале докладов"
+     */
+    private function _subscribeCommand()
+    {
+
+    }
 
 
     /**
@@ -166,9 +211,7 @@ class WebhookController extends Controller
      */
     private function init_bot()
     {
-        $bot = new \Telegram('527782633:AAFPLooKU0KwINR_CwRj7R-1Z_nHv9b5t0o');
-
-        return $bot;
+        return new \Telegram('527782633:AAFPLooKU0KwINR_CwRj7R-1Z_nHv9b5t0o');
     }
 	
 }

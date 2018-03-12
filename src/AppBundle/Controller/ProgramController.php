@@ -11,6 +11,7 @@ use AppBundle\Entity\Logs;
 use AppBundle\Entity\Organization;
 use AppBundle\Entity\Organizations;
 use AppBundle\Entity\OrgToConf;
+use AppBundle\Entity\Program;
 use AppBundle\Entity\User;
 use AppBundle\Entity\UserToApartament;
 use AppBundle\Entity\UserToConf;
@@ -79,7 +80,7 @@ class ProgramController extends Controller
     /**
      * @Route("/old-program", name="old-program")
      */
-    public function oldprogramAction()
+    public function oldProgramAction()
     {
         $monthes = array(
             '01' => 'января',

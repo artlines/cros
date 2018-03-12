@@ -67,6 +67,7 @@ class TgChat
     public function __construct()
     {
         $this->lectures = new ArrayCollection();
+        $this->isActive = true;
     }
 
     /**
@@ -139,6 +140,24 @@ class TgChat
     public function setLectures($lectures)
     {
         $this->lectures = $lectures;
+    }
+
+    /**
+     * @param Lecture $lecture
+     */
+    public function addLecture($lecture)
+    {
+        if (!$this->lectures->contains($lecture))
+            $this->lectures->add($lecture);
+    }
+
+    /**
+     * @param Lecture $lecture
+     */
+    public function removeLecture($lecture)
+    {
+        if ($this->lectures->contains($lecture))
+            $this->lectures->removeElement($lecture);
     }
 
 }
