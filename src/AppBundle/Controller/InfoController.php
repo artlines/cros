@@ -116,7 +116,7 @@ class InfoController extends Controller
 										)),
 									)
 				))
-                ->add('send', SubmitType::class, array('label' => 'Отправить'))
+                ->add('send', SubmitType::class, array('label' => 'Отправить', 'attr' => array('class' => 'btn-success')))
 				->getForm();
 
 			$form->handleRequest($request);
@@ -214,7 +214,7 @@ class InfoController extends Controller
 										)),
 									)
 				))
-                ->add('send', SubmitType::class, array('label' => 'Отправить'))
+                ->add('send', SubmitType::class, array('label' => 'Отправить', 'attr' => array('class' => 'btn-success')))
 				->getForm();
 
 			$form->handleRequest($request);

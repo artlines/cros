@@ -99,7 +99,7 @@ class RegistrationController extends Controller
                     ->add('address', TextareaType::class, array('label' => 'Address', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => false))
                     ->add('comment', TextareaType::class, array('label' => 'Комментарий', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => false))
                     ->add('manager', HiddenType::class, array('label' => 'Manager', 'mapped' => false, 'required' => false, 'data' => $man_id))
-                    ->add('save', SubmitType::class, array('label' => 'Продолжить'))
+                    ->add('save', SubmitType::class, array('label' => 'Продолжить', 'attr' => array('class' => 'btn-success')))
                     ->getForm();
 
                 $form->handleRequest($request);
@@ -426,7 +426,7 @@ class RegistrationController extends Controller
                     ))
                     ->add('car_number', TextType::class, array('label' => 'Если Вы приедете на личном транспорте, укажите его государственный номер', 'required' => false, 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'placeholder' => 'А001АА 00', 'pattern' => '[А-Яа-яA-Za-z]{1,1}[0-9]{3,3}[А-Яа-яA-Za-z]{2,2}[ ][0-9]{2,3}', 'title' => 'А001АА 00')))
                     ->add('apartament', ChoiceType::class, array('label' => 'Класс участия', 'mapped' => false, 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'data-helper' => $class_help), 'choices' => $numbers, 'choice_attr' => array('Выберите номер проживания' => array('disabled' => '')), 'data' => $apartament_id))
-                    ->add('save', SubmitType::class, array('label' => 'Продолжить'))
+                    ->add('save', SubmitType::class, array('label' => 'Продолжить', 'attr' => array('class' => 'btn-success')))
                     ->getForm();
             }
             else{
@@ -451,7 +451,7 @@ class RegistrationController extends Controller
                     ))
                     ->add('car_number', TextType::class, array('label' => 'Если Вы приедете на личном транспорте, укажите его государственный номер', 'required' => false, 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'placeholder' => 'А001АА 00', 'pattern' => '[А-Яа-яA-Za-z]{1,1}[0-9]{3,3}[А-Яа-яA-Za-z]{2,2}[ ][0-9]{2,3}', 'title' => 'А001АА 00')))
                     ->add('apartament', ChoiceType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Класс участия', 'mapped' => false, 'choices' => $numbers, 'choice_attr' => array('Выберите номер проживания' => array('disabled' => '')), 'data' => $apartament_id))
-                    ->add('save', SubmitType::class, array('label' => 'Продолжить'))
+                    ->add('save', SubmitType::class, array('label' => 'Продолжить', 'attr' => array('class' => 'btn-success')))
                     ->getForm();
             }
 
