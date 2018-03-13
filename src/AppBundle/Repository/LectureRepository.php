@@ -35,7 +35,10 @@ class LectureRepository extends EntityRepository
         }
 	}
 
-	public function findHalls()
+    /**
+     * @return array
+     */
+	public function findByHalls()
     {
         return $this->createQueryBuilder('l')
             ->select('l.hall')

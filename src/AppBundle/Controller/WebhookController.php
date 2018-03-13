@@ -47,13 +47,13 @@ class WebhookController extends Controller
                     $this->_menu();
                     break;
                 case 'Посмотреть расписание':
-                    $this->_showLectures();
+                    $this->_showHalls();
                     break;
                 case 'Мое расписание':
-                    $this->_myLecturesCommand();
+                    $this->_mySubscribes();
                     break;
                 case 'Уведомлять о начале докладов':
-                    $this->_subscribeCommand();
+                    $this->_subscribe();
                     break;
                 default:
                     break;
@@ -152,16 +152,17 @@ class WebhookController extends Controller
     /**
      * Command: "Посмотреть расписание"
      */
-    private function _showLectures($page = 1)
+    private function _showHalls()
     {
         /** @var \Telegram $bot */
         $bot = $this->init_bot();
 
-        /** @var ArrayCollection $lectures */
         $lectureRepository = $this->getDoctrine()->getRepository("AppBundle:Lecture");
 
-        $all_halls = $lectureRepository->findHall();
+        $all_halls = $lectureRepository->findByHalls();
         $program = array();
+
+        file_put_contents('/home/cros/www/var/logs/tg_bot.log', "\n".print_r($all_halls, true)."\n\n", FILE_APPEND);
 
         if (false)
         {
@@ -169,8 +170,7 @@ class WebhookController extends Controller
         }
         else
         {
-            /** MISTAKE HERE **/
-            /** @var  $lecture */
+            /** MISTAKE HERE
             foreach ($lectureRepository->findAll()->toArray() as $lecture)
             {
                 $_day_key = $lecture->getDate()->format('d.m.Y');
@@ -184,13 +184,14 @@ class WebhookController extends Controller
                     if (!in_array($_hall_key, $all_halls)) $all_halls[] = $_hall_key;
                 };
             }
+            **/
         }
     }
 
     /**
      * Command: "Мое расписание"
      */
-    private function _myLecturesCommand()
+    private function _mySubscribes()
     {
 
     }
@@ -198,7 +199,7 @@ class WebhookController extends Controller
     /**
      * Command: "Уведомлять о начале докладов"
      */
-    private function _subscribeCommand()
+    private function _subscribe()
     {
 
     }
