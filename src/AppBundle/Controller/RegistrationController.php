@@ -324,7 +324,7 @@ class RegistrationController extends Controller
                         ->findAll();
                     $uc = count($users_yet);
 
-                    if($uc >= 790){
+                    if($uc >= 500){
                         return $this->redirectToRoute('registration-3');
                     }
                 }
@@ -353,7 +353,7 @@ class RegistrationController extends Controller
                     ->findAll();
                 $uc = count($users_yet);
 
-                if($uc >= 790){
+                if($uc >= 500){
                     return $this->redirectToRoute('registration-3');
                 }
             }

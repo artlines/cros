@@ -19,8 +19,8 @@
     Комментарий: {{ org.comment }}<br>
     {#{% if org.manager != null %}: {{ org. }}<br>{% endif %}#}
 
-    <h3>Участники {% if useryet < 790 %}<a href="{{ url('registration-2') }}" class="btn btn-success" title="Добавить участника"><i class="glyphicon glyphicon-plus"></i>Добавить</a>{% endif %}</h3>
-    {% if useryet < 790 %}{% else %}<span class="text-info">Все места забронированы, но при снятии брони вовремя неоплаченых номеров, места могут освободиться и у Вас появится возможность зарегистрировать участников.</span>{% endif %}
+    <h3>Участники {% if useryet < 500 %}<a href="{{ url('registration-2') }}" class="btn btn-success" title="Добавить участника"><i class="glyphicon glyphicon-plus"></i>Добавить</a>{% endif %}</h3>
+    {% if useryet < 500 %}{% else %}<span class="text-info">Все места забронированы, но при снятии брони вовремя неоплаченых номеров, места могут освободиться и у Вас появится возможность зарегистрировать участников.</span>{% endif %}
     <table class="table">
         <thead>
             <tr>
