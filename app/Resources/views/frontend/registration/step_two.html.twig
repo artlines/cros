@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends theme_template %}
 
 {% block title %}Конференция Российских Операторов Связи{% endblock %}
 
@@ -25,21 +25,34 @@
         <p><strong>Выезд:</strong> 12:00 19.05.2018</p>
     </div>
 
-    {{ form_row(form.last_name) }}
-    {{ form_row(form.first_name) }}
+    <div class="row">
+        {{ form_row(form.last_name) }}
+        {{ form_row(form.first_name) }}
+    </div>
 
-    {{ form_row(form.middle_name) }}
-    {{ form_row(form.post) }}
+    <div class="row">
+        {{ form_row(form.middle_name) }}
+        {{ form_row(form.post) }}
+    </div>
 
-    {{ form_row(form.email) }}
-    {{ form_row(form.username) }}
+    <div class="row">
+        {{ form_row(form.email) }}
+        {{ form_row(form.username) }}
+    </div>
 
-    {{ form_row(form.nickname) }}
+    <div class="row">
+        {{ form_row(form.nickname) }}
+        {{ form_row(form.car_number) }}
+    </div>
 
-    {{ form_row(form.arrival) }}
-    {{ form_row(form.leaving) }}
+    <div class="row">
+        {{ form_row(form.arrival) }}
+        {{ form_row(form.leaving) }}
+    </div>
 
-    {{ form_widget(form) }}
+    <div class="row">
+        {{ form_row(form.apartament) }}
+    </div>
 
     {{ form_end(form) }}
     <span style="color: #a94442;">*</span> - поля обязательны к заполнению
@@ -48,10 +61,14 @@
 {% block javascripts %}
 <script>
 
+    $(document).ready(function () {
+        $('form > .row > .form-group').addClass('col-sm-12 col-md-6');
+    });
+
     var numberdescJSON = {{ numberdesc|raw }};
 
     $(function () {
-        $('<br><p id="numberdesc" class="bg-info" style="padding: 3px 5px; display: none;"></p>').insertAfter('#form_apartament');
+        //$('<br><p id="numberdesc" class="alert alert-info"></p>').insertAfter('#form_apartament');
         $('#form_apartament').on('select change', function(){
             var val = $(this).val();
             if(val in numberdescJSON){
@@ -71,12 +88,12 @@
         });
 
         $('*[data-helper]').each(function () {
-            $(this).after('<span class="text-muted">' + $(this).attr('data-helper') + '</span>');
+            $(this).after('<span class="text-muted cs-font-size-11">' + $(this).attr('data-helper') + '</span>');
         });
 
-        $('#form_last_name, #form_middle_name, #form_email, #form_save_and_add, #form_save').parent('.form-group').css('margin-right', '2%');
-        $('#form_last_name, #form_first_name, #form_middle_name, #form_post, #form_email, #form_username').parent('.form-group').css('width', '49%').css('display', 'inline-block').css('vertical-align', 'top');
-        $('#form_save_and_add, #form_save, #form_continue').parent('.form-group').css('width', 'auto').css('display', 'inline-block').css('vertical-align', 'top');
+        //$('#form_last_name, #form_middle_name, #form_email, #form_save_and_add, #form_save').parent('.form-group').css('margin-right', '2%');
+        //$('#form_last_name, #form_first_name, #form_middle_name, #form_post, #form_email, #form_username').parent('.form-group').css('width', '49%').css('display', 'inline-block').css('vertical-align', 'top');
+        //$('#form_save_and_add, #form_save, #form_continue').parent('.form-group').css('width', 'auto').css('display', 'inline-block').css('vertical-align', 'top');
 
         $('#form_continue').on('click', function(){
             $('*[required]').removeAttr('required');
@@ -96,5 +113,3 @@
 
 {% block stylesheets %}
 {% endblock %}
-
-

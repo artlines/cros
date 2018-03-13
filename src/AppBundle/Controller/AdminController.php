@@ -43,6 +43,18 @@ use Symfony\Component\HttpFoundation\Response;
 class AdminController extends Controller
 {
     /**
+     * @Route("/admin/test-bootstrap4")
+     */
+    public function testBootstrapViewAction()
+    {
+        return $this->render('admin/test-bootstrap.html.twig', array(
+            'base_dir' => realpath($this->container->getParameter('kernel.root_dir') . '/..') . DIRECTORY_SEPARATOR,
+            //'' => ''
+        ));
+    }
+
+
+    /**
      * @Route("/admin/test-view")
      */
     public function testViewAction()

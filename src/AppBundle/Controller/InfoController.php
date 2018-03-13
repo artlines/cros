@@ -90,11 +90,11 @@ class InfoController extends Controller
                 //'theses' => 'asd'
             );
 			$form = $this->createFormBuilder($defaultData)
-				->add('speaker', TextType::class, array('label' => 'Имя'))
-				->add('email', EmailType::class, array('label' => 'E-mail'))
-				->add('mobile', TextType::class, array('label' => 'Контактный телефон'))
-				->add('title', TextType::class, array('label' => 'Тема доклада'))
-                ->add('theses', TextareaType::class, array('label' => 'Тезисы'))
+				->add('speaker', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Имя'))
+				->add('email', EmailType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'E-mail'))
+				->add('mobile', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Контактный телефон'))
+				->add('title', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Тема доклада'))
+                ->add('theses', TextareaType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Тезисы'))
                 ->add('files', FileType::class, array(
 									'label' => 'Файлы', 
 									'multiple' => true,
@@ -116,7 +116,7 @@ class InfoController extends Controller
 										)),
 									)
 				))
-                ->add('send', SubmitType::class, array('label' => 'Отправить'))
+                ->add('send', SubmitType::class, array('label' => 'Отправить', 'attr' => array('class' => 'btn-success')))
 				->getForm();
 
 			$form->handleRequest($request);
@@ -195,15 +195,16 @@ class InfoController extends Controller
 				//'theses' => 'asd'
 				);
 			$form = $this->createFormBuilder($defaultData)
-				->add('company', TextType::class, array('label' => 'Компания'))
-				->add('email', EmailType::class, array('label' => 'E-mail'))
-                ->add('mobile', TextType::class, array('label' => 'Контактный телефон'))
+				->add('company', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Компания'))
+				->add('email', EmailType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'E-mail'))
+                ->add('mobile', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Контактный телефон'))
                 ->add('packet', ChoiceType::class, array(
+                    'attr' => array('class' => 'cs-theme-color-gray-dark-v3'),
                     'label' => 'Тип пакета',
                     'choices' => $choices,
                     'choice_attr' => array('Выберите тип пакета' => array('disabled' => '')),
                 ))
-                ->add('present', TextAreaType::class, array('label' => 'Что будет представлено'))
+                ->add('present', TextAreaType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Что будет представлено'))
 				->add('recaptcha', RecaptchaType::class, array(
 									'label' => false, 
 									'mapped' => false,
@@ -213,7 +214,7 @@ class InfoController extends Controller
 										)),
 									)
 				))
-                ->add('send', SubmitType::class, array('label' => 'Отправить'))
+                ->add('send', SubmitType::class, array('label' => 'Отправить', 'attr' => array('class' => 'btn-success')))
 				->getForm();
 
 			$form->handleRequest($request);

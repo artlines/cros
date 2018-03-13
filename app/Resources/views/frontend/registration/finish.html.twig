@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends theme_template %}
 
 {% block title %}Конференция Российских Операторов Связи{% endblock %}
 
@@ -7,9 +7,11 @@
 {% block page_image %}registration{% endblock %}
 
 {% block body %}
-    <h3 class="text-success">Спасибо! Ваша заявка принята. Данные отправлены Вам на почту. В ближайшее время с Вами свяжется наш менеджер.</h3>
+    <h3 class="text-success">Спасибо! Ваша заявка принята.
+        <br/>Данные отправлены Вам на почту.
+        <br/>В ближайшее время с Вами свяжется наш менеджер.</h3>
 
-    <a class="btn btn-default" href="{{ url('registration-3') }}">Перейти в личный кабинет</a>
+    <a class="btn btn-default u-btn-yellow cs-color-white cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ url('registration-3') }}">Перейти в личный кабинет</a>
 {% endblock %}
 
 {% block javascripts %}
