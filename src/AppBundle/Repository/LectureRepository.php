@@ -12,13 +12,7 @@ use Doctrine\ORM\Query;
  */
 class LectureRepository extends EntityRepository
 {
-    public function findAll()
-    {
-        return $this->findBy(array(), array('date' => 'ASC', 'startTime' => 'ASC'));
-    }
-
-	
-	public function findByNotInIds($arrayIDs)
+    public function findByNotInIds($arrayIDs)
 	{
 		$query = $this->getEntityManager()
 				->createQuery('SELECT l from AppBundle:Lecture l
@@ -34,16 +28,5 @@ class LectureRepository extends EntityRepository
             return null;
         }
 	}
-
-    /**
-     * @return array
-     */
-	public function findByHalls()
-    {
-        return $this->createQueryBuilder('l')
-            ->select('l.hall')
-            ->distinct()
-            ->getQuery()->getArrayResult();
-    }
 
 }

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Hall;
 use AppBundle\Entity\Lecture;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -48,13 +49,15 @@ class AdminLectureController extends Controller
         ));
 
     }
-    
+
     /**
      * @Route("/admin/lectures/refresh", name="admin-lectures-refresh")
      *
      * @param Request $request
      *
      * @return object
+     *
+     * @throws \Google_Exception
      */
     public function refreshAction(Request $request)
     {
@@ -172,21 +175,15 @@ class AdminLectureController extends Controller
                 $response = $service->spreadsheets_values->get($spreadsheetId, $range);
                 $values = $response->getValues();
 				unset($values[0]); $values = array_values($values);
-				$ids = array();
 		        $em = $this->getDoctrine()->getManager();
 
-        		/* SAVE TO DB */
+                $lectureRepository = $this->getDoctrine()->getRepository('AppBundle:Lecture');
+                $hallRepository = $this->getDoctrine()->getRepository('AppBundle:Hall');
+
+
+                $lecture_exist_ids = array();
+        		/* SAVE ROWS */
 		        foreach ($values as $row) {
-
-			    /*
-		            $haveEmptyCells = false;
-		            for ($j = 1; $j <= 8; $j++) {
-		                if (empty($row[$j])) $haveEmptyCells = true;
-		            };
-		            if ($haveEmptyCells) continue;
-		            */
-
-		            $lectureRepository = $this->getDoctrine()->getRepository('AppBundle:Lecture');
         
 		            $_date = new \DateTime($row[0]);
 		            $_start_time = new \DateTime($row[1]);
@@ -198,20 +195,28 @@ class AdminLectureController extends Controller
 		            $_title = isset($row[7]) ? $row[7] : '';
 		            $_theses = isset($row[8]) ? $row[8] : '';
 
-		            $lecture = $lectureRepository->findByDateAndTime($_date, $_start_time, $_end_time, $_title);
+		            $lecture = $lectureRepository->findOneBy(array(
+		                    'date' => $_date,
+                            'startTime' => $_start_time,
+                            'endTime' => $_end_time,
+                            'title' => $_title
+                        )
+                    );
 		            
-		            if ($lecture) {
+		            if ($lecture)
+		            {
 						$lecture->setHall($_hall);
 						$lecture->setSpeaker($_speaker);
 						$lecture->setCompany($_company);
 						$lecture->setModerator($_moderator);
 						$lecture->setTheses($_theses);
 
-						$ids[] = $lecture->getId();
+                        $lecture_exist_ids[] = $lecture->getId();
 		                
 		                $em->persist($lecture);
-		                $em->flush();
-		            } else {
+		            }
+		            else
+		            {
 		                $lecture = new Lecture();
 				    
 						$lecture->setDate($_date);
@@ -224,69 +229,59 @@ class AdminLectureController extends Controller
 						$lecture->setTitle($_title);
 						$lecture->setTheses($_theses);
 
-						$ids[] = $lecture->getId();
+                        $lecture_exist_ids[] = $lecture->getId();
 				
 		                $em->persist($lecture);
-		                $em->flush();
-		            };
-		        
+		            }
+                    $em->flush();
+
+		            /* Супер-проверка на НЕ {обед, кофе-брейк, etc.} */
+		            if ($lecture->getSpeaker() !== '')
+                    {
+                        /** @var Hall $hall */
+                        $hall = $hallRepository->findOneBy(array('hallName' => $lecture->getHall()));
+                        if (!$hall)
+                        {
+                            $hall = new Hall();
+                            $hall->setHallName($lecture->getHall());
+                            $em->persist($hall);
+                            $em->flush();
+                        }
+
+                        $hall_exist_ids[] = $hall->getId();
+
+                        $lecture->setHallId($hall->getId());
+                        $em->persist($lecture);
+                        $em->flush();
+                    }
 	        	};
 
 				/* DELETE ROWS */
-				if (!empty($ids)) {
-					foreach ($lectureRepository->findByNotInIds($ids) as $one) {
-						$em->remove($one);
-						$em->flush();
-					};
-				};
+                if (!empty($lecture_exist_ids)) {
+                    foreach ($lectureRepository->findByNotInIds($lecture_exist_ids) as $one) {
+                        $em->remove($one);
+                    };
+                    $em->flush();
+                };
+                if (!empty($hall_exist_ids)) {
+                    foreach ($hallRepository->findByNotInIds($hall_exist_ids) as $one) {
+                        $em->remove($one);
+                    };
+                    $em->flush();
+                };
 
                 return new JsonResponse(array(
                     'code' => 'SUCCESS',
-                    'values' => $values,
-					'deb' => $ids
+                    'values' => $values
                 ));
             }
         }
         else 
         {
             return new Response('', 405);
-        };
-    }
-    
-    /*
-    private function getClient($auth_code = false) {
-        
-
-        // Load previously authorized credentials from a file.
-        if (file_exists($credentialsPath)) {
-            $accessToken = json_decode(file_get_contents($credentialsPath), true);
-        } else {
-            // Request authorization from the user.
-            $authUrl = $client->createAuthUrl();
-            printf("Open the following link in your browser:\n%s\n", $authUrl);
-            print 'Enter verification code: ';
-            $authCode = trim(fgets(STDIN));
-
-            // Exchange authorization code for an access token.
-            $accessToken = $client->fetchAccessTokenWithAuthCode($authCode);
-
-            // Store the credentials to disk.
-            if(!file_exists(dirname($credentialsPath))) {
-                mkdir(dirname($credentialsPath), 0700, true);
-            }
-            file_put_contents($credentialsPath, json_encode($accessToken));
-            printf("Credentials saved to %s\n", $credentialsPath);
         }
-        $client->setAccessToken($accessToken);
-
-        // Refresh the token if it's expired.
-        if ($client->isAccessTokenExpired()) {
-            $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
-            file_put_contents($credentialsPath, json_encode($client->getAccessToken()));
-        }
-        
-        return $client;
     }
-    */
+
+
 }
 

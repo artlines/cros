@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -10,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="lecture")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LectureRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Lecture
 {
@@ -49,6 +51,13 @@ class Lecture
      * @ORM\Column(name="hall", type="string", length=50)
      */
     private $hall;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="hall_id", type="integer", nullable=true)
+     */
+    private $hallId;
 
     /**
      * @var string
@@ -214,6 +223,22 @@ class Lecture
     }
 
     /**
+     * @return int|null
+     */
+    public function getHallId()
+    {
+        return $this->hallId;
+    }
+
+    /**
+     * @param int|null $hallId
+     */
+    public function setHallId($hallId)
+    {
+        $this->hallId = $hallId;
+    }
+
+    /**
      * Set speaker
      *
      * @param string $speaker
@@ -332,5 +357,6 @@ class Lecture
     {
         return $this->theses;
     }
+
 }
 

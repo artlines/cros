@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Hall;
 use AppBundle\Entity\Lecture;
 use AppBundle\Repository\LectureRepository;
 use AppBundle\Repository\TgChatRepository;
@@ -37,26 +38,50 @@ class WebhookController extends Controller
 			// log
             file_put_contents('/home/cros/www/var/logs/tg_bot.log', "***\n[".date("d.m.Y H:i:s")."]\n".print_r($this->update, true)."\n\n", FILE_APPEND);
 
-            $text = trim($this->update['message']['text']);
+            if (isset($this->update['message']))
+            {
+                $text = trim($this->update['message']['text']);
 
-            switch ($text) {
-                case '/start':
-                    $this->_start();
-                    break;
-                case 'МЕНЮ':
-                    $this->_menu();
-                    break;
-                case 'Посмотреть расписание':
-                    $this->_showHalls();
-                    break;
-                case 'Мое расписание':
-                    $this->_mySubscribes();
-                    break;
-                case 'Уведомлять о начале докладов':
-                    $this->_subscribe();
-                    break;
-                default:
-                    break;
+                switch ($text) {
+                    case '/start':
+                        $this->_start();
+                        break;
+                    case '/stop':
+                        $this->_stop();
+                        break;
+                    case 'МЕНЮ':
+                        $this->_menu();
+                        break;
+                    case 'Посмотреть расписание':
+                        $this->_showHalls();
+                        break;
+                    case 'Мое расписание':
+                        $this->_mySubscribes();
+                        break;
+                    case 'Уведомлять о начале докладов':
+                        $this->_subscribe();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            elseif (isset($this->update['callback_query']))
+            {
+                $data = trim($this->update['callback_query']['data']);
+
+                list($cmd, $arg) = explode(":", $data);
+
+                switch ($cmd) {
+                    case 'show_lectures':
+                        $this->_showHalls($arg);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+
             }
 
             return new Response('ok', 200);
@@ -87,8 +112,8 @@ class WebhookController extends Controller
         $username = $this->update['message']['from']['username'];
 
         $text = "Привет, $username! Я бот конференции КРОС 2018.\n"
-                ."Помогу следить за расписанием, быть в курсе событий.\n"
-                ."Если понадоблюсь - жми МЕНЮ. Продуктивного тебе время провождения!";
+            ."Помогу следить за расписанием, быть в курсе событий.\n"
+            ."Если понадоблюсь - жми МЕНЮ. Продуктивного тебе время провождения!";
 
         $options = array(
             array(),
@@ -99,7 +124,7 @@ class WebhookController extends Controller
 
         $content = array('chat_id' => $chat_id, 'text' => $text, 'reply_markup' => $keyBoard);
         $bot->sendMessage($content);
-        
+
         $em = $this->getDoctrine()->getManager();
 
         /** @var TgChatRepository $repo */
@@ -123,6 +148,43 @@ class WebhookController extends Controller
             $chat->setChatId($chat_id);
             $em->persist($chat);
             $em->flush();
+        };
+    }
+
+    /**
+     * Command: /stop
+     */
+    private function _stop()
+    {
+        $bot = $this->init_bot();
+        $chat_id = $this->update['message']['chat']['id'];
+
+        $options = array();
+        $keyBoard = $bot->buildKeyBoard($options, false, true);
+
+        $content = array('chat_id' => $chat_id, 'text' => 'stop', 'reply_markup' => $keyBoard);
+        $bot->sendMessage($content);
+
+        $em = $this->getDoctrine()->getManager();
+
+        /** @var TgChatRepository $repo */
+        $repo = $this->getDoctrine()->getRepository('AppBundle:TgChat');
+
+        /** @var TgChat $chat */
+        $chat = $repo->findOneByChatId($chat_id);
+
+        if ($chat)
+        {
+            if (true === $chat->getIsActive())
+            {
+                $chat->setIsActive(false);
+                $em->persist($chat);
+                $em->flush();
+            }
+        }
+        else
+        {
+
         };
     }
 
@@ -152,40 +214,79 @@ class WebhookController extends Controller
     /**
      * Command: "Посмотреть расписание"
      */
-    private function _showHalls()
+    private function _showHalls($hallId = null)
     {
         /** @var \Telegram $bot */
         $bot = $this->init_bot();
+        /** @var LectureRepository $lectureRepo */
+        $lectureRepo = $this->getDoctrine()->getRepository("AppBundle:Lecture");
 
-        $lectureRepository = $this->getDoctrine()->getRepository("AppBundle:Lecture");
+        // log
+        file_put_contents('/home/cros/www/var/logs/tg_bot.log', "\nHallId: $hallId\n", FILE_APPEND);
 
-        $all_halls = $lectureRepository->findByHalls();
-        $program = array();
-
-        file_put_contents('/home/cros/www/var/logs/tg_bot.log', "\n".print_r($all_halls, true)."\n\n", FILE_APPEND);
-
-        if (false)
+        if ($hallId)
         {
+            if ($hallId === 'all')
+            {
+                $lectures = $lectureRepo->findBy(
+                    array(),
+                    array(
+                        'date' => 'ASC',
+                        'startTime' => 'ASC'
+                    )
+                );
+            }
+            else
+            {
+                $lectures = $lectureRepo->findBy(
+                    array(
+                        'hallId' => $hallId
+                    ),
+                    array(
+                        'date' => 'ASC',
+                        'startTime' => 'ASC'
+                    )
+                );
+            }
 
+
+            $text = '';
+            /** @var Lecture $lecture */
+            foreach ($lectures as $lecture)
+            {
+                $text .= "\n".'<b>'.$lecture->getTitle().'</b>';
+            }
+
+            $content = array(
+                'chat_id' => $this->update['callback_query']['message']['chat']['id'],
+                'text' => ($text == '') ? 'Нет данных' : $text,
+                'parse_mode' => 'HTML',
+            );
         }
         else
         {
-            /** MISTAKE HERE
-            foreach ($lectureRepository->findAll()->toArray() as $lecture)
-            {
-                $_day_key = $lecture->getDate()->format('d.m.Y');
-                $_time_key = $lecture->getStartTime()->format("H:i")." - ".$lecture->getEndTime()->format("H:i");
-                $_hall_key = $lecture->getHall();
+            $all_halls = $this->getDoctrine()->getRepository("AppBundle:Hall")->findAll();
 
-                if (!$lecture->getSpeaker()) {
-                    $program[$_day_key][$_time_key][Lecture::class::DEFAULT_HALL] = $lecture;
-                } else {
-                    $program[$_day_key][$_time_key][$_hall_key] = $lecture;
-                    if (!in_array($_hall_key, $all_halls)) $all_halls[] = $_hall_key;
-                };
+            file_put_contents('/home/cros/www/var/logs/tg_bot.log', "\n" . print_r($all_halls, true) . "\n\n", FILE_APPEND);
+
+            $option = array();
+            /** @var Hall $hall */
+            foreach ($all_halls as $hall) {
+                $option[] = array($bot->buildInlineKeyBoardButton($hall->getHallName(), false, 'show_lectures:' . $hall->getId()));
             }
-            **/
+            $option[] = array($bot->buildInlineKeyBoardButton("Все залы", false, 'show_lectures:all'));
+
+            $keyBoard = $bot->buildInlineKeyBoard($option);
+
+            $content = array(
+                'chat_id' => $this->update['message']['chat']['id'],
+                'text' => 'ping',
+                'parse_mode' => 'Markdown',
+                'reply_markup' => $keyBoard
+            );
         }
+
+        $bot->sendMessage($content);
     }
 
     /**
@@ -203,6 +304,11 @@ class WebhookController extends Controller
     {
 
     }
+
+    /**
+     * Inline
+     */
+
 
 
     /**
