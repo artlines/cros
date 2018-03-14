@@ -53,7 +53,7 @@ class WebhookController extends Controller
                         $this->_menu();
                         break;
                     case 'Посмотреть расписание':
-                        $this->_showHalls();
+                        $this->_showDates();
                         break;
                     case 'Мое расписание':
                         $this->_mySubscribes();
@@ -69,11 +69,15 @@ class WebhookController extends Controller
             {
                 $data = trim($this->update['callback_query']['data']);
 
-                list($cmd, $arg) = explode(":", $data);
+                $args = explode(":", $data);
+                $cmd = array_shift($args);
 
                 switch ($cmd) {
+                    case 'show_halls':
+                        $this->_showHalls($args[1]);
+                        break;
                     case 'show_lectures':
-                        $this->_showHalls($arg);
+                        $this->_showLectures($args[1], $args[2], $args[3]);
                         break;
                     default:
                         break;
@@ -150,7 +154,6 @@ class WebhookController extends Controller
             $em->flush();
         };
     }
-
     /**
      * Command: /stop
      */
@@ -210,11 +213,119 @@ class WebhookController extends Controller
 
         $bot->sendMessage($content);
     }
+    /**
+     * Command: "Мое расписание"
+     */
+    private function _mySubscribes()
+    {
 
+    }
+    /**
+     * Command: "Уведомлять о начале докладов"
+     */
+    private function _subscribe()
+    {
+
+    }
     /**
      * Command: "Посмотреть расписание"
      */
-    private function _showHalls($hallId = null)
+    private function _showDates()
+    {
+        /** @var \Telegram $bot */
+        $bot = $this->init_bot();
+
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery('SELECT DISTINCT l.date FROM AppBundle\Entity\Lecture l ORDER BY l.date ASC');
+        $dates = $query->getResult();
+
+        file_put_contents('/home/cros/www/var/logs/tg_bot.log', "\n" . print_r($dates, true) . "\n\n", FILE_APPEND);
+
+        $option = array();
+        /** @var Hall $hall */
+        foreach ($dates as $date) {
+            $date_title = $date['date']->format("d.m.Y");
+            $date_str = $date['date']->format("Y-m-d");
+            $option[] = array($bot->buildInlineKeyBoardButton($date_title, false, 'show_halls:' . $date_str));
+        }
+        $inlineKeyBoard = $bot->buildInlineKeyBoard($option);
+
+        $content = array(
+            'chat_id' => $this->update['message']['chat']['id'],
+            'text' => 'Выберите дату',
+            'parse_mode' => 'Markdown',
+            'reply_markup' => $inlineKeyBoard
+        );
+        $bot->sendMessage($content);
+
+        /*
+        $options = array(
+            array(),
+            array($bot->buildKeyboardButton("МЕНЮ")),
+            array()
+        );
+        $keyBoard = $bot->buildKeyBoard($options, false, true);
+        $mergeKeyboards = json_encode(
+            array_merge(
+                json_decode($inlineKeyBoard, true),
+                json_decode($keyBoard, true)
+            ),
+            true);
+
+        file_put_contents('/home/cros/www/var/logs/tg_bot.log', "\n" . print_r($mergeKeyboards, true) . "\n\n", FILE_APPEND);
+        */
+
+        /*
+        $content = array(
+            'chat_id' => $chat_id,
+            'text' => '123',
+            'reply_markup' => $keyBoard
+        );
+        $bot->sendMessage($content);
+        */
+    }
+
+    /**
+     * Command: show_halls
+     */
+    private function _showHalls($date)
+    {
+        /** @var \Telegram $bot */
+        $bot = $this->init_bot();
+        /** @var LectureRepository $lectureRepo */
+        $hallRepo = $this->getDoctrine()->getRepository("AppBundle:Hall");
+
+        // log
+        file_put_contents('/home/cros/www/var/logs/tg_bot.log', "\nDate: $date\n", FILE_APPEND);
+
+        $all_halls = $hallRepo->findAll();
+
+        $option = array();
+        /** @var Hall $hall */
+        foreach ($all_halls as $hall) {
+            $option[] = array(
+                $bot->buildInlineKeyBoardButton(
+                    $hall->getHallName(),
+                    false,
+                    'show_lectures:' . $date . ':' . $hall->getId()
+                )
+            );
+        }
+        $option[] = array($bot->buildInlineKeyBoardButton("Все залы", false, 'show_lectures:' . $date . ':all'));
+
+        $content = array(
+            'chat_id' => $this->update['callback_query']['message']['chat']['id'],
+            'message_id' => $this->update['callback_query']['message']['message_id'],
+            'text' => 'Выберите дату',
+            'parse_mode' => 'Markdown',
+            'reply_markup' => $bot->buildInlineKeyBoard($option)
+        );
+        $bot->sendMessage($content);
+    }
+    /**
+     * Command: show_lectures
+     */
+    private function _showLectures($date, $hallId)
     {
         /** @var \Telegram $bot */
         $bot = $this->init_bot();
@@ -224,91 +335,57 @@ class WebhookController extends Controller
         // log
         file_put_contents('/home/cros/www/var/logs/tg_bot.log', "\nHallId: $hallId\n", FILE_APPEND);
 
-        if ($hallId)
+        if ($hallId === 'all')
         {
-            if ($hallId === 'all')
-            {
-                $lectures = $lectureRepo->findBy(
-                    array(),
-                    array(
-                        'date' => 'ASC',
-                        'startTime' => 'ASC'
-                    )
-                );
-            }
-            else
-            {
-                $lectures = $lectureRepo->findBy(
-                    array(
-                        'hallId' => $hallId
-                    ),
-                    array(
-                        'date' => 'ASC',
-                        'startTime' => 'ASC'
-                    )
-                );
-            }
-
-
-            $text = '';
-            /** @var Lecture $lecture */
-            foreach ($lectures as $lecture)
-            {
-                $text .= "\n".'<b>'.$lecture->getTitle().'</b>';
-            }
-
-            $content = array(
-                'chat_id' => $this->update['callback_query']['message']['chat']['id'],
-                'text' => ($text == '') ? 'Нет данных' : $text,
-                'parse_mode' => 'HTML',
-            );
+            $_where = array();
         }
         else
         {
-            $all_halls = $this->getDoctrine()->getRepository("AppBundle:Hall")->findAll();
-
-            file_put_contents('/home/cros/www/var/logs/tg_bot.log', "\n" . print_r($all_halls, true) . "\n\n", FILE_APPEND);
-
-            $option = array();
-            /** @var Hall $hall */
-            foreach ($all_halls as $hall) {
-                $option[] = array($bot->buildInlineKeyBoardButton($hall->getHallName(), false, 'show_lectures:' . $hall->getId()));
-            }
-            $option[] = array($bot->buildInlineKeyBoardButton("Все залы", false, 'show_lectures:all'));
-
-            $keyBoard = $bot->buildInlineKeyBoard($option);
-
-            $content = array(
-                'chat_id' => $this->update['message']['chat']['id'],
-                'text' => 'ping',
-                'parse_mode' => 'Markdown',
-                'reply_markup' => $keyBoard
-            );
+            $_where = array('hallId' => $hallId);
         }
+        $_where['date'] = $date;
+
+        $lectures = $lectureRepo->findBy(
+            $_where,
+            array(
+                'date' => 'ASC',
+                'startTime' => 'ASC'
+            )
+        );
+
+        $text = '';
+        /** @var Lecture $lecture */
+        foreach ($lectures as $lecture)
+        {
+            $text .= "\n".'<b>'.$lecture->getTitle().'</b>';
+        }
+
+        file_put_contents('/home/cros/www/var/logs/tg_bot.log', "\n" . print_r($all_halls, true) . "\n\n", FILE_APPEND);
+
+        $option = array();
+        /** @var Hall $hall */
+        foreach ($all_halls as $hall) {
+            $option[] = array($bot->buildInlineKeyBoardButton($hall->getHallName(), false, 'show_lectures:' . $hall->getId()));
+        }
+        $option[] = array($bot->buildInlineKeyBoardButton("Все залы", false, 'show_lectures:all'));
+
+        $keyBoard = $bot->buildInlineKeyBoard($option);
+
+        $content = array(
+            'chat_id' => $this->update['message']['chat']['id'],
+            'text' => 'ping',
+            'parse_mode' => 'Markdown',
+            'reply_markup' => $keyBoard
+        );
+
+        $content = array(
+            'chat_id' => $this->update['callback_query']['message']['chat']['id'],
+            'text' => ($text == '') ? 'Нет данных' : $text,
+            'parse_mode' => 'HTML',
+        );
 
         $bot->sendMessage($content);
     }
-
-    /**
-     * Command: "Мое расписание"
-     */
-    private function _mySubscribes()
-    {
-
-    }
-
-    /**
-     * Command: "Уведомлять о начале докладов"
-     */
-    private function _subscribe()
-    {
-
-    }
-
-    /**
-     * Inline
-     */
-
 
 
     /**
