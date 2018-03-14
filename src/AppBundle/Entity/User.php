@@ -213,6 +213,8 @@ class User implements UserInterface, \Serializable
     {
         $this->utocs = new ArrayCollection();
         $this->speakers = new ArrayCollection();
+        $this->arrival = new \DateTime("2018-05-16 14:00");
+        $this->leaving = new \DateTime("2018-05-19 12:00");
     }
 
     /**
@@ -946,7 +948,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param date \DateTime
+     * @param \DateTime $leaving
      *
      * @return User
      */
