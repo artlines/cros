@@ -1,9 +1,9 @@
 {% if countdown_date %}
     {% if main_page %}
-        <div style="text-align: center;text-transform: uppercase;" class="cs-font-size-23">До начала регистрации</div>
+        <div style="text-align: center;text-transform: uppercase;" class="cs-font-size-23">{{ countdown_text }}</div>
         <!-- Countdown v4 -->
         <div class="js-countdown text-center text-uppercase u-countdown-v4"
-             data-end-date="{{ reg_start|date("Y/m/d H:i:s") }}"
+             data-end-date="{{ countdown_date|date("Y/m/d H:i:s") }}"
              data-month-format="%m"
              data-days-format="%D"
              data-hours-format="%H"
