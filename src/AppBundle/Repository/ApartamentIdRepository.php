@@ -42,7 +42,7 @@ class ApartamentIdRepository extends \Doctrine\ORM\EntityRepository
             LEFT JOIN utoa.user u
             LEFT JOIN u.organization o
             LEFT JOIN o.managers m
-            WHERE a.conferenceId = :conf AND utoa.approved = 1
+            WHERE a.conferenceId = :conf AND utoa.approved = 1 ORDER BY ai.apartament DESC
             ')->setParameter('conf', $conf_id);
         try{
             return $query->getResult();
