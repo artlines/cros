@@ -1309,3 +1309,7 @@ hr {
   margin: 20px;
   border-color: #5c97bf;
 }
+.backedcontent{
+  display: flex;
+  justify-content: space-around;
+}
