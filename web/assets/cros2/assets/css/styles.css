@@ -1303,3 +1303,9 @@ hr {
   z-index: 100;
   background: #fff !important;
 }
+.marketleadersImg{
+  border-style: solid;
+  border-width: 2px;
+  margin: 5px;
+  border-color: #5c97bf;
+}
