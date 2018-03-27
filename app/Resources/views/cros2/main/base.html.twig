@@ -59,14 +59,14 @@
                                 <a href="{{ path('info', {'alias': 'targets'}) }}" class="nav-link p-0">О Крос</a>
                             </li>
                             <!-- submenu -->
-                            <li class="nav-item cs-has-sub-menu cs-mb-7 cs-mb-0--lg">
+                            <li class="nav-item cs-has-sub-menu cs-mb-7 cs-mb-0--lg submenu" id="submenu" >
                                 <a href="#" class="nav-link p-0" id="nav-link-1"
                                    aria-haspopup="true"
                                    aria-expanded="false"
                                    aria-controls="nav-submenu-1"
                                 >Участие<span class="d-lg-none d-xl-inline"> в КРОС</span></a>
                                 <!-- Submenu -->
-                                <ul class="cs-sub-menu list-unstyled cs-mt-20 cs-mt-10--lcs--scrolling u-shadow-v18 cs-font-weight-700 cs-font-size-12" id="nav-submenu-1"
+                                <ul class="cs-sub-menu list-unstyled cs-mt-20 cs-mt-10--lcs--scrolling u-shadow-v18 cs-font-weight-700 cs-font-size-12 nav-submenu-1" id="nav-submenu-1"
                                     aria-labelledby="nav-link-2">
                                     <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('members') }}">Участники</a></li>
                                     <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('price') }}">Стоимость участия</a></li>
@@ -690,6 +690,29 @@
 <!-- JS Plugins Init. -->
 <!--JS Menu -->
 <script src="{{ asset('assets/cros2/assets/js/components/megamenu.min.js') }}"></script>
+{% block javascripts %}{% endblock %}
+<script>
+    $(function(){
+        $('.submenu').hover(function(){
+            $('.submenu').addClass('cs-sub-menu-opened');
+        }, function(){
+            $('.submenu').removeClass('cs-sub-menu-opened');
+        })
+    });
+    $('.sub-menu').SubMenu({
+        event: 'hover',
+        pageContainer: $('.container'),
+        breakpoint: 991
+    });
+    $(window).on('resize', function () {
+        if ( $('.nav-item').hasClass('active') ) {
+            $('.nav-item').removeClass('active');
+        }
+        setTimeout(function () {
+            $.MainCore.components.B4Tabs.init('[role="tablist"]');
+        }, 200);
+    });
+</script>
 <script>
     /*
       Get html5 attr and set background pos from sprite png.
