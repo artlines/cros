@@ -1316,3 +1316,6 @@ hr {
 .cs-sub-menu-home{
   background-color: #87b1e2 !important;
 }
+.cs-sub-menu-home a{
+  color: #fff;
+}
