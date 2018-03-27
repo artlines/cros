@@ -1313,26 +1313,3 @@ hr {
   display: flex;
   justify-content: space-around;
 }
-.cs-sub-menu-home{
-  background-color: rgba(22, 26, 39, .5);
-}
-.cs-sub-menu-home a{
-  color: #fff;
-}
-.cs-sub-menu-home a:hover{
-  color: #5c97bf !important;
-}
-
-.cs-sub-menu-home-dow{
-  background-color: #87b1e2 !important;
-}
-.cs-sub-menu-home-dow a{
-  color: #fff !important;
-}
-.cs-sub-menu-home-dow a:hover{
-  color: #fff !important;
-}
-#submenu{
-  margin-right: 15px;
-  margin-left: 15px;
-}
