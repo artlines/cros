@@ -1314,8 +1314,23 @@ hr {
   justify-content: space-around;
 }
 .cs-sub-menu-home{
+  background-color: rgba(22, 26, 39, .5) !important;
+}
+.cs-sub-menu-home a{
+  color: #fff;
+}
+.cs-sub-menu-home a:hover{
+  color: #5c97bf !important;
+}
+/*
+.cs-sub-menu-home{
   background-color: #87b1e2 !important;
 }
 .cs-sub-menu-home a{
   color: #fff;
 }
+*/
+/*
+background-color: rgba(22, 26, 39, .5) !important;
+color: #5c97bf !important;
+ */
