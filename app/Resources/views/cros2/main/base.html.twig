@@ -769,28 +769,7 @@
             secondsElSelector: '.js-cd-seconds'
         });
     });
-
-    //Initialization of smooth scroll
-    $(window).on('load', function() {
-        $.MainCore.components.HSScrollNav.init($('#js-scroll-nav'), {
-            duration: 700,
-            easing: 'easeOutExpo'
-        });
-
-        handleLogin();
-        // Search Box (Header)
-        function handleLogin() {
-            jQuery('.login-link').on("click", function () {
-                if(jQuery('.login-btn').hasClass('login-form-open')){
-                    jQuery('.login-open').fadeOut(500);
-                    jQuery('.login-btn').removeClass('login-form-open');
-                } else {
-                    jQuery('.login-open').fadeIn(500);
-                    jQuery('.login-btn').addClass('login-form-open');
-                }
-            });
-        }
-    });
+    
 
 </script>
 <script>
