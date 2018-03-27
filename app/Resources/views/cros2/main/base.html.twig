@@ -535,7 +535,7 @@
                             <span class="u-icon-main icon-set" data-position="-77px -14px"></span>
                         </div>
                         <div class="media-body cs-mt-15">
-                            <h3 class="cs-color-black cs-font-size-17">
+        2                    <h3 class="cs-color-black cs-font-size-17">
                                 <span class="cs-color-black cs-text-underline--none--hover" href="javascript:void(0);">
                                     Вопросы построения
                                     систем телевещания КТВ и IPTV
@@ -692,23 +692,21 @@
 <script src="{{ asset('assets/cros2/assets/js/components/megamenu.min.js') }}"></script>
 {% block javascripts %}{% endblock %}
 <script>
-    function removestyles(){
-
-    }
     (function(){
         var originalAddClassMethod = jQuery.fn.addClass;
         $.fn.addClass = function(){
             var result = originalAddClassMethod.apply(this, arguments);
-            $(this).trigger('cssClassChanged');
+            if ($(this).attr('id') == 'test') {
+                $(this).trigger('cssClassChanged');
+            }
             return result;
         }
     })();
     $(function(){
         $("#test").bind('cssClassChanged', function(){
             if($("#test").hasClass("js-header-change-moment")){
-                let list = document.querySelector('#nav-submenu-1');
-                list.classList += ' cs-sub-menu-home-dow';
-
+                console.log('true');
+                $('#nav-submenu-1').addClass('cs-sub-menu-home-dow');
             }else{
                 console.log('false');
                 $("#nav-submenu-1").removeClass('cs-sub-menu-home-dow');
@@ -769,7 +767,7 @@
             secondsElSelector: '.js-cd-seconds'
         });
     });
-    
+
 
 </script>
 <script>
