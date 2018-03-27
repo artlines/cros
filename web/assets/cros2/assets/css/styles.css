@@ -1313,3 +1313,6 @@ hr {
   display: flex;
   justify-content: space-around;
 }
+.cs-sub-menu-home{
+  background-color: #87b1e2 !important;
+}

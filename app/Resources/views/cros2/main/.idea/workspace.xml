@@ -11,11 +11,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="base.html.twig" pinned="false" current-in-tab="true">
+      <file leaf-file-name="base.html.twig" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/base.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="414">
-              <caret line="698" column="23" lean-forward="false" selection-start-line="698" selection-start-column="23" selection-end-line="698" selection-end-column="23" />
+            <state relative-caret-position="468">
+              <caret line="68" column="60" lean-forward="false" selection-start-line="68" selection-start-column="60" selection-end-line="68" selection-end-column="60" />
+              <folding>
+                <element signature="n#style#0;n#ul#0;n#li#2;n#ul#0;n#div#0;n#div#0;n#nav#0;n#div#0;n#header#0;n#main#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="styles.css" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../../../../../web/assets/cros2/assets/css/styles.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="753">
+              <caret line="1315" column="1" lean-forward="true" selection-start-line="1315" selection-start-column="1" selection-end-line="1315" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -26,6 +38,7 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/../../../../../web/assets/cros2/assets/css/styles.css" />
         <option value="$PROJECT_DIR$/base.html.twig" />
       </list>
     </option>
@@ -66,6 +79,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="HbShouldOpenHtmlAsHb" value="" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../../web/assets/cros2/assets/css/styles.css" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -92,12 +106,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1522120805446</updated>
-      <workItem from="1522120807988" duration="755000" />
+      <workItem from="1522120807988" duration="2478000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="755000" />
+    <option name="totallyTimeSpent" value="2478000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
@@ -136,8 +150,18 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/base.html.twig">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="698" column="23" lean-forward="false" selection-start-line="698" selection-start-column="23" selection-end-line="698" selection-end-column="23" />
+        <state relative-caret-position="468">
+          <caret line="68" column="60" lean-forward="false" selection-start-line="68" selection-start-column="60" selection-end-line="68" selection-end-column="60" />
+          <folding>
+            <element signature="n#style#0;n#ul#0;n#li#2;n#ul#0;n#div#0;n#div#0;n#nav#0;n#div#0;n#header#0;n#main#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../../../web/assets/cros2/assets/css/styles.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="753">
+          <caret line="1315" column="1" lean-forward="true" selection-start-line="1315" selection-start-column="1" selection-end-line="1315" selection-end-column="17" />
           <folding />
         </state>
       </provider>
