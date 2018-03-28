@@ -255,7 +255,65 @@ class InfoController extends Controller
 				'data' => false
             ));
 		};
-        
+
+        /* reminder-SPONSOR */
+        // task 49050
+        // @Route("/info/{alias}", name="reminder")
+        if ($alias == 'reminder') {
+            $defaultData = array(
+                //'theses' => 'asd'
+            );
+            $form = $this->createFormBuilder($defaultData)
+                ->add('company', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Компания'))
+                ->add('mobile', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Контактный телефон'))
+                ->add('recaptcha', RecaptchaType::class, array(
+                    'label' => false,
+                    'mapped' => false,
+                    'constraints' => array(
+                        new RecaptchaTrue(array(
+                            'message' => '',
+                        )),
+                    )
+                ))
+                ->add('send', SubmitType::class, array('label' => 'Отправить', 'attr' => array('class' => 'btn-success')))
+                ->getForm();
+
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                $data = $form->getData();
+
+                $message = \Swift_Message::newInstance()
+                    ->setSubject('КРОС-2.0-18: Заявка на напоминание освобождения брони')
+                    ->setFrom('cros@nag.ru')
+                    ->setTo('cros@nag.ru')
+                    ->setBcc($this->container->getParameter('cros_emails'))
+                    ->setBody(
+                        $this->renderView(
+                            'Emails/reminder-sponsor.html.twig',
+                            array(
+                                'company' => $data['company'],
+                                'mobile' => $data['mobile'],
+                            )
+                        ), 'text/html');
+
+                $this->get('mailer')->send($message);
+
+                return $this->render('frontend/info/reminder-sponsor.html.twig', array(
+                    'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
+                    'form' => false,
+                    'data' => $data
+                ));
+            }
+
+            return $this->render('frontend/info/reminder-sponsor.html.twig', array(
+                'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
+                'form' => $form->createView(),
+                'data' => false
+            ));
+        };
+
         $info = null;
     	if(in_array($alias, ['place', 'result', 'terms', 'transfer', 'targets'])){
 			$infoRepository = $this->getDoctrine()->getRepository('AppBundle:Info');
