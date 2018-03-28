@@ -95,3 +95,6 @@ input.cs-p-text-white--checked[type="radio"]:checked + * p {
     bottom: 0px !important;
     position: absolute !important;
 }
+#Title{
+    margin-bottom: 7%;
+}
