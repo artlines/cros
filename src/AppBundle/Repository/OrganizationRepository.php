@@ -163,7 +163,11 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
             return null;
         }
     }
-
+    /**
+     * @param
+     * @return array
+     * We return the list of participants only those who have already settled in numbers
+     */
     public function findByIdsOrganizationApproved()
     {
 
