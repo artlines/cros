@@ -121,7 +121,6 @@ class MembersController extends Controller
         $members = $this->getDoctrine()
             ->getRepository('AppBundle:Organization')
             ->findByIdsOrganizationApproved();
-        var_dump($members);
         $show_list = true;
 
         // Получаем разрешенные даты регистрации
