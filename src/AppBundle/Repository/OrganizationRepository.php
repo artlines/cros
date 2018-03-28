@@ -163,4 +163,34 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
             return null;
         }
     }
+
+    public function findByIdsOrganizationApproved()
+    {
+
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "SELECT
+	              name,
+	              org.id,
+	              city,
+	              title
+                FROM
+	              organization org
+                inner JOIN organization_status ss ON
+	              org.status = ss.id
+                where
+	              org.id IN(
+		        SELECT
+			      organization_id
+		        FROM
+			      `user` us
+		        left JOIN user_to_apartament apar ON
+			      us.id = apar.user_id
+		        WHERE
+			      approved = 1)";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $res = $stmt->fetchAll();
+        return $res;
+    }
+
 }

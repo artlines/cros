@@ -53,6 +53,7 @@
                 </tr>
             </thead>
             <tbody>
+            {#
             {% if showlist %}
                 {% set oi = 1 %}
                 {% for organization in list %}
@@ -62,6 +63,23 @@
                             <td>{{ organization.name }}</td>
                             <td>{{ organization.city }}</td>
                             <td>{{ organization.txtstatus.title }}</td>
+                            {% if sendauth %}
+                                <td><button type="button" class="btn btn-default send_to_org_button" data-toggle="modal" data-orgid="{{ organization.id }}" data-orgname="{{ organization.name }}" data-target="#sendToOrg">Отправить сообщение</button></td>
+                            {% endif %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+            #}
+            {% if showlist %}
+                {% set oi = 1 %}
+                {% for organization in list %}
+                    {% if organization is not empty %}
+                        <tr>
+                            <td>{{ oi }}{% set oi = oi + 1 %}</td>
+                            <td>{{ organization.name }}</td>
+                            <td>{{ organization.city }}</td>
+                            <td>{{ organization.title }}</td>
                             {% if sendauth %}
                                 <td><button type="button" class="btn btn-default send_to_org_button" data-toggle="modal" data-orgid="{{ organization.id }}" data-orgname="{{ organization.name }}" data-target="#sendToOrg">Отправить сообщение</button></td>
                             {% endif %}

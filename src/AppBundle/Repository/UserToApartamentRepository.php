@@ -10,4 +10,5 @@ namespace AppBundle\Repository;
  */
 class UserToApartamentRepository extends \Doctrine\ORM\EntityRepository
 {
+
 }
