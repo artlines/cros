@@ -1,0 +1,33 @@
+ {% extends theme_template %}
+{% block title %}Конференция Российских Операторов Связи{% endblock %}
+{% block header_title %}Вопросы и ответы{% endblock %}
+{% block body %}
+    Мы работаем над формированием интересной и насыщенной программы для вас.
+    За новостями можете следить на нашей странице в <a href="https://www.facebook.com/groups/cros.nag/" target="_blank" >Facebook</a>
+    О чём бы вы хотели поговорить и послушать?
+    <a href="#" class="click">Заполнить анкету</a>
+    <div class="mydiv"></div>
+
+    <br />Хотите представить свой доклад?<br />
+
+<a class="btn u-btn-yellow cs-color-white cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ path('info', {'alias': 'become-speaker'}) }}">Стать докладчиком</a>
+    <script src="{{ asset('assets/cros2/assets/cros/jquery/jquery.min.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+            $('.click').on('click', function(){
+                if($('#blabla').length === 0){
+                    $('<iframe />', {
+                        id : 'blabla',
+                        width: '100%',
+                        height: '600',
+                        align: 'center',
+                        frameborder: '0',
+                        src : 'https://docs.google.com/forms/d/e/1FAIpQLScACJoI8VfSuDMAZYog-YheyxaN9PYa3C1HMX62TxOC1NvJdA/viewform'
+                    }).appendTo('.mydiv');
+                }
+            });
+        });
+    </script>
+{% endblock %}
+{% block stylesheets %}
+{% endblock %}
