@@ -122,8 +122,8 @@ input.cs-p-text-white--checked[type="radio"]:checked + * p {
     }
 
 }
-@media (max-width: 590px) and (min-width: 320px) {
+@media (max-width: 490px){
     #frame_google{
-        height: 7888px;
+        height: 7700px;
         overflow-x:hidden;
     }
