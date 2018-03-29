@@ -99,22 +99,26 @@ input.cs-p-text-white--checked[type="radio"]:checked + * p {
 }
 #frame_google{
     height: 3900px;
+    overflow-x:hidden;
 }
 @media (max-width: 750px) {
     #frame_google{
         height: 4400px;
+        overflow-x:hidden;
     }
 
 }
 @media (max-width: 590px) {
     #frame_google{
         height: 4800px;
+        overflow-x:hidden;
     }
 
 }
-@media (max-width: 320px) {
+@media (max-width: 320px) and (min-width: 590px) {
     #frame_google{
         height: 7888px;
+        overflow-x:hidden;
     }
 
 }
