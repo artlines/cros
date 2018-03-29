@@ -13,22 +13,27 @@
 
 <a class="btn u-btn-yellow cs-color-white cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ path('info', {'alias': 'become-speaker'}) }}">Стать докладчиком</a>
     <script src="{{ asset('assets/cros2/assets/cros/jquery/jquery.min.js') }}"></script>
+ <!-- <iframe id="example" width="320" height="240" frameborder="0" scrolling="" src="https://docs.google.com/forms/d/e/1FAIpQLScACJoI8VfSuDMAZYog-YheyxaN9PYa3C1HMX62TxOC1NvJdA/viewform" allowtransparency="true" onload="window.parent.scrollTo(0,0)" style="width: 100%; height: 1390px; border: none;"> -->
+ <!--   <iframe id="iframe" class="frame" src="https://docs.google.com/forms/d/e/1FAIpQLScACJoI8VfSuDMAZYog-YheyxaN9PYa3C1HMX62TxOC1NvJdA/viewform" onload="this.height=this.contentWindow.document.body.scrollHeight;"></iframe> -->
+
+
     <script>
         $(document).ready(function(){
             $('.click').on('click', function(){
-                if($('#blabla').length === 0){
+                if($('#frame_google').length === 0){
                     $('<iframe />', {
-                        id : 'blabla',
+                        id : 'frame_google',
                         width: '100%',
-                        height: '3900',
+                     //   height: '3900',
                         align: 'center',
-                        frameborder: '0',
+                    //    overflow: 'hidden',
                         src : 'https://docs.google.com/forms/d/e/1FAIpQLScACJoI8VfSuDMAZYog-YheyxaN9PYa3C1HMX62TxOC1NvJdA/viewform'
                     }).appendTo('.mydiv');
                 }
             });
         });
     </script>
+
 {% endblock %}
 {% block stylesheets %}
 {% endblock %}
