@@ -102,7 +102,7 @@ input.cs-p-text-white--checked[type="radio"]:checked + * p {
 }
 @media (max-width: 750px) {
     #frame_google{
-        height: 4100px;
+        height: 4400px;
     }
 
 }
