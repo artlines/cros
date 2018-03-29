@@ -101,29 +101,3 @@ input.cs-p-text-white--checked[type="radio"]:checked + * p {
     height: 3900px;
     overflow-x:hidden;
 }
-@media (max-width: 750px) {
-    #frame_google{
-        height: 4400px;
-        overflow-x:hidden;
-    }
-
-}
-@media (max-width: 590px) {
-    #frame_google{
-        height: 4800px;
-        overflow-x:hidden;
-    }
-
-}
-@media (max-width: 320px){
-    #frame_google{
-        height: 7888px;
-        overflow-x:hidden;
-    }
-
-}
-@media (max-width: 490px){
-    #frame_google{
-        height: 7700px;
-        overflow-x:hidden;
-    }
