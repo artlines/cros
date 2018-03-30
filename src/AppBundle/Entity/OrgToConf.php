@@ -39,7 +39,7 @@ class OrgToConf
     /**
      * @var int | 0 - не оплачено, 1 - оплачено, 2 - частично оплачено
      *
-     * @ORM\Column(name="paid", type="integer")
+     * @ORM\Column(name="paid", type="integer", options={"default":0})
      */
     private $paid;
 
