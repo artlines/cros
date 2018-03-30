@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class User implements UserInterface, \Serializable
 {
@@ -963,5 +964,21 @@ class User implements UserInterface, \Serializable
         $this->leaving = $leaving;
 
         return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getTmAdd()
+    {
+        return $this->tmAdd;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function setTmAdd()
+    {
+        $this->tmAdd = new \DateTime();
     }
 }
