@@ -190,7 +190,7 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
 		        left JOIN user_to_apartament apar ON
 			      us.id = apar.user_id
 		        WHERE
-			      approved = 1)";
+			      approved = 1) ORDER BY priority DESC, name ";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $res = $stmt->fetchAll();

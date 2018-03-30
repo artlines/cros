@@ -33,6 +33,10 @@ class OrganizationStatus
      * @ORM\OneToMany(targetEntity="Organization", mappedBy="txtstatus")
      */
     private $organizations;
+    /**
+     * @ORM\Column(name="priority", type="integer", options={"default":0})
+     */
+    private $priority;
 
     /**
      * OrganizationStatus constructor.
@@ -50,6 +54,15 @@ class OrganizationStatus
     public function getId()
     {
         return $this->id;
+    }
+    /**
+     * Get priority
+     *
+     * @return int
+     */
+    public function getPriority()
+    {
+        return $this->priority;
     }
 
     /**

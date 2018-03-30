@@ -122,7 +122,6 @@ class MembersController extends Controller
             ->getRepository('AppBundle:Organization')
             ->findByIdsOrganizationApproved();
         $show_list = true;
-
         // Получаем разрешенные даты регистрации
         $reg_start = $conf->getRegistrationStart();
 
