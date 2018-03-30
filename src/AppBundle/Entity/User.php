@@ -203,6 +203,12 @@ class User implements UserInterface, \Serializable
      * @ORM\OneToMany(targetEntity="Speaker", mappedBy="user")
      */
     private $speakers;
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="tm_add", type="datetime", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private $tmAdd;
 
     private $entityName = 'user';
 
