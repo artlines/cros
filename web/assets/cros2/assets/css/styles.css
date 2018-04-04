@@ -1304,8 +1304,8 @@ hr {
   background: #fff !important;
 }
 .marketleadersImg{
-  /*border-style: solid;
-  border-width: 2px;*/
+  max-height: 70px;
+  width: auto;
   margin: 20px;
   border-color: #5c97bf;
 }
