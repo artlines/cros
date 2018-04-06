@@ -182,15 +182,17 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
                 inner JOIN organization_status ss ON
 	              org.status = ss.id
                 where
-	              org.id IN(
-		        SELECT
-			      organization_id
-		        FROM
-			      `user` us
-		        left JOIN user_to_apartament apar ON
-			      us.id = apar.user_id
-		        WHERE
-			      approved = 1) ORDER BY priority DESC, name ";
+                      org.id IN(
+                    SELECT
+                      organization_id
+                    FROM
+                      `user` us
+                    left JOIN user_to_apartament apar ON
+                      us.id = apar.user_id
+                    WHERE
+                      approved = 1 AND hidden = 0
+                ) 
+                ORDER BY priority DESC, name ";
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $res = $stmt->fetchAll();
