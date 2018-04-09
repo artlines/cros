@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -10,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="lecture")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LectureRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Lecture
 {
@@ -51,6 +53,13 @@ class Lecture
     private $hall;
 
     /**
+     * @var int|null
+     *
+     * @ORM\Column(name="hall_id", type="integer", nullable=true)
+     */
+    private $hallId;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="speaker", type="string", length=50)
@@ -84,20 +93,28 @@ class Lecture
      * @ORM\Column(name="theses", type="text")
      */
     private $theses;
-
+    
     /**
-     * Many Lectures have Many Chats
+     * @var ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="TgChat", mappedBy="lectures")
      */
     private $chats;
 
 
+
     public function __construct()
     {
         $this->chats = new ArrayCollection();
     }
-
+    
+    /**
+     * @return ArrayCollection
+     */
+    public function getChats()
+    {
+        return $this->chats;
+    }
 
     /**
      * Get id
@@ -203,6 +220,22 @@ class Lecture
     public function getHall()
     {
         return $this->hall;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getHallId()
+    {
+        return $this->hallId;
+    }
+
+    /**
+     * @param int|null $hallId
+     */
+    public function setHallId($hallId)
+    {
+        $this->hallId = $hallId;
     }
 
     /**
@@ -324,5 +357,6 @@ class Lecture
     {
         return $this->theses;
     }
+
 }
 
