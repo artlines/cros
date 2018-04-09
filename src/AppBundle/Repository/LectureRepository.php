@@ -22,11 +22,27 @@ class LectureRepository extends EntityRepository
 		try 
         {
             return $query->getResult();
-        } 
-        catch (\Doctrine\ORM\NoResultException $e) 
-        {
+        } catch (\Doctrine\ORM\NoResultException $e) {
             return null;
         }
 	}
+
+
+    public function findByHallIdNotNull($date)
+    {
+        $qb = $this->createQueryBuilder('l');
+
+        $result = $qb
+            ->where('l.date = ?1')
+            ->andWhere($qb->expr()->isNotNull('l.hallId'))
+            ->orderBy('l.startTime', 'ASC')
+            ->setParameter('1', $date);
+
+        try{
+            return $result->getQuery();
+        } catch (\Doctrine\ORM\NoResultException $e){
+            return null;
+        }
+    }
 
 }
