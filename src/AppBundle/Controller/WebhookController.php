@@ -23,6 +23,7 @@ class WebhookController extends Controller
 {
     const LECTURES_ON_PAGE = 2;
     const MY_LECTURES_ON_PAGE = 2;
+    const CONTACTS_ON_PAGE = 5;
 
     /** @var \Telegram */
     private $bot;
@@ -93,6 +94,9 @@ class WebhookController extends Controller
                 case 'Уведомлять о начале докладов':
                     $this->_notifyMe();
                     break;
+                case 'Написать участнику':
+                    $this->_contactWith(1);
+                    break;
                 default:
                     break;
             }
@@ -117,6 +121,9 @@ class WebhookController extends Controller
                     break;
                 case 'notify':
                     $this->_notifyMe($args[1]);
+                    break;
+                case 'contact_with':
+                    $this->_contactWith($args[1]);
                     break;
                 default:
                     break;
@@ -212,7 +219,8 @@ class WebhookController extends Controller
         $options = array(
             array($this->bot->buildKeyboardButton("Посмотреть расписание")),
             array($this->bot->buildKeyboardButton("Мое расписание")),
-            array($this->bot->buildKeyboardButton("Уведомлять о начале докладов"))
+            array($this->bot->buildKeyboardButton("Уведомлять о начале докладов")),
+            array($this->bot->buildKeyboardButton("Написать участнику"))
         );
         $keyBoard = $this->bot->buildKeyBoard($options, true, true);
 
@@ -316,6 +324,22 @@ class WebhookController extends Controller
                 'reply_markup' => $this->bot->buildInlineKeyBoard($buttons)
             );
             $this->bot->editMessageText($content);
+        }
+    }
+
+    /**
+     * Command: "Написать учаcтнику"
+     *
+     * @param int $page
+     */
+    public function _contactWith($page = 1)
+    {
+
+
+        if (isset($this->update['message'])) {
+
+        } else {
+
         }
     }
 
