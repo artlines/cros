@@ -4,7 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Hall;
 use AppBundle\Entity\Lecture;
-use AppBundle\Manager\TgSubscribeManager;
+use AppBundle\Manager\TgChatManager;
 use AppBundle\Repository\LectureRepository;
 use AppBundle\Repository\TgChatRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityNotFoundException;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\QueryBuilder;
+use Monolog\Logger;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,17 +21,18 @@ use AppBundle\Entity\TgChat;
 
 class WebhookController extends Controller
 {
-    const BOT_TOKEN = '527782633:AAFPLooKU0KwINR_CwRj7R-1Z_nHv9b5t0o';
     const LECTURES_ON_PAGE = 2;
-    const MY_LECTURES_ON_PAGE = 1;
+    const MY_LECTURES_ON_PAGE = 2;
 
     /** @var \Telegram */
     private $bot;
 
+    private $tgChat;
+
     /** @var array */
     private $update;
 
-    /** @var TgSubscribeManager */
+    /** @var TgChatManager */
     private $tsm;
 
     /** @var string */
@@ -39,99 +41,87 @@ class WebhookController extends Controller
 	// setWebhook
 	//https://api.telegram.org/bot527782633:AAFPLooKU0KwINR_CwRj7R-1Z_nHv9b5t0o/setWebhook?url=https://test-cros.nag.ru/webhook/update/c2hhbWJhbGEyMykxMiUh
 
-
-
     /**
      * @Route("/webhook/update/{token}", name="webhook-update")
      * @param $token
      * @return Response
      */
 	public function update($token)
-	{
-        $this->init_bot();
-
-        $this->tsm = $this->get('tg.subscriber');
-
-	    // Для очистки повисших запросов
-        //return new Response('ok', 200);
-
-	    /**
-         * Проверяем get-переменную, с которой пришел запрос на вебхук
-         */
-		if ($this->access_token === $token) {
-			$this->update = json_decode(file_get_contents('php://input'), true);
-
-			// log
-            file_put_contents('/home/cros/www/var/logs/tg_bot.log', "***\n[".date("d.m.Y H:i:s")."]\n".print_r($this->update, true)."\n\n", FILE_APPEND);
-
-            if (isset($this->update['message']))
-            {
-                $text = trim($this->update['message']['text']);
-
-                switch ($text) {
-                    case '/start':
-                        $this->_start();
-                        break;
-                    case '/stop':
-                        $this->_stop();
-                        break;
-                    case 'МЕНЮ':
-                        $this->_menu();
-                        break;
-                    case 'Посмотреть расписание':
-                        $this->_showDates();
-                        break;
-                    case 'Мое расписание':
-                        $this->_mySubscribes(1);
-                        break;
-                    case 'Уведомлять о начале докладов':
-                        $this->_notifyMe();
-                        break;
-                    default:
-                        break;
-                }
-            }
-            elseif (isset($this->update['callback_query']))
-            {
-                $data = trim($this->update['callback_query']['data']);
-
-                $args = explode(":", $data);
-                $cmd = $args[0];
-
-                // log
-                $this->_debug($args);
-
-                switch ($cmd) {
-                    case 'show_dates':
-                        $this->_showDates();
-                        break;
-                    case 'show_halls':
-                        $this->_showHalls($args[1]);
-                        break;
-                    case 'show_lectures':
-                        $this->_showLectures($args[1], $args[2], $args[3], $args[4], $args[5], $args[6]);
-                        break;
-                    case 'my_subscribes':
-                        $this->_mySubscribes($args[1]);
-                        break;
-                    case 'notify':
-                        $this->_notifyMe($args[1]);
-                        break;
-                    default:
-                        break;
-                }
-            }
-            else
-            {
-
+    {
+        $this->tsm = $this->get('tg.chat.manager');
+        if ($this->access_token === $token) {
+            // Для очистки повисших запросов
+            //return new Response('ok', 200);
+            try {
+                $this->init_bot();
+                $this->update = json_decode(file_get_contents('php://input'), true);
+                $this->_debug($this->update);
+                $this->tgChat = $this->_findTgChat();
+                $this->process();
+            } catch (\Exception $e) {
+                $this->_error($e);
             }
 
             return new Response('ok', 200);
+        } else {
+            return new Response('Permission denied.', 403);
         }
-		else
-		{
-			return new Response('', 403);
-		}
+    }
+
+    /**
+     * Разбор комманд
+     */
+    private function process()
+	{
+        if (isset($this->update['message'])) {
+            switch (trim($this->update['message']['text'])) {
+                case '/start':
+                    $this->_start();
+                    break;
+                case '/stop':
+                    $this->_stop();
+                    break;
+                case 'МЕНЮ':
+                    $this->_menu();
+                    break;
+                case 'Посмотреть расписание':
+                    $this->_showDates();
+                    break;
+                case 'Мое расписание':
+                    $this->_mySubscribes(1);
+                    break;
+                case 'Уведомлять о начале докладов':
+                    $this->_notifyMe();
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            $args = explode(":", trim($this->update['callback_query']['data']));
+
+            // log
+            $this->_debug($args);
+
+            switch ($args[0]) {
+                case 'show_dates':
+                    $this->_showDates();
+                    break;
+                case 'show_halls':
+                    $this->_showHalls($args[1]);
+                    break;
+                case 'show_lectures':
+                    $this->_showLectures($args[1], $args[2], $args[3], $args[4], $args[5], $args[6]);
+                    break;
+                case 'my_subscribes':
+                    $this->_mySubscribes($args[1], $args[2], $args[3]);
+                    break;
+                case 'notify':
+                    $this->_notifyMe($args[1]);
+                    break;
+                default:
+                    break;
+            }
+        }
 	}
 
     /**
@@ -144,7 +134,7 @@ class WebhookController extends Controller
 
         $text = "Привет, $username! Я бот конференции КРОС 2018.\n"
             ."Помогу следить за расписанием, быть в курсе событий.\n"
-            ."Если понадоблюсь - жми МЕНЮ. Продуктивного тебе время провождения!";
+            ."Если понадоблюсь - жми МЕНЮ. Продуктивного тебе времяпровождения!";
 
         $options = array(
             array(),
@@ -164,17 +154,13 @@ class WebhookController extends Controller
         /** @var TgChat $chat */
         $chat = $repo->findOneByChatId($chat_id);
 
-        if ($chat)
-        {
-            if (false === $chat->getIsActive())
-            {
+        if ($chat) {
+            if (false === $chat->getIsActive()) {
                 $chat->setIsActive(true);
                 $em->persist($chat);
                 $em->flush();
             }
-        }
-        else
-        {
+        } else {
             $chat = new TgChat();
             $chat->setChatId($chat_id);
             $em->persist($chat);
@@ -242,52 +228,81 @@ class WebhookController extends Controller
     /**
      * Command: "Мое расписание"
      */
-    private function _mySubscribes($page = 1)
+    private function _mySubscribes($page = 1, $lecture_action = null, $lecture_id = null)
     {
-        $tgChat = $this->_findTgChat();
         $buttons = array();
 
-        $subscribes = $tgChat->getLectures();
-        if (!$subscribes->isEmpty()) {
-            $sub_show = new ArrayCollection($subscribes->slice(($page-1) * self::MY_LECTURES_ON_PAGE, self::MY_LECTURES_ON_PAGE));
-            /** @var Lecture $subscribe */
-            foreach ($sub_show as $subscribe) {
-                $buttons[] = array($this->bot->buildInlineKeyBoardButton(
-                    $subscribe->getStartTime()->format("H:i") . " " . $subscribe->getDate()->format("d.m.Y") . " | " . $subscribe->getTitle(),
+        if (isset($lecture_action, $lecture_id) && $lecture_action == 'info') {
+            $lecture = $this->_findLecture($lecture_id);
+
+            $text = $this->renderView('telegram_bot/lecture_info.html.twig', ['lecture' => $lecture]);
+
+            $buttons[] = array(
+                $this->bot->buildInlineKeyBoardButton(
+                    "Отписаться",
                     false,
-                    '???'
-                ));
+                    "my_subscribes:1:unsubscribe:$lecture_id"
+                )
+            );
+            $buttons[] = array(
+                $this->bot->buildInlineKeyBoardButton(
+                    "НАЗАД",
+                    false,
+                    "my_subscribes:$page"
+                )
+            );
+
+        } else {
+
+            if (isset($lecture_action, $lecture_id) && $lecture_action == 'unsubscribe') {
+                $lecture = $this->_findLecture($lecture_id);
+                $this->tsm->unsubscribeLecture($this->tgChat, $lecture);
             }
-        }
 
-        /**
-         * Если лекций больше, чем можно выводить на страницу, то
-         * - пишем номер страницы
-         * - добавляем кнопки пагинации
-         */
-        $paginator = '';
-        if ($subscribes->count() > self::MY_LECTURES_ON_PAGE) {
-            $totalPages = round($subscribes->count() / self::MY_LECTURES_ON_PAGE, PHP_ROUND_HALF_UP);
-            $paginator = $this->renderView('telegram_bot/_paginator_text.html.twig', ['current_page' => $page, 'total_pages' => $totalPages]);
-
-            if ($totalPages > 1) {
-                if ($page == 1) {
-                    $buttons[] = array($this->bot->buildInlineKeyBoardButton(">>>", false, 'my_subscribes:'.($page+1)));
-                } elseif ($page == $totalPages) {
-                    $buttons[] = array($this->bot->buildInlineKeyBoardButton("<<<", false, 'my_subscribes:'.($page-1)));
-                } else {
-                    $buttons[] = array(
-                        $this->bot->buildInlineKeyBoardButton("<<<", false, 'my_subscribes:'.($page-1)),
-                        $this->bot->buildInlineKeyBoardButton(">>>", false, 'my_subscribes:'.($page+1))
-                    );
+            $subscribes = $this->tgChat->getLectures();
+            if (!$subscribes->isEmpty()) {
+                $sub_show = new ArrayCollection($subscribes->slice(($page-1) * self::MY_LECTURES_ON_PAGE, self::MY_LECTURES_ON_PAGE));
+                /** @var Lecture $subscribe */
+                foreach ($sub_show as $subscribe) {
+                    $buttons[] = array($this->bot->buildInlineKeyBoardButton(
+                        $subscribe->getStartTime()->format("H:i") . " " . $subscribe->getDate()->format("d.m.Y") . " | " . $subscribe->getTitle(),
+                        false,
+                        "my_subscribes:$page:info:{$subscribe->getId()}"
+                    ));
                 }
             }
+
+            /**
+             * Если лекций больше, чем можно выводить на страницу, то
+             * - пишем номер страницы
+             * - добавляем кнопки пагинации
+             */
+            $paginator = '';
+            if ($subscribes->count() > self::MY_LECTURES_ON_PAGE) {
+                $totalPages = round($subscribes->count() / self::MY_LECTURES_ON_PAGE, 0,PHP_ROUND_HALF_UP);
+                $paginator = $this->renderView('telegram_bot/_paginator_text.html.twig', ['current_page' => $page, 'total_pages' => $totalPages]);
+
+                if ($totalPages > 1) {
+                    if ($page == 1) {
+                        $buttons[] = array($this->bot->buildInlineKeyBoardButton(">>>", false, 'my_subscribes:' . ($page + 1)));
+                    } elseif ($page == $totalPages) {
+                        $buttons[] = array($this->bot->buildInlineKeyBoardButton("<<<", false, 'my_subscribes:' . ($page - 1)));
+                    } else {
+                        $buttons[] = array(
+                            $this->bot->buildInlineKeyBoardButton("<<<", false, 'my_subscribes:' . ($page - 1)),
+                            $this->bot->buildInlineKeyBoardButton(">>>", false, 'my_subscribes:' . ($page + 1))
+                        );
+                    }
+                }
+            }
+
+            $text = $this->renderView('telegram_bot/my_subscribes.html.twig', ['count' => $subscribes->count()]).$paginator;
         }
 
         if (isset($this->update['message'])) {
             $content = array(
                 'chat_id' => $this->update['message']['chat']['id'],
-                'text' => $this->renderView('telegram_bot/my_subscribes.html.twig', ['count' => $subscribes->count()]).$paginator,
+                'text' => $text,
                 'parse_mode' => 'HTML',
                 'reply_markup' => $this->bot->buildInlineKeyBoard($buttons)
             );
@@ -296,7 +311,7 @@ class WebhookController extends Controller
             $content = array(
                 'chat_id' => $this->update['callback_query']['message']['chat']['id'],
                 'message_id' => $this->update['callback_query']['message']['message_id'],
-                'text' => $this->renderView('telegram_bot/my_subscribes.html.twig', ['count' => $subscribes->count()]).$paginator,
+                'text' => $text,
                 'parse_mode' => 'HTML',
                 'reply_markup' => $this->bot->buildInlineKeyBoard($buttons)
             );
@@ -316,8 +331,7 @@ class WebhookController extends Controller
          */
         if (isset($this->update['message'])) {
             try {
-                $tgChat = $this->_findTgChat();
-                if ($tgChat->isAllowNotify()) {
+                if ($this->tgChat->isAllowNotify()) {
                     $_status = 'Вы подписаны на уведомления';
                 } else {
                     $_status = 'Вы отписаны от уведомлений';
@@ -325,7 +339,7 @@ class WebhookController extends Controller
             } catch (EntityNotFoundException $e) {
                 return false;
             }
-            $this->_debug(['status' => $tgChat->isAllowNotify()]);
+            $this->_debug(['status' => $this->tgChat->isAllowNotify()]);
 
             $option = array(array(
                 $this->bot->buildInlineKeyBoardButton(
@@ -351,21 +365,15 @@ class WebhookController extends Controller
         } else {
             $em = $this->getDoctrine()->getManager();
 
-            try {
-                $tgChat = $this->_findTgChat();
-            } catch (EntityNotFoundException $e) {
-                return false;
-            }
-
             if ($flag) {
-                $tgChat->allowNotify();
+                $this->tgChat->allowNotify();
                 $_status = 'Вы подписаны на уведомления';
             } else {
-                $tgChat->denyNotify();
+                $this->tgChat->denyNotify();
                 $_status = 'Вы отписаны от уведомлений';
             }
 
-            $em->persist($tgChat);
+            $em->persist($this->tgChat);
             $em->flush();
 
             $content = array(
@@ -387,9 +395,6 @@ class WebhookController extends Controller
         $query = $em->createQuery('SELECT DISTINCT l.date FROM AppBundle\Entity\Lecture l ORDER BY l.date ASC');
         $dates = $query->getResult();
 
-        //log
-        $this->_debug($dates);
-
         $option = array();
         /** @var Hall $hall */
         foreach ($dates as $date) {
@@ -398,7 +403,6 @@ class WebhookController extends Controller
             $option[] = array($this->bot->buildInlineKeyBoardButton($date_title, false, 'show_halls:' . $date_str));
         }
         $inlineKeyBoard = $this->bot->buildInlineKeyBoard($option);
-
 
         /**
          * Проверяем событие
@@ -409,7 +413,7 @@ class WebhookController extends Controller
             $content = array(
                 'chat_id' => $this->update['callback_query']['message']['chat']['id'],
                 'message_id' => $this->update['callback_query']['message']['message_id'],
-                'text' => '<strong>Просмотр расписания</strong>' . "\n\n" . 'Выберите дату',
+                'text' => $this->renderView('telegram_bot/schedule.html.twig'),
                 'parse_mode' => 'HTML',
                 'reply_markup' => $inlineKeyBoard
             );
@@ -417,13 +421,12 @@ class WebhookController extends Controller
         } else {
             $content = array(
                 'chat_id' => $this->update['message']['chat']['id'],
-                'text' => '<strong>Просмотр расписания</strong>' . "\n\n" . 'Выберите дату',
+                'text' => $this->renderView('telegram_bot/schedule.html.twig'),
                 'parse_mode' => 'HTML',
                 'reply_markup' => $inlineKeyBoard
             );
             $this->bot->sendMessage($content);
         }
-
     }
 
     /**
@@ -433,9 +436,6 @@ class WebhookController extends Controller
     {
         /** @var LectureRepository $lectureRepo */
         $all_halls = $this->getDoctrine()->getRepository("AppBundle:Hall")->findAll();
-
-        // log
-        $this->_debug(['all_halls' => $all_halls]);
 
         $option = array();
         /** @var Hall $hall */
@@ -451,7 +451,7 @@ class WebhookController extends Controller
         $option[] = array($this->bot->buildInlineKeyBoardButton("Все залы", false, 'show_lectures:' . $date . ':all:1'));
         $option[] = array($this->bot->buildInlineKeyBoardButton("НАЗАД", false, 'show_dates'));
 
-        $text = "<strong>Просмотр расписания</strong>\n\n<strong>Выбранная дата:</strong> $date\n\n" . 'Выберите зал';
+        $text = $this->renderView('telegram_bot/schedule.html.twig', ['date' => $date]);
         $content = array(
             'chat_id' => $this->update['callback_query']['message']['chat']['id'],
             'message_id' => $this->update['callback_query']['message']['message_id'],
@@ -467,34 +467,23 @@ class WebhookController extends Controller
      * @param $date
      * @param $hallId
      * @param $page
-     * @param int|null $lecture_id
      * @param string|null $lecture_action
+     * @param int|null $lecture_id
+     * @param string|null $info_action
+     * @return bool
+     * @throws EntityNotFoundException
      */
     private function _showLectures($date, $hallId, $page, $lecture_action = null, $lecture_id = null, $info_action = null)
     {
         $buttons = array();
-
         if (isset($lecture_action, $lecture_id) && $lecture_action == 'info') {
-
-            try {
-                $lecture = $this->_findLecture($lecture_id);
-            } catch (EntityNotFoundException $e) {
-                return false;
-            }
-
             if (isset($info_action)) {
                 switch ($info_action) {
                     case 'subscribe':
-                        $this->tsm->subcribe(
-                            $this->update['callback_query']['message']['chat']['id'],
-                            $lecture_id
-                        );
+                        $this->tsm->subscribeLecture($this->tgChat, $lecture_id);
                         break;
                     case 'unsubscribe':
-                        $this->tsm->unsubcribe(
-                            $this->update['callback_query']['message']['chat']['id'],
-                            $lecture_id
-                        );
+                        $this->tsm->unsubscribeLecture($this->tgChat, $lecture_id);
                         break;
                 }
             }
@@ -502,28 +491,25 @@ class WebhookController extends Controller
             /**
              * Тут оформление сообщения с информацией по лекции
              */
+            $lecture = $this->_findLecture($lecture_id);
             $text = $this->renderView('telegram_bot/lecture_info.html.twig', ['lecture' => $lecture]);
 
-            try {
-                $tgChat = $this->_findTgChat();
-                if ($tgChat->getLectures()->contains($lecture)) {
-                    $buttons[] = array(
-                        $this->bot->buildInlineKeyBoardButton(
-                            "Отписаться",
-                            false,
-                            "show_lectures:$date:$hallId:$page:info:$lecture_id:unsubscribe"
-                        )
-                    );
-                } else {
-                    $buttons[] = array(
-                        $this->bot->buildInlineKeyBoardButton(
-                            "Подписаться",
-                            false,
-                            "show_lectures:$date:$hallId:$page:info:$lecture_id:subscribe"
-                        )
-                    );
-                }
-            } catch (EntityNotFoundException $e) {
+            if ($this->tgChat->getLectures()->contains($lecture)) {
+                $buttons[] = array(
+                    $this->bot->buildInlineKeyBoardButton(
+                        "Отписаться",
+                        false,
+                        "show_lectures:$date:$hallId:$page:info:$lecture_id:unsubscribe"
+                    )
+                );
+            } else {
+                $buttons[] = array(
+                    $this->bot->buildInlineKeyBoardButton(
+                        "Подписаться",
+                        false,
+                        "show_lectures:$date:$hallId:$page:info:$lecture_id:subscribe"
+                    )
+                );
             }
 
             $buttons[] = array(
@@ -566,28 +552,28 @@ class WebhookController extends Controller
             /**
              * Inline-кнопки лекций
              */
-            $tgChat = $this->_findTgChat();
             /** @var Lecture $lecture */
             foreach ($lectures as $lecture) {
                 $_id = $lecture->getId();
-                $_subscribed = $tgChat->getLectures()->contains($lecture);
-
 
                 if (isset($lecture_action, $lecture_id) && $lecture_id == $_id) {
-
-                    $buttons[] = array(
-                        $this->bot->buildInlineKeyBoardButton(
-                            $lecture->getStartTime()->format("H:i") . ' | ' . $lecture->getTitle(),
-                            false,
-                            "show_lectures:$date:$hallId:$page"
-                        )
-                    );
 
                     switch ($lecture_action) {
                         /**
                          * Разворачиваем мини-меню для лекции, если оно вызвано
                          */
                         case 'toggle':
+                            $_subscribed = $this->tgChat->getLectures()->contains($lecture);
+
+                            $btn_text = $lecture->getStartTime()->format("H:i") . ' | ' . $lecture->getTitle();
+                            $buttons[] = array(
+                                $this->bot->buildInlineKeyBoardButton(
+                                    $btn_text,
+                                    false,
+                                    "show_lectures:$date:$hallId:$page"
+                                )
+                            );
+
                             if ($_subscribed) {
                                 $_btn = $this->bot->buildInlineKeyBoardButton(
                                     "Отписаться",
@@ -615,9 +601,18 @@ class WebhookController extends Controller
                          * Подписываемся
                          */
                         case 'subscribe':
-                            $this->tsm->subcribe(
-                                $this->update['callback_query']['message']['chat']['id'],
+                            $this->tsm->subscribeLecture(
+                                $this->tgChat,
                                 $lecture_id
+                            );
+
+                            $btn_text = $lecture->getStartTime()->format("H:i") . ' | ' . $lecture->getTitle();
+                            $buttons[] = array(
+                                $this->bot->buildInlineKeyBoardButton(
+                                    $btn_text,
+                                    false,
+                                    "show_lectures:$date:$hallId:$page"
+                                )
                             );
 
                             $buttons[] = array(
@@ -637,9 +632,18 @@ class WebhookController extends Controller
                          * Отписываемся
                          */
                         case 'unsubscribe':
-                            $this->tsm->unsubcribe(
-                                $this->update['callback_query']['message']['chat']['id'],
+                            $this->tsm->unsubscribeLecture(
+                                $this->tgChat,
                                 $lecture_id
+                            );
+
+                            $btn_text = $lecture->getStartTime()->format("H:i") . ' | ' . $lecture->getTitle();
+                            $buttons[] = array(
+                                $this->bot->buildInlineKeyBoardButton(
+                                    $btn_text,
+                                    false,
+                                    "show_lectures:$date:$hallId:$page"
+                                )
                             );
 
                             $buttons[] = array(
@@ -674,7 +678,7 @@ class WebhookController extends Controller
              * - добавляем кнопки пагинации
              */
             if ($lectures_count > self::LECTURES_ON_PAGE) {
-                $totalPages = round($lectures_count / self::LECTURES_ON_PAGE, PHP_ROUND_HALF_UP);
+                $totalPages = round($lectures_count / self::LECTURES_ON_PAGE, 0,PHP_ROUND_HALF_UP);
                 $text .= "\n".$this->renderView('telegram_bot/_paginator_text.html.twig', ['current_page' => $page, 'total_pages' => $totalPages]);
 
                 if ($totalPages > 1) {
@@ -692,11 +696,11 @@ class WebhookController extends Controller
             }
 
             /**
-             * Если по заданным параметрам лекций не найдено
-             * выводим "Лекций не найдено" и кнопку "Назад"
+             * Если по заданным параметрам докладов не найдено
+             * выводим "Докладов не найдено" и кнопку "Назад"
              */
             if ($lectures_count == 0) {
-                $text .= "\nЛекций не найдено";
+                $text .= "\nДокладов не найдено";
             }
 
             /**
@@ -715,16 +719,14 @@ class WebhookController extends Controller
         $this->bot->editMessageText($content);
     }
 
-
     private function init_bot()
     {
-        $this->bot = new \Telegram(self::BOT_TOKEN);
-    }
+        $bot_token = $this->container->getParameter('tg.bot.token');
+        if (!$bot_token) {
+            throw new \Exception("Bot token is not set in parameters.yml");
+        }
 
-    private function _debug($data)
-    {
-        // log
-        file_put_contents('/home/cros/www/var/logs/tg_bot.log', print_r($data, true), FILE_APPEND);
+        $this->bot = new \Telegram($bot_token);
     }
 
     /**
@@ -768,6 +770,38 @@ class WebhookController extends Controller
             throw new EntityNotFoundException("TgChat not found.");
         }
         return $tgChat;
+    }
+
+    /**
+     * Обработчик ошибок
+     *
+     * Сообщение о неполадке для пользователя
+     * TODO: Сообщение отладки для администратора
+     *
+     * @param \Exception $e
+     * @return Response
+     */
+    private function _error($e)
+    {
+        if (isset($this->bot)) {
+            $msg = "Что-то пошло не так. Сообщение об ошибке отправлено специалистам.";
+            $content = array(
+                'chat_id' => isset($this->update['message']) ? $this->update['message']['chat']['id'] : $this->update['callback_query']['message']['chat']['id'],
+                'text' => $msg //. $e->getMessage()
+            );
+            $this->bot->sendMessage($content);
+            return new Response('ok', 200);
+        }
+
+        /** @var Logger $logger */
+        $logger = $this->container->get('monolog.logger');
+        $logger->error("EROORROROOROROROROROROORRRRRRR: ".$e->getMessage());
+    }
+
+    private function _debug($data)
+    {
+        // log
+        file_put_contents('/home/cros/www/var/logs/tg_bot.log', print_r($data, true), FILE_APPEND);
     }
 	
 }

@@ -5,11 +5,13 @@ parameters:
     lectures.sheets.client_secret: "%kernel.root_dir%/google_sheets/google_client_secret.json"
     lectures.sheets.credentials_path: "%kernel.root_dir%/google_sheets/cros.google-sheets.credentials.json"
 
+    tg.bot.token: "527782633:AAFPLooKU0KwINR_CwRj7R-1Z_nHv9b5t0o"
+
 services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
-    tg.subscriber:
-        class: AppBundle\Manager\TgSubscribeManager
+    tg.chat.manager:
+        class: AppBundle\Manager\TgChatManager
         public: true
-        arguments: ['@doctrine.orm.entity_manager']
+        arguments: ['@doctrine.orm.entity_manager', '%tg.bot.token%', '@twig']
