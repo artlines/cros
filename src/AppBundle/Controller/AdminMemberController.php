@@ -31,6 +31,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Vich\UploaderBundle\Form\Type\VichFileType;
+use AppBundle\Service\FileUploader;
+
 
 class AdminMemberController extends Controller
 {
@@ -330,9 +332,9 @@ class AdminMemberController extends Controller
      */
     public function speakerNewAction(Request $request){
 
+
         $em = $this->getDoctrine()->getManager();
         $add_id = $request->get('add_id');
-
         $userRepository = $this->getDoctrine()->getRepository('AppBundle:User');
         $user = $userRepository->find($add_id);
         if($user) {
@@ -343,7 +345,10 @@ class AdminMemberController extends Controller
             $em->persist($speaker);
             $em->flush();
 
-            return new Response($speaker->getId());
+            //return new Response($speaker->getId());
+            var_dump(new Response($speaker->getId()));
+            echo "Вошли в добавление";
+            die();
         }
         else{
             return new Response('false');
@@ -510,5 +515,60 @@ class AdminMemberController extends Controller
             $em->remove($userToConf);
             $em->flush();
         }
+    }
+    /**
+     * Создание докладчика
+     *
+     * @Route("/admin/speakeradd", name="admin-speaker-add")
+     * @param Request $request
+     * @return object
+     */
+    public function speakerAddAction(Request $request){
+
+//        $id = 33;
+//        /** @var SpeakerRepository $speakerRepository */
+//        $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
+//
+//        /** @var Speaker $speaker */
+//        $speaker = $speakerRepository->find($id);
+
+        /** @var Form $form */
+        $form = $this->createFormBuilder()
+            ->add('avatar', HiddenType::class, array('required' => false))
+            ->add('avatarFile', VichFileType::class, array('label' => 'Photo', 'required' => false))
+            ->add('family', TextType::class, array('label' => 'Фамилия'))
+            ->add('name', TextType::class, array('label' => 'Имя'))
+            ->add('middle_name', TextType::class, array('label' => 'Отчество'))
+            ->add('phone', TextType::class, array('label' => 'Телефон'))
+            ->add('email', TextType::class, array('label' => 'E-mail'))
+            ->add('report', TextType::class, array('label' => 'Доклад'))
+            ->add('isActive', CheckboxType::class, array('label' => 'Скрыть Докладчика','required' => false ))
+            ->add('description', TextareaType::class, array('label' => 'Биография'))
+            ->add('save', SubmitType::class, array('label' => 'Save'))
+            ->getForm();
+
+        /*
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $speaker = $form->getData();
+            $speaker->setPublish(1);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($speaker);
+            $em->flush();
+
+            $result = array(
+                'status' => 'success',
+                'text' => 'Сохранено',
+            );
+        }
+
+        $user = $speaker->getUser();
+        */
+        return $this->render('admin/speakers/add.html.twig', array(
+            'form' => $form->createView(),
+            'h1' => 'Добавление докладчика',
+        ));
     }
 }
