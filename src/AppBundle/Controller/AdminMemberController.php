@@ -548,12 +548,37 @@ class AdminMemberController extends Controller
             ->getForm();
 
         $form->handleRequest($request);
-        //var_dump($this->get('kernel')->getRootDir());
-
         if($form->isSubmitted() && $form->isValid()){
+        //if($form->isSubmitted()){
+            echo "Вошли ебана";
+            $UserRepository = $this->getDoctrine()->getRepository('AppBundle:User');
+            $orgsts = $this->getDoctrine()->getRepository('AppBundle:Organization')->find(2);
+            $form = $form->getData();
             $rootDir = $this->get('kernel')->getRootDir();
-            $speaker = $form->getData();
             $em = $this->getDoctrine()->getManager();
+
+
+            /* add user */
+            $user = new User();
+            $user->setOrganization($orgsts);
+            $user->setFirstName($form['name']);
+            $user->setLastName($form['family']);
+            $user->setMiddleName($form['middle_name']);
+            $user->setUsername($form['phone']); // It's actually a phone
+            $user->setEmail($form['email']);
+            $user->setIsActive(1);
+            $password = substr(md5($user->getLastName().$user->getFirstName()), 0, 6);
+            $encoder = $this->container->get('security.password_encoder');
+            $encoded = $encoder->encodePassword($user, $password);
+            $user->setPassword($encoded);
+            $user->setRoles(array("ROLE_USER"));
+
+            $em->persist($user);
+            $em->flush();
+
+
+
+            //$speaker = $form->getData();
 
             /*
             $resizeService = $this->get('resizeImages');
@@ -561,7 +586,7 @@ class AdminMemberController extends Controller
             $resizeService->resize(400, 200);
             $resizeService->save('/home/stat-cros/www/web/uploads/image1.jpg');
             */
-            echo "Ебана нажали на форму"; die();
+            return true;
         }
 
         /*
