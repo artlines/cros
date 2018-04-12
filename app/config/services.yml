@@ -9,6 +9,5 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
-    AppBundle\Service\FileUploader:
-        arguments:
-            $targetDirectory: '/home/stat-cros/uploads/speakers'
+  resizeImages:
+    class: AppBundle\Service\ResizeImages

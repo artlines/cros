@@ -32,7 +32,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 use AppBundle\Service\FileUploader;
-
+use AppBundle\Service\ResizeImages;
 
 class AdminMemberController extends Controller
 {
@@ -546,6 +546,23 @@ class AdminMemberController extends Controller
             ->add('description', TextareaType::class, array('label' => 'Биография'))
             ->add('save', SubmitType::class, array('label' => 'Save'))
             ->getForm();
+
+        $form->handleRequest($request);
+        //var_dump($this->get('kernel')->getRootDir());
+
+        if($form->isSubmitted() && $form->isValid()){
+            $rootDir = $this->get('kernel')->getRootDir();
+            $speaker = $form->getData();
+            $em = $this->getDoctrine()->getManager();
+
+            /*
+            $resizeService = $this->get('resizeImages');
+            $resizeService->load('/home/stat-cros/www/web/uploads/image.jpg');
+            $resizeService->resize(400, 200);
+            $resizeService->save('/home/stat-cros/www/web/uploads/image1.jpg');
+            */
+            echo "Ебана нажали на форму"; die();
+        }
 
         /*
         $form->handleRequest($request);
