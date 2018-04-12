@@ -65,7 +65,7 @@ swiftmailer:
     spool:     { type: memory }
 
 # File Uploader
-vich_uploader:
+vich_uploader: # Where does this work I do not quite understand?
     db_driver: orm
     twig: true
 
@@ -76,7 +76,8 @@ vich_uploader:
             inject_on_load: false
             delete_on_update: false
             delete_on_remove: false
-
+parameters:
+    brochures_directory: '%kernel.root_dir%/../web/uploads/speakers'
 # reCAPTCHA
 vihuvac_recaptcha:
     site_key:   6LcCcEYUAAAAAIUTbUWnxgBb1u8DGKNc3G4A-waZ

@@ -549,8 +549,21 @@ class AdminMemberController extends Controller
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-        //if($form->isSubmitted()){
+
             echo "Вошли ебана";
+            $resizeService = $this->get('resizeImages');
+            $files = $form->get('avatarFile')->getData();
+            $_exten = $files->getClientOriginalExtension();
+            $postefixOriginal = '_original';
+            $postefixSmall = '_small';
+            $postefixBig = '_big';
+            $uniqid = uniqid();
+            $file = $files->move('/home/stat-cros/www/web/uploads/',$uniqid.$postefixOriginal.'.'.$_exten);
+            $resizeService->load('/home/stat-cros/www/web/uploads/'.$uniqid.$postefixOriginal.'.'.$_exten);
+            $resizeService->resize(400, 200);
+            $resizeService->save('/home/stat-cros/www/web/uploads/'.$uniqid.$postefixSmall.'.'.$_exten);
+            /* add big resize */
+
             $UserRepository = $this->getDoctrine()->getRepository('AppBundle:User');
             $orgsts = $this->getDoctrine()->getRepository('AppBundle:Organization')->find(2);
             $form = $form->getData();
@@ -558,7 +571,7 @@ class AdminMemberController extends Controller
             $em = $this->getDoctrine()->getManager();
 
 
-            /* add user */
+
             $user = new User();
             $user->setOrganization($orgsts);
             $user->setFirstName($form['name']);
@@ -572,21 +585,19 @@ class AdminMemberController extends Controller
             $encoded = $encoder->encodePassword($user, $password);
             $user->setPassword($encoded);
             $user->setRoles(array("ROLE_USER"));
-
             $em->persist($user);
             $em->flush();
 
+            $speaker = new Speaker();
+            $speaker->setUser($user);
+            $speaker->setPublish(1);
+            $speaker->setConferenceId(12);
+            $em->persist($speaker);
+            $em->flush();
 
 
             //$speaker = $form->getData();
-
-            /*
-            $resizeService = $this->get('resizeImages');
-            $resizeService->load('/home/stat-cros/www/web/uploads/image.jpg');
-            $resizeService->resize(400, 200);
-            $resizeService->save('/home/stat-cros/www/web/uploads/image1.jpg');
-            */
-            return true;
+            return $this->redirectToRoute('admin-speakers');
         }
 
         /*

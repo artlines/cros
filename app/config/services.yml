@@ -11,3 +11,7 @@ services:
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
   resizeImages:
     class: AppBundle\Service\ResizeImages
+
+    App\Service\FileUploader:
+        arguments:
+            $targetDirectory: '%brochures_directory%'
