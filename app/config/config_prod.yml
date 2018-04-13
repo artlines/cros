@@ -33,6 +33,9 @@ monolog:
 
 parameters:
     cros_emails: [ 'e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru', 'cros@nag.ru' ]
+    #tg.bot.token: "527782633:AAFPLooKU0KwINR_CwRj7R-1Z_nHv9b5t0o"
+    tg.bot.token: "560591203:AAGbR2dImWaYdY1LzT5qZfE4wmRoleMU9vc"
+
 twig:
     globals:
         theme_template: 'base.html.twig'

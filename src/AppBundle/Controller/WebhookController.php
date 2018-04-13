@@ -4,13 +4,18 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Hall;
 use AppBundle\Entity\Lecture;
+use AppBundle\Entity\Organization;
+use AppBundle\Entity\User;
 use AppBundle\Manager\TgChatManager;
 use AppBundle\Repository\LectureRepository;
+use AppBundle\Repository\OrganizationRepository;
 use AppBundle\Repository\TgChatRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityNotFoundException;
+use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\PersistentCollection;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Monolog\Logger;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -18,6 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\TgChat;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 class WebhookController extends Controller
 {
@@ -28,6 +34,7 @@ class WebhookController extends Controller
     /** @var \Telegram */
     private $bot;
 
+    /** @var TgChat */
     private $tgChat;
 
     /** @var array */
@@ -49,16 +56,21 @@ class WebhookController extends Controller
      */
 	public function update($token)
     {
-        $this->tsm = $this->get('tg.chat.manager');
         if ($this->access_token === $token) {
             // Для очистки повисших запросов
             //return new Response('ok', 200);
             try {
                 $this->init_bot();
+
                 $this->update = json_decode(file_get_contents('php://input'), true);
                 $this->_debug($this->update);
+
                 $this->tgChat = $this->_findTgChat();
+                $this->tsm = $this->get('tg.chat.manager');
+
                 $this->process();
+            } catch (OptimisticLockException $e) {
+                $this->_error($e);
             } catch (\Exception $e) {
                 $this->_error($e);
             }
@@ -71,34 +83,61 @@ class WebhookController extends Controller
 
     /**
      * Разбор комманд
+     *
+     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws EntityNotFoundException
      */
     private function process()
 	{
         if (isset($this->update['message'])) {
-            switch (trim($this->update['message']['text'])) {
-                case '/start':
-                    $this->_start();
-                    break;
-                case '/stop':
-                    $this->_stop();
-                    break;
-                case 'МЕНЮ':
-                    $this->_menu();
-                    break;
-                case 'Посмотреть расписание':
-                    $this->_showDates();
-                    break;
-                case 'Мое расписание':
-                    $this->_mySubscribes(1);
-                    break;
-                case 'Уведомлять о начале докладов':
-                    $this->_notifyMe();
-                    break;
-                case 'Написать участнику':
-                    $this->_contactWith(1);
-                    break;
-                default:
-                    break;
+            if (isset($this->update['message']['reply_to_message'])) {
+                $tgState = $this->tgChat->getState();
+                if (isset($tgState['reply_type'])) {
+                    $_text = trim($this->update['message']['text']);
+                    switch ($tgState['reply_type']) {
+                        case 'contact_with':
+                            $this->_debug(['$tgState' => $tgState]);
+                            if (!isset($tgState['_name'])) {
+                                $this->_contactWith($tgState['_org_id'], $_text);
+                            } elseif (!isset($tgState['_company'])) {
+                                $this->_contactWith($tgState['_org_id'], $tgState['_name'], $_text);
+                            } elseif (!isset($tgState['_phone'])) {
+                                $this->_contactWith($tgState['_org_id'], $tgState['_name'], $tgState['_company'], $_text);
+                            } else {
+                                throw new InvalidParameterException("All parameters must be defined.");
+                            }
+                            break;
+                    }
+                } else {
+                    // Ничего. Молчим, если по стейту мы не ожидаем никакого ответа на сообщение
+                }
+
+            } else {
+                switch (trim($this->update['message']['text'])) {
+                    case '/start':
+                        $this->_start();
+                        break;
+                    case '/stop':
+                        $this->_stop();
+                        break;
+                    case 'МЕНЮ':
+                        $this->_menu();
+                        break;
+                    case 'Посмотреть расписание':
+                        $this->_showDates();
+                        break;
+                    case 'Мое расписание':
+                        $this->_mySubscribes(1);
+                        break;
+                    case 'Уведомлять о начале докладов':
+                        $this->_notifyMe();
+                        break;
+                    case 'Написать участнику':
+                        $this->_contactList(1);
+                        break;
+                    default:
+                        break;
+                }
             }
         } else {
             $args = explode(":", trim($this->update['callback_query']['data']));
@@ -122,8 +161,12 @@ class WebhookController extends Controller
                 case 'notify':
                     $this->_notifyMe($args[1]);
                     break;
+                case 'contact_list':
+                    $this->_contactList($args[1]);
+                    break;
                 case 'contact_with':
-                    $this->_contactWith($args[1]);
+                    $this->tsm->resetState($this->tgChat);
+                    $this->_contactWith($args[1], $args[2], $args[3], $args[4]);
                     break;
                 default:
                     break;
@@ -220,7 +263,7 @@ class WebhookController extends Controller
             array($this->bot->buildKeyboardButton("Посмотреть расписание")),
             array($this->bot->buildKeyboardButton("Мое расписание")),
             array($this->bot->buildKeyboardButton("Уведомлять о начале докладов")),
-            array($this->bot->buildKeyboardButton("Написать участнику"))
+            //array($this->bot->buildKeyboardButton("Написать участнику"))
         );
         $keyBoard = $this->bot->buildKeyBoard($options, true, true);
 
@@ -332,19 +375,85 @@ class WebhookController extends Controller
      *
      * @param int $page
      */
-    public function _contactWith($page = 1)
+    public function _contactList($page = 1)
     {
+        $em = $this->getDoctrine()->getManager();
+
+        /** @var OrganizationRepository $organizations */
+        $orgRepo = $em->getRepository('AppBundle:Organization');
+        /** @var Query $orgQ */
+        $orgQ = $orgRepo
+            ->createQueryBuilder('o')
+            ->getQuery();
+
+        $org_count = count($orgQ->getResult());
+
+        $orgs = $orgQ
+            ->setMaxResults(self::CONTACTS_ON_PAGE)
+            ->setFirstResult(($page - 1) * self::CONTACTS_ON_PAGE)
+            ->getResult();
+
+        $org_list = array();
+        $buttons = array();
+        /** @var Organization $org */
+        foreach ($orgs as $org) {
+            $buttons[] = array(
+                $this->bot->buildInlineKeyBoardButton(
+                    $org->getName(),
+                    false,
+                    "contact_with:{$org->getId()}"
+                )
+            );
+            $org_list[] = $org->getName();
+        }
+
+        $text = $this->renderView('telegram_bot/contacts_list.html.twig');
+
+        /**
+         * Пагинаццция
+         */
+        if ($org_count > self::CONTACTS_ON_PAGE) {
+            $totalPages = round($org_count / self::CONTACTS_ON_PAGE, 0,PHP_ROUND_HALF_UP);
+            $text .= $this->renderView('telegram_bot/_paginator_text.html.twig', ['current_page' => $page, 'total_pages' => $totalPages]);
+
+            if ($totalPages > 1) {
+                if ($page == 1) {
+                    $buttons[] = array($this->bot->buildInlineKeyBoardButton(">>>", false, 'contact_list:'.($page+1)));
+                } elseif ($page == $totalPages) {
+                    $buttons[] = array($this->bot->buildInlineKeyBoardButton("<<<", false, 'contact_list:'.($page-1)));
+                } else {
+                    $buttons[] = array(
+                        $this->bot->buildInlineKeyBoardButton("<<<", false, 'contact_list:'.($page-1)),
+                        $this->bot->buildInlineKeyBoardButton(">>>", false, 'contact_list:'.($page+1))
+                    );
+                }
+            }
+        }
 
 
         if (isset($this->update['message'])) {
-
+            $content = array(
+                'chat_id' => $this->update['message']['chat']['id'],
+                'text' => ($text == '') ? 'Нет данных' : $text,
+                'parse_mode' => 'HTML',
+                'reply_markup' => $this->bot->buildInlineKeyBoard($buttons)
+            );
+            $this->bot->sendMessage($content);
         } else {
-
+            $content = array(
+                'chat_id' => $this->update['callback_query']['message']['chat']['id'],
+                'message_id' => $this->update['callback_query']['message']['message_id'],
+                'text' => ($text == '') ? 'Нет данных' : $text,
+                'parse_mode' => 'HTML',
+                'reply_markup' => $this->bot->buildInlineKeyBoard($buttons)
+            );
+            $this->bot->editMessageText($content);
         }
     }
 
     /**
      * Command: "Уведомлять о начале докладов"
+     * TODO: убрать html
      */
     private function _notifyMe($flag = null)
     {
@@ -451,6 +560,120 @@ class WebhookController extends Controller
             );
             $this->bot->sendMessage($content);
         }
+    }
+
+    /**
+     * Command: contact_with
+     *
+     * @throws OptimisticLockException
+     */
+    private function _contactWith($org_id, $_name = null, $_company = null, $_phone = null)
+    {
+        //&& (strlen($_phone) < 8 && strlen($_phone) > 16)
+        //&& !preg_match("/(7|8)\d{10}/", $_phone, $matches)
+
+        $isValid = true;
+        if (isset($_name) && strlen($_name) > 50) {
+            $isValid = false;
+        } elseif (isset($_company) && strlen($_name) > 50) {
+            $isValid = false;
+        }
+        if (isset($_phone)) {
+            $f_phone = preg_replace("/\D/", '', $_phone);
+            if (strlen($f_phone) < 8 || strlen($f_phone) > 16) {
+                $isValid = false;
+            }
+            $_phone = $f_phone;
+        }
+
+        /** @var Organization $org */
+        $org = $this->getDoctrine()->getManager()
+            ->getRepository('AppBundle:Organization')
+            ->find($org_id);
+
+        $template_parameters = array();
+        $template_parameters['org_name'] = $org->getName();
+
+        if (isset($_name, $_company, $_phone) && $isValid) {
+
+            $template_parameters['name'] = $_name;
+            $template_parameters['company'] = $_company;
+            $template_parameters['phone'] = $_phone;
+
+            $_TEXT = $this->renderView('telegram_bot/contact_with.html.twig', $template_parameters);
+            $_TEXT .= "\nЯ разошлю СМС сообщение со следующим текстом:\n".
+                "<i>Участник $_name из компании $_company хочет с вами пообщаться. Телефон: $_phone</i>,\n\n".
+                "всем из выбранной Вами организации:";
+            /** @var User $user */
+            foreach ($org->getUsers() as $user) {
+                $_TEXT .= "\n{$user->getFirstName()} (Тел: {$user->getUsername()})";
+            }
+
+            $content = array(
+                'chat_id' => isset($this->update['message']) ? $this->update['message']['chat']['id'] : $this->update['callback_query']['message']['chat']['id'],
+                //'message_id' => $this->update['callback_query']['message']['message_id'],
+                'text' => $_TEXT,
+                'parse_mode' => 'HTML'
+            );
+            $this->tsm->resetState($this->tgChat);
+        } elseif (!$isValid) {
+            $state = $this->tgChat->getState();
+
+            if (!isset($state['_name'])) {
+                $state['reply_type'] = 'contact_with';
+                $state['_org_id'] = $org_id;
+            } elseif (!isset($state['_company'])) {
+                $template_parameters['name'] = $state['_name'];
+            } elseif (!isset($state['_phone'])) {
+                $template_parameters['name'] = $state['_name'];
+                $template_parameters['company'] = $state['_company'];
+            } else {
+                throw new InvalidParameterException("All parameters must be defined.");
+            }
+
+            if ($isValid) {
+                $this->tsm->updateState($this->tgChat, $state);
+            }
+
+            $content = array(
+                'chat_id' => isset($this->update['message']) ? $this->update['message']['chat']['id'] : $this->update['callback_query']['message']['chat']['id'],
+                //'message_id' => $this->update['callback_query']['message']['message_id'],
+                'text' => $this->renderView('telegram_bot/contact_with.html.twig', $template_parameters),
+                'parse_mode' => 'HTML',
+                'reply_markup' => $this->bot->buildForceReply(true),
+            );
+        } else {
+            $state = $this->tgChat->getState();
+
+            if (!isset($_name)) {
+                $state['reply_type'] = 'contact_with';
+                $state['_org_id'] = $org_id;
+            } elseif (!isset($_company)) {
+                $template_parameters['name'] = $_name;
+                $state['_name'] = $_name;
+            } elseif (!isset($_phone)) {
+                $template_parameters['name'] = $_name;
+                $template_parameters['company'] = $_company;
+                $state['_company'] = $_company;
+            } else {
+                throw new InvalidParameterException("All parameters must be defined.");
+            }
+
+            if ($isValid) {
+                $this->tsm->updateState($this->tgChat, $state);
+            }
+
+            $content = array(
+                'chat_id' => isset($this->update['message']) ? $this->update['message']['chat']['id'] : $this->update['callback_query']['message']['chat']['id'],
+                //'message_id' => $this->update['callback_query']['message']['message_id'],
+                'text' => $this->renderView('telegram_bot/contact_with.html.twig', $template_parameters),
+                'parse_mode' => 'HTML',
+                'reply_markup' => $this->bot->buildForceReply(true),
+            );
+        }
+
+        $this->bot->sendMessage($content);
+        //$this->bot->editMessageText($content);
     }
 
     /**
@@ -818,15 +1041,16 @@ class WebhookController extends Controller
         }
 
         /** @var Logger $logger */
-        $logger = $this->container->get('monolog.logger');
+        $logger = $this->get('monolog.logger');
         $logger->error("EROORROROOROROROROROROORRRRRRR: ".$e->getMessage());
     }
 
     private function _debug($data)
     {
-        // log
-        file_put_contents('/home/cros/www/var/logs/tg_bot.log', print_r($data, true), FILE_APPEND);
+        if (true || $this->container->getParameter('kernel.environment') == 'dev') {
+            file_put_contents('/home/cros/www/var/logs/tg_bot.log', print_r($data, true), FILE_APPEND);
+        }
     }
-	
+
 }
 

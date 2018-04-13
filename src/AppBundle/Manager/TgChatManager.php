@@ -37,6 +37,8 @@ class TgChatManager
     }
 
     /**
+     * Add Lecture with lectureId to TgChat subscribes
+     *
      * @param TgChat $tgChat
      * @param integer $lectureId
      * @return bool
@@ -63,6 +65,8 @@ class TgChatManager
     }
 
     /**
+     * Remove Lecture with lectureId from TgChat subscribes
+     *
      * @param TgChat $tgChat
      * @param integer $lectureId
      * @return bool
@@ -88,6 +92,9 @@ class TgChatManager
         return true;
     }
 
+    /**
+     * Look for coming soon lectures and notify TgChats about lecture start time
+     */
     public function checkAndNotifySubscribes()
     {
         date_default_timezone_set("Europe/Moscow");
@@ -126,6 +133,31 @@ class TgChatManager
                 }
             }
         }
+    }
+
+    /**
+     * Update current state of TgChat
+     *
+     * @param TgChat $tgChat
+     * @param array $newState
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function updateState($tgChat, $newState)
+    {
+        $tgChat->setState($newState);
+        $this->em->persist($tgChat);
+        $this->em->flush();
+    }
+
+    /**
+     * Reset state of TgChat
+     *
+     * @param TgChat $tgChat
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function resetState($tgChat)
+    {
+        $this->updateState($tgChat, array());
     }
 
     /**
