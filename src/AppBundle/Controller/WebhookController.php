@@ -44,17 +44,17 @@ class WebhookController extends Controller
     private $tsm;
 
     /** @var string */
-	private $access_token = 'c2hhbWJhbGEyMykxMiUh';
+    private $access_token = 'c2hhbWJhbGEyMykxMiUh';
 
-	// setWebhook
-	//https://api.telegram.org/bot527782633:AAFPLooKU0KwINR_CwRj7R-1Z_nHv9b5t0o/setWebhook?url=https://test-cros.nag.ru/webhook/update/c2hhbWJhbGEyMykxMiUh
+    // setWebhook
+    //https://api.telegram.org/bot527782633:AAFPLooKU0KwINR_CwRj7R-1Z_nHv9b5t0o/setWebhook?url=https://test-cros.nag.ru/webhook/update/c2hhbWJhbGEyMykxMiUh
 
     /**
      * @Route("/webhook/update/{token}", name="webhook-update")
      * @param $token
      * @return Response
      */
-	public function update($token)
+    public function update($token)
     {
         if ($this->access_token === $token) {
             // Для очистки повисших запросов
@@ -88,7 +88,7 @@ class WebhookController extends Controller
      * @throws EntityNotFoundException
      */
     private function process()
-	{
+    {
         if (isset($this->update['message'])) {
             if (isset($this->update['message']['reply_to_message'])) {
                 $tgState = $this->tgChat->getState();
@@ -172,7 +172,7 @@ class WebhookController extends Controller
                     break;
             }
         }
-	}
+    }
 
     /**
      * Command: /start
@@ -913,7 +913,7 @@ class WebhookController extends Controller
                         $this->bot->buildInlineKeyBoardButton(
                             $lecture->getStartTime()->format("H:i") . ' | ' . $lecture->getTitle(),
                             false,
-                             "show_lectures:$date:$hallId:$page:toggle:{$lecture->getId()}"
+                            "show_lectures:$date:$hallId:$page:toggle:{$lecture->getId()}"
                         )
                     );
                 }
@@ -970,7 +970,7 @@ class WebhookController extends Controller
     {
         $bot_token = $this->container->getParameter('tg.bot.token');
         if (!$bot_token) {
-            throw new \Exception("Bot token is not set in parameters.yml");
+            throw new \Exception("tg.bot.token is not set in parameters");
         }
 
         $this->bot = new \Telegram($bot_token);
@@ -1014,7 +1014,10 @@ class WebhookController extends Controller
 
         $tgChat = $this->getDoctrine()->getRepository('AppBundle:TgChat')->findOneBy(['chatId' => $tgChatId]);
         if (!$tgChat) {
-            throw new EntityNotFoundException("TgChat not found.");
+            $tgChat = new TgChat();
+            $tgChat->setChatId($tgChatId);
+            $this->getDoctrine()->getManager()->persist($tgChat);
+            $this->getDoctrine()->getManager()->flush();
         }
         return $tgChat;
     }

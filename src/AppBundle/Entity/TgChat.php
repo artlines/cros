@@ -80,9 +80,10 @@ class TgChat
      */
     public function __construct()
     {
-        $this->lectures = new ArrayCollection();
-        $this->isActive = true;
-        $this->state    = json_encode(array());
+        $this->lectures     = new ArrayCollection();
+        $this->isActive     = true;
+        $this->allowNotify  = true;
+        $this->state        = json_encode(array());
     }
 
     /**
