@@ -38,6 +38,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Repository\OrganizationRepository;
 class AdminMemberController extends Controller
 {
     /**
@@ -528,22 +529,21 @@ class AdminMemberController extends Controller
      * @return object
      */
     public function speakerAddAction(Request $request){
-//var_dump(dirname(__DIR__));
-//        $id = 33;
-//        /** @var SpeakerRepository $speakerRepository */
-//        $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
-//
-//        /** @var Speaker $speaker */
-//        $speaker = $speakerRepository->find($id);
         $patchSave = $this->get('kernel')->getRootDir().'/../web/uploads/';
         $resize_patch = str_replace("app/../", '', $patchSave);
 
 
         $conferenceRepository = $this->getDoctrine()->getRepository('AppBundle:Conference');
         $conferences = $conferenceRepository->findBy(array(), array('year' => 'DESC'));
+        $orgsts = $this->getDoctrine()->getRepository('AppBundle:Organization');
+        $orgsts = $orgsts->findBy(array(), array('id' => 'ASC'));
         $boxConferenses = array();
         foreach ($conferences as $value){
             $boxConferenses[$value->getYear()] = $value->getId();
+        }
+        $boxOrgsts = array();
+        foreach ($orgsts as $org){
+            $boxOrgsts[$org->getName()] = $org->getId();
         }
         //var_dump($boxConferenses); die();
         $good_extens = array('jpeg', 'png');
@@ -557,10 +557,13 @@ class AdminMemberController extends Controller
             ->add('phone', TextType::class, array('label' => 'Телефон'))
             ->add('email', TextType::class, array('label' => 'E-mail'))
             ->add('report', TextType::class, array('label' => 'Доклад'))
-            ->add('isActive', CheckboxType::class, array('label' => 'Скрыть Докладчика','required' => false ))
+            ->add('isActive', CheckboxType::class, array('label' => 'Активный докладчик','required' => false,'data' => true ))
             ->add('conference', ChoiceType::class, array(
                 'label' => 'Конференция',
                 'choices'  => $boxConferenses))
+            ->add('organization', ChoiceType::class, array(
+                'label' => 'Организация',
+                'choices'  => $boxOrgsts))
             ->add('description', TextareaType::class, array('label' => 'Биография'))
             ->add('save', SubmitType::class,array('label' => 'Сохранить') )
             ->getForm();
@@ -568,7 +571,6 @@ class AdminMemberController extends Controller
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
 
-            echo "Вошли ебана";
             $resizeService = $this->get('resizeImages');
             $files = $form->get('avatarFile')->getData();
             $_exten = $files->getClientOriginalExtension();
@@ -576,9 +578,8 @@ class AdminMemberController extends Controller
             $postefixSmall = '_small';
             $postefixBig = '_big';
             $uniqid = uniqid();
-            $file = $files->move($patchSave,$uniqid.$postefixOriginal.'.'.$_exten);
+            $files->move($patchSave,$uniqid.$postefixOriginal.'.'.$_exten);
             /* small  */
-            var_dump($patchSave.$uniqid.$postefixOriginal.'.'.$_exten);
             $resizeService->load($patchSave.$uniqid.$postefixOriginal.'.'.$_exten);
             $resizeService->resize(400, 200);
             $resizeService->save($patchSave.$uniqid.$postefixSmall.'.'.$_exten);
@@ -587,10 +588,9 @@ class AdminMemberController extends Controller
             $resizeService->resize(800, 800);
             $resizeService->save($patchSave.$uniqid.$postefixBig.'.'.$_exten);
 
-            //$UserRepository = $this->getDoctrine()->getRepository('AppBundle:User');
-            $orgsts = $this->getDoctrine()->getRepository('AppBundle:Organization')->find(2);
+            $orgsts = $this->getDoctrine()->getRepository('AppBundle:Organization')->find($form['organization']);
             $form = $form->getData();
-            $rootDir = $this->get('kernel')->getRootDir();
+            $isActive = (int) $form['isActive'];
             $em = $this->getDoctrine()->getManager();
 
             $user = new User();
@@ -600,7 +600,7 @@ class AdminMemberController extends Controller
             $user->setMiddleName($form['middle_name']);
             $user->setUsername($form['phone']); // It's actually a phone
             $user->setEmail($form['email']);
-            $user->setIsActive(1);
+            $user->setIsActive($isActive);
             $password = substr(md5($user->getLastName().$user->getFirstName()), 0, 6);
             $encoder = $this->container->get('security.password_encoder');
             $encoded = $encoder->encodePassword($user, $password);
@@ -614,8 +614,8 @@ class AdminMemberController extends Controller
             $speaker->setAvatar($uniqid.$postefixOriginal.'.'.$_exten);
             $speaker->setAvatarSmall($uniqid.$postefixSmall.'.'.$_exten);
             $speaker->setAvatarBig($uniqid.$postefixBig.'.'.$_exten);
-            $speaker->setPublish(1);
-            $speaker->setConferenceId(12);
+            $speaker->setPublish($isActive);
+            $speaker->setConferenceId($form['conference']);
             $em->persist($speaker);
             $em->flush();
 
@@ -623,26 +623,6 @@ class AdminMemberController extends Controller
             //$speaker = $form->getData();
             return $this->redirectToRoute('admin-speakers');
         }
-
-        /*
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()){
-            $speaker = $form->getData();
-            $speaker->setPublish(1);
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($speaker);
-            $em->flush();
-
-            $result = array(
-                'status' => 'success',
-                'text' => 'Сохранено',
-            );
-        }
-
-        $user = $speaker->getUser();
-        */
         return $this->render('admin/speakers/add.html.twig', array(
             'form' => $form->createView(),
             'h1' => 'Добавление докладчика',
