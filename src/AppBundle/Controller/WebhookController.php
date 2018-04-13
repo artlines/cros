@@ -80,40 +80,6 @@ class WebhookController extends Controller
             return new Response('Permission denied.', 403);
         }
     }
-<<<<<<< HEAD
-
-    /**
-     * Разбор комманд
-     *
-     * @throws \Doctrine\ORM\OptimisticLockException
-     * @throws EntityNotFoundException
-     */
-    private function process()
-	{
-        if (isset($this->update['message'])) {
-            if (isset($this->update['message']['reply_to_message'])) {
-                $tgState = $this->tgChat->getState();
-                if (isset($tgState['reply_type'])) {
-                    $_text = trim($this->update['message']['text']);
-                    switch ($tgState['reply_type']) {
-                        case 'contact_with':
-                            $this->_debug(['$tgState' => $tgState]);
-                            if (!isset($tgState['_name'])) {
-                                $this->_contactWith($tgState['_org_id'], $_text);
-                            } elseif (!isset($tgState['_company'])) {
-                                $this->_contactWith($tgState['_org_id'], $tgState['_name'], $_text);
-                            } elseif (!isset($tgState['_phone'])) {
-                                $this->_contactWith($tgState['_org_id'], $tgState['_name'], $tgState['_company'], $_text);
-                            } else {
-                                throw new InvalidParameterException("All parameters must be defined.");
-                            }
-                            break;
-                    }
-                } else {
-                    // Ничего. Молчим, если по стейту мы не ожидаем никакого ответа на сообщение
-                }
-
-=======
 
     /**
      * Разбор комманд
@@ -145,8 +111,6 @@ class WebhookController extends Controller
                 } else {
                     // Ничего. Молчим, если по стейту мы не ожидаем никакого ответа на сообщение
                 }
-
->>>>>>> telegram-bot
             } else {
                 switch (trim($this->update['message']['text'])) {
                     case '/start':
@@ -207,11 +171,7 @@ class WebhookController extends Controller
                     break;
             }
         }
-<<<<<<< HEAD
-	}
-=======
     }
->>>>>>> telegram-bot
 
     /**
      * Command: /start
@@ -319,77 +279,6 @@ class WebhookController extends Controller
      * Command: "Мое расписание"
      */
     private function _mySubscribes($page = 1, $lecture_action = null, $lecture_id = null)
-<<<<<<< HEAD
-    {
-        $buttons = array();
-
-        if (isset($lecture_action, $lecture_id) && $lecture_action == 'info') {
-            $lecture = $this->_findLecture($lecture_id);
-
-            $text = $this->renderView('telegram_bot/lecture_info.html.twig', ['lecture' => $lecture]);
-
-            $buttons[] = array(
-                $this->bot->buildInlineKeyBoardButton(
-                    "Отписаться",
-                    false,
-                    "my_subscribes:1:unsubscribe:$lecture_id"
-                )
-            );
-            $buttons[] = array(
-                $this->bot->buildInlineKeyBoardButton(
-                    "НАЗАД",
-                    false,
-                    "my_subscribes:$page"
-                )
-            );
-
-        } else {
-
-            if (isset($lecture_action, $lecture_id) && $lecture_action == 'unsubscribe') {
-                $lecture = $this->_findLecture($lecture_id);
-                $this->tsm->unsubscribeLecture($this->tgChat, $lecture);
-            }
-
-            $subscribes = $this->tgChat->getLectures();
-            if (!$subscribes->isEmpty()) {
-                $sub_show = new ArrayCollection($subscribes->slice(($page-1) * self::MY_LECTURES_ON_PAGE, self::MY_LECTURES_ON_PAGE));
-                /** @var Lecture $subscribe */
-                foreach ($sub_show as $subscribe) {
-                    $buttons[] = array($this->bot->buildInlineKeyBoardButton(
-                        $subscribe->getStartTime()->format("H:i") . " " . $subscribe->getDate()->format("d.m.Y") . " | " . $subscribe->getTitle(),
-                        false,
-                        "my_subscribes:$page:info:{$subscribe->getId()}"
-                    ));
-                }
-            }
-
-            /**
-             * Если лекций больше, чем можно выводить на страницу, то
-             * - пишем номер страницы
-             * - добавляем кнопки пагинации
-             */
-            $paginator = '';
-            if ($subscribes->count() > self::MY_LECTURES_ON_PAGE) {
-                $totalPages = round($subscribes->count() / self::MY_LECTURES_ON_PAGE, 0,PHP_ROUND_HALF_UP);
-                $paginator = $this->renderView('telegram_bot/_paginator_text.html.twig', ['current_page' => $page, 'total_pages' => $totalPages]);
-
-                if ($totalPages > 1) {
-                    if ($page == 1) {
-                        $buttons[] = array($this->bot->buildInlineKeyBoardButton(">>>", false, 'my_subscribes:' . ($page + 1)));
-                    } elseif ($page == $totalPages) {
-                        $buttons[] = array($this->bot->buildInlineKeyBoardButton("<<<", false, 'my_subscribes:' . ($page - 1)));
-                    } else {
-                        $buttons[] = array(
-                            $this->bot->buildInlineKeyBoardButton("<<<", false, 'my_subscribes:' . ($page - 1)),
-                            $this->bot->buildInlineKeyBoardButton(">>>", false, 'my_subscribes:' . ($page + 1))
-                        );
-                    }
-                }
-            }
-
-            $text = $this->renderView('telegram_bot/my_subscribes.html.twig', ['count' => $subscribes->count()]).$paginator;
-        }
-=======
     {
         $buttons = array();
 
@@ -540,98 +429,6 @@ class WebhookController extends Controller
             }
         }
 
->>>>>>> telegram-bot
-
-        if (isset($this->update['message'])) {
-            $content = array(
-                'chat_id' => $this->update['message']['chat']['id'],
-<<<<<<< HEAD
-                'text' => $text,
-=======
-                'text' => ($text == '') ? 'Нет данных' : $text,
->>>>>>> telegram-bot
-                'parse_mode' => 'HTML',
-                'reply_markup' => $this->bot->buildInlineKeyBoard($buttons)
-            );
-            $this->bot->sendMessage($content);
-        } else {
-            $content = array(
-                'chat_id' => $this->update['callback_query']['message']['chat']['id'],
-                'message_id' => $this->update['callback_query']['message']['message_id'],
-<<<<<<< HEAD
-                'text' => $text,
-=======
-                'text' => ($text == '') ? 'Нет данных' : $text,
->>>>>>> telegram-bot
-                'parse_mode' => 'HTML',
-                'reply_markup' => $this->bot->buildInlineKeyBoard($buttons)
-            );
-            $this->bot->editMessageText($content);
-        }
-    }
-
-<<<<<<< HEAD
-    /**
-     * Command: "Написать учаcтнику"
-     *
-     * @param int $page
-     */
-    public function _contactList($page = 1)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        /** @var OrganizationRepository $organizations */
-        $orgRepo = $em->getRepository('AppBundle:Organization');
-        /** @var Query $orgQ */
-        $orgQ = $orgRepo
-            ->createQueryBuilder('o')
-            ->getQuery();
-
-        $org_count = count($orgQ->getResult());
-
-        $orgs = $orgQ
-            ->setMaxResults(self::CONTACTS_ON_PAGE)
-            ->setFirstResult(($page - 1) * self::CONTACTS_ON_PAGE)
-            ->getResult();
-
-        $org_list = array();
-        $buttons = array();
-        /** @var Organization $org */
-        foreach ($orgs as $org) {
-            $buttons[] = array(
-                $this->bot->buildInlineKeyBoardButton(
-                    $org->getName(),
-                    false,
-                    "contact_with:{$org->getId()}"
-                )
-            );
-            $org_list[] = $org->getName();
-        }
-
-        $text = $this->renderView('telegram_bot/contacts_list.html.twig');
-
-        /**
-         * Пагинаццция
-         */
-        if ($org_count > self::CONTACTS_ON_PAGE) {
-            $totalPages = round($org_count / self::CONTACTS_ON_PAGE, 0,PHP_ROUND_HALF_UP);
-            $text .= $this->renderView('telegram_bot/_paginator_text.html.twig', ['current_page' => $page, 'total_pages' => $totalPages]);
-
-            if ($totalPages > 1) {
-                if ($page == 1) {
-                    $buttons[] = array($this->bot->buildInlineKeyBoardButton(">>>", false, 'contact_list:'.($page+1)));
-                } elseif ($page == $totalPages) {
-                    $buttons[] = array($this->bot->buildInlineKeyBoardButton("<<<", false, 'contact_list:'.($page-1)));
-                } else {
-                    $buttons[] = array(
-                        $this->bot->buildInlineKeyBoardButton("<<<", false, 'contact_list:'.($page-1)),
-                        $this->bot->buildInlineKeyBoardButton(">>>", false, 'contact_list:'.($page+1))
-                    );
-                }
-            }
-        }
-
-
         if (isset($this->update['message'])) {
             $content = array(
                 'chat_id' => $this->update['message']['chat']['id'],
@@ -652,8 +449,6 @@ class WebhookController extends Controller
         }
     }
 
-=======
->>>>>>> telegram-bot
     /**
      * Command: "Уведомлять о начале докладов"
      * TODO: убрать html
@@ -697,17 +492,8 @@ class WebhookController extends Controller
                 'parse_mode' => 'HTML'
             );
             $this->bot->sendMessage($content);
-<<<<<<< HEAD
-
         } else {
             $em = $this->getDoctrine()->getManager();
-
-=======
-
-        } else {
-            $em = $this->getDoctrine()->getManager();
-
->>>>>>> telegram-bot
             if ($flag) {
                 $this->tgChat->allowNotify();
                 $_status = 'Вы подписаны на уведомления';
@@ -1123,11 +909,7 @@ class WebhookController extends Controller
                         $this->bot->buildInlineKeyBoardButton(
                             $lecture->getStartTime()->format("H:i") . ' | ' . $lecture->getTitle(),
                             false,
-<<<<<<< HEAD
-                             "show_lectures:$date:$hallId:$page:toggle:{$lecture->getId()}"
-=======
                             "show_lectures:$date:$hallId:$page:toggle:{$lecture->getId()}"
->>>>>>> telegram-bot
                         )
                     );
                 }
@@ -1179,19 +961,6 @@ class WebhookController extends Controller
         );
         $this->bot->editMessageText($content);
     }
-<<<<<<< HEAD
-
-    private function init_bot()
-    {
-        $bot_token = $this->container->getParameter('tg.bot.token');
-        if (!$bot_token) {
-            throw new \Exception("Bot token is not set in parameters.yml");
-        }
-
-        $this->bot = new \Telegram($bot_token);
-    }
-
-=======
 
     private function init_bot()
     {
@@ -1203,7 +972,6 @@ class WebhookController extends Controller
         $this->bot = new \Telegram($bot_token);
     }
 
->>>>>>> telegram-bot
     /**
      * @param $lectureId
      * @return Lecture
@@ -1242,14 +1010,10 @@ class WebhookController extends Controller
 
         $tgChat = $this->getDoctrine()->getRepository('AppBundle:TgChat')->findOneBy(['chatId' => $tgChatId]);
         if (!$tgChat) {
-<<<<<<< HEAD
-            throw new EntityNotFoundException("TgChat not found.");
-=======
             $tgChat = new TgChat();
             $tgChat->setChatId($tgChatId);
             $this->getDoctrine()->getManager()->persist($tgChat);
             $this->getDoctrine()->getManager()->flush();
->>>>>>> telegram-bot
         }
         return $tgChat;
     }
