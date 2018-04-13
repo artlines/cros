@@ -33,7 +33,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Vich\UploaderBundle\Form\Type\VichFileType;
 use AppBundle\Service\FileUploader;
 use AppBundle\Service\ResizeImages;
-
+use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Validator\Constraints as Assert;
 class AdminMemberController extends Controller
 {
     /**
@@ -524,18 +528,29 @@ class AdminMemberController extends Controller
      * @return object
      */
     public function speakerAddAction(Request $request){
-
+//var_dump(dirname(__DIR__));
 //        $id = 33;
 //        /** @var SpeakerRepository $speakerRepository */
 //        $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
 //
 //        /** @var Speaker $speaker */
 //        $speaker = $speakerRepository->find($id);
+        $patchSave = $this->get('kernel')->getRootDir().'/../web/uploads/';
+        $resize_patch = str_replace("app/../", '', $patchSave);
 
-        /** @var Form $form */
+
+        $conferenceRepository = $this->getDoctrine()->getRepository('AppBundle:Conference');
+        $conferences = $conferenceRepository->findBy(array(), array('year' => 'DESC'));
+        $boxConferenses = array();
+        foreach ($conferences as $value){
+            $boxConferenses[$value->getYear()] = $value->getId();
+        }
+        //var_dump($boxConferenses); die();
+        $good_extens = array('jpeg', 'png');
+        $mimeMsg = 'Допустимые расширения файлов: '.implode(', ', $good_extens);
         $form = $this->createFormBuilder()
             ->add('avatar', HiddenType::class, array('required' => false))
-            ->add('avatarFile', VichFileType::class, array('label' => 'Photo', 'required' => false))
+            ->add('avatarFile', FileType::class, array('label' => 'Фото'))
             ->add('family', TextType::class, array('label' => 'Фамилия'))
             ->add('name', TextType::class, array('label' => 'Имя'))
             ->add('middle_name', TextType::class, array('label' => 'Отчество'))
@@ -543,8 +558,11 @@ class AdminMemberController extends Controller
             ->add('email', TextType::class, array('label' => 'E-mail'))
             ->add('report', TextType::class, array('label' => 'Доклад'))
             ->add('isActive', CheckboxType::class, array('label' => 'Скрыть Докладчика','required' => false ))
+            ->add('conference', ChoiceType::class, array(
+                'label' => 'Конференция',
+                'choices'  => $boxConferenses))
             ->add('description', TextareaType::class, array('label' => 'Биография'))
-            ->add('save', SubmitType::class, array('label' => 'Save'))
+            ->add('save', SubmitType::class,array('label' => 'Сохранить') )
             ->getForm();
 
         $form->handleRequest($request);
@@ -558,19 +576,22 @@ class AdminMemberController extends Controller
             $postefixSmall = '_small';
             $postefixBig = '_big';
             $uniqid = uniqid();
-            $file = $files->move('/home/stat-cros/www/web/uploads/',$uniqid.$postefixOriginal.'.'.$_exten);
-            $resizeService->load('/home/stat-cros/www/web/uploads/'.$uniqid.$postefixOriginal.'.'.$_exten);
+            $file = $files->move($patchSave,$uniqid.$postefixOriginal.'.'.$_exten);
+            /* small  */
+            var_dump($patchSave.$uniqid.$postefixOriginal.'.'.$_exten);
+            $resizeService->load($patchSave.$uniqid.$postefixOriginal.'.'.$_exten);
             $resizeService->resize(400, 200);
-            $resizeService->save('/home/stat-cros/www/web/uploads/'.$uniqid.$postefixSmall.'.'.$_exten);
-            /* add big resize */
+            $resizeService->save($patchSave.$uniqid.$postefixSmall.'.'.$_exten);
+            /* big */
+            $resizeService->load($patchSave.$uniqid.$postefixOriginal.'.'.$_exten);
+            $resizeService->resize(800, 800);
+            $resizeService->save($patchSave.$uniqid.$postefixBig.'.'.$_exten);
 
-            $UserRepository = $this->getDoctrine()->getRepository('AppBundle:User');
+            //$UserRepository = $this->getDoctrine()->getRepository('AppBundle:User');
             $orgsts = $this->getDoctrine()->getRepository('AppBundle:Organization')->find(2);
             $form = $form->getData();
             $rootDir = $this->get('kernel')->getRootDir();
             $em = $this->getDoctrine()->getManager();
-
-
 
             $user = new User();
             $user->setOrganization($orgsts);
@@ -590,6 +611,9 @@ class AdminMemberController extends Controller
 
             $speaker = new Speaker();
             $speaker->setUser($user);
+            $speaker->setAvatar($uniqid.$postefixOriginal.'.'.$_exten);
+            $speaker->setAvatarSmall($uniqid.$postefixSmall.'.'.$_exten);
+            $speaker->setAvatarBig($uniqid.$postefixBig.'.'.$_exten);
             $speaker->setPublish(1);
             $speaker->setConferenceId(12);
             $em->persist($speaker);
