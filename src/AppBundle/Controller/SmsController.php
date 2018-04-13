@@ -61,7 +61,7 @@ class SmsController extends Controller
     }
 
     /**
-     * Create SMS list
+     * Create Sms list
      *
      * @return SmsController
      */

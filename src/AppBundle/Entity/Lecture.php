@@ -97,7 +97,7 @@ class Lecture
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="TgChat", mappedBy="lectures")
+     * @ORM\ManyToMany(targetEntity="TgChat", mappedBy="lectures", fetch="EXTRA_LAZY")
      */
     private $chats;
 
