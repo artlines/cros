@@ -350,10 +350,7 @@ class AdminMemberController extends Controller
             $em->persist($speaker);
             $em->flush();
 
-            //return new Response($speaker->getId());
-            var_dump(new Response($speaker->getId()));
-            echo "Вошли в добавление";
-            die();
+            return new Response($speaker->getId());
         }
         else{
             return new Response('false');
@@ -376,24 +373,97 @@ class AdminMemberController extends Controller
 
         /** @var Speaker $speaker */
         $speaker = $speakerRepository->find($id);
+        $isActive = (boolean) $speaker->getPublish();
+        $conferenceRepository = $this->getDoctrine()->getRepository('AppBundle:Conference');
+        $conferences = $conferenceRepository->findBy(array(), array('year' => 'DESC'));
+        $orgsts = $this->getDoctrine()->getRepository('AppBundle:Organization');
+        $orgsts = $orgsts->findBy(array(), array('id' => 'ASC'));
+        $userRepository = $this->getDoctrine()->getRepository('AppBundle:User');
+        $user = $userRepository->find($speaker->getUser());
 
-        /** @var Form $form */
-        $form = $this->createFormBuilder($speaker)
+
+
+        $boxConferenses = array();
+        foreach ($conferences as $value){
+            $boxConferenses[$value->getYear()] = $value->getId();
+        }
+        $boxOrgsts = array();
+        foreach ($orgsts as $org){
+            $boxOrgsts[$org->getName()] = $org->getId();
+        }
+
+        $form = $this->createFormBuilder()
             ->add('avatar', HiddenType::class, array('required' => false))
-            ->add('avatarFile', VichFileType::class, array('label' => 'Photo', 'required' => false))
-            ->add('report', TextType::class, array('label' => 'Доклад'))
-            ->add('description', TextareaType::class, array('label' => 'Description'))
-            ->add('save', SubmitType::class, array('label' => 'Save'))
+            ->add('avatarFile', FileType::class, array('label' => 'Фото','required' => false))
+            ->add('family', TextType::class, array('label' => 'Фамилия','data' => $user->getLastName()))
+            ->add('name', TextType::class, array('label' => 'Имя','data' => $user->getFirstName()))
+            ->add('middle_name', TextType::class, array('label' => 'Отчество','data' => $user->getMiddleName()))
+            ->add('phone', TextType::class, array('label' => 'Телефон','data' => $user->getUsername()))
+            ->add('email', TextType::class, array('label' => 'E-mail','data' => $user->getEmail()))
+            ->add('report', TextType::class, array('label' => 'Доклад','data'=>$speaker->getReport()))
+            ->add('isActive', CheckboxType::class, array('label' => 'Активный докладчик','required' => false,'data' => $isActive ))
+            ->add('conference', ChoiceType::class, array(
+                'label' => 'Конференция',
+                'choices'  => $boxConferenses))
+            ->add('organization', ChoiceType::class, array(
+                'label' => 'Организация',
+                'choices'  => $boxOrgsts))
+            ->add('description', TextareaType::class, array('label' => 'Биография','data'=>$speaker->getDescription()))
+            ->add('save', SubmitType::class,array('label' => 'Сохранить') )
             ->getForm();
 
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-            $speaker = $form->getData();
-            $speaker->setPublish(1);
-
+            $resizeService = $this->get('resizeImages');
+            $files = $form->get('avatarFile')->getData();
+            if(!is_null($files)) {
+                $_exten = $files->getClientOriginalExtension();
+                $postefixOriginal = '_original';
+                $postefixSmall = '_small';
+                $postefixBig = '_big';
+                $uniqid = uniqid();
+                $files->move($patchSave, $uniqid . $postefixOriginal . '.' . $_exten);
+                /* small  */
+                $resizeService->load($patchSave . $uniqid . $postefixOriginal . '.' . $_exten);
+                $resizeService->resize(400, 200);
+                $resizeService->save($patchSave . $uniqid . $postefixSmall . '.' . $_exten);
+                /* big */
+                $resizeService->load($patchSave . $uniqid . $postefixOriginal . '.' . $_exten);
+                $resizeService->resize(800, 800);
+                $resizeService->save($patchSave . $uniqid . $postefixBig . '.' . $_exten);
+            }
+            $form = $form->getData();
+            $orgsts = $this->getDoctrine()->getRepository('AppBundle:Organization')->find($form['organization']);
+            $isActive = (int) $form['isActive'];
             $em = $this->getDoctrine()->getManager();
-            $em->persist($speaker);
+
+            $user = new User();
+            $user->setOrganization($orgsts);
+            $user->setFirstName($form['name']);
+            $user->setLastName($form['family']);
+            $user->setMiddleName($form['middle_name']);
+            $user->setUsername($form['phone']); // It's actually a phone
+            $user->setEmail($form['email']);
+            $user->setIsActive($isActive);
+            $password = substr(md5($user->getLastName().$user->getFirstName()), 0, 6);
+            $encoder = $this->container->get('security.password_encoder');
+            $encoded = $encoder->encodePassword($user, $password);
+            $user->setPassword($encoded);
+            $user->setRoles(array("ROLE_USER"));
+            $em->persist($user);
+            $em->flush();
+
+            $speaker = new Speaker();
+            $speaker->setUser($user);
+            if(!is_null($files)) {
+                $speaker->setAvatar($uniqid . $postefixOriginal . '.' . $_exten);
+                $speaker->setAvatarSmall($uniqid . $postefixSmall . '.' . $_exten);
+                $speaker->setAvatarBig($uniqid . $postefixBig . '.' . $_exten);
+            }
+            $speaker->setPublish($isActive);
+            $speaker->setConferenceId($form['conference']);
+            $em->merge($speaker);
             $em->flush();
 
             $result = array(
@@ -529,7 +599,7 @@ class AdminMemberController extends Controller
      * @return object
      */
     public function speakerAddAction(Request $request){
-        $patchSave = $this->get('kernel')->getRootDir().'/../web/uploads/';
+        $patchSave = $this->get('kernel')->getRootDir().'/../web/uploads/speakers/';
         $resize_patch = str_replace("app/../", '', $patchSave);
 
 
