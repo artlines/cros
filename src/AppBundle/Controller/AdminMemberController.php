@@ -20,6 +20,7 @@ use AppBundle\Repository\UserToConfRepository;
 use function PHPSTORM_META\type;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -283,7 +284,6 @@ class AdminMemberController extends Controller
      */
     public function speakersAction(Request $request){
         $year = date("Y");
-
         /** @var ConferenceRepository $conferenceRepository */
         $conferenceRepository = $this->getDoctrine()->getRepository('AppBundle:Conference');
         /** @var Conference $conf */
@@ -419,6 +419,7 @@ class AdminMemberController extends Controller
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
+            $patchSave = $this->get('kernel')->getRootDir().'/../web/uploads/speakers/';
             $resizeService = $this->get('resizeImages');
             $files = $form->get('avatarFile')->getData();
             if(!is_null($files)) {
@@ -464,12 +465,6 @@ class AdminMemberController extends Controller
             $speaker->setConferenceId($form['conference']);
             $em->persist($speaker);
             $em->flush();
-            /*
-            $result = array(
-                'status' => 'success',
-                'text' => 'Сохранено',
-            );
-            */
             return $this->redirectToRoute('admin-speakers');
         }
 
