@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 use \ZipArchive;
 
 class AdminBadgesController extends Controller
@@ -94,6 +95,7 @@ class AdminBadgesController extends Controller
             $user->setFirstName($request->get('first_name'));
             $user->setMiddleName($request->get('middle_name'));
             $user->setPost($request->get('post'));
+            $user->setNickname($request->get('nickname'));
             $org->addUser($user);
             $orgs[] = $org;
             $badge_type = $request->get('type');
@@ -111,14 +113,13 @@ class AdminBadgesController extends Controller
             $orgs = $orgRepository->findAllByConferenceWoNot($conf->getId(), false);
         }
 
-        $this->w = 3508;                    // Ширина шаблона
-        $this->h = 2482;                    // Высота шаблона
+        $this->w = 2598;                    // Ширина шаблона
+        $this->h = 1772;                    // Высота шаблона
+        if ($badge_type == 'nag') {
+            $this->w = 3072;                    // Ширина шаблона
+            $this->h = 1890;                    // Высота шаблона
+        }
         $this->c = $this->w / 2;            // Центр шаблона
-
-        $this->pt = 950;                    // Отступ сверху
-        $this->pb = 100;                    // Отступ снизу
-        $this->l1 = 585;                    // Отступ слева 1
-        $this->l2 = $this->c + $this->l1;   // Отступ слева 2
 
         $message = false;
         $is_generated = false;
@@ -137,33 +138,31 @@ class AdminBadgesController extends Controller
 
         /** @var Organization $org */
         foreach ($orgs as $org) {
-            if($badge_type){
+            if ($badge_type) {
                 $temp = $badge_type;
-                if($temp == 'nag'){
-                    $this->pt = 1060;
-                    $this->l1 = 680;
-                    $this->l2 = $this->c + $this->l1 - 515;
+                if ($temp == 'nag') {
+                    $this->pt = 600;                    // Отступ сверху
+                    $this->pb = 100;                    // Отступ снизу
+                    $this->l1 = 165;                    // Отступ слева 1
+                    $this->l2 = $this->c + $this->l1;   // Отступ слева 2
+                } else {
+                    $this->pt = 560;                    // Отступ сверху
+                    $this->pb = 400;                    // Отступ снизу
+                    $this->l1 = 175;                    // Отступ слева 1
+                    $this->l2 = $this->c + $this->l1;   // Отступ слева 2
                 }
-                else{
-                    $this->pt = 950;                            // Отступ сверху
-                    $this->pb = 100;                            // Отступ снизу
-                    $this->l1 = 585;                            // Отступ слева 1
-                    $this->l2 = $this->c + $this->l1 - 335;     // Отступ слева 2
-                }
-            }
-            else {
+            } else {
                 $temp = 'all';
                 if ($org->getId() == 1) {
                     $temp = 'nag';
-                } elseif ($org->getSponsor() == 1 || $org->getStatus() == 3) {
-                    $temp = 'vip';
                 }
                 if ($temp == 'nag') {
-                    continue;
+                    // TODO: что это
+                    // continue;
                 }
             }
-            $this->temp = $temp;
 
+            $this->temp = $temp;
             $temp_path = $root . 'templates/' . $temp . '.png';
 
             $users = $org->getUsers();
@@ -171,78 +170,74 @@ class AdminBadgesController extends Controller
             foreach ($users as $user) {
                 $this->badge = imagecreatefrompng($temp_path);
 
+
                 // Имя участника
                 $font_color = imagecolorallocate($this->badge, 43, 42, 41);
-                if($temp == 'nag'){
-                    $font_size = 110;
+                $font_size = 76;
+                $fio = str_replace('>', '', str_replace('<', '', str_replace('\"', '', $user->getFirstName() . ' ' . $user->getLastName()))); //  . ' ' . $user->getMiddleName()
+                $this->addText($fio, $font_size, $font_color, true);
+
+
+                // Ник участника
+                $font_color = imagecolorallocate($this->badge, 23, 22, 21);
+                $font_size = 76;
+                $_pt = 860;
+                if ($temp == 'nag') {
+                    $_pt = 925;
                 }
-                else {
-                    $font_size = 100;
+                $nick = $user->getNickname();
+                if ($nick !== null) {
+                    $this->addText(substr($nick, 0, 16), $font_size, $font_color, false, $_pt);
                 }
-                $fio = str_replace('>', '', str_replace('<', '', str_replace('\"', '', $user->getLastName() . ' ' . $user->getFirstName() . ' ' . $user->getMiddleName())));
 
-                $this->addText($fio, $font_size, $font_color);
 
-                if ($this->temp != 'nag') {
-                    // Должность участника
-                    $post_relative_top = $this->post_top;
-                    if ($post_relative_top > 450) { //450 - 3 string
-                        $post_relative_top = $post_relative_top - ($post_relative_top / 12);
-                    }
-                    elseif ($post_relative_top > 250){ //250 - 2 string
-                        $post_relative_top = $post_relative_top - ($post_relative_top / 6);
-                    }
-                    $font_size = 60;
-                    $font_color = imagecolorallocate($this->badge, 43, 42, 41);
-                    $post = str_replace('>', '', str_replace('<', '', str_replace('\"', '', $user->getPost())));
-                    mb_internal_encoding('UTF-8');
-                    $post = mb_convert_case(mb_substr($post, 0, 1), MB_CASE_TITLE) . mb_substr($post, 1);
-
-                    $top_minus = -800;
-                    //$top_plus_minus = $top_minus + $post_relative_top;
-                    $top_plus_minus = -350;
-
-                    $this->midorg($post, $font_size, $font_color, $this->l1, false, $top_plus_minus);
-                    $this->midorg($post, $font_size, $font_color, $this->l2, false, $top_plus_minus);
+                // Должность участника
+                $font_size = 48;
+                $font_color = imagecolorallocate($this->badge, 43, 42, 41);
+                mb_internal_encoding('UTF-8');
+                $post = str_replace('>', '', str_replace('<', '', str_replace('\"', '', $user->getPost())));
+                $post = mb_convert_case(mb_substr($post, 0, 1), MB_CASE_TITLE) . mb_substr($post, 1);
+                $_pt = 970;
+                if ($temp == 'nag') {
+                    $_pt = 1025;
                 }
+                $this->addText($post, $font_size, $font_color, false, $_pt);
+
 
                 // Организация
-                if($temp == 'nag'){
-                    $font_size = 100;
-                }
-                else {
-                    $font_size = 90;
-                }
-                if ($temp != 'nag') {
-                    $font_size = 60;
-                }
-
+                $font_size = 100;
                 $font_color = imagecolorallocate($this->badge, 57, 56, 56);
                 $org_name = strtoupper(
                     str_replace(array('ООО ', 'ЗАО ', 'ОАО ', 'НОУ ', 'ПАО ', 'АО ', 'ТОО ', 'РУП', 'AО ', '"', "'", "»", "«", '>', '<', '\"'), '', str_replace('ООО"ЭйрЛинк"', 'ЭйрЛинк', $org->getName())));
-                $this->midorg($org_name, $font_size, $font_color, $this->l1, true);
-                $this->midorg($org_name, $font_size, $font_color, $this->l2, true);
+
+                $_pt = -140;
+                if ($this->temp == 'nag') {
+                    $_pt = -30;
+                }
+                $this->midorg($org_name, $font_size, $font_color, 0, false, $_pt);
+                $this->midorg($org_name, $font_size, $font_color, $this->c, false, $_pt);
+
 
                 // Город
-                if($temp == 'nag'){
-                    $font_size = 50;
-                }
-                else {
-                    $font_size = 35;
-                }
+                $font_size = 100;
                 $town = str_replace("»", '"', str_replace("«", '"', str_replace('>', '"', str_replace('<', '"', str_replace('\"', '"', $org->getCity())))));
                 if ($org->getId() == 1) {
                     if ($user->getId() == 87) {
-                        $town = 'г. Новосибирск';
+                        $town = 'Новосибирск';
                     }
                     if ($user->getId() == 88) {
-                        $town = 'г. Москва';
+                        $town = 'Москва';
                     }
                 }
-                $this->midorg($town, $font_size, $font_color, $this->l1, false, 100);
-                $this->midorg($town, $font_size, $font_color, $this->l2, false, 100);
+                $_pt = 90;
+                if ($this->temp == 'nag') {
+                    $_pt = 190;
+                }
+                $this->midorg($town, $font_size, $font_color, 0, false, $_pt);
+                $this->midorg($town, $font_size, $font_color, $this->c, false, $_pt);
 
 
+                // Формирование имени файла, сохранение изображение в файл
                 $t = str_replace('/', "", str_replace(" ", "_", str_replace('"', '', str_replace("»", '', str_replace("«", '', str_replace('>', '', str_replace('<', '', str_replace('\"', '', $org_name)))))))) . "_" . $user->getLastName() . '_' . $user->getFirstName();
                 if(!$man){
                     imagepng($this->badge, $root . 'forgen/' . $t . '.png');
@@ -255,13 +250,14 @@ class AdminBadgesController extends Controller
                     $zip->addFile($root . 'forgen/' . $t . '.png', $t . '.png');
                 }
                 else{
-                    $message = 'http://cros.nag.ru/uploads/badges/personal/'.$t.'.png';
+                    $message = 'https://'.$request->getHttpHost().'/uploads/badges/personal/'.$t.'.png';
                     return new Response($message);
                 }
                 $message = 'ok';
                 $is_generated = true;
             }
         }
+
         if(!$man) {
             $zip->close();
         }
@@ -284,7 +280,7 @@ class AdminBadgesController extends Controller
         $words = explode(' ', $str);
         if ($spacebr) {
             $result = str_replace(" ", "\n", $str);
-            $textbox = imagettfbbox($font_size, 0, $this->root . '/templates/arial.ttf', $result);
+            $textbox = imagettfbbox($font_size, 0, $this->root . '/templates/helveticaneue.ttf', $result);
             $minY = min(array($textbox[1], $textbox[3], $textbox[5], $textbox[7]));
             $maxY = max(array($textbox[1], $textbox[3], $textbox[5], $textbox[7]));
             $this->post_top = ($maxY - $minY);
@@ -292,7 +288,7 @@ class AdminBadgesController extends Controller
             foreach ($words as $word) {
                 $tmp_str = $result . ' ' . $word;
 
-                $textbox = imagettfbbox($font_size, 0, $this->root . '/templates/arial.ttf', $tmp_str);
+                $textbox = imagettfbbox($font_size, 0, $this->root . '/templates/helveticaneue.ttf', $tmp_str);
 
                 if ($textbox[2] > 1169) {
                     $result .= ($result == "" ? "" : "\n") . $word;
@@ -307,48 +303,56 @@ class AdminBadgesController extends Controller
     /**
      * Add text to left and right page of badge
      *
-     * @param string        $text
-     * @param integer       $font_size
-     * @param string|bool   $font_color
+     * @param string $text              String
+     * @param integer $font_size        Font size
+     * @param string|bool $font_color   Font color
+     * @param string|null $pt           Padding top
+     * @param string|null $pl           Padding left
      */
-    public function addText($text, $font_size = 90, $font_color = false){
+    public function addText($text, $font_size = 90, $font_color = false, $spacebr = false, $pt = null, $pl = null){
         if(!$font_color){
             imagecolorallocate($this->badge, 57, 56, 56);
         }
+
+        $_pt = isset($pt) ? $pt : $this->pt;
+        $_pl = isset($pl) ? $pl : $this->l1;
+
         imagettftext(
             $this->badge,
             $font_size,
             0,
-            $this->l1,
-            $this->pt,
+            $_pl,
+            $_pt,
             $font_color,
-            $this->root . 'templates/arial.ttf',
-            $this->wraper($text, $font_size, true)
+            $this->root . 'templates/helveticaneue.ttf',
+            $this->wraper($text, $font_size, $spacebr)
         );
         imagettftext(
             $this->badge,
             $font_size,
             0,
-            $this->l2,
-            $this->pt,
+            $_pl + $this->c,
+            $_pt,
             $font_color,
-            $this->root . 'templates/arial.ttf',
-            $this->wraper($text, $font_size, true)
+            $this->root . 'templates/helveticaneue.ttf',
+            $this->wraper($text, $font_size, $spacebr)
         );
+        dump($_pl);
+        dump($this->c);
     }
+
 
     public function midorg($str, $font_size, $font_color, $left, $bold = false, $top_plus = 0)
     {
         if ($bold) {
-            $font_file = $this->root . "/templates/arialbd.ttf";
+            $font_file = $this->root . "/templates/helveticaneuebold.ttf";
         } else {
-            $font_file = $this->root . "/templates/arial.ttf";
+            $font_file = $this->root . "/templates/helveticaneue.ttf";
         }
         $result = '';
         $words = explode(' ', $str);
         foreach ($words as $word) {
             $tmp_str = $result . ' ' . $word;
-
             $textbox = imagettfbbox($font_size, 0, $font_file, $tmp_str);
 
             if ($textbox[2] > 1169) {
@@ -359,6 +363,8 @@ class AdminBadgesController extends Controller
         }
         $strings = explode("\n", $result);
         $textbox = imagettfbbox($font_size, 0, $font_file, $result);
+
+        // Если высота блока с текстом выше 300, делаем шрифт меньше на единицу
         if (($textbox[1] - $textbox[7]) > 300) {
             do {
                 $font_size = $font_size - 1;
@@ -366,22 +372,21 @@ class AdminBadgesController extends Controller
             } while (($textbox[1] - $textbox[7]) > 300);
         }
         $textbox = imagettfbbox($font_size, 0, $font_file, $result);
+
         $t_h = ((300 - ($textbox[1] - $textbox[7])) / 2) - 10;
         foreach ($strings as $string) {
             $textbox = imagettfbbox($font_size, 0, $font_file, $string);
-            //if($this->temp != "nag"){
-                $mid_left = 425;
-            //}
-            //else{
-            //    $mid_left = 0;
-            //}
+            $mid_left = 0;
+            if ($this->temp == 'nag') {
+                $mid_left = 0;
+            }
             $left_str = $left - $mid_left + round((($this->w / 2) - ($textbox[2] - $textbox[0])) / 2);
             imagettftext(
                 $this->badge,
                 $font_size,
                 0, // rotate
                 $left_str, // left
-                /*1425*/ 1750 + $t_h + $top_plus, // top
+                1425 + $t_h + $top_plus, // top
                 $font_color,
                 $font_file,
                 $string
