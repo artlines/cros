@@ -368,6 +368,7 @@ class AdminMemberController extends Controller
      * @return object
      */
     public function speakerEditAction($id, Request $request){
+
         /** @var SpeakerRepository $speakerRepository */
         $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
 
@@ -378,8 +379,11 @@ class AdminMemberController extends Controller
         $conferences = $conferenceRepository->findBy(array(), array('year' => 'DESC'));
         $orgsts = $this->getDoctrine()->getRepository('AppBundle:Organization');
         $orgsts = $orgsts->findBy(array(), array('id' => 'ASC'));
-        $userRepository = $this->getDoctrine()->getRepository('AppBundle:User');
-        $user = $userRepository->find($speaker->getUser());
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($speaker->getUser());
+
+
 
 
 
@@ -433,12 +437,12 @@ class AdminMemberController extends Controller
                 $resizeService->resize(800, 800);
                 $resizeService->save($patchSave . $uniqid . $postefixBig . '.' . $_exten);
             }
+
             $form = $form->getData();
             $orgsts = $this->getDoctrine()->getRepository('AppBundle:Organization')->find($form['organization']);
             $isActive = (int) $form['isActive'];
             $em = $this->getDoctrine()->getManager();
 
-            $user = new User();
             $user->setOrganization($orgsts);
             $user->setFirstName($form['name']);
             $user->setLastName($form['family']);
@@ -446,15 +450,10 @@ class AdminMemberController extends Controller
             $user->setUsername($form['phone']); // It's actually a phone
             $user->setEmail($form['email']);
             $user->setIsActive($isActive);
-            $password = substr(md5($user->getLastName().$user->getFirstName()), 0, 6);
-            $encoder = $this->container->get('security.password_encoder');
-            $encoded = $encoder->encodePassword($user, $password);
-            $user->setPassword($encoded);
-            $user->setRoles(array("ROLE_USER"));
             $em->persist($user);
             $em->flush();
 
-            $speaker = new Speaker();
+            $speaker = $speakerRepository->findOneByUserId($user->getId());
             $speaker->setUser($user);
             if(!is_null($files)) {
                 $speaker->setAvatar($uniqid . $postefixOriginal . '.' . $_exten);
@@ -463,13 +462,15 @@ class AdminMemberController extends Controller
             }
             $speaker->setPublish($isActive);
             $speaker->setConferenceId($form['conference']);
-            $em->merge($speaker);
+            $em->persist($speaker);
             $em->flush();
-
+            /*
             $result = array(
                 'status' => 'success',
                 'text' => 'Сохранено',
             );
+            */
+            return $this->redirectToRoute('admin-speakers');
         }
 
         $user = $speaker->getUser();
