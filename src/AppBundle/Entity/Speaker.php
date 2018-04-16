@@ -50,22 +50,6 @@ class Speaker
     /**
      * @var string
      *
-     * @ORM\Column(name="avatar_big", type="text", nullable=true)
-     *
-     */
-    private $avatar_big;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="avatar_small", type="text", nullable=true)
-     *
-     */
-    private $avatar_small;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="image", type="text", nullable=true)
      */
     private $image;
@@ -168,53 +152,6 @@ class Speaker
         $this->avatar = $avatar;
 
         return $this;
-    }
-
-    /**
-     * Set avatar_small
-     *
-     * @param string $avatar
-     *
-     * @return Speaker
-     */
-    public function setAvatarSmall($avatar)
-    {
-        $this->avatar_small = $avatar;
-
-        return $this;
-    }
-
-    /**
-     * Set avatar_big
-     *
-     * @param string $avatar
-     *
-     * @return Speaker
-     */
-    public function setAvatarBig($avatar)
-    {
-        $this->avatar_big = $avatar;
-
-        return $this;
-    }
-
-    /**
-     * Get avatar_small
-     *
-     * @return string
-     */
-    public function getAvatarSmall()
-    {
-        return $this->avatar_small;
-    }
-    /**
-     * Get avatar_big
-     *
-     * @return string
-     */
-    public function getAvatarBig()
-    {
-        return $this->avatar_big;
     }
 
     /**
@@ -370,15 +307,4 @@ class Speaker
     {
         return $this->report;
     }
-    /**
-     * @var string
-     */
-    private $avatarBig;
-
-    /**
-     * @var string
-     */
-    private $avatarSmall;
-
-
 }
