@@ -122,4 +122,18 @@ class OrganizationStatus
     {
         return $this->organizations;
     }
+
+    /**
+     * Set priority
+     *
+     * @param integer $priority
+     *
+     * @return OrganizationStatus
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = $priority;
+
+        return $this;
+    }
 }

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\User" table="user">
+    <indexes>
+      <index name="IDX_8D93D64932C8A3DE" columns="organization_id"/>
+      <index name="IDX_8D93D649479CD6B0" columns="firstclass"/>
+      <index name="IDX_8D93D649A3EA123" columns="manager_group_id"/>
+    </indexes>
+    <unique-constraints>
+      <unique-constraint name="UNIQ_8D93D649444F97DD" columns="phone"/>
+      <unique-constraint name="UNIQ_8D93D64943320DA" columns="telegram"/>
+    </unique-constraints>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="firstName" type="string" column="first_name" length="255" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="lastName" type="string" column="last_name" length="255" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="middleName" type="string" column="middle_name" length="255" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="post" type="string" column="post" length="255" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="phone" type="bigint" column="phone" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="email" type="string" column="email" length="255" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="isActive" type="boolean" column="is_active" nullable="false"/>
+    <field name="password" type="string" column="password" length="255" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="telegram" type="string" column="telegram" length="255" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="roles" type="string" column="roles" length="255" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="nickname" type="string" column="nickname" length="255" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="carNumber" type="string" column="car_number" length="255" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="saved" type="boolean" column="saved" nullable="true"/>
+    <field name="changeLog" type="text" column="change_log" length="65535" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="regdate" type="datetime" column="regdate" nullable="true"/>
+    <field name="female" type="boolean" column="female" nullable="true"/>
+    <field name="arrival" type="datetime" column="arrival" nullable="false">
+      <options>
+        <option name="default">2018-05-16 14:00:00</option>
+      </options>
+    </field>
+    <field name="leaving" type="datetime" column="leaving" nullable="false">
+      <options>
+        <option name="default">2018-05-19 12:00:00</option>
+      </options>
+    </field>
+    <field name="tmAdd" type="datetime" column="tm_add" nullable="false">
+      <options>
+        <option name="default">CURRENT_TIMESTAMP</option>
+      </options>
+    </field>
+    <many-to-one field="organization" target-entity="Organization" fetch="LAZY">
+      <join-columns>
+        <join-column name="organization_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="managerGroup" target-entity="ManagerGroup" fetch="LAZY">
+      <join-columns>
+        <join-column name="manager_group_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="firstclass" target-entity="Apartament" fetch="LAZY">
+      <join-columns>
+        <join-column name="firstclass" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

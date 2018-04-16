@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\UserToApartament" table="user_to_apartament">
+    <indexes>
+      <index name="IDX_9CA02ED4A76ED395" columns="user_id"/>
+      <index name="IDX_9CA02ED497D8FD11" columns="apartaments_id"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="approved" type="boolean" column="approved" nullable="false"/>
+    <many-to-one field="apartaments" target-entity="ApartamentId" fetch="LAZY">
+      <join-columns>
+        <join-column name="apartaments_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="user" target-entity="User" fetch="LAZY">
+      <join-columns>
+        <join-column name="user_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

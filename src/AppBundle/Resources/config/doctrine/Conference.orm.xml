@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\Conference" table="conference">
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="year" type="integer" column="year" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="registrationStart" type="datetime" column="registration_start" nullable="false"/>
+    <field name="registrationFinish" type="datetime" column="registration_finish" nullable="false"/>
+    <field name="start" type="datetime" column="start" nullable="false"/>
+    <field name="finish" type="datetime" column="finish" nullable="false"/>
+  </entity>
+</doctrine-mapping>

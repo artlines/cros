@@ -783,4 +783,33 @@ class Organization implements UserInterface, AdvancedUserInterface, \Serializabl
     {
         return $this->hidden;
     }
+    /**
+     * @var integer
+     */
+    private $phone;
+
+
+    /**
+     * Set phone
+     *
+     * @param integer $phone
+     *
+     * @return Organization
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return integer
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
 }

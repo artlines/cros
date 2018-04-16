@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\Organization" table="organization">
+    <indexes>
+      <index name="IDX_C1EE637CFA2425B9" columns="manager"/>
+      <index name="IDX_C1EE637C7B00651C" columns="status"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="name" type="string" column="name" length="255" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="city" type="string" column="city" length="255" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="phone" type="bigint" column="phone" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="email" type="string" column="email" length="255" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="password" type="string" column="password" length="255" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="requisites" type="text" column="requisites" length="65535" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="inn" type="string" column="inn" length="255" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="kpp" type="string" column="kpp" length="255" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="address" type="text" column="address" length="65535" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="isActive" type="boolean" column="is_active" nullable="false"/>
+    <field name="sponsor" type="boolean" column="sponsor" nullable="false"/>
+    <field name="regdate" type="datetime" column="regdate" nullable="true"/>
+    <field name="comment" type="text" column="comment" length="65535" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="ourComment" type="text" column="our_comment" length="65535" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="hidden" type="boolean" column="hidden" nullable="true"/>
+    <many-to-one field="manager" target-entity="ManagerGroup" fetch="LAZY">
+      <join-columns>
+        <join-column name="manager" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="status" target-entity="OrganizationStatus" fetch="LAZY">
+      <join-columns>
+        <join-column name="status" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

@@ -154,4 +154,25 @@ class Setting
     {
         return $this->send_pass;
     }
+    /**
+     * @var string
+     */
+    private $footerText;
+
+    /**
+     * @var string
+     */
+    private $forumLink;
+
+    /**
+     * @var string
+     */
+    private $adminEmails;
+
+    /**
+     * @var string
+     */
+    private $sendPass;
+
+
 }

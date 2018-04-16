@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\Tgchat" table="tgchat">
+    <unique-constraints>
+      <unique-constraint name="UNIQ_4EBA689F1A9A7125" columns="chat_id"/>
+    </unique-constraints>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="chatId" type="integer" column="chat_id" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="isActive" type="boolean" column="is_active" nullable="false"/>
+    <field name="joined" type="datetime" column="joined" nullable="false">
+      <options>
+        <option name="default">CURRENT_TIMESTAMP</option>
+      </options>
+    </field>
+    <many-to-many field="lecture" target-entity="Lecture" inversed-by="tgchat" fetch="LAZY">
+      <join-table name="tgchat_lecture">
+        <join-columns>
+          <join-column name="tgchat_id" referenced-column-name="id"/>
+        </join-columns>
+        <inverse-join-columns>
+          <join-column name="lecture_id" referenced-column-name="id"/>
+        </inverse-join-columns>
+      </join-table>
+    </many-to-many>
+  </entity>
+</doctrine-mapping>

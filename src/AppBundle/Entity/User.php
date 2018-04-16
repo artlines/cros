@@ -981,4 +981,33 @@ class User implements UserInterface, \Serializable
     {
         $this->tmAdd = new \DateTime();
     }
+    /**
+     * @var integer
+     */
+    private $phone;
+
+
+    /**
+     * Set phone
+     *
+     * @param integer $phone
+     *
+     * @return User
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return integer
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
 }

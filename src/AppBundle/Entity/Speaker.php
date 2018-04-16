@@ -370,4 +370,15 @@ class Speaker
     {
         return $this->report;
     }
+    /**
+     * @var string
+     */
+    private $avatarBig;
+
+    /**
+     * @var string
+     */
+    private $avatarSmall;
+
+
 }

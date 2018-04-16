@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\InfoToConf" table="info_to_conf">
+    <indexes>
+      <index name="IDX_71D8B1F95D8BC1F8" columns="info_id"/>
+      <index name="IDX_71D8B1F9604B8382" columns="conference_id"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <many-to-one field="conference" target-entity="Conference" fetch="LAZY">
+      <join-columns>
+        <join-column name="conference_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="info" target-entity="Info" fetch="LAZY">
+      <join-columns>
+        <join-column name="info_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\Corpuses" table="corpuses">
+    <indexes>
+      <index name="IDX_225031FBB7704AD8" columns="stage1"/>
+      <index name="IDX_225031FB2E791B62" columns="stage2"/>
+      <index name="IDX_225031FB597E2BF4" columns="stage3"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <many-to-one field="stage1" target-entity="Stage" fetch="LAZY">
+      <join-columns>
+        <join-column name="stage1" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="stage3" target-entity="Stage" fetch="LAZY">
+      <join-columns>
+        <join-column name="stage3" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="stage2" target-entity="Stage" fetch="LAZY">
+      <join-columns>
+        <join-column name="stage2" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

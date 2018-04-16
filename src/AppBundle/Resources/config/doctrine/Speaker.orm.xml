@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\Speaker" table="speaker">
+    <indexes>
+      <index name="IDX_7B85DB61A76ED395" columns="user_id"/>
+    </indexes>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="avatar" type="text" column="avatar" length="65535" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="image" type="text" column="image" length="65535" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="description" type="text" column="description" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="publish" type="boolean" column="publish" nullable="true"/>
+    <field name="conferenceId" type="integer" column="conference_id" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="report" type="string" column="report" length="255" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="avatarBig" type="text" column="avatar_big" length="65535" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="avatarSmall" type="text" column="avatar_small" length="65535" nullable="true">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <many-to-one field="user" target-entity="User" fetch="LAZY">
+      <join-columns>
+        <join-column name="user_id" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>
