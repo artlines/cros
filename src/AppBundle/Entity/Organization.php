@@ -165,10 +165,14 @@ class Organization implements UserInterface, AdvancedUserInterface, \Serializabl
      * @var string
      */
     private $entityName = 'organization';
-
+    /**
+     * @ORM\Column(name="phone", type="integer")
+     */
+    private $phone;
     /**
      * Organization constructor.
      */
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -783,33 +787,5 @@ class Organization implements UserInterface, AdvancedUserInterface, \Serializabl
     {
         return $this->hidden;
     }
-    /**
-     * @var integer
-     */
-    private $phone;
-
-
-    /**
-     * Set phone
-     *
-     * @param integer $phone
-     *
-     * @return Organization
-     */
-    public function setPhone($phone)
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    /**
-     * Get phone
-     *
-     * @return integer
-     */
-    public function getPhone()
-    {
-        return $this->phone;
-    }
 }
+
