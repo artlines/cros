@@ -6,7 +6,14 @@ use TelegramErrorLogger;
 
 class Telegram extends \Telegram
 {
-    private $bot_token = '';
+    private $bot_token;
+    private $data;
+
+    public function __construct($bot_token)
+    {
+        $this->bot_token = $bot_token;
+        $this->data = $this->getData();
+    }
 
     public function endpoint($api, array $content, $post = true)
     {
