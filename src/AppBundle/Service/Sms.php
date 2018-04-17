@@ -94,23 +94,24 @@ class Sms
     {
         $this->prepareToSend();
 
-        var_dump($this->messages);
-
-        //$debug = $this->xml;
-        //return $debug;
-
         $ch = curl_init();
+
+        $header = [
+            "Content-Type: application/x-www-form-urlencoded",
+            "Content-Charset: UTF-8"
+        ];
+
         curl_setopt($ch, CURLOPT_URL, $this->url);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $this->xml);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_SSLVERSION, 3);
-        $result = curl_exec($ch);
-        curl_close($ch);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSLVERSION, 6);
 
+        $result = curl_exec($ch);
 
         if ($result) {
             /** @var Logs $log */
@@ -119,6 +120,13 @@ class Sms
             }
             $this->em->flush();
         }
+
+        if ($errno = curl_errno($ch)) {
+            $error_message = curl_strerror($errno);
+            $result = "cURL error ({$errno}):\n {$error_message}";
+        }
+
+        curl_close($ch);
 
         return $result;
     }
