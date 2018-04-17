@@ -57,7 +57,7 @@ class WebhookController extends Controller
     {
         if ($this->access_token === $token) {
             // Для очистки повисших запросов
-            return new Response('ok', 200);
+            //return new Response('ok', 200);
             try {
                 $this->init_bot();
 

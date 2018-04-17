@@ -12,10 +12,6 @@ monolog:
         main:
             type:         fingers_crossed
             handler:      syslog
-        nested:
-            type:  stream
-            path:  "%kernel.logs_dir%/%kernel.environment%.log"
-            level: debug
         console:
             type:  console
         swift:
