@@ -7,6 +7,7 @@ use AppBundle\Entity\Lecture;
 use AppBundle\Entity\Organization;
 use AppBundle\Entity\User;
 use AppBundle\Manager\TgChatManager;
+use AppBundle\Service\Telegram;
 use AppBundle\Repository\LectureRepository;
 use AppBundle\Repository\OrganizationRepository;
 use AppBundle\Repository\TgChatRepository;
@@ -31,7 +32,7 @@ class WebhookController extends Controller
     const MY_LECTURES_ON_PAGE = 2;
     const CONTACTS_ON_PAGE = 5;
 
-    /** @var \Telegram */
+    /** @var Telegram */
     private $bot;
 
     /** @var TgChat */
@@ -487,8 +488,7 @@ class WebhookController extends Controller
             ));
             $content = array(
                 'chat_id' => $this->update['message']['chat']['id'],
-                'text' => '<strong>Уведомления</strong>' . "\n\n" .
-                    'Вы хотите получать уведомления за 15 минут до начала докладов, на которые вы подписаны?',
+                'text' => $this->renderView('telegram_bot/notify_setting.html.twig'),
                 'reply_markup' => $this->bot->buildInlineKeyBoard($option),
                 'parse_mode' => 'HTML'
             );
@@ -511,7 +511,7 @@ class WebhookController extends Controller
             $content = array(
                 'chat_id' => $this->update['callback_query']['message']['chat']['id'],
                 'message_id' => $this->update['callback_query']['message']['message_id'],
-                'text' => '<strong>Уведомления</strong>' . "\n\n" . '<i>' . $_status . '</i>',
+                'text' => $this->renderView('telegram_bot/notify_setting.html.twig', ['status' => $_status]),
                 'parse_mode' => 'HTML'
             );
             $this->bot->editMessageText($content);
@@ -972,7 +972,7 @@ class WebhookController extends Controller
             throw new \Exception("tg.bot.token is not set in parameters");
         }
 
-        $this->bot = new \Telegram($bot_token);
+        $this->bot = new Telegram($bot_token);
     }
 
     /**

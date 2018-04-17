@@ -4,6 +4,7 @@ namespace AppBundle\Manager;
 
 use AppBundle\Entity\Lecture;
 use AppBundle\Entity\TgChat;
+use AppBundle\Service\Telegram;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityNotFoundException;
 use Twig_Environment;
@@ -33,7 +34,7 @@ class TgChatManager
         if (!$bot_token) {
             throw new \Exception("Bot token is not set in parameters.yml");
         }
-        $this->bot = new \Telegram($bot_token);
+        $this->bot = new Telegram($bot_token);
     }
 
     /**
