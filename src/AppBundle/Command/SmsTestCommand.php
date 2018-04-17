@@ -29,14 +29,9 @@ class SmsTestCommand extends ContainerAwareCommand
         $sms->setEntityClass('tg_connection');
         $sms->setEntityId(123);
 
-        $sms->addMessage('cros_test_3', '79221544365', 'PRIVET1');
-        $sms->addMessage('cros_test_4', '79221123365', 'PRIVET2');
-        $sms->addMessage('cros_test_5', '79221321365', 'PRIVET3');
-        $sms->addMessage('cros_test_6', '79221789365', 'PRIVET4');
+        $sms->addMessage('cros_test_23', '79221544365', 'фывфывфывфыв');
 
-        $res = $sms->send();
-
-        var_dump($res);
+        $sms->send();
     }
 
 

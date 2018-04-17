@@ -46,9 +46,8 @@ class WebhookController extends Controller
     /** @var string */
     private $access_token = 'c2hhbWJhbGEyMykxMiUh';
 
-    // setWebhook
-    //https://api.telegram.org/bot527782633:AAFPLooKU0KwINR_CwRj7R-1Z_nHv9b5t0o/setWebhook?url=https://test-cros.nag.ru/webhook/update/c2hhbWJhbGEyMykxMiUh
-
+    // setWebhook / stage.cros.nag.ru
+    // https://api.telegram.org/bot527782633:AAFPLooKU0KwINR_CwRj7R-1Z_nHv9b5t0o/setWebhook?url=https://proxy-web.nag.how:88/webhook/update/c2hhbWJhbGEyMykxMiUh
     /**
      * @Route("/webhook/update/{token}", name="webhook-update")
      * @param $token
