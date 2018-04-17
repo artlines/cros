@@ -113,14 +113,6 @@ class AdminBadgesController extends Controller
             $orgs = $orgRepository->findAllByConferenceWoNot($conf->getId(), false);
         }
 
-        $this->w = 2598;                    // Ширина шаблона
-        $this->h = 1772;                    // Высота шаблона
-        if ($badge_type == 'nag') {
-            $this->w = 3072;                    // Ширина шаблона
-            $this->h = 1890;                    // Высота шаблона
-        }
-        $this->c = $this->w / 2;            // Центр шаблона
-
         $message = false;
         $is_generated = false;
         $root = $this->root;
@@ -140,6 +132,13 @@ class AdminBadgesController extends Controller
         foreach ($orgs as $org) {
             if ($badge_type) {
                 $temp = $badge_type;
+                $this->w = 2598;                    // Ширина шаблона
+                $this->h = 1772;                    // Высота шаблона
+                if ($badge_type == 'nag') {
+                    $this->w = 3072;                    // Ширина шаблона
+                    $this->h = 1890;                    // Высота шаблона
+                }
+                $this->c = $this->w / 2;            // Центр шаблона
                 if ($temp == 'nag') {
                     $this->pt = 600;                    // Отступ сверху
                     $this->pb = 100;                    // Отступ снизу
@@ -156,6 +155,13 @@ class AdminBadgesController extends Controller
                 if ($org->getId() == 1) {
                     $temp = 'nag';
                 }
+                $this->w = 2598;                    // Ширина шаблона
+                $this->h = 1772;                    // Высота шаблона
+                if ($temp == 'nag') {
+                    $this->w = 3072;                    // Ширина шаблона
+                    $this->h = 1890;                    // Высота шаблона
+                }
+                $this->c = $this->w / 2;            // Центр шаблона
                 if ($temp == 'nag') {
                     $this->pt = 600;                    // Отступ сверху
                     $this->pb = 100;                    // Отступ снизу
