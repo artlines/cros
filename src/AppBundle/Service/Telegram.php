@@ -18,9 +18,8 @@ class Telegram extends \Telegram
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
         // ADD socks5 settings
-        $proxy = "e.nachuychenko:fSNJlcgOY@proxy.nag.ru:50000";
         curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
-        curl_setopt($ch, CURLOPT_PROXY, $proxy);
+        curl_setopt($ch, CURLOPT_PROXY, 'localhost:1080');
 
         if ($post) {
             curl_setopt($ch, CURLOPT_POST, 1);
