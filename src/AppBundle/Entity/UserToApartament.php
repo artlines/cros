@@ -184,4 +184,33 @@ class UserToApartament
     {
         return $this->approved;
     }
+    /**
+     * @var \AppBundle\Entity\ApartamentId
+     */
+    private $apartaments;
+
+
+    /**
+     * Set apartaments
+     *
+     * @param \AppBundle\Entity\ApartamentId $apartaments
+     *
+     * @return UserToApartament
+     */
+    public function setApartaments(\AppBundle\Entity\ApartamentId $apartaments = null)
+    {
+        $this->apartaments = $apartaments;
+
+        return $this;
+    }
+
+    /**
+     * Get apartaments
+     *
+     * @return \AppBundle\Entity\ApartamentId
+     */
+    public function getApartaments()
+    {
+        return $this->apartaments;
+    }
 }

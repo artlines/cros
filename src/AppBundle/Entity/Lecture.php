@@ -93,11 +93,11 @@ class Lecture
      * @ORM\Column(name="theses", type="text")
      */
     private $theses;
-    
+
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="TgChat", mappedBy="lectures", fetch="EXTRA_LAZY")
+     * @ORM\ManyToMany(targetEntity="TgChat", mappedBy="lectures")
      */
     private $chats;
 
@@ -107,7 +107,7 @@ class Lecture
     {
         $this->chats = new ArrayCollection();
     }
-    
+
     /**
      * @return ArrayCollection
      */
@@ -358,5 +358,43 @@ class Lecture
         return $this->theses;
     }
 
-}
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $tgchat;
 
+
+    /**
+     * Add tgchat
+     *
+     * @param \AppBundle\Entity\Tgchat $tgchat
+     *
+     * @return Lecture
+     */
+    public function addTgchat(\AppBundle\Entity\Tgchat $tgchat)
+    {
+        $this->tgchat[] = $tgchat;
+
+        return $this;
+    }
+
+    /**
+     * Remove tgchat
+     *
+     * @param \AppBundle\Entity\Tgchat $tgchat
+     */
+    public function removeTgchat(\AppBundle\Entity\Tgchat $tgchat)
+    {
+        $this->tgchat->removeElement($tgchat);
+    }
+
+    /**
+     * Get tgchat
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTgchat()
+    {
+        return $this->tgchat;
+    }
+}
