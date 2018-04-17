@@ -9,5 +9,12 @@ services:
 #    service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
-  resizeImages:
-    class: AppBundle\Service\ResizeImages
+    tg.chat.manager:
+            class: AppBundle\Manager\TgChatManager
+            public: true
+            arguments: ['@doctrine.orm.entity_manager', '%tg.bot.token%', '@twig']
+
+    sms.service:
+            class: AppBundle\Service\Sms
+            public: true
+            arguments: ['@doctrine.orm.entity_manager']

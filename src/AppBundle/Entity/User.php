@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class User implements UserInterface, \Serializable
 {
@@ -30,6 +31,7 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(name="organization_id", type="integer")
      */
     private $organizationId;
+
     /**
      * @var string
      *
@@ -171,13 +173,6 @@ class User implements UserInterface, \Serializable
     private $leaving;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="tm_add", type="datetime", options={"default": "2018-05-19 12:00"})
-     */
-    private $tmAdd;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Apartament", inversedBy="users")
      * @ORM\JoinColumn(name="firstclass", referencedColumnName="id")
      */
@@ -209,6 +204,12 @@ class User implements UserInterface, \Serializable
      * @ORM\OneToMany(targetEntity="Speaker", mappedBy="user")
      */
     private $speakers;
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="tm_add", type="datetime", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private $tmAdd;
 
     private $entityName = 'user';
 
@@ -219,6 +220,8 @@ class User implements UserInterface, \Serializable
     {
         $this->utocs = new ArrayCollection();
         $this->speakers = new ArrayCollection();
+        $this->arrival = new \DateTime("2018-05-16 14:00");
+        $this->leaving = new \DateTime("2018-05-19 12:00");
     }
 
     /**
@@ -243,27 +246,7 @@ class User implements UserInterface, \Serializable
 
         return $this;
     }
-    /**
-     * Set phone
-     *
-     * @param integer $phone
-     * @return User
-     */
-    public function setPhone($phone)
-    {
-        $this->phone = $phone;
 
-        return $this;
-    }
-    /**
-     * Get phone
-     *
-     * @return integer
-     */
-    public function getPhone()
-    {
-        return $this->phone;
-    }
     /**
      * Get organizationId
      *
@@ -972,7 +955,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param date \DateTime
+     * @param \DateTime $leaving
      *
      * @return User
      */
@@ -982,6 +965,7 @@ class User implements UserInterface, \Serializable
 
         return $this;
     }
+
     /**
      * @return \DateTime
      */
@@ -991,14 +975,10 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param date \DateTime
-     *
-     * @return User
+     * @ORM\PrePersist()
      */
-    public function setTmAdd($tmAdd)
+    public function setTmAdd()
     {
-        $this->tmAdd = $tmAdd;
-
-        return $this;
+        $this->tmAdd = new \DateTime();
     }
 }

@@ -1,6 +1,6 @@
 {% extends '@twig_views/Exception/base.html.twig' %}
 
-{% block header_title %}Страница не найдена 404 {% endblock %}
+{% block header_title %}Страница не найдена{% endblock %}
 
 {% block page_image %}info_terms{% endblock %}
 
@@ -11,6 +11,6 @@
     {% endif %}
 
     <p>
-        Мы не нашли страницу, но Вы можете вернуться <a href="{{ path('homepage') }}">на главную</a>.
+        Мы не нашли страницу, но Вы можете вернуться <a href="{{ path('homepage') }}">на главную</a> или написать нам на почту <a href="mailto:web@nag.ru">web@nag.ru</a> о случившейся неприятности.
     </p>
 {% endblock %}

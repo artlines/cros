@@ -266,5 +266,4 @@ class AdminClassesController extends Controller
             'wocs' => $apartamentPair,
         ));
     }
-    
 }

@@ -165,10 +165,10 @@ class Organization implements UserInterface, AdvancedUserInterface, \Serializabl
      * @var string
      */
     private $entityName = 'organization';
+
     /**
      * Organization constructor.
      */
-
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -784,4 +784,3 @@ class Organization implements UserInterface, AdvancedUserInterface, \Serializabl
         return $this->hidden;
     }
 }
-

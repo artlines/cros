@@ -68,14 +68,22 @@ class TgChat
      */
     private $lectures;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="state", type="text", nullable=true)
+     */
+    private $state;
 
-
-
-
+    /**
+     * TgChat constructor.
+     */
     public function __construct()
     {
-        $this->lectures = new ArrayCollection();
-        $this->isActive = true;
+        $this->lectures     = new ArrayCollection();
+        $this->isActive     = true;
+        $this->allowNotify  = true;
+        $this->state        = json_encode(array());
     }
 
     /**
@@ -177,5 +185,24 @@ class TgChat
         return (boolean) $this->allowNotify;
     }
 
+    /**
+     * @return array
+     */
+    public function getState()
+    {
+        if (is_null($this->state)) {
+            return array();
+        }
+
+        return json_decode($this->state, true);
+    }
+
+    /**
+     * @param array $state
+     */
+    public function setState($state)
+    {
+        $this->state = json_encode($state);
+    }
 }
 
