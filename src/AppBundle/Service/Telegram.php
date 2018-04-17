@@ -6,6 +6,21 @@ use TelegramErrorLogger;
 
 class Telegram extends \Telegram
 {
+    private $bot_token = '';
+
+    public function endpoint($api, array $content, $post = true)
+    {
+        //$url = 'https://api.telegram.org/bot'.$this->bot_token.'/'.$api;
+        $url = 'https://proxy-web.nag.how:88/bot'.$this->bot_token.'/'.$api;
+        if ($post) {
+            $reply = $this->sendAPIRequest($url, $content);
+        } else {
+            $reply = $this->sendAPIRequest($url, [], false);
+        }
+
+        return json_decode($reply, true);
+    }
+
     private function sendAPIRequest($url, array $content, $post = true)
     {
         if (isset($content['chat_id'])) {
@@ -18,9 +33,9 @@ class Telegram extends \Telegram
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
         // ADD socks5 settings
-        curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
-        curl_setopt($ch, CURLOPT_PROXY, '136.243.17.12:50000');
-        curl_setopt($ch, CURLOPT_PROXYUSERPWD, 'e.nachuychenko:fSNJlcgOY');
+        //curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
+        //curl_setopt($ch, CURLOPT_PROXY, '136.243.17.12:50000');
+        //curl_setopt($ch, CURLOPT_PROXYUSERPWD, 'e.nachuychenko:fSNJlcgOY');
 
         if ($post) {
             curl_setopt($ch, CURLOPT_POST, 1);
