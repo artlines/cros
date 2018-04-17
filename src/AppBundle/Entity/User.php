@@ -30,7 +30,12 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(name="organization_id", type="integer")
      */
     private $organizationId;
-
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="phone", type="integer")
+     */
+    private $phone;
     /**
      * @var string
      *
@@ -172,6 +177,13 @@ class User implements UserInterface, \Serializable
     private $leaving;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="tm_add", type="datetime", options={"default": "2018-05-19 12:00"})
+     */
+    private $tmAdd;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Apartament", inversedBy="users")
      * @ORM\JoinColumn(name="firstclass", referencedColumnName="id")
      */
@@ -237,7 +249,27 @@ class User implements UserInterface, \Serializable
 
         return $this;
     }
+    /**
+     * Set phone
+     *
+     * @param integer $phone
+     * @return User
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
 
+        return $this;
+    }
+    /**
+     * Get phone
+     *
+     * @return integer
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
     /**
      * Get organizationId
      *
@@ -953,6 +985,25 @@ class User implements UserInterface, \Serializable
     public function setLeaving($leaving)
     {
         $this->leaving = $leaving;
+
+        return $this;
+    }
+    /**
+     * @return \DateTime
+     */
+    public function getTmAdd()
+    {
+        return $this->tmAdd;
+    }
+
+    /**
+     * @param date \DateTime
+     *
+     * @return User
+     */
+    public function setTmAdd($tmAdd)
+    {
+        $this->tmAdd = $tmAdd;
 
         return $this;
     }
