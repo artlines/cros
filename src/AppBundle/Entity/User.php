@@ -31,12 +31,6 @@ class User implements UserInterface, \Serializable
      */
     private $organizationId;
     /**
-     * @var int
-     *
-     * @ORM\Column(name="phone", type="integer")
-     */
-    private $phone;
-    /**
      * @var string
      *
      * @ORM\Column(name="first_name", type="string", length=255)

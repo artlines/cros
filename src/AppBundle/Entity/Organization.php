@@ -166,10 +166,6 @@ class Organization implements UserInterface, AdvancedUserInterface, \Serializabl
      */
     private $entityName = 'organization';
     /**
-     * @ORM\Column(name="phone", type="integer")
-     */
-    private $phone;
-    /**
      * Organization constructor.
      */
 
