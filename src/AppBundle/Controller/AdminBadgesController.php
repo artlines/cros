@@ -337,8 +337,6 @@ class AdminBadgesController extends Controller
             $this->root . 'templates/helveticaneue.ttf',
             $this->wraper($text, $font_size, $spacebr)
         );
-        dump($_pl);
-        dump($this->c);
     }
 
 
