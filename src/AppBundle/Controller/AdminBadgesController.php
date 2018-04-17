@@ -157,8 +157,15 @@ class AdminBadgesController extends Controller
                     $temp = 'nag';
                 }
                 if ($temp == 'nag') {
-                    // TODO: что это
-                    // continue;
+                    $this->pt = 600;                    // Отступ сверху
+                    $this->pb = 100;                    // Отступ снизу
+                    $this->l1 = 165;                    // Отступ слева 1
+                    $this->l2 = $this->c + $this->l1;   // Отступ слева 2
+                } else {
+                    $this->pt = 560;                    // Отступ сверху
+                    $this->pb = 400;                    // Отступ снизу
+                    $this->l1 = 175;                    // Отступ слева 1
+                    $this->l2 = $this->c + $this->l1;   // Отступ слева 2
                 }
             }
 
