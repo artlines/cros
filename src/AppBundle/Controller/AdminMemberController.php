@@ -712,14 +712,10 @@ class AdminMemberController extends Controller
         $speakerReportsRepository = $this->getDoctrine()->getRepository('AppBundle:SpeakerReports');
         $report = $speakerReportsRepository->findBy(array('speaker_id' => $id));
 
-        /** @var SpeakerRepository $speakerRepository */
-        $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
-        /** @var Speaker $speakers */
-        $speakers = $speakerRepository->findByConf($conf->getId());
 
         return $this->render('admin/speakers/list_reports.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-            'list' => $speakers,
+            'list' => $report,
         ));
     }
 }
