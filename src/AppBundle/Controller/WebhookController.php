@@ -49,7 +49,10 @@ class WebhookController extends Controller
 
     // setWebhook / stage.cros.nag.ru
     // https://api.telegram.org/bot527782633:AAFPLooKU0KwINR_CwRj7R-1Z_nHv9b5t0o/setWebhook?url=https://proxy-web.nag.how:88/webhook/update/c2hhbWJhbGEyMykxMiUh
+
     /**
+     * Прием обновлений
+     *
      * @Route("/webhook/update/{token}", name="webhook-update")
      * @param $token
      * @return Response
@@ -263,7 +266,7 @@ class WebhookController extends Controller
             array($this->bot->buildKeyboardButton("Посмотреть расписание")),
             array($this->bot->buildKeyboardButton("Мое расписание")),
             array($this->bot->buildKeyboardButton("Уведомлять о начале докладов")),
-            //array($this->bot->buildKeyboardButton("Написать участнику"))
+            array($this->bot->buildKeyboardButton("Написать участнику"))
         );
         $keyBoard = $this->bot->buildKeyBoard($options, true, true);
 
@@ -453,7 +456,6 @@ class WebhookController extends Controller
 
     /**
      * Command: "Уведомлять о начале докладов"
-     * TODO: убрать html
      */
     private function _notifyMe($flag = null)
     {
@@ -1024,8 +1026,8 @@ class WebhookController extends Controller
     /**
      * Обработчик ошибок
      *
-     * Сообщение о неполадке для пользователя
-     * TODO: Сообщение отладки для администратора
+     * Отправляет сообщение о неполадке для пользователя
+     * и расширенное сообщение с указанием ошибки в чат админа (Евгений Н.)
      *
      * @param \Exception $e
      * @return Response
@@ -1034,9 +1036,16 @@ class WebhookController extends Controller
     {
         if (isset($this->bot)) {
             $msg = "Что-то пошло не так. Сообщение об ошибке отправлено специалистам.";
+            $chat_id = isset($this->update['message']) ? $this->update['message']['chat']['id'] : $this->update['callback_query']['message']['chat']['id'];
+
+            // Сообщение об ошибке в чат администратора
+            if ($chat_id == '285036678') {
+                $msg .= "\n\n"."Error: ".$e->getMessage()." Line: ".$e->getLine()." in ".$e->getFile();
+            }
+
             $content = array(
                 'chat_id' => isset($this->update['message']) ? $this->update['message']['chat']['id'] : $this->update['callback_query']['message']['chat']['id'],
-                'text' => $msg //. $e->getMessage()
+                'text' => $msg
             );
             $this->bot->sendMessage($content);
             return new Response('ok', 200);
@@ -1049,7 +1058,7 @@ class WebhookController extends Controller
 
     private function _debug($data)
     {
-        if (true || $this->container->getParameter('kernel.environment') == 'dev') {
+        if ($this->container->getParameter('kernel.environment') == 'dev') {
             file_put_contents('/home/cros/www/var/logs/tg_bot.log', print_r($data, true), FILE_APPEND);
         }
     }
