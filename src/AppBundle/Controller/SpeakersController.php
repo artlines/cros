@@ -73,11 +73,21 @@ class SpeakersController extends Controller
         $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
         /** @var Speaker $speakers */
         $speaker = $speakerRepository->find($id);
-        $speakerReports = $this->getDoctrine()->getRepository('AppBundle:SpeakerReports');
-        dump($speakerReports->find(1));
+        //$speakerReports = $this->getDoctrine()->getRepository('AppBundle:SpeakerReports');
+        //$speakerReports->find(1)
+        //dump($speakerReports->find(1)->getre);
+        $orgname = $speaker->getUser()->getOrganization()->getName();
+        $firstName = $speaker->getUser()->getFirstName();
+        $LastName = $speaker->getUser()->getLastName();
+        $MiddleName = $speaker->getUser()->getMiddleName();
 
         return $this->render('frontend/speakers/show.html.twig', array(
-            'speaker' => $speaker
+            'speaker' => $speaker,
+            'orgname' => $orgname,
+            'firstName' => $firstName,
+            'Lastname' => $LastName,
+            'MiddleName' => $MiddleName
+
         ));
     }
 }
