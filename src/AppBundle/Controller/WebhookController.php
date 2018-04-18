@@ -387,12 +387,11 @@ class WebhookController extends Controller
         /** @var OrganizationRepository $organizations */
         $orgRepo = $em->getRepository('AppBundle:Organization');
 
-
-        $org_count = count($orgQ->getResult());
-        $orgs = $orgQ
-            ->setMaxResults(self::CONTACTS_ON_PAGE)
-            ->setFirstResult(($page - 1) * self::CONTACTS_ON_PAGE)
-            ->getResult();
+        $org_count = $orgRepo->findByIdsOrganizationApproved(['count' => true]);
+        $orgs = $orgRepo->findByIdsOrganizationApproved([
+            'limit' => self::CONTACTS_ON_PAGE,
+            'offset' => ($page - 1) * self::CONTACTS_ON_PAGE
+        ]);
 
         $org_list = array();
         $buttons = array();
@@ -400,12 +399,12 @@ class WebhookController extends Controller
         foreach ($orgs as $org) {
             $buttons[] = array(
                 $this->bot->buildInlineKeyBoardButton(
-                    $org->getName(),
+                    $org['name'],
                     false,
-                    "contact_with:{$org->getId()}"
+                    "contact_with:{$org['id']}"
                 )
             );
-            $org_list[] = $org->getName();
+            $org_list[] = $org['name'];
         }
 
         $text = $this->renderView('telegram_bot/contacts_list.html.twig');

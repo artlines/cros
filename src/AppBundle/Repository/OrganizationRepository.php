@@ -172,7 +172,7 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $select = (isset($params['count']) && $params['count']) ? 'count(*)' : 'name, org.id, city, title';
+        $select = isset($params['count']) ? 'count(*)' : 'name, org.id, city, title';
 
         $sql = "SELECT
 	              $select
@@ -194,9 +194,20 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
                 AND hidden = 0
                 ORDER BY priority DESC, name ";
 
+        if (isset($params['limit'])) {
+            $limit = intval($params['limit']);
+            $offset = (isset($params['offset'])) ? intval($params['offset']) : 0;
+            $sql .= " LIMIT $offset,$limit";
+        }
+
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $res = $stmt->fetchAll();
+
+        if (isset($params['count'])) {
+            return $res[0]['count(*)'];
+        }
+
         return $res;
     }
 }
