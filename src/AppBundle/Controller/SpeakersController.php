@@ -5,9 +5,10 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Conference;
 use AppBundle\Entity\Organization;
 use AppBundle\Entity\Organizations;
-use AppBundle\Entity\Speaker;
+use AppBundle\Entity\SpeakerReports;
 use AppBundle\Entity\User;
 use AppBundle\Repository\SpeakerRepository;
+use AppBundle\Repository\SpeakerReportsRepository;
 use AppBundle\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -72,8 +73,8 @@ class SpeakersController extends Controller
         $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
         /** @var Speaker $speakers */
         $speaker = $speakerRepository->find($id);
-
-
+        $speakerReports = $this->getDoctrine()->getRepository('AppBundle:SpeakerReports');
+        dump($speakerReports->find(1));
 
         return $this->render('frontend/speakers/show.html.twig', array(
             'speaker' => $speaker
