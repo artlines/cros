@@ -75,11 +75,12 @@ class SpeakersController extends Controller
         $speaker = $speakerRepository->find($id);
         $speakerReportsRepository = $this->getDoctrine()->getRepository('AppBundle:SpeakerReports');
         $report = $speakerReportsRepository->findBy(array('speaker_id' => $id));
-
         $orgname = $speaker->getUser()->getOrganization()->getName();
         $firstName = $speaker->getUser()->getFirstName();
         $LastName = $speaker->getUser()->getLastName();
         $MiddleName = $speaker->getUser()->getMiddleName();
+        $Description = $speaker->getDescription();
+        $avatar = $speaker->getAvatarBig();
 
         return $this->render('frontend/speakers/show.html.twig', array(
             'speaker' => $speaker,
@@ -87,8 +88,9 @@ class SpeakersController extends Controller
             'firstName' => $firstName,
             'Lastname' => $LastName,
             'MiddleName' => $MiddleName,
-            'report_list' => $report
-
+            'report_list' => $report,
+            'description' => $Description,
+            'avatar' => $avatar
         ));
     }
 }
