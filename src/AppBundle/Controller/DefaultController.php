@@ -50,9 +50,10 @@ class DefaultController extends Controller
             ->findOneBy(array('year' => date("Y")));
 
         $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
-        $speaker = $speakerRepository->findAll();
+        $speaker = $speakerRepository->findBy(array('conferenceId' => $reg_time->getId()));
         $speakerList = NULL;
         foreach ($speaker as $key =>  $value){
+            $speakerList[$key]['id'] = $value->getid();
             $speakerList[$key]['AvatarSmall'] = $value->getAvatarSmall();
             $speakerList[$key]['Organization'] = $value->getUser()->getOrganization()->getName();
             $speakerList[$key]['SpeakerFirstName'] = $value->getUser()->getFirstName();
