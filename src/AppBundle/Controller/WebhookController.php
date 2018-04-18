@@ -567,6 +567,7 @@ class WebhookController extends Controller
      * Command: contact_with
      *
      * @throws OptimisticLockException
+     * @throws \Exception
      */
     private function _contactWith($org_id, $_name = null, $_company = null, $_phone = null)
     {
@@ -625,7 +626,11 @@ class WebhookController extends Controller
                 $em->persist($log);
                 $em->flush($log);
             }
-            $this->sms->send();
+            try {
+                $this->sms->send();
+            } catch (\Exception $e) {
+                $this->_error($e);
+            }
 
             $content = array(
                 'chat_id' => $chat_id,
