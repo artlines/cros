@@ -617,6 +617,7 @@ class WebhookController extends Controller
                 $log->setDate(new \DateTime());
                 $log->setEntity('tg_connection');
                 $log->setElementId($chat_id);
+                $log->setEvent('{}');
                 $em->persist($log);
                 $em->flush($log);
                 $msg = $this->sms->addMessage('cros2018_'.$log->getId(), $user->getUsername(), $sms_text);
