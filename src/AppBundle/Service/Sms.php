@@ -124,9 +124,7 @@ class Sms
         }
 
         if ($errno = curl_errno($ch)) {
-            throw new ResourceNotFoundException($errno);
-//            $error_message = curl_strerror($errno);
-//            $result = "cURL error ({$errno}):\n {$error_message}";
+            throw new ResourceNotFoundException("Curl ($errno): ".curl_strerror($errno));
         }
 
         curl_close($ch);
