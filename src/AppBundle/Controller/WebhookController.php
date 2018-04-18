@@ -387,13 +387,28 @@ class WebhookController extends Controller
 
         /** @var OrganizationRepository $organizations */
         $orgRepo = $em->getRepository('AppBundle:Organization');
-        /** @var Query $orgQ */
-        $orgQ = $orgRepo
-            ->createQueryBuilder('o')
-            ->getQuery();
+
+        /*
+                $orgQB = $orgRepo->createQueryBuilder('o');
+                $org_count = count($orgQB->getQuery()->getResult());
+                $orgs = $orgQB
+                    ->getQuery()
+                    ->setMaxResults(self::CONTACTS_ON_PAGE)
+                    ->setFirstResult(($page - 1) * self::CONTACTS_ON_PAGE)
+                    ->getResult();
+        */
+
+        /**
+         * Организации с участниками по ID конференции
+         *
+         * КРОС 2018 соответствует id:13
+         * Второй параметр отвечает за вывод только нескрытых организаций?
+         *
+         * @var Query $orgQ
+         */
+        $orgQ = $orgRepo->findAllByConferenceWoNot(13, true);
 
         $org_count = count($orgQ->getResult());
-
         $orgs = $orgQ
             ->setMaxResults(self::CONTACTS_ON_PAGE)
             ->setFirstResult(($page - 1) * self::CONTACTS_ON_PAGE)
