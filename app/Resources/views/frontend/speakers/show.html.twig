@@ -8,6 +8,27 @@
 
 {% block body %}
     <h2>{{ speaker.user.firstname }} {{ speaker.user.lastname }}</h2>
+    <div class="row no-gutters cs-pb-30">
+        <div class="col-sm-3 col-lg-3">
+            <img src="{{ asset('assets/cros2/img/guests.jpg') }}" class="img-fluid" alt="" title="Участники КРОС"/>
+        </div>
+        <div class="col-sm-8 col-lg-8 w-100">
+            <p class="cs-font-size-14 text-center">За 13 лет конференция КРОС стала для многих интернет-провайдеров, интеграторов, представителей промышленности и бизнеса одним из важнейших околопрофессиональных событий.
+                Компании НАГ доверяют как эксперту.
+                Перед каждой конференцией мы не только изучаем современные тенденции рынка, но и опрашиваем будущих участников КРОС. Нам важно, чтобы вы получили актуальную и полезную информацию.
+            </p>
+        </div>
+    </div>
+    <h2>Список докладов</h2>
+    <div class="panel-heading card-header" role="tab" style="border: 1px solid rgba(0,0,0,.125);">
+        <h5 class="panel-title mb-0">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" aria-controls="collapse1" aria-expanded="false" class="collapse-header-link collapsed">
+                <p>Контакты экстренной связи с организаторами</p></a>
+        </h5>
+    </div>
+
+
+
     <p>{{ speaker.description|raw }}</p>
 {% endblock %}
 

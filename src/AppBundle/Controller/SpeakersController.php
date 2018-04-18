@@ -73,6 +73,8 @@ class SpeakersController extends Controller
         /** @var Speaker $speakers */
         $speaker = $speakerRepository->find($id);
 
+
+
         return $this->render('frontend/speakers/show.html.twig', array(
             'speaker' => $speaker
         ));
