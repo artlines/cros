@@ -173,7 +173,6 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
 
         $conn = $this->getEntityManager()->getConnection();
         $sql = "SELECT
-                  count(*)
 	              name,
 	              org.id,
 	              city,
@@ -199,8 +198,8 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
         if (isset($_limit)) {
             $offset = isset($_offset) ? $_offset : 0;
             $limit = " LIMIT $offset. $_limit";
+            $sql .= $limit;
         }
-        $sql .= $limit;
 
         $stmt = $conn->prepare($sql);
         $stmt->execute();
