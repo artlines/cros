@@ -28,9 +28,9 @@ use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 class WebhookController extends Controller
 {
-    const LECTURES_ON_PAGE = 2;
-    const MY_LECTURES_ON_PAGE = 2;
-    const CONTACTS_ON_PAGE = 5;
+    const LECTURES_ON_PAGE = 5;
+    const MY_LECTURES_ON_PAGE = 5;
+    const CONTACTS_ON_PAGE = 8;
 
     /** @var Telegram */
     private $bot;
