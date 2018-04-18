@@ -15,7 +15,7 @@ class Sms
      *
      * @var string
      */
-    private $url = 'https://www.contentum-it.ru/xml/';
+    private $url = 'https://proxy-web.nag.how:88/xml/';
 
     /**
      * Login
