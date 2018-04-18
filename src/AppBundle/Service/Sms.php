@@ -15,7 +15,7 @@ class Sms
      *
      * @var string
      */
-    private $url = 'https://proxy-web.nag.how:88/xml/';
+    private $url = 'http://alf1kksam.dev.nag.ru/xml/';
 
     /**
      * Login
@@ -129,7 +129,7 @@ class Sms
 
         curl_close($ch);
 
-        return $result;
+        return [$result, $this->url];
     }
 
     /**
