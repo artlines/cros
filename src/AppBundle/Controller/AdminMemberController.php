@@ -20,6 +20,7 @@ use AppBundle\Repository\UserToConfRepository;
 use function PHPSTORM_META\type;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -31,7 +32,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Vich\UploaderBundle\Form\Type\VichFileType;
-
+use AppBundle\Service\FileUploader;
+use AppBundle\Service\ResizeImages;
+use Vich\UploaderBundle\Mapping\PropertyMapping;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Repository\OrganizationRepository;
 class AdminMemberController extends Controller
 {
     /**
@@ -510,5 +518,112 @@ class AdminMemberController extends Controller
             $em->remove($userToConf);
             $em->flush();
         }
+    }
+    /**
+     * Создание докладчика
+     *
+     * @Route("/admin/speakeradd", name="admin-speaker-add")
+     * @param Request $request
+     * @return object
+     */
+    public function speakerAddAction(Request $request){
+        $patchSave = $this->get('kernel')->getRootDir().'/../web/uploads/speakers/';
+        $resize_patch = str_replace("app/../", '', $patchSave);
+
+
+        $conferenceRepository = $this->getDoctrine()->getRepository('AppBundle:Conference');
+        $conferences = $conferenceRepository->findBy(array(), array('year' => 'DESC'));
+        $orgsts = $this->getDoctrine()->getRepository('AppBundle:Organization');
+        $orgsts = $orgsts->findBy(array(), array('id' => 'ASC'));
+        $boxConferenses = array();
+        foreach ($conferences as $value){
+            $boxConferenses[$value->getYear()] = $value->getId();
+        }
+        $boxOrgsts = array();
+        foreach ($orgsts as $org){
+            $boxOrgsts[$org->getName()] = $org->getId();
+        }
+        //var_dump($boxConferenses); die();
+        $good_extens = array('jpeg', 'png');
+        $mimeMsg = 'Допустимые расширения файлов: '.implode(', ', $good_extens);
+        $form = $this->createFormBuilder()
+            ->add('avatar', HiddenType::class, array('required' => false))
+            ->add('avatarFile', FileType::class, array('label' => 'Фото'))
+            ->add('family', TextType::class, array('label' => 'Фамилия'))
+            ->add('name', TextType::class, array('label' => 'Имя'))
+            ->add('middle_name', TextType::class, array('label' => 'Отчество'))
+            ->add('phone', TextType::class, array('label' => 'Телефон'))
+            ->add('email', TextType::class, array('label' => 'E-mail'))
+            ->add('report', TextType::class, array('label' => 'Доклад'))
+            ->add('isActive', CheckboxType::class, array('label' => 'Активный докладчик','required' => false,'data' => true ))
+            ->add('conference', ChoiceType::class, array(
+                'label' => 'Конференция',
+                'choices'  => $boxConferenses))
+            ->add('organization', ChoiceType::class, array(
+                'label' => 'Организация',
+                'choices'  => $boxOrgsts))
+            ->add('description', TextareaType::class, array('label' => 'Биография'))
+            ->add('save', SubmitType::class,array('label' => 'Сохранить') )
+            ->getForm();
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+
+            $resizeService = $this->get('resizeImages');
+            $files = $form->get('avatarFile')->getData();
+            $_exten = $files->getClientOriginalExtension();
+            $postefixOriginal = '_original';
+            $postefixSmall = '_small';
+            $postefixBig = '_big';
+            $uniqid = uniqid();
+            $files->move($patchSave,$uniqid.$postefixOriginal.'.'.$_exten);
+            /* small  */
+            $resizeService->load($patchSave.$uniqid.$postefixOriginal.'.'.$_exten);
+            $resizeService->resize(400, 200);
+            $resizeService->save($patchSave.$uniqid.$postefixSmall.'.'.$_exten);
+            /* big */
+            $resizeService->load($patchSave.$uniqid.$postefixOriginal.'.'.$_exten);
+            $resizeService->resize(800, 800);
+            $resizeService->save($patchSave.$uniqid.$postefixBig.'.'.$_exten);
+            $form = $form->getData();
+            $orgsts = $this->getDoctrine()->getRepository('AppBundle:Organization')->find($form['organization']);
+
+            $isActive = (int) $form['isActive'];
+            $em = $this->getDoctrine()->getManager();
+
+            $user = new User();
+            $user->setOrganization($orgsts);
+            $user->setFirstName($form['name']);
+            $user->setLastName($form['family']);
+            $user->setMiddleName($form['middle_name']);
+            $user->setUsername($form['phone']); // It's actually a phone
+            $user->setEmail($form['email']);
+            $user->setIsActive($isActive);
+            $password = substr(md5($user->getLastName().$user->getFirstName()), 0, 6);
+            $encoder = $this->container->get('security.password_encoder');
+            $encoded = $encoder->encodePassword($user, $password);
+            $user->setPassword($encoded);
+            $user->setRoles(array("ROLE_USER"));
+            $em->persist($user);
+            $em->flush();
+
+            $speaker = new Speaker();
+            $speaker->setUser($user);
+            $speaker->setAvatar($uniqid.$postefixOriginal.'.'.$_exten);
+            $speaker->setAvatarSmall($uniqid.$postefixSmall.'.'.$_exten);
+            $speaker->setAvatarBig($uniqid.$postefixBig.'.'.$_exten);
+            $speaker->setPublish($isActive);
+            $speaker->setConferenceId($form['conference']);
+            $em->persist($speaker);
+            $em->flush();
+
+
+            //$speaker = $form->getData();
+            return $this->redirectToRoute('admin-speakers');
+        }
+        return $this->render('admin/speakers/add.html.twig', array(
+            'form' => $form->createView(),
+            'h1' => 'Добавление докладчика',
+        ));
     }
 }

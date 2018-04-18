@@ -18,3 +18,5 @@ services:
             class: AppBundle\Service\Sms
             public: true
             arguments: ['@doctrine.orm.entity_manager']
+    resizeImages:
+            class: AppBundle\Service\ResizeImages
