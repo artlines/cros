@@ -73,11 +73,9 @@ class SpeakersController extends Controller
         $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
         /** @var Speaker $speakers */
         $speaker = $speakerRepository->find($id);
-        $speakerReports = $this->getDoctrine()->getRepository('AppBundle:SpeakerReports');
-        $report = $speakerReports->find(1);
-        dump($report);
-        //$speakerReports->find(1)
-        //dump($speakerReports->find(1)->getre);
+        $speakerReportsRepository = $this->getDoctrine()->getRepository('AppBundle:SpeakerReports');
+        $report = $speakerReportsRepository->findBy(array('speaker_id' => $id));
+
         $orgname = $speaker->getUser()->getOrganization()->getName();
         $firstName = $speaker->getUser()->getFirstName();
         $LastName = $speaker->getUser()->getLastName();
@@ -88,7 +86,8 @@ class SpeakersController extends Controller
             'orgname' => $orgname,
             'firstName' => $firstName,
             'Lastname' => $LastName,
-            'MiddleName' => $MiddleName
+            'MiddleName' => $MiddleName,
+            'report_list' => $report
 
         ));
     }

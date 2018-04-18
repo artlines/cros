@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Entity;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 /**
  * SpeakerReports
@@ -10,10 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class SpeakerReports
 {
-    /**
-     * @var string
-     */
-    private $report;
 
     /**
      * @var int
@@ -23,11 +20,18 @@ class SpeakerReports
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
     /**
-     * @var \AppBundle\Entity\Speaker
+     * @var string
+     *
+     * @ORM\Column(name="report", type="string", length=255)
      */
-    private $speaker;
+    private $report;
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="speaker_id", type="integer")
+     */
+    private $speaker_id;
 
 
     /**
@@ -67,13 +71,13 @@ class SpeakerReports
     /**
      * Set speaker
      *
-     * @param \AppBundle\Entity\Speaker $speaker
+     * @param \AppBundle\Entity\Speaker $speaker_id
      *
      * @return SpeakerReports
      */
-    public function setSpeaker(\AppBundle\Entity\Speaker $speaker = null)
+    public function setSpeaker(\AppBundle\Entity\Speaker $speaker_id = null)
     {
-        $this->speaker = $speaker;
+        $this->speaker = $speaker_id;
 
         return $this;
     }
@@ -85,6 +89,6 @@ class SpeakerReports
      */
     public function getSpeaker()
     {
-        return $this->speaker;
+        return $this->speaker_id;
     }
 }
