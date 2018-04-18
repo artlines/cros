@@ -168,11 +168,12 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
      * @return array
      * We return the list of participants only those who have already settled in numbers
      */
-    public function findByIdsOrganizationApproved()
+    public function findByIdsOrganizationApproved($_offset = null, $_limit = null)
     {
 
         $conn = $this->getEntityManager()->getConnection();
         $sql = "SELECT
+                  count(*)
 	              name,
 	              org.id,
 	              city,
@@ -193,6 +194,14 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
                       approved = 1 AND hidden = 0
                 ) 
                 ORDER BY priority DESC, name ";
+
+        $limit = '';
+        if (isset($_limit)) {
+            $offset = isset($_offset) ? $_offset : 0;
+            $limit = " LIMIT $offset. $_limit";
+        }
+        $sql .= $limit;
+
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $res = $stmt->fetchAll();
