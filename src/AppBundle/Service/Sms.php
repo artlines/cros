@@ -117,6 +117,7 @@ class Sms
             /** @var Logs $log */
             foreach ($this->logs as $log) {
                 $this->em->persist($log);
+                var_Dump($log);
             }
             $this->em->flush();
         }
@@ -163,14 +164,6 @@ class Sms
          * Generate SMS
          */
         foreach ($messages as $msg) {
-            $log = new Logs();
-            $log->setReaded(0);
-            $log->setDate(new \DateTime());
-            $log->setElementId($this->entityId);
-            $log->setEntity($this->entityClass);
-            $log->setEvent(json_encode($msg));
-            $this->logs[] = $log;
-
             $sms = $xml->addChild('sms', $msg['text']);
             $sms->addAttribute('sms_id', $msg['id']);
             $sms->addAttribute('number', $msg['dst_number']);
@@ -186,6 +179,8 @@ class Sms
      * @param $id           string
      * @param $dst_number   string
      * @param $text         string
+     *
+     * @return array
      */
     public function addMessage($id, $dst_number, $text)
     {
@@ -195,6 +190,8 @@ class Sms
             'text'      => $text
         ];
         $this->messages[$id] = $msg;
+
+        return $msg;
     }
 
     /**

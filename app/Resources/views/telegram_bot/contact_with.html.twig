@@ -4,6 +4,14 @@
 <b>Имя:</b> {{ name }}
 <b>Компания:</b> {{ company }}
 <b>Телефон:</b> {{ phone }}
+
+Я разошлю СМС сообщение со следующим текстом:
+<i>{% include 'telegram_bot/_contact_sms.html.twig' %}</i>
+
+всем участникам из организации <b>{{ org.name }}</b>:
+{% for user in org.users %}
+{{ user.firstName }} (Тел.: {{ user.username }})
+{% endfor %}
 {% elseif company %}
 <b>Имя:</b> {{ name }}
 <b>Компания:</b> {{ company }}

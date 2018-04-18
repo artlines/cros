@@ -4,9 +4,11 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Hall;
 use AppBundle\Entity\Lecture;
+use AppBundle\Entity\Logs;
 use AppBundle\Entity\Organization;
 use AppBundle\Entity\User;
 use AppBundle\Manager\TgChatManager;
+use AppBundle\Service\Sms;
 use AppBundle\Service\Telegram;
 use AppBundle\Repository\LectureRepository;
 use AppBundle\Repository\OrganizationRepository;
@@ -44,6 +46,9 @@ class WebhookController extends Controller
     /** @var TgChatManager */
     private $tsm;
 
+    /** @var Sms */
+    private $sms;
+
     /** @var string */
     private $access_token = 'c2hhbWJhbGEyMykxMiUh';
 
@@ -70,6 +75,7 @@ class WebhookController extends Controller
 
                 $this->tgChat = $this->_findTgChat();
                 $this->tsm = $this->get('tg.chat.manager');
+                $this->sms = $this->get('sms.service');
 
                 $this->process();
             } catch (OptimisticLockException $e) {
@@ -594,18 +600,34 @@ class WebhookController extends Controller
             $template_parameters['name'] = $_name;
             $template_parameters['company'] = $_company;
             $template_parameters['phone'] = $_phone;
+            $template_parameters['org'] = $org;
 
             $_TEXT = $this->renderView('telegram_bot/contact_with.html.twig', $template_parameters);
-            $_TEXT .= "\nЯ разошлю СМС сообщение со следующим текстом:\n".
-                "<i>Участник $_name из компании $_company хочет с вами пообщаться. Телефон: $_phone</i>,\n\n".
-                "всем из выбранной Вами организации:";
+
+            $chat_id = isset($this->update['message']) ? $this->update['message']['chat']['id'] : $this->update['callback_query']['message']['chat']['id'];
+            $em = $this->getDoctrine()->getManager();
+
+            $sms_text = $this->renderView('telegram_bot/_contact_sms.html.twig', $template_parameters);
+            $this->sms->setEntityClass('tg_connection');
+            $this->sms->setEntityId($chat_id);
             /** @var User $user */
             foreach ($org->getUsers() as $user) {
-                $_TEXT .= "\n{$user->getFirstName()} (Тел: {$user->getUsername()})";
+                $log = new Logs();
+                $log->setReaded(0);
+                $log->setDate(new \DateTime());
+                $log->setEntity('tg_connection');
+                $log->setElementId($chat_id);
+                $em->persist($log);
+                $em->flush($log);
+                $msg = $this->sms->addMessage('cros2018_'.$log->getId(), $user->getUsername(), $sms_text);
+                $log->setEvent(json_encode($msg));
+                $em->persist($log);
+                $em->flush($log);
             }
+            $this->sms->send();
 
             $content = array(
-                'chat_id' => isset($this->update['message']) ? $this->update['message']['chat']['id'] : $this->update['callback_query']['message']['chat']['id'],
+                'chat_id' => $chat_id,
                 //'message_id' => $this->update['callback_query']['message']['message_id'],
                 'text' => $_TEXT,
                 'parse_mode' => 'HTML'
