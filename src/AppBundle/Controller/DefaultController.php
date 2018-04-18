@@ -150,22 +150,27 @@ class DefaultController extends Controller
 
     /**
      */
-    public function newcountdownAction()
+    public function newcountdownAction($isMainPage = false)
     {
-        $reg_time = $this->getDoctrine()->getRepository('AppBundle:Conference')
+        $countdown_date = new \DateTime("1970-01-01 00:00");
+        $now = new \DateTime('now');
+
+        /** @var Conference $conf */
+        $conf = $this->getDoctrine()->getRepository('AppBundle:Conference')
             ->findOneBy(array('year' => date("Y")));
 
-        $reg_start = $reg_time->getRegistrationStart()->getTimestamp();
-        $now = time();
+        $reg_start = $conf->getRegistrationStart();
+        $event_start = $conf->getStart();
 
-        $countdown_date = new \DateTime("1970-01-01 00:00");
-        if ($now < $reg_start) {
-            $countdown_date = $reg_start;
+        if ($now < $event_start) {
+            $countdown_date = $event_start;
         };
 
         return $this->render('cros2/misc/_countdown.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-            'countdown_date' => $countdown_date
+            'countdown_date' => $countdown_date,
+            'countdown_text' => 'До начала мероприятия',
+            'main_page' => $isMainPage
         ));
     }
 }

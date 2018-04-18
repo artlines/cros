@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class User implements UserInterface, \Serializable
 {
@@ -203,6 +204,12 @@ class User implements UserInterface, \Serializable
      * @ORM\OneToMany(targetEntity="Speaker", mappedBy="user")
      */
     private $speakers;
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="tm_add", type="datetime", options={"default": "CURRENT_TIMESTAMP"})
+     */
+    private $tmAdd;
 
     private $entityName = 'user';
 
@@ -213,6 +220,8 @@ class User implements UserInterface, \Serializable
     {
         $this->utocs = new ArrayCollection();
         $this->speakers = new ArrayCollection();
+        $this->arrival = new \DateTime("2018-05-16 14:00");
+        $this->leaving = new \DateTime("2018-05-19 12:00");
     }
 
     /**
@@ -946,7 +955,7 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @param date \DateTime
+     * @param \DateTime $leaving
      *
      * @return User
      */
@@ -955,5 +964,21 @@ class User implements UserInterface, \Serializable
         $this->leaving = $leaving;
 
         return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getTmAdd()
+    {
+        return $this->tmAdd;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function setTmAdd()
+    {
+        $this->tmAdd = new \DateTime();
     }
 }

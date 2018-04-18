@@ -1,0 +1,45 @@
+{% extends theme_template %}
+
+{% block title %}Конференция Российских Операторов Связи{% endblock %}
+
+{% block text_image %}_organize{% endblock %}
+
+{% block header_title %}Отправить заявку{% endblock %}
+
+{% block stylesheets %}{% endblock %}
+
+
+{% block body %}
+
+	{% if form %}
+		<h2>Заполните форму</h2>
+		<p> Оставьте свои контактные данные и мы свяжемся с вами, если бронь будет снята.</p>
+		{{ form_start(form) }}
+
+
+        {{ form_row(form.company) }}
+        {{ form_row(form.mobile) }}
+
+
+        {{ form_row(form.send) }}
+
+		{{ form_end(form) }}
+
+	{% endif %}
+
+	{% if data %}
+			<h2>Спасибо! Ваша заявка принята!</h2>
+			<br/>
+		Мы свяжемся с вами по номеру: {{ data['mobile'] }} сразу как будет снята бронь, и появятся свободные места.
+			<br/>
+			С уважением,<br/>
+			Оргкомитет КРОС-2.0-18<br/>
+			E-mail: cros@nag.ru<br/>
+			+7 (343) 379-98-38
+		</p>
+	{% endif %}
+
+{% endblock %}
+
+
+{% block javascripts %}{% endblock %}

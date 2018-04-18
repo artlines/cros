@@ -161,6 +161,9 @@ class Organization implements UserInterface, AdvancedUserInterface, \Serializabl
      */
     private $managers;
 
+    /**
+     * @var string
+     */
     private $entityName = 'organization';
 
     /**

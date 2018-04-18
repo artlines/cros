@@ -11,7 +11,7 @@
     <meta name="author" content="shop.nag.ru">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <!-- Favicon -->
-    <!-- <link rel="shortcut icon" href="/favicon.ico"> -->
+     <link rel="shortcut icon" href="/favicon.ico">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
     <!-- CSS Global Compulsory -->
@@ -24,10 +24,10 @@
     {# <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}"> #}
     <!-- CSS Template -->
     <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/styles.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/bases.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/bases.css?t=20180313') }}">
     <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/megamenu.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/light-blue.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/custom.css?t=2018030601') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/custom.css?t=1522296586') }}">
 
     <meta name="theme-color" content="#737373">
     <link rel="icon" sizes="192x192" href="{{ asset('temp/cros-logo_192px.png') }}">
@@ -165,12 +165,13 @@
         <div class="container cs-flex-middle-item cs-pt-50">
             <div class="row">
                 <div class="col-md-6">
-                    <h3 class="cs-color-white cs-font-weight-700 cs-font-size-40 mt-2 mb-5">
+                    <h3 class="cs-color-white cs-font-weight-700 cs-font-size-40 mt-2" id="Title">
                         {% block header_title %}КРОС-2.0-18{% endblock %}
                     </h3>
                     <!--
                     <div class="d-block cs-color-white-opacity-0_8 cs-font-size-16 mb-4"><strong>Пример внутренней страницы</strong> - <br /> <span>Информация для участников</span></div>
                     -->
+                    <a class="btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ url('program-pre') }}" id="TitleBotton">Программа КРОС</a>
                 </div>
                 <div class="col-md-6 text-right align-middle">
                     {{ render(controller('AppBundle:Default:newcountdown')) }}
@@ -189,7 +190,6 @@
     </section>
     <!-- End Section Content -->
     <!-- Footer -->
-    {% include 'cros2/misc/_sponsors.html.twig' %}
     {% include 'cros2/misc/footer.html.twig' %}
     <!-- End Footer -->
     <a class="js-go-to u-go-to-v1" href="#"
@@ -209,7 +209,7 @@
 <script src="{{ asset('assets/cros2/assets/cros/jquery-migrate/jquery-migrate.min.js') }}"></script>
 <script src="{{ asset('assets/cros2/assets/cros/jquery.easing/js/jquery.easing.min.js') }}"></script>
 <script src="{{ asset('assets/cros2/assets/cros/tether/tether.min.js') }}"></script>
-<script src="{{ asset('assets/cros2/assets/cros/bootstrap/bootstrap.min.js') }}"></script>
+<script src="{{ asset('assets/cros2/assets/cros/bootstrap/bootstrap.min.js?t=20180313') }}"></script>
 <script src="{{ asset('assets/cros2/assets/cros/jquery.countdown.min.js') }}"></script>
 <script src="{{ asset('assets/cros2/assets/cros/slick-slider/slick.js') }}"></script>
 <script src="{{ asset('assets/cros2/assets/js/components/core.js') }}"></script>
@@ -289,6 +289,15 @@
             $.MainCore.components.B4Tabs.init('[role="tablist"]');
         }, 200);
     });
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-749542-17"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-749542-17');
 </script>
 </body>
 </html>

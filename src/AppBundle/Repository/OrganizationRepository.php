@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\ManagerGroup;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Doctrine\ORM\EntityRepository;
 
@@ -115,21 +116,29 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
      *
      * @return object|array|null
      */
-    public function findByIdsWithConfUser($ids, $conf_id, $mangrid = false, $approved = false){
+    public function findByIdsWithConfUser($ids, $conf_id, $mangrid = false, $approved = false, $show_empty = false)
+    {
         $where = '';
-        if($approved){
+
+        if ($approved)
+        {
             $where .= ' AND o.status IN (2,3,4) AND otc.paid = 1';
         }
-        if($mangrid){
+
+        if ($mangrid)
+        {
             $where .= ' AND o.manager = '.$mangrid;
         }
+
+
+
         $query = $this->getEntityManager()
             ->createQuery('
             SELECT o, u, otc, s, utc, uta, ai, a, f1, f2, f3, f4, f5, t1, t2, t3, t4, t5 FROM AppBundle:Organization o
-            JOIN o.users u 
+            LEFT JOIN o.users u
             JOIN o.otc otc
             JOIN o.txtstatus s
-            JOIN u.utocs utc
+            LEFT JOIN u.utocs utc
             LEFT JOIN u.utoas uta
             LEFT JOIN uta.apartament ai
             LEFT JOIN ai.apartament a
@@ -144,14 +153,50 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
             LEFT JOIN f4.type t4
             LEFT JOIN f5.type t5
             WHERE o.id IN (:ids) 
-            AND utc.conferenceId = :conf_id 
-            AND otc.conferenceId = :conf_id 
+                '. (!$show_empty ? 'AND utc.conferenceId = :conf_id' : '') . ' 
+                AND otc.conferenceId = :conf_id 
             '.$where.'
             ')->setParameter('ids', $ids)->setParameter('conf_id', $conf_id);
-        try{
+        try {
             return $query->getResult();
-        } catch (\Doctrine\ORM\NoResultException $e){
+        } catch (\Doctrine\ORM\NoResultException $e) {
             return null;
         }
     }
+    /**
+     * @param
+     * @return array
+     * We return the list of participants only those who have already settled in numbers
+     */
+    public function findByIdsOrganizationApproved()
+    {
+
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "SELECT
+	              name,
+	              org.id,
+	              city,
+	              title
+                FROM
+	              organization org
+                inner JOIN organization_status ss ON
+	              org.status = ss.id
+                where
+                      org.id IN(
+                    SELECT
+                      organization_id
+                    FROM
+                      `user` us
+                    left JOIN user_to_apartament apar ON
+                      us.id = apar.user_id
+                    WHERE
+                      approved = 1 AND hidden = 0
+                ) 
+                ORDER BY priority DESC, name ";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $res = $stmt->fetchAll();
+        return $res;
+    }
+
 }

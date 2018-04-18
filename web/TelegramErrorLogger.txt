@@ -1,0 +1,3311 @@
+============[Date]============
+[ 2018-03-12 12:48:27  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		403
+description:		Forbidden: bot was blocked by the user
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103560
+ref.message.message_id= 694
+ref.message.from.id= 93784228
+ref.message.from.is_bot= false
+ref.message.from.first_name= Lucifer
+ref.message.from.username= ImLucif
+ref.message.from.language_code= ru-ru
+ref.message.chat.id= 93784228
+ref.message.chat.first_name= Lucifer
+ref.message.chat.username= ImLucif
+ref.message.chat.type= private
+ref.message.date= 1520757723
+ref.message.text= /start
+ref.message.entities.0.offset= 0
+ref.message.entities.0.length= 6
+ref.message.entities.0.type= bot_command
+
+
+[ref]
+ref.text= Привет, ImLucif! Я бот конференции КРОС 2018.
+Помогу следить за расписанием, быть в курсе событий.
+Если понадоблюсь - жми МЕНЮ. Продуктивного тебе время провождения!
+ref.reply_markup= {"keyboard":[[{"text":"\u041c\u0415\u041d\u042e","request_contact":false,"request_location":false}]],"one_time_keyboard":false,"resize_keyboard":false,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(126): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(69): AppBundle\Controller\WebhookController->_startCommand(Array)
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-12 12:49:28  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		403
+description:		Forbidden: bot was blocked by the user
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103560
+ref.message.message_id= 694
+ref.message.from.id= 93784228
+ref.message.from.is_bot= false
+ref.message.from.first_name= Lucifer
+ref.message.from.username= ImLucif
+ref.message.from.language_code= ru-ru
+ref.message.chat.id= 93784228
+ref.message.chat.first_name= Lucifer
+ref.message.chat.username= ImLucif
+ref.message.chat.type= private
+ref.message.date= 1520757723
+ref.message.text= /start
+ref.message.entities.0.offset= 0
+ref.message.entities.0.length= 6
+ref.message.entities.0.type= bot_command
+
+
+[ref]
+ref.text= Привет, ImLucif! Я бот конференции КРОС 2018.
+Помогу следить за расписанием, быть в курсе событий.
+Если понадоблюсь - жми МЕНЮ. Продуктивного тебе время провождения!
+ref.reply_markup= {"keyboard":[[{"text":"\u041c\u0415\u041d\u042e","request_contact":false,"request_location":false}]],"one_time_keyboard":false,"resize_keyboard":false,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(126): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(69): AppBundle\Controller\WebhookController->_startCommand(Array)
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-12 12:50:28  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		403
+description:		Forbidden: bot was blocked by the user
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103560
+ref.message.message_id= 694
+ref.message.from.id= 93784228
+ref.message.from.is_bot= false
+ref.message.from.first_name= Lucifer
+ref.message.from.username= ImLucif
+ref.message.from.language_code= ru-ru
+ref.message.chat.id= 93784228
+ref.message.chat.first_name= Lucifer
+ref.message.chat.username= ImLucif
+ref.message.chat.type= private
+ref.message.date= 1520757723
+ref.message.text= /start
+ref.message.entities.0.offset= 0
+ref.message.entities.0.length= 6
+ref.message.entities.0.type= bot_command
+
+
+[ref]
+ref.text= Привет, ImLucif! Я бот конференции КРОС 2018.
+Помогу следить за расписанием, быть в курсе событий.
+Если понадоблюсь - жми МЕНЮ. Продуктивного тебе время провождения!
+ref.reply_markup= {"keyboard":[[{"text":"\u041c\u0415\u041d\u042e","request_contact":false,"request_location":false}]],"one_time_keyboard":false,"resize_keyboard":false,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(126): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(69): AppBundle\Controller\WebhookController->_startCommand(Array)
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-12 12:51:29  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		403
+description:		Forbidden: bot was blocked by the user
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103560
+ref.message.message_id= 694
+ref.message.from.id= 93784228
+ref.message.from.is_bot= false
+ref.message.from.first_name= Lucifer
+ref.message.from.username= ImLucif
+ref.message.from.language_code= ru-ru
+ref.message.chat.id= 93784228
+ref.message.chat.first_name= Lucifer
+ref.message.chat.username= ImLucif
+ref.message.chat.type= private
+ref.message.date= 1520757723
+ref.message.text= /start
+ref.message.entities.0.offset= 0
+ref.message.entities.0.length= 6
+ref.message.entities.0.type= bot_command
+
+
+[ref]
+ref.text= Привет, ImLucif! Я бот конференции КРОС 2018.
+Помогу следить за расписанием, быть в курсе событий.
+Если понадоблюсь - жми МЕНЮ. Продуктивного тебе время провождения!
+ref.reply_markup= {"keyboard":[[{"text":"\u041c\u0415\u041d\u042e","request_contact":false,"request_location":false}]],"one_time_keyboard":false,"resize_keyboard":false,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(126): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(69): AppBundle\Controller\WebhookController->_startCommand(Array)
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-12 12:52:29  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		403
+description:		Forbidden: bot was blocked by the user
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103560
+ref.message.message_id= 694
+ref.message.from.id= 93784228
+ref.message.from.is_bot= false
+ref.message.from.first_name= Lucifer
+ref.message.from.username= ImLucif
+ref.message.from.language_code= ru-ru
+ref.message.chat.id= 93784228
+ref.message.chat.first_name= Lucifer
+ref.message.chat.username= ImLucif
+ref.message.chat.type= private
+ref.message.date= 1520757723
+ref.message.text= /start
+ref.message.entities.0.offset= 0
+ref.message.entities.0.length= 6
+ref.message.entities.0.type= bot_command
+
+
+[ref]
+ref.text= Привет, ImLucif! Я бот конференции КРОС 2018.
+Помогу следить за расписанием, быть в курсе событий.
+Если понадоблюсь - жми МЕНЮ. Продуктивного тебе время провождения!
+ref.reply_markup= {"keyboard":[[{"text":"\u041c\u0415\u041d\u042e","request_contact":false,"request_location":false}]],"one_time_keyboard":false,"resize_keyboard":false,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(126): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(69): AppBundle\Controller\WebhookController->_startCommand(Array)
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-12 12:53:30  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		403
+description:		Forbidden: bot was blocked by the user
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103560
+ref.message.message_id= 694
+ref.message.from.id= 93784228
+ref.message.from.is_bot= false
+ref.message.from.first_name= Lucifer
+ref.message.from.username= ImLucif
+ref.message.from.language_code= ru-ru
+ref.message.chat.id= 93784228
+ref.message.chat.first_name= Lucifer
+ref.message.chat.username= ImLucif
+ref.message.chat.type= private
+ref.message.date= 1520757723
+ref.message.text= /start
+ref.message.entities.0.offset= 0
+ref.message.entities.0.length= 6
+ref.message.entities.0.type= bot_command
+
+
+[ref]
+ref.text= Привет, ImLucif! Я бот конференции КРОС 2018.
+Помогу следить за расписанием, быть в курсе событий.
+Если понадоблюсь - жми МЕНЮ. Продуктивного тебе время провождения!
+ref.reply_markup= {"keyboard":[[{"text":"\u041c\u0415\u041d\u042e","request_contact":false,"request_location":false}]],"one_time_keyboard":false,"resize_keyboard":false,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(126): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(69): AppBundle\Controller\WebhookController->_startCommand(Array)
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-12 17:11:12  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103576
+ref.message.message_id= 787
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1520856668
+ref.message.text= МЕНЮ
+
+
+[ref]
+ref.chat_id= 
+ref.text= ping
+ref.reply_markup= {"keyboard":[[{"text":"\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u041c\u043e\u0435 \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u044f\u0442\u044c \u043e \u043d\u0430\u0447\u0430\u043b\u0435 \u0434\u043e\u043a\u043b\u0430\u0434\u043e\u0432","request_contact":false,"request_location":false}]],"one_time_keyboard":false,"resize_keyboard":true,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(172): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(49): AppBundle\Controller\WebhookController->_menuCommand()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(151): call_user_func_array(Array, Array)
+#7 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(68): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-12 17:11:15  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103576
+ref.message.message_id= 787
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1520856668
+ref.message.text= МЕНЮ
+
+
+[ref]
+ref.chat_id= 
+ref.text= ping
+ref.reply_markup= {"keyboard":[[{"text":"\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u041c\u043e\u0435 \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u044f\u0442\u044c \u043e \u043d\u0430\u0447\u0430\u043b\u0435 \u0434\u043e\u043a\u043b\u0430\u0434\u043e\u0432","request_contact":false,"request_location":false}]],"one_time_keyboard":false,"resize_keyboard":true,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(172): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(49): AppBundle\Controller\WebhookController->_menuCommand()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(151): call_user_func_array(Array, Array)
+#7 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(68): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-12 17:11:20  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103576
+ref.message.message_id= 787
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1520856668
+ref.message.text= МЕНЮ
+
+
+[ref]
+ref.chat_id= 
+ref.text= ping
+ref.reply_markup= {"keyboard":[[{"text":"\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u041c\u043e\u0435 \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u044f\u0442\u044c \u043e \u043d\u0430\u0447\u0430\u043b\u0435 \u0434\u043e\u043a\u043b\u0430\u0434\u043e\u0432","request_contact":false,"request_location":false}]],"one_time_keyboard":false,"resize_keyboard":true,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(172): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(49): AppBundle\Controller\WebhookController->_menuCommand()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-12 17:11:29  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103576
+ref.message.message_id= 787
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1520856668
+ref.message.text= МЕНЮ
+
+
+[ref]
+ref.chat_id= 
+ref.text= ping
+ref.reply_markup= {"keyboard":[[{"text":"\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u041c\u043e\u0435 \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u044f\u0442\u044c \u043e \u043d\u0430\u0447\u0430\u043b\u0435 \u0434\u043e\u043a\u043b\u0430\u0434\u043e\u0432","request_contact":false,"request_location":false}]],"one_time_keyboard":false,"resize_keyboard":true,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(172): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(49): AppBundle\Controller\WebhookController->_menuCommand()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-12 17:11:45  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103576
+ref.message.message_id= 787
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1520856668
+ref.message.text= МЕНЮ
+
+
+[ref]
+ref.chat_id= 
+ref.text= ping
+ref.reply_markup= {"keyboard":[[{"text":"\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u041c\u043e\u0435 \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u044f\u0442\u044c \u043e \u043d\u0430\u0447\u0430\u043b\u0435 \u0434\u043e\u043a\u043b\u0430\u0434\u043e\u0432","request_contact":false,"request_location":false}]],"one_time_keyboard":false,"resize_keyboard":true,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(172): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(49): AppBundle\Controller\WebhookController->_menuCommand()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-12 17:12:18  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103576
+ref.message.message_id= 787
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1520856668
+ref.message.text= МЕНЮ
+
+
+[ref]
+ref.chat_id= 
+ref.text= ping
+ref.reply_markup= {"keyboard":[[{"text":"\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u041c\u043e\u0435 \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u044f\u0442\u044c \u043e \u043d\u0430\u0447\u0430\u043b\u0435 \u0434\u043e\u043a\u043b\u0430\u0434\u043e\u0432","request_contact":false,"request_location":false}]],"one_time_keyboard":false,"resize_keyboard":true,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(172): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(49): AppBundle\Controller\WebhookController->_menuCommand()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-12 17:13:19  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103576
+ref.message.message_id= 787
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1520856668
+ref.message.text= МЕНЮ
+
+
+[ref]
+ref.chat_id= 
+ref.text= ping
+ref.reply_markup= {"keyboard":[[{"text":"\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u041c\u043e\u0435 \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u044f\u0442\u044c \u043e \u043d\u0430\u0447\u0430\u043b\u0435 \u0434\u043e\u043a\u043b\u0430\u0434\u043e\u0432","request_contact":false,"request_location":false}]],"one_time_keyboard":false,"resize_keyboard":true,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(172): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(49): AppBundle\Controller\WebhookController->_menuCommand()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-12 17:14:20  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103576
+ref.message.message_id= 787
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1520856668
+ref.message.text= МЕНЮ
+
+
+[ref]
+ref.chat_id= 
+ref.text= ping
+ref.reply_markup= {"keyboard":[[{"text":"\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u041c\u043e\u0435 \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u044f\u0442\u044c \u043e \u043d\u0430\u0447\u0430\u043b\u0435 \u0434\u043e\u043a\u043b\u0430\u0434\u043e\u0432","request_contact":false,"request_location":false}]],"one_time_keyboard":false,"resize_keyboard":true,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(172): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(49): AppBundle\Controller\WebhookController->_menuCommand()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-12 17:15:21  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103576
+ref.message.message_id= 787
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1520856668
+ref.message.text= МЕНЮ
+
+
+[ref]
+ref.chat_id= 
+ref.text= ping
+ref.reply_markup= {"keyboard":[[{"text":"\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u041c\u043e\u0435 \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u044f\u0442\u044c \u043e \u043d\u0430\u0447\u0430\u043b\u0435 \u0434\u043e\u043a\u043b\u0430\u0434\u043e\u0432","request_contact":false,"request_location":false}]],"one_time_keyboard":false,"resize_keyboard":true,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(172): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(49): AppBundle\Controller\WebhookController->_menuCommand()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-12 17:16:22  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103576
+ref.message.message_id= 787
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1520856668
+ref.message.text= МЕНЮ
+
+
+[ref]
+ref.chat_id= 
+ref.text= ping
+ref.reply_markup= {"keyboard":[[{"text":"\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u041c\u043e\u0435 \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u044f\u0442\u044c \u043e \u043d\u0430\u0447\u0430\u043b\u0435 \u0434\u043e\u043a\u043b\u0430\u0434\u043e\u0432","request_contact":false,"request_location":false}]],"one_time_keyboard":false,"resize_keyboard":true,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(172): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(49): AppBundle\Controller\WebhookController->_menuCommand()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-12 17:16:41  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103577
+ref.message.message_id= 788
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1520856998
+ref.message.text= МЕНЮ
+
+
+[ref]
+ref.chat_id= 
+ref.text= ping
+ref.reply_markup= {"keyboard":[[{"text":"\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u041c\u043e\u0435 \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u044f\u0442\u044c \u043e \u043d\u0430\u0447\u0430\u043b\u0435 \u0434\u043e\u043a\u043b\u0430\u0434\u043e\u0432","request_contact":false,"request_location":false}]],"one_time_keyboard":false,"resize_keyboard":true,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(172): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(49): AppBundle\Controller\WebhookController->_menuCommand()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(151): call_user_func_array(Array, Array)
+#7 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(68): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-12 17:16:44  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103577
+ref.message.message_id= 788
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1520856998
+ref.message.text= МЕНЮ
+
+
+[ref]
+ref.chat_id= 
+ref.text= ping
+ref.reply_markup= {"keyboard":[[{"text":"\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u041c\u043e\u0435 \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u044f\u0442\u044c \u043e \u043d\u0430\u0447\u0430\u043b\u0435 \u0434\u043e\u043a\u043b\u0430\u0434\u043e\u0432","request_contact":false,"request_location":false}]],"one_time_keyboard":false,"resize_keyboard":true,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(172): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(49): AppBundle\Controller\WebhookController->_menuCommand()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(151): call_user_func_array(Array, Array)
+#7 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(68): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-12 17:16:49  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103577
+ref.message.message_id= 788
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1520856998
+ref.message.text= МЕНЮ
+
+
+[ref]
+ref.chat_id= 
+ref.text= ping
+ref.reply_markup= {"keyboard":[[{"text":"\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u041c\u043e\u0435 \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u044f\u0442\u044c \u043e \u043d\u0430\u0447\u0430\u043b\u0435 \u0434\u043e\u043a\u043b\u0430\u0434\u043e\u0432","request_contact":false,"request_location":false}]],"one_time_keyboard":false,"resize_keyboard":true,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(172): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(49): AppBundle\Controller\WebhookController->_menuCommand()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-12 17:16:58  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103577
+ref.message.message_id= 788
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1520856998
+ref.message.text= МЕНЮ
+
+
+[ref]
+ref.chat_id= 
+ref.text= ping
+ref.reply_markup= {"keyboard":[[{"text":"\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u041c\u043e\u0435 \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u044f\u0442\u044c \u043e \u043d\u0430\u0447\u0430\u043b\u0435 \u0434\u043e\u043a\u043b\u0430\u0434\u043e\u0432","request_contact":false,"request_location":false}]],"one_time_keyboard":false,"resize_keyboard":true,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(172): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(49): AppBundle\Controller\WebhookController->_menuCommand()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-12 17:17:15  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103577
+ref.message.message_id= 788
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1520856998
+ref.message.text= МЕНЮ
+
+
+[ref]
+ref.chat_id= 
+ref.text= ping
+ref.reply_markup= {"keyboard":[[{"text":"\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u041c\u043e\u0435 \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u044f\u0442\u044c \u043e \u043d\u0430\u0447\u0430\u043b\u0435 \u0434\u043e\u043a\u043b\u0430\u0434\u043e\u0432","request_contact":false,"request_location":false}]],"one_time_keyboard":false,"resize_keyboard":true,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(172): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(49): AppBundle\Controller\WebhookController->_menuCommand()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-12 17:17:23  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103576
+ref.message.message_id= 787
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1520856668
+ref.message.text= МЕНЮ
+
+
+[ref]
+ref.chat_id= 
+ref.text= ping
+ref.reply_markup= {"keyboard":[[{"text":"\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u041c\u043e\u0435 \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u044f\u0442\u044c \u043e \u043d\u0430\u0447\u0430\u043b\u0435 \u0434\u043e\u043a\u043b\u0430\u0434\u043e\u0432","request_contact":false,"request_location":false}]],"one_time_keyboard":false,"resize_keyboard":true,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(172): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(49): AppBundle\Controller\WebhookController->_menuCommand()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-12 17:17:47  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103577
+ref.message.message_id= 788
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1520856998
+ref.message.text= МЕНЮ
+
+
+[ref]
+ref.chat_id= 
+ref.text= ping
+ref.reply_markup= {"keyboard":[[{"text":"\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u041c\u043e\u0435 \u0440\u0430\u0441\u043f\u0438\u0441\u0430\u043d\u0438\u0435","request_contact":false,"request_location":false}],[{"text":"\u0423\u0432\u0435\u0434\u043e\u043c\u043b\u044f\u0442\u044c \u043e \u043d\u0430\u0447\u0430\u043b\u0435 \u0434\u043e\u043a\u043b\u0430\u0434\u043e\u0432","request_contact":false,"request_location":false}]],"one_time_keyboard":false,"resize_keyboard":true,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(172): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(49): AppBundle\Controller\WebhookController->_menuCommand()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 10:42:10  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse inline keyboard button: Field "text" must be of type String
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103596
+ref.message.message_id= 833
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1520919727
+ref.message.text= Посмотреть расписание
+
+
+[ref]
+ref.text= ping
+ref.reply_markup= {"inline_keyboard":[[{"text":{"hall":"\u0411\u043e\u043b\u044c\u0448\u043e\u0439 \u0437\u0430\u043b"},"callback_data":"show_lectures \"$hall\""}],[{"text":{"hall":"\u041c\u0430\u043b\u044b\u0439 \u0437\u0430\u043b"},"callback_data":"show_lectures \"$hall\""}],[{"text":{"hall":"\u0421\u0440\u0435\u0434\u043d\u0435\u043c\u0430\u043b\u044b\u0439 \u0437\u0430\u043b"},"callback_data":"show_lectures \"$hall\""}],[{"text":"\u0412\u0441\u0435 \u0437\u0430\u043b\u044b","callback_data":"show_lectures \"\u0412\u0441\u0435 \u0437\u0430\u043b\u044b\""}]]}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(181): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(50): AppBundle\Controller\WebhookController->_showHalls()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(151): call_user_func_array(Array, Array)
+#7 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(68): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 11:59:37  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse inline keyboard button: Field "text" must be of type String
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103597
+ref.message.message_id= 834
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1520924376
+ref.message.text= Посмотреть расписание
+
+
+[ref]
+ref.text= ping
+ref.reply_markup= {"inline_keyboard":[[{"text":{"hall":"\u0411\u043e\u043b\u044c\u0448\u043e\u0439 \u0437\u0430\u043b"},"callback_data":"show_lectures \"$hall\""}],[{"text":{"hall":"\u041c\u0430\u043b\u044b\u0439 \u0437\u0430\u043b"},"callback_data":"show_lectures \"$hall\""}],[{"text":{"hall":"\u0421\u0440\u0435\u0434\u043d\u0435\u043c\u0430\u043b\u044b\u0439 \u0437\u0430\u043b"},"callback_data":"show_lectures \"$hall\""}],[{"text":"\u0412\u0441\u0435 \u0437\u0430\u043b\u044b","callback_data":"show_lectures \"\u0412\u0441\u0435 \u0437\u0430\u043b\u044b\""}]]}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(181): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(50): AppBundle\Controller\WebhookController->_showHalls()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(151): call_user_func_array(Array, Array)
+#7 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(68): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 12:01:14  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse inline keyboard button: Field "text" must be of type String
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103600
+ref.message.message_id= 837
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1520924473
+ref.message.text= Посмотреть расписание
+
+
+[ref]
+ref.text= ping
+ref.reply_markup= {"inline_keyboard":[[{"text":{"hall":"\u0411\u043e\u043b\u044c\u0448\u043e\u0439 \u0437\u0430\u043b"},"callback_data":"show_lectures \"$hall\""}],[{"text":{"hall":"\u041c\u0430\u043b\u044b\u0439 \u0437\u0430\u043b"},"callback_data":"show_lectures \"$hall\""}],[{"text":{"hall":"\u0421\u0440\u0435\u0434\u043d\u0435\u043c\u0430\u043b\u044b\u0439 \u0437\u0430\u043b"},"callback_data":"show_lectures \"$hall\""}],[{"text":"\u0412\u0441\u0435 \u0437\u0430\u043b\u044b","callback_data":"show_lectures \"\u0412\u0441\u0435 \u0437\u0430\u043b\u044b\""}]]}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(181): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(50): AppBundle\Controller\WebhookController->_showHalls()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 12:02:54  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse inline keyboard button: Field "text" must be of type String
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103601
+ref.message.message_id= 838
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1520924571
+ref.message.text= Посмотреть расписание
+
+
+[ref]
+ref.text= ping
+ref.reply_markup= {"inline_keyboard":[[{"text":{"hall":"\u0411\u043e\u043b\u044c\u0448\u043e\u0439 \u0437\u0430\u043b"},"callback_data":"show_lectures \"$hall\""}],[{"text":{"hall":"\u041c\u0430\u043b\u044b\u0439 \u0437\u0430\u043b"},"callback_data":"show_lectures \"$hall\""}],[{"text":{"hall":"\u0421\u0440\u0435\u0434\u043d\u0435\u043c\u0430\u043b\u044b\u0439 \u0437\u0430\u043b"},"callback_data":"show_lectures \"$hall\""}],[{"text":"\u0412\u0441\u0435 \u0437\u0430\u043b\u044b","callback_data":"show_lectures \"\u0412\u0441\u0435 \u0437\u0430\u043b\u044b\""}]]}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(181): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(50): AppBundle\Controller\WebhookController->_showHalls()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(151): call_user_func_array(Array, Array)
+#7 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(68): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 12:03:54  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse inline keyboard button: Field "text" must be of type String
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103602
+ref.message.message_id= 839
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1520924630
+ref.message.text= Посмотреть расписание
+
+
+[ref]
+ref.text= ping
+ref.reply_markup= {"inline_keyboard":[[{"text":{"hall":"\u0411\u043e\u043b\u044c\u0448\u043e\u0439 \u0437\u0430\u043b"},"callback_data":"show_lectures \"$hall\""}],[{"text":{"hall":"\u041c\u0430\u043b\u044b\u0439 \u0437\u0430\u043b"},"callback_data":"show_lectures \"$hall\""}],[{"text":{"hall":"\u0421\u0440\u0435\u0434\u043d\u0435\u043c\u0430\u043b\u044b\u0439 \u0437\u0430\u043b"},"callback_data":"show_lectures \"$hall\""}],[{"text":"\u0412\u0441\u0435 \u0437\u0430\u043b\u044b","callback_data":"show_lectures \"\u0412\u0441\u0435 \u0437\u0430\u043b\u044b\""}]]}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(181): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(50): AppBundle\Controller\WebhookController->_showHalls()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(151): call_user_func_array(Array, Array)
+#7 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(68): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:13:08  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: message text is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103631
+ref.callback_query.id= 1224223211837513845
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 857
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520939583
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:all
+
+
+[ref]
+ref.chat_id= 
+ref.text= 
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(273): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('all')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(151): call_user_func_array(Array, Array)
+#7 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(68): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:13:27  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103626
+ref.callback_query.id= 1224223212145231038
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 854
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520935155
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:1
+
+
+[ref]
+ref.chat_id= 
+ref.text= 
+ *Терабитный доступ - время менять интерфейсы?*
+ *Петабитный доступ - время менять интерфейсы?*
+ *Гбитный доступ - время менять интерфейсы?*
+ *Границы фантазии при генерации тестовых данных*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(273): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('1')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:13:37  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: message text is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103627
+ref.callback_query.id= 1224223212312171738
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 854
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520935155
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:all
+
+
+[ref]
+ref.chat_id= 
+ref.text= 
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(273): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('all')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:13:49  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: message text is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103628
+ref.callback_query.id= 1224223212349909282
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 854
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520935155
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:all
+
+
+[ref]
+ref.chat_id= 
+ref.text= 
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(273): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('all')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:14:34  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: message text is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103632
+ref.callback_query.id= 1224223214174797138
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 858
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520939603
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:all
+
+
+[ref]
+ref.chat_id= 
+ref.text= 
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(269): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('all')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:15:48  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103633
+ref.callback_query.id= 1224223210407127850
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 858
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520939603
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:3
+
+
+[ref]
+ref.chat_id= 
+ref.text= 
+ **
+ **
+ *Границы фантазии при генерации тестовых данных*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(269): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('3')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:17:25  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103634
+ref.callback_query.id= 1224223213967588900
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 858
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520939603
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:3
+
+
+[ref]
+ref.chat_id= 
+ref.text= 
+ **
+ **
+ *Границы фантазии при генерации тестовых данных*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(269): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('3')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:17:26  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 81
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103635
+ref.callback_query.id= 1224223210319530583
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 858
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520939603
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:2
+
+
+[ref]
+ref.chat_id= 
+ref.text= 
+ **
+ **битный доступ - время менять интерфейсы?*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(269): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('2')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:17:31  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103636
+ref.callback_query.id= 1224223210836034659
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 858
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520939603
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:1
+
+
+[ref]
+ref.chat_id= 
+ref.text= 
+ *Терабитный доступ - время менять интерфейсы?*
+ *Петабитный доступ - время менять интерфейсы?*
+ *Гбитный доступ - время менять интерфейсы?*
+ *Границы фантазии при генерации тестовых данных*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(269): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('1')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:19:05  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 81
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103637
+ref.callback_query.id= 1224223212865316675
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 858
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520939603
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:2
+
+
+[ref]
+ref.chat_id= 
+ref.text= 
+ **
+ **битный доступ - время менять интерфейсы?*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(272): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('2')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(151): call_user_func_array(Array, Array)
+#7 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(68): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:19:08  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103638
+ref.callback_query.id= 1224223211142279895
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 858
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520939603
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:3
+
+
+[ref]
+ref.chat_id= 
+ref.text= 
+ **
+ **
+ *Границы фантазии при генерации тестовых данных*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(272): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('3')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(151): call_user_func_array(Array, Array)
+#7 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(68): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:19:11  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: message text is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103639
+ref.callback_query.id= 1224223214044462948
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 858
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520939603
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:all
+
+
+[ref]
+ref.chat_id= 
+ref.text= 
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(272): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('all')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:22:07  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 520
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103640
+ref.callback_query.id= 1224223211312786105
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 858
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520939603
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:all
+
+
+[ref]
+ref.chat_id= 
+ref.text= 
+ *Терабитный доступ - время менять интерфейсы?*
+ **
+ *Петабитный доступ - время менять интерфейсы?*
+ **
+ *Гбитный доступ - время менять интерфейсы?*
+ **
+ **битный доступ - время менять интерфейсы?*
+ *Границы фантазии при генерации тестовых данных*
+ *Границы фантазии при генерации тестовых данных*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(274): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('all')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:22:09  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103641
+ref.callback_query.id= 1224223211429793652
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 858
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520939603
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:3
+
+
+[ref]
+ref.chat_id= 
+ref.text= 
+ **
+ **
+ *Границы фантазии при генерации тестовых данных*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(274): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('3')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:22:10  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 81
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103642
+ref.callback_query.id= 1224223213123467041
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 858
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520939603
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:2
+
+
+[ref]
+ref.chat_id= 
+ref.text= 
+ **
+ **битный доступ - время менять интерфейсы?*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(274): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('2')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:23:28  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 520
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103643
+ref.callback_query.id= 1224223211963321892
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 858
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520939603
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:all
+
+
+[ref]
+ref.chat_id= 
+ref.text= 
+ *Терабитный доступ - время менять интерфейсы?*
+ **
+ *Петабитный доступ - время менять интерфейсы?*
+ **
+ *Гбитный доступ - время менять интерфейсы?*
+ **
+ **битный доступ - время менять интерфейсы?*
+ *Границы фантазии при генерации тестовых данных*
+ *Границы фантазии при генерации тестовых данных*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(274): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('all')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:24:55  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 81
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103645
+ref.callback_query.id= 1224223211695330743
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 858
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520939603
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:2
+
+
+[ref]
+ref.text= 
+ **
+ **битный доступ - время менять интерфейсы?*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(274): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('2')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(151): call_user_func_array(Array, Array)
+#7 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(68): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:25:08  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 81
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103647
+ref.callback_query.id= 1224223214278473509
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 858
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520939603
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:2
+
+
+[ref]
+ref.text= 
+ **
+ **битный доступ - время менять интерфейсы?*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(274): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('2')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:25:12  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 520
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103649
+ref.callback_query.id= 1224223211041538098
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 858
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520939603
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:all
+
+
+[ref]
+ref.text= 
+ *Терабитный доступ - время менять интерфейсы?*
+ **
+ *Петабитный доступ - время менять интерфейсы?*
+ **
+ *Гбитный доступ - время менять интерфейсы?*
+ **
+ **битный доступ - время менять интерфейсы?*
+ *Границы фантазии при генерации тестовых данных*
+ *Границы фантазии при генерации тестовых данных*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(274): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('all')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:25:20  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 520
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103650
+ref.callback_query.id= 1224223211043811889
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 858
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520939603
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:all
+
+
+[ref]
+ref.text= 
+ *Терабитный доступ - время менять интерфейсы?*
+ **
+ *Петабитный доступ - время менять интерфейсы?*
+ **
+ *Гбитный доступ - время менять интерфейсы?*
+ **
+ **битный доступ - время менять интерфейсы?*
+ *Границы фантазии при генерации тестовых данных*
+ *Границы фантазии при генерации тестовых данных*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(274): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('all')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:25:43  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 520
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103651
+ref.callback_query.id= 1224223210530351153
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 858
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520939603
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:all
+
+
+[ref]
+ref.text= 
+ *Гбитный доступ - время менять интерфейсы?*
+ *Терабитный доступ - время менять интерфейсы?*
+ **
+ *Петабитный доступ - время менять интерфейсы?*
+ **битный доступ - время менять интерфейсы?*
+ *Границы фантазии при генерации тестовых данных*
+ **
+ **
+ *Границы фантазии при генерации тестовых данных*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(274): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('all')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(151): call_user_func_array(Array, Array)
+#7 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(68): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:26:14  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 520
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103652
+ref.callback_query.id= 1224223213437129887
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 858
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520939603
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:all
+
+
+[ref]
+ref.text= 
+ *Гбитный доступ - время менять интерфейсы?*
+ *Терабитный доступ - время менять интерфейсы?*
+ **
+ *Петабитный доступ - время менять интерфейсы?*
+ **битный доступ - время менять интерфейсы?*
+ *Границы фантазии при генерации тестовых данных*
+ **
+ **
+ *Границы фантазии при генерации тестовых данных*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(274): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('all')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(151): call_user_func_array(Array, Array)
+#7 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(68): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:26:23  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 81
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103654
+ref.callback_query.id= 1224223210864783704
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 858
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520939603
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:2
+
+
+[ref]
+ref.text= 
+ **
+ **битный доступ - время менять интерфейсы?*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(274): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('2')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:27:48  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 81
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103658
+ref.callback_query.id= 1224223210445846559
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 865
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520940462
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:2
+
+
+[ref]
+ref.text= 
+ **
+ **битный доступ - время менять интерфейсы?*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(274): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('2')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:27:58  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 520
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103660
+ref.callback_query.id= 1224223212076253581
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 865
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520940462
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:all
+
+
+[ref]
+ref.text= 
+ *Гбитный доступ - время менять интерфейсы?*
+ *Терабитный доступ - время менять интерфейсы?*
+ **
+ *Петабитный доступ - время менять интерфейсы?*
+ **битный доступ - время менять интерфейсы?*
+ *Границы фантазии при генерации тестовых данных*
+ **
+ **
+ *Границы фантазии при генерации тестовых данных*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(274): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('all')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:30:07  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 81
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103663
+ref.callback_query.id= 1224223211318069865
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 869
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520940601
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:2
+
+
+[ref]
+ref.text= 
+ **
+ **битный доступ - время менять интерфейсы?*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(274): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('2')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:31:36  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 520
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103668
+ref.callback_query.id= 1224223214378499879
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 875
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520940684
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:all
+
+
+[ref]
+ref.text= 
+ *Терабитный доступ - время менять интерфейсы?*
+ **
+ *Петабитный доступ - время менять интерфейсы?*
+ **
+ *Гбитный доступ - время менять интерфейсы?*
+ **
+ **битный доступ - время менять интерфейсы?*
+ *Границы фантазии при генерации тестовых данных*
+ *Границы фантазии при генерации тестовых данных*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(274): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('all')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:31:40  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 81
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103669
+ref.callback_query.id= 1224223210865108346
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 875
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520940684
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:2
+
+
+[ref]
+ref.text= 
+ **
+ **битный доступ - время менять интерфейсы?*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(274): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('2')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-13 16:33:31  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse entities: Can't find end of the entity starting at byte offset 81
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103675
+ref.callback_query.id= 1224223212384769268
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 880
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1520940798
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_lectures:2
+
+
+[ref]
+ref.text= 
+ **
+ **битный доступ - время менять интерфейсы?*
+ref.parse_mode= Markdown
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(274): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(76): AppBundle\Controller\WebhookController->_showHalls('2')
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-14 10:41:07  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103690
+ref.callback_query.id= 1224223210599257645
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 898
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1521006061
+ref.callback_query.message.text= ping
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_halls:2018-02-27
+
+
+[ref]
+ref.chat_id= 
+ref.text= ping
+ref.parse_mode= Markdown
+ref.reply_markup= {"inline_keyboard":[[{"text":"\u0411\u043e\u043b\u044c\u0448\u043e\u0439 \u0437\u0430\u043b","callback_data":"show_lectures:1"}],[{"text":"\u041c\u0430\u043b\u044b\u0439 \u0437\u0430\u043b","callback_data":"show_lectures:2"}],[{"text":"\u0421\u0440\u0435\u0434\u043d\u0435\u043c\u0430\u043b\u044b\u0439 \u0437\u0430\u043b","callback_data":"show_lectures:3"}],[{"text":"\u0412\u0441\u0435 \u0437\u0430\u043b\u044b","callback_data":"show_lectures:all"}]]}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(323): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(77): AppBundle\Controller\WebhookController->_showHalls(NULL)
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-14 10:41:58  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: chat_id is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103691
+ref.callback_query.id= 1224223210339134275
+ref.callback_query.from.id= 285036678
+ref.callback_query.from.is_bot= false
+ref.callback_query.from.first_name= Evgeny
+ref.callback_query.from.last_name= Nachuychenko
+ref.callback_query.from.username= alf1kk
+ref.callback_query.from.language_code= ru-RU
+ref.callback_query.message.message_id= 900
+ref.callback_query.message.from.id= 527782633
+ref.callback_query.message.from.is_bot= true
+ref.callback_query.message.from.first_name= NAG CROS 2018
+ref.callback_query.message.from.username= NagCROSbot
+ref.callback_query.message.chat.id= 285036678
+ref.callback_query.message.chat.first_name= Evgeny
+ref.callback_query.message.chat.last_name= Nachuychenko
+ref.callback_query.message.chat.username= alf1kk
+ref.callback_query.message.chat.type= private
+ref.callback_query.message.date= 1521006090
+ref.callback_query.message.text= Выберите дату
+ref.callback_query.chat_instance= 4601084807771213353
+ref.callback_query.data= show_halls:2018-02-27
+
+
+[ref]
+ref.chat_id= 
+ref.text= ping
+ref.parse_mode= Markdown
+ref.reply_markup= {"inline_keyboard":[[{"text":"\u0411\u043e\u043b\u044c\u0448\u043e\u0439 \u0437\u0430\u043b","callback_data":"show_lectures:1"}],[{"text":"\u041c\u0430\u043b\u044b\u0439 \u0437\u0430\u043b","callback_data":"show_lectures:2"}],[{"text":"\u0421\u0440\u0435\u0434\u043d\u0435\u043c\u0430\u043b\u044b\u0439 \u0437\u0430\u043b","callback_data":"show_lectures:3"}],[{"text":"\u0412\u0441\u0435 \u0437\u0430\u043b\u044b","callback_data":"show_lectures:all"}]]}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(323): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(77): AppBundle\Controller\WebhookController->_showHalls(NULL)
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-14 12:57:14  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: message text is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103692
+ref.message.message_id= 902
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1521014231
+ref.message.text= Посмотреть расписание
+
+
+[ref]
+ref.text= 
+ref.reply_markup= {"keyboard":[[],[{"text":"\u041c\u0415\u041d\u042e","request_contact":false,"request_location":false}],[]],"one_time_keyboard":false,"resize_keyboard":true,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(259): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(56): AppBundle\Controller\WebhookController->_showDates()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(151): call_user_func_array(Array, Array)
+#7 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(68): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-14 13:22:24  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: message text is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103701
+ref.message.message_id= 924
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1521015743
+ref.message.text= Посмотреть расписание
+
+
+[ref]
+ref.text= 
+ref.reply_markup= {"keyboard":[[],[{"text":"\u041c\u0415\u041d\u042e","request_contact":false,"request_location":false}],[]],"one_time_keyboard":false,"resize_keyboard":true,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(275): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(56): AppBundle\Controller\WebhookController->_showDates()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(151): call_user_func_array(Array, Array)
+#7 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(68): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-14 13:22:28  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: message text is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103702
+ref.message.message_id= 926
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1521015747
+ref.message.text= Посмотреть расписание
+
+
+[ref]
+ref.text= 
+ref.reply_markup= {"keyboard":[[],[{"text":"\u041c\u0415\u041d\u042e","request_contact":false,"request_location":false}],[]],"one_time_keyboard":false,"resize_keyboard":true,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(275): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(56): AppBundle\Controller\WebhookController->_showDates()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-14 13:23:28  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: message text is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103707
+ref.message.message_id= 938
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1521015806
+ref.message.text= Посмотреть расписание
+
+
+[ref]
+ref.text= 
+ref.reply_markup= {"keyboard":[[],[{"text":"\u041c\u0415\u041d\u042e","request_contact":false,"request_location":false}],[]],"one_time_keyboard":false,"resize_keyboard":true,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(275): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(56): AppBundle\Controller\WebhookController->_showDates()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(151): call_user_func_array(Array, Array)
+#7 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(68): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-14 13:23:49  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: message text is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103708
+ref.message.message_id= 940
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1521015828
+ref.message.text= Посмотреть расписание
+
+
+[ref]
+ref.text= 
+ref.reply_markup= {"keyboard":[[],[{"text":"\u041c\u0415\u041d\u042e","request_contact":false,"request_location":false}],[]],"one_time_keyboard":false,"resize_keyboard":true,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(275): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(56): AppBundle\Controller\WebhookController->_showDates()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-14 13:24:22  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: message text is empty
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103709
+ref.message.message_id= 942
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1521015861
+ref.message.text= Посмотреть расписание
+
+
+[ref]
+ref.text= 
+ref.reply_markup= {"keyboard":[[],[{"text":"\u041c\u0415\u041d\u042e","request_contact":false,"request_location":false}],[]],"one_time_keyboard":false,"resize_keyboard":true,"selective":true}
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(275): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(56): AppBundle\Controller\WebhookController->_showDates()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-14 13:33:45  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse reply keyboard markup JSON object
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103720
+ref.message.message_id= 961
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1521016422
+ref.message.text= Посмотреть расписание
+
+
+[ref]
+ref.text= Выберите дату
+ref.parse_mode= Markdown
+ref.reply_markup= Array
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(275): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(56): AppBundle\Controller\WebhookController->_showDates()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(151): call_user_func_array(Array, Array)
+#7 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/HttpKernel.php(68): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-14 13:33:48  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse reply keyboard markup JSON object
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103718
+ref.message.message_id= 959
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1521016360
+ref.message.text= Посмотреть расписание
+
+
+[ref]
+ref.text= Выберите дату
+ref.parse_mode= Markdown
+ref.reply_markup= Array
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(275): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(56): AppBundle\Controller\WebhookController->_showDates()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+
+============[Date]============
+[ 2018-03-14 13:34:29  Asia/Yekaterinburg ] 
+==========[Response]==========
+ok:			False
+error_code:		400
+description:		Bad Request: can't parse reply keyboard markup JSON object
+=========[Sent Data]==========
+[ref]
+ref.update_id= 343103721
+ref.message.message_id= 962
+ref.message.from.id= 285036678
+ref.message.from.is_bot= false
+ref.message.from.first_name= Evgeny
+ref.message.from.last_name= Nachuychenko
+ref.message.from.username= alf1kk
+ref.message.from.language_code= ru-RU
+ref.message.chat.id= 285036678
+ref.message.chat.first_name= Evgeny
+ref.message.chat.last_name= Nachuychenko
+ref.message.chat.username= alf1kk
+ref.message.chat.type= private
+ref.message.date= 1521016468
+ref.message.text= Посмотреть расписание
+
+
+[ref]
+ref.text= Выберите дату
+ref.parse_mode= Markdown
+ref.reply_markup= Array
+
+
+============[Trace]===========
+#0 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(3057): TelegramErrorLogger::log(Array, Array)
+#1 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(93): Telegram->sendAPIRequest('https://api.tel...', Array)
+#2 /home/cros/www/vendor/eleirbag89/telegrambotphp/Telegram.php(178): Telegram->endpoint('sendMessage', Array)
+#3 /home/cros/www/src/AppBundle/Controller/WebhookController.php(275): Telegram->sendMessage(Array)
+#4 /home/cros/www/src/AppBundle/Controller/WebhookController.php(56): AppBundle\Controller\WebhookController->_showDates()
+#5 [internal function]: AppBundle\Controller\WebhookController->updateAction('c2hhbWJhbGEyMyk...')
+#6 /home/cros/www/var/cache/prod/classes.php(5099): call_user_func_array(Array, Array)
+#7 /home/cros/www/var/cache/prod/classes.php(5054): Symfony\Component\HttpKernel\HttpKernel->handleRaw(Object(Symfony\Component\HttpFoundation\Request), 1)
+#8 /home/cros/www/vendor/symfony/symfony/src/Symfony/Component/HttpKernel/Kernel.php(202): Symfony\Component\HttpKernel\HttpKernel->handle(Object(Symfony\Component\HttpFoundation\Request), 1, true)
+#9 /home/cros/www/web/app.php(16): Symfony\Component\HttpKernel\Kernel->handle(Object(Symfony\Component\HttpFoundation\Request))
+#10 {main}
+

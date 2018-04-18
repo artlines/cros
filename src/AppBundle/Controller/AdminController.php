@@ -299,6 +299,7 @@ class AdminController extends Controller
     public function tableAction($year = null, Request $request)
     {
         $group_sort = $request->get('group');
+        $show_empty = (bool) $request->get('show_empty');
 
         if ($year == null) {
             $year = date("Y");
@@ -347,7 +348,7 @@ class AdminController extends Controller
             ->getRepository('AppBundle:Organization');
 
         /** @var Organization $organizations */
-        $organizations = $OrganizationRepository->findByIdsWithConfUser($org_ids_array, $conf->getId(), $man_gr_id, $approved);
+        $organizations = $OrganizationRepository->findByIdsWithConfUser($org_ids_array, $conf->getId(), $man_gr_id, $approved, $show_empty);
 
         /** @var Organization $organization */
         foreach ($organizations as $organization) {

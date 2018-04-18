@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <!-- Favicon -->
-    <!-- <link rel="shortcut icon" href="/favicon.ico"> -->
+     <link rel="shortcut icon" href="/favicon.ico"> 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
     <!-- CSS Global Compulsory -->
@@ -18,10 +18,15 @@
     <link rel="stylesheet" href="{{ asset('assets/cros2/assets/cros/animate.css') }}">
     <!-- CSS Implementing Plugins -->
     <link rel="stylesheet" href="{{ asset('assets/cros2/assets/cros/fancybox/jquery.fancybox.css') }}">
+    <!-- for menu -->
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/megamenu.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/lightbox.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/cros/slick-slider/slick.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/bases.css?t=20180313') }}">
     <!-- CSS Template -->
-    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/styles.css?t=2018040402') }}">
     <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/light-blue.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/custom.css?t=2018030601') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/custom.css?t=1522151435') }}">
     <meta name="theme-color" content="#6ca0dc">
     <link rel="icon" sizes="192x192" href="{{ asset('temp/cros-logo_192px.png') }}">
 </head>
@@ -31,7 +36,7 @@
             data-header-fix-moment="100">
         <div class="u-header__section cs-bg-darkblue-opacity-0_5 cs-transition-0_3 cs-py-0"
              data-header-fix-moment-exclude="light-theme cs-bg-darkblue-opacity-0_5"
-             data-header-fix-moment-classes="dark-theme cs-bg-white-opacity-0_9">
+             data-header-fix-moment-classes="dark-theme cs-bg-white-opacity-0_9" id="test">
             <nav class="navbar navbar-toggleable-md cs-py-0">
                 <div class="container">
                     <!-- Logo -->
@@ -48,25 +53,34 @@
                     <div class="collapse navbar-collapse align-items-center flex-sm-row" id="navBar">
                         <ul id="js-scroll-nav" class="navbar-nav text-uppercase cs-font-weight-700 cs-font-size-11 cs-pt-20 cs-pt-0--lg ml-auto">
                             <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg active">
-                                <a href="#home" class="nav-link p-0">Главная <span class="sr-only">(current)</span></a>
+                                <a href="{{ url('homepage') }}" class="nav-link p-0">Главная <span class="sr-only">(current)</span></a>
                             </li>
                             <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
-                                <a href="#about" class="nav-link p-0">О Крос</a>
+                                <a href="{{ path('info', {'alias': 'targets'}) }}" class="nav-link p-0">О Крос</a>
+                            </li>
+                            <!-- submenu -->
+                            <li class="nav-item cs-has-sub-menu cs-mb-7 cs-mb-0--lg submenu" id="submenu" >
+                                <a href="#" class="nav-link p-0" id="nav-link-1"
+                                   aria-haspopup="true"
+                                   aria-expanded="false"
+                                   aria-controls="nav-submenu-1"
+                                >Участие<span class="d-lg-none d-xl-inline"> в КРОС</span></a>
+                                <!-- Submenu -->
+                                <ul class="cs-sub-menu-home cs-sub-menu list-unstyled cs-mt-20 cs-mt-10--lcs--scrolling u-shadow-v18 cs-font-weight-700 cs-font-size-12 nav-submenu-1" id="nav-submenu-1"
+                                    aria-labelledby="nav-link-2" style="margin-top: 0px;">
+                                    <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('members') }}">Участники</a></li>
+                                    <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('price') }}">Стоимость участия</a></li>
+                                    <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('registration') }}">Регистрация</a></li>
+                                    <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('info', {'alias': 'organize'}) }}">Место проведения</a></li>
+                                </ul>
+                                <!-- End Submenu -->
+                            </li>
+                            <!-- sub menu -->
+                            <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
+                                <a href="{{ url('faq') }}" class="nav-link p-0">FAQ</a>
                             </li>
                             <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
-                                <a href="#why" class="nav-link p-0">Возможности</a>
-                            </li>
-                            <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
-                                <a href="#ourguests" class="nav-link p-0">Наши гости</a>
-                            </li>
-                            <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
-                                <a href="#testimonials" class="nav-link p-0">Отзывы</a>
-                            </li>
-                            <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
-                                <a href="#hottopics" class="nav-link p-0">Темы</a>
-                            </li>
-                            <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
-                                <a href="#contact" class="nav-link p-0">Контакты</a>
+                                <a href="{{ url('archive') }}" class="nav-link p-0">Архив</a>
                             </li>
                             <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
                                 <a href="javascript:void(0)" class="nav-link p-0">+7 (343) 379 98 38</a>
@@ -152,33 +166,7 @@
         {% endif %}
         <!-- cs-max-width-750  -->
         <div class="container u-bg-overlay__inner cs-color-white mb-0 cs-pt-40">
-            <div style="text-align: center;text-transform: uppercase;" class="cs-font-size-23">До начала регистрации</div>
-            <!-- Countdown v4 -->
-            <div class="js-countdown text-center text-uppercase u-countdown-v4"
-                 data-end-date="{{ reg_start|date("Y/m/d H:i:s") }}"
-                 data-month-format="%m"
-                 data-days-format="%D"
-                 data-hours-format="%H"
-                 data-minutes-format="%M"
-                 data-seconds-format="%S">
-                <div class="d-inline-block cs-font-size-12 cs-px-10 cs-px-50--md cs-py-15">
-                    <div class="js-cd-days cs-font-size-20 cs-font-size-40--md cs-font-weight-700 cs-line-height-1 cs-mb-5">12</div>
-                    <span>Дней</span>
-                </div>
-                <div class="d-inline-block cs-font-size-12 cs-brd-left cs-px-10 cs-px-60--md cs-py-15">
-                    <div class="js-cd-hours cs-font-size-20 cs-font-size-40--md cs-font-weight-700 cs-line-height-1 cs-mb-5">01</div>
-                    <span>Часов</span>
-                </div>
-                <div class="d-inline-block cs-font-size-12 cs-brd-left cs-px-10 cs-px-60--md cs-py-15">
-                    <div class="js-cd-minutes cs-font-size-20 cs-font-size-40--md cs-font-weight-700 cs-line-height-1 cs-mb-5">52</div>
-                    <span>Минут</span>
-                </div>
-                <div class="d-inline-block cs-font-size-12 cs-brd-left cs-px-10 cs-px-50--md cs-py-15">
-                    <div class="js-cd-seconds cs-font-size-20 cs-font-size-40--md cs-font-weight-700 cs-line-height-1 cs-mb-5">52</div>
-                    <span>Секунд</span>
-                </div>
-            </div>
-            <!-- End Countdown v4 -->
+            {{ render(controller('AppBundle:Default:newcountdown', {'isMainPage': true})) }}
             <div class="row cs-mb-0 cs-mt-100">
                 <div class="col-md-6  text-left">
                     <p class="cs-font-size-20 mb-0 cs-color-white">
@@ -361,6 +349,34 @@
                         Перед каждой конференцией мы не только изучаем современные тенденции рынка, но и опрашиваем будущих участников КРОС. Нам важно, чтобы вы получили актуальную и полезную информацию.
                     </p>
                 </div>
+            </div>
+        </div>
+    </section>
+    <section class="cs-pt-30 cs-mb-100 cs-bg-img-layer-middle">
+        <div class="container">
+            <div class="text-center cs-mb-30">
+                <h2 class="text-uppercase cs-line-height-1 cs-font-weight-700 cs-font-size-23 cs-letter-spacing-0 cs-color-header">
+                    Лидеры рынка ценят наш опыт
+                </h2>
+            </div>
+            <div class="row no-gutters text-center cs-pb-30 backedcontent">
+                <img src="{{ asset('assets/cros2/img/new_marketleaders/logo-goodline.png') }}" title="GoodLine" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/marketleaders/er-telecom.jpg') }}" title="Эр-телеком" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/new_marketleaders/logo-kvanttele.gif') }}" title="Квант-телеком" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/new_marketleaders/logo-zt.png') }}" title="Зелёная точка" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/marketleaders/ix.png') }}" title="Msk Ix" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/marketleaders/logo-ufanet.png') }}" title="Ufanet" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/marketleaders/megafon.png') }}" title="Мегафон" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/new_marketleaders/logo-motiv.jpg') }}" title="Мотив" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/marketleaders/rent.png') }}" title="Retnnet" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/new_marketleaders/logo-severnoevolokno.png') }}" title="Северное волокно" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/marketleaders/ttk.png') }}" title="ТТК" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/marketleaders/ihome.png') }}" title="Ihome" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/new_marketleaders/logo-almatel.jpg') }}" title="Almatel" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/new_marketleaders/logo-rostele.png') }}" title="Ростелеком" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/new_marketleaders/logo-mail.png') }}" title="Mail.ru" class="marketleadersImg" />
+                <img src="{{ asset('assets/cros2/img/new_marketleaders/logo-selectel.png') }}" title="Selectel" class="marketleadersImg" />
+                <img src="{{ asset('assets/cros2/img/new_marketleaders/logo-zummer.png') }}" title="Зуммер" class="marketleadersImg" />
             </div>
         </div>
     </section>
@@ -664,13 +680,13 @@
 <script src="{{ asset('assets/cros2/assets/cros/jquery-migrate/jquery-migrate.min.js') }}"></script>
 <script src="{{ asset('assets/cros2/assets/cros/jquery.easing/js/jquery.easing.min.js') }}"></script>
 <script src="{{ asset('assets/cros2/assets/cros/tether/tether.min.js') }}"></script>
-<script src="{{ asset('assets/cros2/assets/cros/bootstrap/bootstrap.min.js') }}"></script>
+<script src="{{ asset('assets/cros2/assets/cros/bootstrap/bootstrap.min.js?t=20180313') }}"></script>
 <script src="{{ asset('assets/cros2/assets/cros/fancybox/jquery.fancybox.min.js') }}"></script>
 <script src="{{ asset('assets/cros2/assets/cros/jquery.countdown.min.js') }}"></script>
 <script src="{{ asset('assets/cros2/assets/js/components/core.js') }}"></script>
 <script src="{{ asset('assets/cros2/assets/js/components/header.js') }}"></script>
 <script src="{{ asset('assets/cros2/assets/js/components/hamburgers.js') }}"></script>
-<script src="{{ asset('assets/cros2/assets/js/components/scroll-nav.js') }}"></script>
+
 <script src="{{ asset('assets/cros2/assets/js/components/countdown.js') }}"></script>
 <script src="{{ asset('assets/cros2/assets/js/components/go-to.js') }}"></script>
 <script src="{{ asset('assets/cros2/assets/js/components/popup.js') }}"></script>
@@ -678,6 +694,52 @@
 <script src="{{ asset('assets/cros2/assets/cros/charts/Chart.bundle.js') }}"></script>
 <script src="{{ asset('assets/cros2/assets/cros/charts/utils.js') }}"></script>
 <!-- JS Plugins Init. -->
+<!--JS Menu -->
+<script src="{{ asset('assets/cros2/assets/js/components/megamenu.min.js') }}"></script>
+{% block javascripts %}{% endblock %}
+<script>
+    (function(){
+        var originalAddClassMethod = jQuery.fn.addClass;
+        $.fn.addClass = function(){
+            var result = originalAddClassMethod.apply(this, arguments);
+            if ($(this).attr('id') == 'test') {
+                $(this).trigger('cssClassChanged');
+            }
+            return result;
+        }
+    })();
+    $(function(){
+        $("#test").bind('cssClassChanged', function(){
+            if($("#test").hasClass("js-header-change-moment")){
+                $('#nav-submenu-1').addClass('cs-sub-menu-home-dow');
+            }else{
+                $("#nav-submenu-1").removeClass('cs-sub-menu-home-dow');
+            }
+
+        });
+    });
+
+    $(function(){
+        $('.submenu').hover(function(){
+            $('.submenu').addClass('cs-sub-menu-opened');
+        }, function(){
+            $('.submenu').removeClass('cs-sub-menu-opened');
+        })
+    });
+    $('.sub-menu').SubMenu({
+        event: 'hover',
+        pageContainer: $('.container'),
+        breakpoint: 991
+    });
+    $(window).on('resize', function () {
+        if ( $('.nav-item').hasClass('active') ) {
+            $('.nav-item').removeClass('active');
+        }
+        setTimeout(function () {
+            $.MainCore.components.B4Tabs.init('[role="tablist"]');
+        }, 200);
+    });
+</script>
 <script>
     /*
       Get html5 attr and set background pos from sprite png.
@@ -692,14 +754,6 @@
 
     $(document).on('ready', function () {
         setIconPosition();
-        //microfix for to navbar
-        $(".navbar-toggler").on('click', function () {
-            if ($("#navBar").hasClass("show")) {
-                $("#navBar").removeClass("show");
-            } else {
-                $("#navBar").addClass("show");
-            }
-        });
         // initialization of header
         $.MainCore.components.HSHeader.init($('#js-header'));
         $.MainCore.helpers.HSHamburgers.init('.hamburger');
@@ -716,14 +770,6 @@
             minutesElSelector: '.js-cd-minutes',
             secondsElSelector: '.js-cd-seconds'
         });
-    });
-
-    //Initialization of smooth scroll
-    $(window).on('load', function() {
-        $.MainCore.components.HSScrollNav.init($('#js-scroll-nav'), {
-            duration: 700,
-            easing: 'easeOutExpo'
-        });
 
         handleLogin();
         // Search Box (Header)
@@ -739,6 +785,8 @@
             });
         }
     });
+
+
 </script>
 <script>
     var config = {
@@ -828,6 +876,43 @@
         window.myDoughnut2 = new Chart(ctx2, config2);
     };
 
+</script>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter48079550 = new Ya.Metrika({
+                    id:48079550,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/48079550" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-749542-17"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-749542-17');
 </script>
 </body>
 </html>

@@ -112,12 +112,16 @@ class MembersController extends Controller
             ->findOneBy(array('year' => $year));
 
         /** @var Organization $members */
+
+        /*
         $members = $this->getDoctrine()
             ->getRepository('AppBundle:Organization')
             ->findAllByConference($conf->getId(), true);
-
+        */
+        $members = $this->getDoctrine()
+            ->getRepository('AppBundle:Organization')
+            ->findByIdsOrganizationApproved();
         $show_list = true;
-
         // Получаем разрешенные даты регистрации
         $reg_start = $conf->getRegistrationStart();
 
@@ -126,7 +130,6 @@ class MembersController extends Controller
         if($now < $reg_start->format('Y-m-d H:i:s')){
             $show_list = false;
         }
-
         return $this->render('frontend/members/list.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
             'list' => $members,

@@ -114,7 +114,6 @@ class WebhookController extends Controller
                 } else {
                     // Ничего. Молчим, если по стейту мы не ожидаем никакого ответа на сообщение
                 }
-
             } else {
                 switch (trim($this->update['message']['text'])) {
                     case '/start':
@@ -451,7 +450,6 @@ class WebhookController extends Controller
             }
         }
 
-
         if (isset($this->update['message'])) {
             $content = array(
                 'chat_id' => $this->update['message']['chat']['id'],
@@ -513,10 +511,8 @@ class WebhookController extends Controller
                 'parse_mode' => 'HTML'
             );
             $this->bot->sendMessage($content);
-
         } else {
             $em = $this->getDoctrine()->getManager();
-
             if ($flag) {
                 $this->tgChat->allowNotify();
                 $_status = 'Вы подписаны на уведомления';
