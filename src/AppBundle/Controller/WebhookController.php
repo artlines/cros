@@ -387,7 +387,7 @@ class WebhookController extends Controller
 
         /** @var OrganizationRepository $organizations */
         $orgRepo = $em->getRepository('AppBundle:Organization');
-        $orgQ = $orgRepo->createQuery("
+        $orgQ = $em->createQuery("
             SELECT
                       org.*
                 FROM
