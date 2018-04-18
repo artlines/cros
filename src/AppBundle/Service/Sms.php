@@ -3,8 +3,10 @@
 namespace AppBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use GuzzleHttp\Exception\RequestException;
 use \SimpleXMLElement;
 use AppBundle\Entity\Logs;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class Sms
 {
@@ -117,14 +119,14 @@ class Sms
             /** @var Logs $log */
             foreach ($this->logs as $log) {
                 $this->em->persist($log);
-                var_Dump($log);
             }
             $this->em->flush();
         }
 
         if ($errno = curl_errno($ch)) {
-            $error_message = curl_strerror($errno);
-            $result = "cURL error ({$errno}):\n {$error_message}";
+            throw new ResourceNotFoundException($errno);
+//            $error_message = curl_strerror($errno);
+//            $result = "cURL error ({$errno}):\n {$error_message}";
         }
 
         curl_close($ch);
@@ -142,7 +144,7 @@ class Sms
         $messages = $this->messages;
 
         if (empty($messages)) {
-            throw new \Exception("Messages array is empty. Nothing to send.");
+            throw new \Exception("SMS Service: Messages array is empty. Nothing to send.");
         }
 
         /**
