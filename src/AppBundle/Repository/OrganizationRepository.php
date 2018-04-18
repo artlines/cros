@@ -168,7 +168,7 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
      * @return array
      * We return the list of participants only those who have already settled in numbers
      */
-    public function findByIdsOrganizationApproved($params = array('count' => true))
+    public function findByIdsOrganizationApproved($params = array())
     {
         $conn = $this->getEntityManager()->getConnection();
 
