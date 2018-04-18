@@ -168,14 +168,14 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
      * @return array
      * We return the list of participants only those who have already settled in numbers
      */
-    public function findByIdsOrganizationApproved($_limit = null, $_offset = null)
+    public function findByIdsOrganizationApproved($params = array('count' => true))
     {
         $conn = $this->getEntityManager()->getConnection();
+
+        $select = (isset($params['count']) && $params['count']) ? 'count(*)' : 'name, org.id, city, title';
+
         $sql = "SELECT
-	              name,
-	              org.id,
-	              city,
-	              title
+	              $select
                 FROM
 	              organization org
                 inner JOIN organization_status ss ON
@@ -189,19 +189,14 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
                     left JOIN user_to_apartament apar ON
                       us.id = apar.user_id
                     WHERE
-                      approved = 1 AND hidden = 0
+                      approved = 1
                 ) 
+                AND hidden = 0
                 ORDER BY priority DESC, name ";
-
-        if (isset($_limit)) {
-            $offset = isset($_offset) ? $_offset : 0;
-            $sql .= " LIMIT $offset,$_limit";
-        }
 
         $stmt = $conn->prepare($sql);
         $stmt->execute();
         $res = $stmt->fetchAll();
         return $res;
     }
-
 }

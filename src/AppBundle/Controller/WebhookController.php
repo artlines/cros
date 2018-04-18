@@ -386,26 +386,7 @@ class WebhookController extends Controller
 
         /** @var OrganizationRepository $organizations */
         $orgRepo = $em->getRepository('AppBundle:Organization');
-        $orgQ = $em->createQuery("
-            SELECT
-                      org.*
-                FROM
-                      AppBundle\Entity\Organization org
-                inner JOIN AppBundle\Entity\OrganizationStatus ss ON
-                      org.status = ss.id
-                where
-                      org.id IN(
-                    SELECT
-                      us.organizationId
-                    FROM
-                      AppBundle\Entity\User us
-                    left JOIN AppBundle\Entity\UserToApartament apar ON
-                      us.id = apar.userId
-                    WHERE
-                      approved = 1 AND hidden = 0
-                )
-                ORDER BY priority DESC, name
-        ");
+
 
         $org_count = count($orgQ->getResult());
         $orgs = $orgQ
