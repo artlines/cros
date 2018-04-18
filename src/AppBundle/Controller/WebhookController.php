@@ -628,7 +628,6 @@ class WebhookController extends Controller
             }
             try {
                 $res = $this->sms->send();
-                file_put_contents('/tmp/debug_sms', print_r($res) . "\n\n*********\n", FILE_APPEND);
             } catch (\Exception $e) {
                 $this->_error($e);
             }

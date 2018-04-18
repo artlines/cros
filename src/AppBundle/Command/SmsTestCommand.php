@@ -29,11 +29,11 @@ class SmsTestCommand extends ContainerAwareCommand
         $sms->setEntityClass('tg_connection');
         $sms->setEntityId(123);
 
-        $sms->addMessage('cros_test0418_12', '79221544365', 'test');
+        //$sms->addMessage('cros_test0418_12', '79221544365', 'test');
 
-        $res = $sms->send();
+        //$res = $sms->send();
 
-        var_dump($res);
+        //var_dump($res);
     }
 
 
