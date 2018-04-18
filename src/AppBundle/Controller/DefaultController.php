@@ -56,7 +56,6 @@ class DefaultController extends Controller
             $speakerList[$key]['AvatarSmall'] = $value->getAvatarSmall();
             $speakerList[$key]['Organization'] = $value->getUser()->getOrganization()->getName();
             $speakerList[$key]['SpeakerFirstName'] = $value->getUser()->getFirstName();
-            $speakerList[$key]['SpeakerFirstName'] = $value->getUser()->getFirstName();
             $speakerList[$key]['SpeakerLastName'] = $value->getUser()->getLastName();
             $speakerList[$key]['SpeakerMiddleName'] = $value->getUser()->getMiddleName();
         }
