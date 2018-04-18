@@ -123,6 +123,9 @@ class WebhookController extends Controller
                     case '/stop':
                         $this->_stop();
                         break;
+                    case '/menu':
+                        $this->_menu();
+                        break;
                     case 'МЕНЮ':
                         $this->_menu();
                         break;
