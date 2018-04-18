@@ -73,7 +73,9 @@ class SpeakersController extends Controller
         $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
         /** @var Speaker $speakers */
         $speaker = $speakerRepository->find($id);
-        //$speakerReports = $this->getDoctrine()->getRepository('AppBundle:SpeakerReports');
+        $speakerReports = $this->getDoctrine()->getRepository('AppBundle:SpeakerReports');
+        $report = $speakerReports->find(1);
+        dump($report);
         //$speakerReports->find(1)
         //dump($speakerReports->find(1)->getre);
         $orgname = $speaker->getUser()->getOrganization()->getName();
