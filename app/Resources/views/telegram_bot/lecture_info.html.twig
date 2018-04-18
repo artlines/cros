@@ -1,0 +1,10 @@
+<b>{{ lecture.title }}</b>
+
+<b>Докладчик:</b> {{ lecture.speaker }} ({{ lecture.company }})
+
+<b>Дата:</b> {{ lecture.date|date("d.m.Y") }}
+<b>Время начала:</b> {{ lecture.startTime|date("H:i") }}
+<b>Время завершения:</b> {{ lecture.endTime|date("H:i") }}
+
+<b>Основные тезисы:</b>
+{{ lecture.theses }}
