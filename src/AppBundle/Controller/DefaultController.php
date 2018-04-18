@@ -46,13 +46,24 @@ class DefaultController extends Controller
      */
     public function newMainAction()
     {
+        $year = date("Y");
         $reg_time = $this->getDoctrine()->getRepository('AppBundle:Conference')
             ->findOneBy(array('year' => date("Y")));
+        /** @var ConferenceRepository $conferenceRepository */
+        $conferenceRepository = $this->getDoctrine()->getRepository('AppBundle:Conference');
+        /** @var Conference $conf */
+        $conf = $conferenceRepository->findOneBy(array('year' => $year));
 
+        /** @var SpeakerRepository $speakerRepository */
+        $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
+        /** @var Speaker $speakers */
+        $speakers = $speakerRepository->findByConf($conf->getId());
+        /*
         $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
         $speaker = $speakerRepository->findBy(array('conferenceId' => $reg_time->getId()));
+        */
         $speakerList = NULL;
-        foreach ($speaker as $key =>  $value){
+        foreach ($speakers as $key =>  $value){
             $speakerList[$key]['id'] = $value->getid();
             $speakerList[$key]['AvatarSmall'] = $value->getAvatarSmall();
             $speakerList[$key]['Organization'] = $value->getUser()->getOrganization()->getName();

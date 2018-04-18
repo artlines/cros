@@ -405,7 +405,6 @@ class AdminMemberController extends Controller
             ->add('middle_name', TextType::class, array('label' => 'Отчество','data' => $user->getMiddleName()))
             ->add('phone', TextType::class, array('label' => 'Телефон','data' => $user->getUsername()))
             ->add('email', TextType::class, array('label' => 'E-mail','data' => $user->getEmail()))
-            ->add('report', TextType::class, array('label' => 'Доклад','data'=>$speaker->getReport()))
             ->add('isActive', CheckboxType::class, array('label' => 'Активный докладчик','required' => false,'data' => $isActive ))
             ->add('conference', ChoiceType::class, array(
                 'label' => 'Конференция',
@@ -591,7 +590,7 @@ class AdminMemberController extends Controller
     /**
      * Создание докладчика
      *
-     * @Route("/admin/speakeradd", name="admin-speaker-add")
+     * @Route("/admin/speaker-add", name="admin-speaker-add")
      * @param Request $request
      * @return object
      */
@@ -623,7 +622,6 @@ class AdminMemberController extends Controller
             ->add('middle_name', TextType::class, array('label' => 'Отчество'))
             ->add('phone', TextType::class, array('label' => 'Телефон'))
             ->add('email', TextType::class, array('label' => 'E-mail'))
-            ->add('report', TextType::class, array('label' => 'Доклад'))
             ->add('isActive', CheckboxType::class, array('label' => 'Активный докладчик','required' => false,'data' => true ))
             ->add('conference', ChoiceType::class, array(
                 'label' => 'Конференция',

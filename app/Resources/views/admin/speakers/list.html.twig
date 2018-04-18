@@ -19,7 +19,9 @@
             {% else %}
                 {% set uc = list|length %}
             {% endif %}
-            <h1 class="page-header">Докладчики{% if uc %} <small>{{ uc }} человек</small>{% endif %}</h1>Кнопка добавления
+            <h1 class="page-header">Докладчики{% if uc %} <small>{{ uc }} человек</small>{% endif %}</h1><a href="{{ path('admin-speaker-add')}}" class="btn btn-success">
+                Добавить докладчика
+            </a>
         </div>
     </div>
     <div class="row">
@@ -61,15 +63,6 @@
                             </td>
                         </tr>
                     {% endfor %}
-                        <tr>
-                            <td colspan="4">
-                                Добавление докладчика<br>
-                                <input type="text" id="find_user" placeholder="Имя и Фамилия">
-                                <div class="userlist">
-
-                                </div>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             {% endif %}
