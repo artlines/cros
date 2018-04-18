@@ -3,59 +3,148 @@
 <head>
     <meta charset="utf-8">
     <title>{% block title %}{% endblock %} {{ "now"|date("Y") }} - NAG.ru</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Required Meta Tags Always Come First -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="shop.nag.ru">
-    <!-- <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"> -->
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/favicon.ico">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+    <!-- CSS Global Compulsory -->
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/cros/bootstrap/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/cros/icon-awesome/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/cros/hamburgers/hamburgers.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/cros/animate.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/cros/slick-slider/slick.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/lightbox.min.css') }}">
+    {# <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}"> #}
+    <!-- CSS Template -->
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/bases.css?t=20180313') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/megamenu.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/light-blue.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/custom.css?t=1522296586') }}">
+
+    <meta name="theme-color" content="#737373">
+    <link rel="icon" sizes="192x192" href="{{ asset('temp/cros-logo_192px.png') }}">
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
-<div class="container page">
-    <div class="row header">
-        <div class="col-sm-2 logo-col">
-            <a href="{{ url('homepage') }}"><img src="{{ asset('assets/cros2/img/logo-dark.png') }}" class="logo"></a>
+<main>
+    <!-- Header -->
+    <header id="js-header" class="u-header u-header--static u-header--floating cs-transition-0_3"
+            data-header-fix-moment-classes="cs-bg-white">
+        <div class="container">
+            <div class="u-header__section u-header__section--light cs-bg-white"
+                    {#data-header-fix-moment-exclude="cs-bg-white"#} >
+                <nav class="navbar navbar-toggleable-md cs-py-0 cs-font-weight-300">
+                    <!-- mx-auto -->
+                    <div class="container">
+                        <!-- Logo -->
+                        <a href="{{ url('homepage') }}" class="navbar-brand u-header__logo">
+                            <img class="u-header__logo-img u-header__logo-img--main d-block cs-width-80x" src="{{ asset('assets/cros2/img/logo-dark.png') }}" alt="CROS-2.0-18 Logo"
+                                 data-header-fix-moment-exclude="d-block"
+                                 data-header-fix-moment-classes="d-none">
+                            <!-- Temporary fix -->
+                            <img class="u-header__logo-img u-header__logo-img--main d-none cs-width-80x" src="{{ asset('assets/cros2/img/layer_height.png') }}" alt="CROS-2.0-18 Logo"
+                                 data-header-fix-moment-exclude="d-none"
+                                 data-header-fix-moment-classes="d-block">
+                        </a>
+                        <!-- End Logo -->
+                        <div class="sub-menu collapse navbar-collapse align-items-center flex-sm-row" id="navBar">
+                            <ul id="js-scroll-nav" class="u-main-nav-v1 navbar-nav text-uppercase cs-font-weight-700 cs-font-size-11 cs-pt-20 cs-pt-0--lg ml-auto mr-lg-3">
+                                <li class="nav-item cs-mr-15--lg cs-mb-7 cs-mb-0--lg d-lg-none d-xl-block">
+                                    <a href="{{ url('homepage') }}" class="nav-link cs-py-5">Главная</a>
+                                </li>
+                                <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
+                                    <a href="{{ path('info', {'alias': 'targets'}) }}" class="nav-link cs-py-5">О Крос</a>
+                                </li>
+                                {#
+                                <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
+                                    <a href="{{ path('info', {'alias': 'sponsors'}) }}" class="nav-link cs-py-5">Спонсоры</a>
+                                </li>
+                                #}
+                                <li class="nav-item cs-has-sub-menu cs-mx-20--lg">
+                                    <a href="#" class="nav-link cs-py-5" id="nav-link-1"
+                                       aria-haspopup="true"
+                                       aria-expanded="false"
+                                       aria-controls="nav-submenu-1"
+                                    >Участие<span class="d-lg-none d-xl-inline"> в КРОС</span></a>
+                                    <!-- Submenu -->
+                                    <ul class="cs-sub-menu list-unstyled cs-mt-20 cs-mt-10--lcs--scrolling u-shadow-v18 cs-font-weight-700 cs-font-size-12" id="nav-submenu-1"
+                                        aria-labelledby="nav-link-2">
+                                        <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('members') }}">Участники</a></li>
+                                        <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('price') }}">Стоимость участия</a></li>
+                                        <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('registration') }}">Регистрация</a></li>
+                                        <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('info', {'alias': 'organize'}) }}">Место проведения</a></li>
+                                    </ul>
+                                    <!-- End Submenu -->
+                                <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
+                                    <a href="{{ url('faq') }}" class="nav-link cs-py-5">FAQ</a>
+                                </li>
+                                <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
+                                    <a href="{{ url('archive') }}" class="nav-link cs-py-5">Архив</a>
+                                </li>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Responsive Toggle Button  cs-mt-15 ml-auto mr-auto-->
+                    <button class="navbar-toggler btn cs-line-height-1 cs-brd-none cs-pa-0 cs-pos-abs dropdown-menu-right cs-px-20 cs-py-20" type="button"
+                            aria-label="Toggle navigation"
+                            aria-expanded="false"
+                            aria-controls="navBar"
+                            data-toggle="collapse"
+                            data-target="#navBar">
+                     <span class="hamburger hamburger--slider">
+                     <span class="hamburger-box">
+                     <span class="hamburger-inner"></span>
+                     </span>
+                     </span>
+                    </button>
+                    <!-- End Responsive Toggle Button -->
+                </nav>
+            </div>
         </div>
-        <div class="col-sm-6 col-xs-12">
-            <h1 class="inline-title">{% block header_title %}{% endblock %}</h1>
         </div>
-        <div class="col-sm-1 middle-header">
-            <img src="{{ asset('assets/images/') }}{% block page_image %}{{ app.request.attributes.get('_route') }}{% block text_image %}{% endblock %}{% endblock %}.png" class="selected-menu-icon">
+    </header>
+    <section class="cs-bcs-images cs-color-white cs-pos-rel cs-pt-50 cs-pb-30 cs-mb-50 cs-theme-bg-blue-dark-v2 cs-bg-img-layer-middle-bottom" style="background-image: url({{ asset('assets/cros2/img/blue_bg_middle.png') }});">
+        <div class="container cs-flex-middle-item cs-pt-50">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="cs-color-white cs-font-weight-700 cs-font-size-40 mt-2" id="Title">
+                        {% block header_title %}КРОС-2.0-18{% endblock %}
+                    </h3>
+                    <!--
+                    <div class="d-block cs-color-white-opacity-0_8 cs-font-size-16 mb-4"><strong>Пример внутренней страницы</strong> - <br /> <span>Информация для участников</span></div>
+                    -->
+                    <a class="btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ url('program-pre') }}" id="TitleBotton">Программа КРОС</a>
+                </div>
+                <div class="col-md-6 text-right align-middle">
+                    {{ render(controller('AppBundle:Default:newcountdown')) }}
+                    <a class="btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ url('registration') }}">Принять участие</a>
+                    <a class="btn u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ path('info', {'alias': 'become-speaker'}) }}">Стать докладчиком</a>
+                    <a class="btn u-btn-yellow cs-color-white cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ path('info', {'alias': 'become-sponsor'}) }}">Стать спонсором</a>
+                </div>
+            </div>
         </div>
-        <div class="col-sm-3">
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-2">
-            <ul class="list-group">
-                <li class="list-group-item"><a href="{{ path('info', {'alias': 'targets'}) }}">О КРОС</a></li>
-                <!--
-                <li class="list-group-item"><a href="{{ url('program') }}">Программа</a></li>
-                -->
-                <li class="list-group-item"><a href="{{ path('info', {'alias': 'sponsors'}) }}">Спонсоры</a></li>
-                <li class="list-group-item"><a href="{{ url('members') }}">Участники</a></li>
-                <li class="list-group-item"><a href="{{ url('price') }}">Стоимость участия</a></li>
-                <li class="list-group-item"><a href="{{ url('registration') }}">Регистрация</a></li>
-                <li class="list-group-item"><a href="{{ path('info', {'alias': 'organize'}) }}">Место проведения</a></li>
-                <li class="list-group-item"><a href="{{ url('faq') }}">FAQ</a></li>
-                <li class="list-group-item"><a href="{{ url('archive') }}">Архив</a></li>
-            </ul>
-            <ul class="list-group">
-                <li class="list-group-item"><a href="https://forum.nag.ru/index.php?/topic/131636-kros-2018/" target="_blank" data-toggle="tooltip" title="Ссылка откроется в новом окне">Форум <span class="glyphicon glyphicon-new-window"></span></a></li>
-                <li class="list-group-item"><a href="https://academy.nag.ru" target="_blank" data-toggle="tooltip" title="Ссылка откроется в новом окне">Академия НАГ <span class="glyphicon glyphicon-new-window"></span></a></li>
-            </ul>
-        </div>
-        <div class="col-sm-10" id="main-content">
+    </section>
+    <section class="container-fluid cs-mb-100">
+        <div class="container">
             {% block body %}{% endblock %}
         </div>
+    </section>
+    <!-- End Section Content -->
+    <!-- Footer -->
+    <div style="position: absolute;bottom: 0px;width: 100%;">
+    {% include 'cros2/misc/footer.html.twig' %}
     </div>
-</div>
-<footer class="container-fluid text-center">
-    {{ render(controller('AppBundle:Default:footer')) }}
-</footer>
+    <!-- End Footer -->
+</main>
 </body>
 </html>
 
