@@ -71,16 +71,24 @@ class SpeakerReports
     /**
      * Set speaker
      *
-     * @param \AppBundle\Entity\Speaker $speaker_id
+     * @param int $speaker_id
      *
      * @return SpeakerReports
      */
-    public function setSpeaker(\AppBundle\Entity\Speaker $speaker_id = null)
+    public function setSpeaker($speaker_id)
     {
-        $this->speaker = $speaker_id;
+        $this->speaker_id = $speaker_id;
 
         return $this;
     }
+    /*
+    public function setSpeaker(\AppBundle\Entity\Speaker $speaker_id = null)
+    {
+        $this->speaker_id = $speaker_id;
+
+        return $this;
+    }
+    */
 
     /**
      * Get speaker

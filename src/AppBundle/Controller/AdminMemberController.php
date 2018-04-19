@@ -734,6 +734,8 @@ class AdminMemberController extends Controller
      */
     public function addReport($id,Request $request){
         $speakerReportsRepository = $this->getDoctrine()->getRepository('AppBundle:SpeakerReports');
+        $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
+        $speaker = $speakerRepository->find($id);
         $form = $this->createFormBuilder()
             ->add('name', TextType::class, array('label' => 'Название','required' => true))
             ->add('save', SubmitType::class,array('label' => 'Сохранить'))
@@ -742,15 +744,12 @@ class AdminMemberController extends Controller
         if($form->isSubmitted() && $form->isValid()){
             $form = $form->getData();
             $em = $this->getDoctrine()->getManager();
-            $speaker = new SpeakerReports();
-            $speaker->setReport($form['name']);
-            $speaker->setSpeaker($id);
-            $em->persist($speaker);
+            $speakerReports = new SpeakerReports();
+            $speakerReports->setReport($form['name']);
+            $speakerReports->setSpeaker($id);
+            $em->persist($speakerReports);
             $em->flush();
         }
-/*
-        return new Response('ok');
-*/
 
         $urlParameters[ "id" ] = $id ;
         return $this->redirectToRoute('speakers-list-report',$urlParameters);
