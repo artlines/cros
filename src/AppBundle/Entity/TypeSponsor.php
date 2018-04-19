@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * TypeSponsor
  *
- * @ORM\Table(name="type_sponsor")
+ * @ORM\Table(name="sponsor_type")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TypeSponsorRepository")
  */
 class TypeSponsor
@@ -42,7 +42,7 @@ class TypeSponsor
      *
      * @return TypeSponsor
      */
-    public function setType($name_type)
+    public function setNameType($name_type)
     {
         $this->name_type = $name_type;
 
@@ -53,7 +53,7 @@ class TypeSponsor
      *
      * @return string
      */
-    public function getType()
+    public function getNameType()
     {
         return $this->name_type;
     }

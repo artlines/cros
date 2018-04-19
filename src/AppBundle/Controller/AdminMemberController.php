@@ -8,6 +8,7 @@ use AppBundle\Entity\Conference;
 use AppBundle\Entity\OrgToConf;
 use AppBundle\Entity\Speaker;
 use AppBundle\Entity\SpeakerReports;
+use AppBundle\Entity\Sponsor;
 use AppBundle\Entity\User;
 use AppBundle\Entity\UserToApartament;
 use AppBundle\Entity\UserToConf;
@@ -774,5 +775,23 @@ class AdminMemberController extends Controller
         return $this->redirectToRoute('speakers-list-report',$urlParameters);
 
     }
+    /**
+     * Спонсоры
+     *
+     * @Route("/admin/sponsor", name="admin-sponsor-list")
+     *
+     * @param Request $request
+     * @return object
+     */
+    public function sponsorList(Request $request){
+        $RepositorySponsor = $this->getDoctrine()->getRepository('AppBundle:Sponsor');
+        /** @var Sponsor $sponsor */
+        $sponsor = $RepositorySponsor->findAll();
+        return $this->render('admin/sponsor/list.html.twig', array(
+            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
+            'list' => $sponsor,
+        ));
+    }
+
 
 }

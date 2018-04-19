@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 /**
  * Sponsor
  *
@@ -246,7 +247,7 @@ class Sponsor
      *
      * @return Sponsor
      */
-    public function setDescription($active)
+    public function setActive($active)
     {
         $this->active = $active;
 
