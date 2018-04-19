@@ -733,7 +733,7 @@ class AdminMemberController extends Controller
      * @param Request $request
      * @return object
      */
-    public function addReport($id,Request $request){
+    public function addReportAction($id,Request $request){
         $speakerReportsRepository = $this->getDoctrine()->getRepository('AppBundle:SpeakerReports');
         $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
         $speaker = $speakerRepository->find($id);
@@ -765,7 +765,7 @@ class AdminMemberController extends Controller
      * @param integer $user_id
      * @return object
      */
-    public function deleteReport($id,$user_id){
+    public function deleteReportAction($id,$user_id){
         $speakerReportsRepository = $this->getDoctrine()->getRepository('AppBundle:SpeakerReports');
         $report = $speakerReportsRepository->find($id);
         $em = $this->getDoctrine()->getManager();
@@ -783,7 +783,7 @@ class AdminMemberController extends Controller
      * @param Request $request
      * @return object
      */
-    public function sponsorList(Request $request){
+    public function sponsorListAction(Request $request){
         $RepositorySponsor = $this->getDoctrine()->getRepository('AppBundle:Sponsor');
         /** @var Sponsor $sponsor */
         $sponsor = $RepositorySponsor->findAll();
@@ -799,7 +799,7 @@ class AdminMemberController extends Controller
      * @param Request $request
      * @return object
      */
-    public function addSponsor(Request $request){
+    public function addSponsorAction(Request $request){
         $RepositoryTypeSponsor = $this->getDoctrine()->getRepository('AppBundle:TypeSponsor');
         $typeSponsor = $RepositoryTypeSponsor->findAll();
         $typeSponsorList = null;
@@ -824,7 +824,7 @@ class AdminMemberController extends Controller
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
 
-            $patchSave = $this->get('kernel')->getRootDir().'/../web/uploads/speakers/'; // replase to config for prod!!!
+            $patchSave = $this->get('kernel')->getRootDir().'/../web/uploads/sponsor/'; // replase to config for prod!!!
             $resizeService = $this->get('resizeImages');
             $files = $form->get('avatarFile')->getData();
             $_exten = $files->getClientOriginalExtension();
@@ -857,6 +857,100 @@ class AdminMemberController extends Controller
             'form' => $form->createView(),
             'h1' => 'Добавление спонсора',
         ));
+
+    }
+    /**
+     * Редактирование спонсора
+     *
+     * @Route("/admin/sponsor-edit/{id}", name="admin-sponsor-edit")
+     *
+     * @param integer $id
+     * @param Request $request
+     *
+     * @return object
+     */
+    public function sponsorEditAction($id, Request $request){
+        $RepositoryTypeSponsor = $this->getDoctrine()->getRepository('AppBundle:TypeSponsor');
+        $RepositorySponsor = $this->getDoctrine()->getRepository('AppBundle:Sponsor');
+        $typeSponsor = $RepositoryTypeSponsor->findAll();
+        $typeSponsorList = null;
+        foreach ($typeSponsor as $value){ // This is necessary for select, and then he does not know how else
+            $typeSponsorList[$value->getNameType()] = $value->getId();
+        }
+        $sponsor = $RepositorySponsor->find($id);
+
+        $form = $this->createFormBuilder()
+            ->add('avatarFile', FileType::class, array('label' => 'Фото','required' => false))
+            ->add('name', TextType::class, array('label' => 'Наименование','required' => true,'data'=>$sponsor->getName()))
+            ->add('url', TextType::class, array('label' => 'Сайт','required' => true,'data' => $sponsor->getUrl()))
+            ->add('phone', TextType::class, array('label' => 'Телефон','required' => true, 'data' => $sponsor->getPhone()))
+            ->add('type', ChoiceType::class, array(
+                'label' => 'Тип спонсора',
+                'choices'  => $typeSponsorList))
+            ->add('isActive', CheckboxType::class, array('label' => 'Показывать спонсора','required' => false,'data' => $sponsor->getIsActive() ))
+            ->add('description', TextareaType::class, array('label' => 'Описание','data'=>$sponsor->getDescription()))
+            ->add('save', SubmitType::class,array('label' => 'Сохранить'))
+            ->getForm();
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $patchSave = $this->get('kernel')->getRootDir().'/../web/uploads/sponsor/'; // replase to config for prod!!!
+            $resizeService = $this->get('resizeImages');
+            $files = $form->get('avatarFile')->getData();
+            if(!is_null($files)) {
+                $_exten = $files->getClientOriginalExtension();
+                $postefixOriginal = '_original';
+                $postefixResize = '_resize';
+                $uniqid = uniqid();
+                $files->move($patchSave, $uniqid . $postefixOriginal . '.' . $_exten);
+                /* resize  */
+                $resizeService->load($patchSave . $uniqid . $postefixOriginal . '.' . $_exten);
+                $resizeService->resize(400, 200);
+                $resizeService->save($patchSave . $uniqid . $postefixResize . '.' . $_exten);
+            }
+            $form = $form->getData();
+            $em = $this->getDoctrine()->getManager();
+
+            $sponsor->setActive($form['isActive']);
+            if(!is_null($files)) {
+                $sponsor->setLogo($uniqid . $postefixOriginal . '.' . $_exten);
+                $sponsor->setLogoResize($uniqid . $postefixResize . '.' . $_exten);
+            }
+            $sponsor->setName($form['name']);
+            $sponsor->setPhone($form['phone']);
+            $sponsor->setUrl($form['url']);
+            $sponsor->setDescription($form['description']);
+            $sponsor->setTypeSponsor($RepositoryTypeSponsor->find($form['type']));
+            $em->persist($sponsor);
+            $em->flush();
+            return $this->redirectToRoute('admin-sponsor-list');
+
+        }
+
+
+
+        return $this->render('admin/sponsor/edit.html.twig', array(
+            'form' => $form->createView(),
+            'h1' => 'Редактирование докладчика ',
+            'avatar' => 'asd',
+        ));
+    }
+    /**
+     * Удаление спонсора
+     *
+     * @Route("/admin/sponsor/delete/{id}", name="admin-sponsor-delete")
+     *
+     * @param integer $id
+     * @return object
+     */
+    public function deleteSponsorAction($id){
+        $RepositorySponsor = $this->getDoctrine()->getRepository('AppBundle:Sponsor');
+        $sponsor = $RepositorySponsor->find($id);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($sponsor);
+        $em->flush();
+
+        return $this->redirectToRoute('admin-sponsor-list');
 
     }
 
