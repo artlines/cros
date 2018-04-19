@@ -67,46 +67,6 @@ class Sponsor
      * @ORM\Column(name="active", type="boolean", nullable=true)
      */
     private $active;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /**
-     * Set report
-     *
-     * @param string $report
-     *
-     * @return SpeakerReports
-     */
-    public function setReport($report)
-    {
-        $this->report = $report;
-
-        return $this;
-    }
-
-    /**
-     * Get report
-     *
-     * @return string
-     */
-    public function getReport()
-    {
-        return $this->report;
-    }
-
     /**
      * Get id
      *
@@ -116,36 +76,180 @@ class Sponsor
     {
         return $this->id;
     }
-
     /**
-     * Set speaker
+     * Get name
      *
-     * @param int $speaker_id
-     *
-     * @return SpeakerReports
+     * @return string
      */
-    public function setSpeaker($speaker_id)
+    public function getName()
     {
-        $this->speaker_id = $speaker_id;
+        return $this->name;
+    }
+    /**
+     * Get phone
+     *
+     * @return int
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+    /**
+     * Get url
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+    /**
+     * Get logo
+     *
+     * @return string
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+    /**
+     * Get logo_resize
+     *
+     * @return string
+     */
+    public function getLogoResize()
+    {
+        return $this->logo_resize;
+    }
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+    /**
+     * Get type
+     *
+     * @return \AppBundle\Entity\TypeSponsor
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+    /**
+     * Get active
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->active;
+    }
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Sponsor
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
 
         return $this;
     }
-    /*
-    public function setSpeaker(\AppBundle\Entity\Speaker $speaker_id = null)
+    /**
+     * Set phone
+     *
+     * @param string $phone
+     *
+     * @return Sponsor
+     */
+    public function setPhone($phone)
     {
-        $this->speaker_id = $speaker_id;
+        $this->phone = $phone;
 
         return $this;
     }
-    */
-
     /**
-     * Get speaker
+     * Set url
      *
-     * @return \AppBundle\Entity\Speaker
+     * @param string $url
+     *
+     * @return Sponsor
      */
-    public function getSpeaker()
+    public function setUrl($url)
     {
-        return $this->speaker_id;
+        $this->url = $url;
+
+        return $this;
+    }
+    /**
+     * Set logo
+     *
+     * @param string $logo
+     *
+     * @return Sponsor
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
+
+        return $this;
+    }
+    /**
+     * Set logo_resize
+     *
+     * @param string $logo_resize
+     *
+     * @return Sponsor
+     */
+    public function setLogoResize($logo_resize)
+    {
+        $this->logo_resize = $logo_resize;
+
+        return $this;
+    }
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Sponsor
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+    /**
+     * Set TypeSponsor
+     *
+     * @param \AppBundle\Entity\TypeSponsor $TypeSponsor
+     *
+     * @return Sponsor
+     */
+    public function setTypeSponsor(\AppBundle\Entity\TypeSponsor $TypeSponsor = null)
+    {
+        $this->type = $TypeSponsor;
+
+        return $this;
+    }
+    /**
+     * Set active
+     *
+     * @param boolean $active
+     *
+     * @return Sponsor
+     */
+    public function setDescription($active)
+    {
+        $this->active = $active;
+
+        return $this;
     }
 }
