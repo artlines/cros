@@ -792,6 +792,73 @@ class AdminMemberController extends Controller
             'list' => $sponsor,
         ));
     }
+    /**
+     * Добавление спонсора
+     *
+     * @Route("/admin/sponsor/add", name="sponsor-add")
+     * @param Request $request
+     * @return object
+     */
+    public function addSponsor(Request $request){
+        $RepositoryTypeSponsor = $this->getDoctrine()->getRepository('AppBundle:TypeSponsor');
+        $typeSponsor = $RepositoryTypeSponsor->findAll();
+        $typeSponsorList = null;
+        foreach ($typeSponsor as $value){ // This is necessary for select, and then he does not know how else
+            $typeSponsorList[$value->getNameType()] = $value->getId();
+        }
+
+        $form = $this->createFormBuilder()
+            ->add('avatarFile', FileType::class, array('label' => 'Фото','required' => true))
+            ->add('name', TextType::class, array('label' => 'Наименование','required' => true))
+            ->add('url', TextType::class, array('label' => 'Сайт','required' => true))
+            ->add('phone', TextType::class, array('label' => 'Телефон','required' => true))
+            ->add('type', ChoiceType::class, array(
+                'label' => 'Тип спонсора',
+                'choices'  => $typeSponsorList))
+            ->add('isActive', CheckboxType::class, array('label' => 'Показывать спонсора','required' => false,'data' => true ))
+            ->add('description', TextareaType::class, array('label' => 'Описание'))
+            ->add('save', SubmitType::class,array('label' => 'Сохранить'))
+            ->getForm();
+
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+
+            $patchSave = $this->get('kernel')->getRootDir().'/../web/uploads/speakers/'; // replase to config for prod!!!
+            $resizeService = $this->get('resizeImages');
+            $files = $form->get('avatarFile')->getData();
+            $_exten = $files->getClientOriginalExtension();
+            $postefixOriginal = '_original';
+            $postefixResize = '_resize';
+            $uniqid = uniqid();
+            $files->move($patchSave,$uniqid.$postefixOriginal.'.'.$_exten);
+            /* resize  */
+            $resizeService->load($patchSave.$uniqid.$postefixOriginal.'.'.$_exten);
+            $resizeService->resize(400, 200);
+            $resizeService->save($patchSave.$uniqid.$postefixResize.'.'.$_exten);
+            $form = $form->getData();
+            $em = $this->getDoctrine()->getManager();
+            $sponsor = new Sponsor();
+            $sponsor->setActive($form['isActive']);
+            $sponsor->setLogo($uniqid.$postefixOriginal.'.'.$_exten);
+            $sponsor->setLogoResize($uniqid.$postefixResize.'.'.$_exten);
+            $sponsor->setName($form['name']);
+            $sponsor->setPhone($form['phone']);
+            $sponsor->setUrl($form['url']);
+            $sponsor->setDescription($form['description']);
+            $sponsor->setTypeSponsor($RepositoryTypeSponsor->find($form['type']));
+            $em->persist($sponsor);
+            $em->flush();
+            return $this->redirectToRoute('admin-sponsor-list');
+
+        }
+
+        return $this->render('admin/sponsor/add.html.twig', array(
+            'form' => $form->createView(),
+            'h1' => 'Добавление спонсора',
+        ));
+
+    }
 
 
 }
