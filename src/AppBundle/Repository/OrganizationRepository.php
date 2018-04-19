@@ -168,6 +168,7 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
      * @return array
      * We return the list of participants only those who have already settled in numbers
      */
+<<<<<<< HEAD
     public function findByIdsOrganizationApproved()
     {
 
@@ -177,6 +178,16 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
 	              org.id,
 	              city,
 	              title
+=======
+    public function findByIdsOrganizationApproved($params = array())
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $select = isset($params['count']) ? 'count(*)' : 'name, org.id, city, title';
+
+        $sql = "SELECT
+	              $select
+>>>>>>> telegram-bot
                 FROM
 	              organization org
                 inner JOIN organization_status ss ON
@@ -190,6 +201,7 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
                     left JOIN user_to_apartament apar ON
                       us.id = apar.user_id
                     WHERE
+<<<<<<< HEAD
                       approved = 1 AND hidden = 0
                 ) 
                 ORDER BY priority DESC, name ";
@@ -199,4 +211,27 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
         return $res;
     }
 
+=======
+                      approved = 1
+                ) 
+                AND hidden = 0
+                ORDER BY priority DESC, name ";
+
+        if (isset($params['limit'])) {
+            $limit = intval($params['limit']);
+            $offset = (isset($params['offset'])) ? intval($params['offset']) : 0;
+            $sql .= " LIMIT $offset,$limit";
+        }
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $res = $stmt->fetchAll();
+
+        if (isset($params['count'])) {
+            return $res[0]['count(*)'];
+        }
+
+        return $res;
+    }
+>>>>>>> telegram-bot
 }
