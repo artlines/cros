@@ -170,8 +170,8 @@ class AdminLectureController extends Controller
                 $service = new Google_Service_Sheets($client);
                 
                 /* WORK WITH SPREADSHEET HERE */
-                $spreadsheetId = '1au95ZtSi6G2OAipXySxihIQR9lE2ZgnVtmPctSKcxaU';
-                $range = 'A:I';
+                $spreadsheetId = '1Olv8L8yGdhqXSWC3Eq3AOL0wqExKwDzkhGgwPrklF74';
+                $range = 'Расписание докладов и КС!A:I';
                 $response = $service->spreadsheets_values->get($spreadsheetId, $range);
                 $values = $response->getValues();
 				unset($values[0]); $values = array_values($values);
