@@ -755,5 +755,24 @@ class AdminMemberController extends Controller
         return $this->redirectToRoute('speakers-list-report',$urlParameters);
 
     }
+    /**
+     * Удаление доклада
+     *
+     * @Route("/admin/speakers/delete-report/{id}/{user_id}", name="speakers-delete-report")
+     *
+     * @param integer $id
+     * @param integer $user_id
+     * @return object
+     */
+    public function deleteReport($id,$user_id){
+        $speakerReportsRepository = $this->getDoctrine()->getRepository('AppBundle:SpeakerReports');
+        $report = $speakerReportsRepository->find($id);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($report);
+        $em->flush();
+        $urlParameters[ "id" ] = $user_id ;
+        return $this->redirectToRoute('speakers-list-report',$urlParameters);
+
+    }
 
 }

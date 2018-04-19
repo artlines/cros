@@ -52,7 +52,11 @@
                             <td>
                                 {{ user.lastname }} {{ user.firstname }} {{ user.middlename }}
                             </td>
-                            <td>{% if speaker.report %}"{{ speaker.report }}"{% else %}Нет доклада{% endif %}</td>
+                            <td>
+                                <a href="{{ path('speakers-list-report', {'id': speaker.id}) }}" class="btn btn-success">
+                                    Список докладов
+                                </a>
+                            </td>
                             <td>
                                 <a href="{{ path('admin-speaker-edit', {'id': speaker.id}) }}" class="btn btn-success">
                                     <i class="fa fa-edit fa-fw"></i>

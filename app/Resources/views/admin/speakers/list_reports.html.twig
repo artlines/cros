@@ -45,10 +45,7 @@
                                 {{ speaker.report }}
                             </td>
                             <td align="right">
-                                <a href="{{ path('admin-speaker-edit', {'id': speaker.id}) }}" class="btn btn-success">
-                                    <i class="fa fa-edit fa-fw"></i>
-                                </a>
-                                <a href="{{ path('admin-speaker-remove', {'id': speaker.id}) }}" class="btn btn-danger remove-speaker">
+                                <a href="{{ path('speakers-delete-report', {'id': speaker.id,'user_id':id}) }}" class="btn btn-danger remove-speaker">
                                     <i class="fa fa-remove fa-fw"></i>
                                 </a>
                             </td>
