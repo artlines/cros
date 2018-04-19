@@ -19,10 +19,10 @@
             {% else %}
                 {% set uc = list|length %}
             {% endif %}
-            <h1 class="page-header">Спонсоры{% if uc %} <small>{{ uc }} человек</small>{% endif %}</h1><a href="{{ path('admin-speaker-add')}}" class="btn btn-success">
+            <h1 class="page-header">Спонсоры{% if uc %} <small>{{ uc }} человек</small>{% endif %}</h1><a href="{{ path('sponsor-add')}}" class="btn btn-success">
                 Добавить спонсора
             </a>
-            <a href="{{ path('admin-speaker-add')}}" class="btn btn-warning">
+            <a href="{{ path('sponsor-add')}}" class="btn btn-warning">
                 Импортировать спонсоров из csv
             </a>
         </div>
@@ -41,6 +41,7 @@
                         <th>Тип</th>
                         <th>Телефон</th>
                         <th>Сайт</th>
+                        <th>Активен</th>
                         <th>Действие</th>
                     </tr>
                     </thead>
@@ -66,10 +67,17 @@
                                 {{ sponsor.url }}
                             </td>
                             <td>
+                                {% if sponsor.isactive %}
+                                Активен
+                                {% else %}
+                                Не активен
+                                {% endif %}
+                            </td>
+                            <td>
                                 <a href="{{ path('admin-sponsor-edit', {'id': sponsor.id}) }}" class="btn btn-success">
                                     <i class="fa fa-edit fa-fw"></i>
                                 </a>
-                                <a href="{{ path('admin-speaker-remove', {'id': '1'}) }}" class="btn btn-danger remove-speaker">
+                                <a href="{{ path('admin-sponsor-delete', {'id': sponsor.id}) }}" class="btn btn-danger remove-sponsor">
                                     <i class="fa fa-remove fa-fw"></i>
                                 </a>
                             </td>
@@ -88,7 +96,7 @@
                     <h4 class="modal-title">Подтвердите удаление</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Вы точно хотите удалить докладчика?</p>
+                    <p>Вы точно хотите удалить спонсора?</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-warning btn-ok" data-dismiss="modal">Удалить</button>
@@ -107,7 +115,7 @@
     <script src="{{ asset('assets/js/admin.js') }}"></script>
     <script>
         var linkforemove = false;
-        $('.remove-speaker').on('click', function(e){
+        $('.remove-sponsor').on('click', function(e){
             e.preventDefault();
             linkforemove = $(this).attr('href');
             $('#remove-confirm').modal();
