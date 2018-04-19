@@ -168,17 +168,6 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
      * @return array
      * We return the list of participants only those who have already settled in numbers
      */
-<<<<<<< HEAD
-    public function findByIdsOrganizationApproved()
-    {
-
-        $conn = $this->getEntityManager()->getConnection();
-        $sql = "SELECT
-	              name,
-	              org.id,
-	              city,
-	              title
-=======
     public function findByIdsOrganizationApproved($params = array())
     {
         $conn = $this->getEntityManager()->getConnection();
@@ -187,7 +176,6 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
 
         $sql = "SELECT
 	              $select
->>>>>>> telegram-bot
                 FROM
 	              organization org
                 inner JOIN organization_status ss ON
@@ -201,17 +189,6 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
                     left JOIN user_to_apartament apar ON
                       us.id = apar.user_id
                     WHERE
-<<<<<<< HEAD
-                      approved = 1 AND hidden = 0
-                ) 
-                ORDER BY priority DESC, name ";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $res = $stmt->fetchAll();
-        return $res;
-    }
-
-=======
                       approved = 1
                 ) 
                 AND hidden = 0
@@ -233,5 +210,4 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
 
         return $res;
     }
->>>>>>> telegram-bot
 }
