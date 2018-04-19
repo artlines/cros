@@ -7,6 +7,7 @@ use AppBundle\Entity\ApartamentId;
 use AppBundle\Entity\Conference;
 use AppBundle\Entity\OrgToConf;
 use AppBundle\Entity\Speaker;
+use AppBundle\Entity\SpeakerReports;
 use AppBundle\Entity\User;
 use AppBundle\Entity\UserToApartament;
 use AppBundle\Entity\UserToConf;
@@ -611,7 +612,6 @@ class AdminMemberController extends Controller
         foreach ($orgsts as $org){
             $boxOrgsts[$org->getName()] = $org->getId();
         }
-        //var_dump($boxConferenses); die();
         $good_extens = array('jpeg', 'png');
         $mimeMsg = 'Допустимые расширения файлов: '.implode(', ', $good_extens);
         $form = $this->createFormBuilder()
@@ -711,11 +711,50 @@ class AdminMemberController extends Controller
 
         $speakerReportsRepository = $this->getDoctrine()->getRepository('AppBundle:SpeakerReports');
         $report = $speakerReportsRepository->findBy(array('speaker_id' => $id));
-
+        $form = $this->createFormBuilder()
+            ->add('name', TextType::class, array('label' => 'Название','required' => true))
+            ->add('save', SubmitType::class,array('label' => 'Сохранить'))
+            ->getForm();
 
         return $this->render('admin/speakers/list_reports.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
             'list' => $report,
+            'form' => $form->createView(),
+            'id' => $id
         ));
     }
+    /**
+     * Добавление доклада
+     *
+     * @Route("/admin/speakers/add-report/{id}", name="speakers-add-report")
+     *
+     * @param integer $id
+     * @param Request $request
+     * @return object
+     */
+    public function addReport($id,Request $request){
+        $speakerReportsRepository = $this->getDoctrine()->getRepository('AppBundle:SpeakerReports');
+        $form = $this->createFormBuilder()
+            ->add('name', TextType::class, array('label' => 'Название','required' => true))
+            ->add('save', SubmitType::class,array('label' => 'Сохранить'))
+            ->getForm();
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $form = $form->getData();
+            $em = $this->getDoctrine()->getManager();
+            $speaker = new SpeakerReports();
+            $speaker->setReport($form['name']);
+            $speaker->setSpeaker($id);
+            $em->persist($speaker);
+            $em->flush();
+        }
+/*
+        return new Response('ok');
+*/
+
+        $urlParameters[ "id" ] = $id ;
+        return $this->redirectToRoute('speakers-list-report',$urlParameters);
+
+    }
+
 }

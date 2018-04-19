@@ -19,7 +19,7 @@
             {% else %}
                 {% set uc = list|length %}
             {% endif %}
-            <h1 class="page-header">Список докладов</h1><a href="{{ path('admin-speaker-add')}}" class="btn btn-success">
+            <h1 class="page-header">Список докладов</h1><a href="{{ path('speakers-add-report',{'id': id})}}" class="btn btn-success add-confirm">
                 Добавить доклад
             </a>
         </div>
@@ -79,16 +79,20 @@
     <div id="add-confirm" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
+                {{ form_start(form,{'action': path('speakers-add-report',{'id':id})}) }}
                 <div class="modal-header">
-                    <h4 class="modal-title">Подтвердите удаление</h4>
+                    <h4 class="modal-title">Добавления нового доклада</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Вы точно хотите удалить докладчика?</p>
+
+                    {{ form_widget(form.name) }}
+
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-warning btn-ok" data-dismiss="modal">Удалить</button>
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-success btn-ok-add-confirm'}}) }}
                     <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">Отмена</button>
                 </div>
+                {{ form_end(form) }}
             </div>
         </div>
     </div>
@@ -107,7 +111,7 @@
             linkforemove = $(this).attr('href');
             $('#remove-confirm').modal();
         });
-        $('.remove-speaker').on('click', function(e){
+        $('.add-confirm').on('click', function(e){
             e.preventDefault();
             linkforemove = $(this).attr('href');
             $('#add-confirm').modal();
