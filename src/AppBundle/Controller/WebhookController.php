@@ -4,9 +4,12 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Hall;
 use AppBundle\Entity\Lecture;
+use AppBundle\Entity\Logs;
 use AppBundle\Entity\Organization;
 use AppBundle\Entity\User;
 use AppBundle\Manager\TgChatManager;
+use AppBundle\Service\Sms;
+use AppBundle\Service\Telegram;
 use AppBundle\Repository\LectureRepository;
 use AppBundle\Repository\OrganizationRepository;
 use AppBundle\Repository\TgChatRepository;
@@ -27,11 +30,11 @@ use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 class WebhookController extends Controller
 {
-    const LECTURES_ON_PAGE = 2;
-    const MY_LECTURES_ON_PAGE = 2;
-    const CONTACTS_ON_PAGE = 5;
+    const LECTURES_ON_PAGE = 5;
+    const MY_LECTURES_ON_PAGE = 5;
+    const CONTACTS_ON_PAGE = 8;
 
-    /** @var \Telegram */
+    /** @var Telegram */
     private $bot;
 
     /** @var TgChat */
@@ -43,12 +46,18 @@ class WebhookController extends Controller
     /** @var TgChatManager */
     private $tsm;
 
+    /** @var Sms */
+    private $sms;
+
     /** @var string */
     private $access_token = 'c2hhbWJhbGEyMykxMiUh';
 
     // setWebhook / stage.cros.nag.ru
     // https://api.telegram.org/bot527782633:AAFPLooKU0KwINR_CwRj7R-1Z_nHv9b5t0o/setWebhook?url=https://proxy-web.nag.how:88/webhook/update/c2hhbWJhbGEyMykxMiUh
+
     /**
+     * Прием обновлений
+     *
      * @Route("/webhook/update/{token}", name="webhook-update")
      * @param $token
      * @return Response
@@ -66,6 +75,7 @@ class WebhookController extends Controller
 
                 $this->tgChat = $this->_findTgChat();
                 $this->tsm = $this->get('tg.chat.manager');
+                $this->sms = $this->get('sms.service');
 
                 $this->process();
             } catch (OptimisticLockException $e) {
@@ -117,6 +127,9 @@ class WebhookController extends Controller
                         break;
                     case '/stop':
                         $this->_stop();
+                        break;
+                    case '/menu':
+                        $this->_menu();
                         break;
                     case 'МЕНЮ':
                         $this->_menu();
@@ -261,7 +274,7 @@ class WebhookController extends Controller
             array($this->bot->buildKeyboardButton("Посмотреть расписание")),
             array($this->bot->buildKeyboardButton("Мое расписание")),
             array($this->bot->buildKeyboardButton("Уведомлять о начале докладов")),
-            //array($this->bot->buildKeyboardButton("Написать участнику"))
+            array($this->bot->buildKeyboardButton("Написать участнику"))
         );
         $keyBoard = $this->bot->buildKeyBoard($options, true, true);
 
@@ -379,17 +392,12 @@ class WebhookController extends Controller
 
         /** @var OrganizationRepository $organizations */
         $orgRepo = $em->getRepository('AppBundle:Organization');
-        /** @var Query $orgQ */
-        $orgQ = $orgRepo
-            ->createQueryBuilder('o')
-            ->getQuery();
 
-        $org_count = count($orgQ->getResult());
-
-        $orgs = $orgQ
-            ->setMaxResults(self::CONTACTS_ON_PAGE)
-            ->setFirstResult(($page - 1) * self::CONTACTS_ON_PAGE)
-            ->getResult();
+        $org_count = $orgRepo->findByIdsOrganizationApproved(['count' => true]);
+        $orgs = $orgRepo->findByIdsOrganizationApproved([
+            'limit' => self::CONTACTS_ON_PAGE,
+            'offset' => ($page - 1) * self::CONTACTS_ON_PAGE
+        ]);
 
         $org_list = array();
         $buttons = array();
@@ -397,12 +405,12 @@ class WebhookController extends Controller
         foreach ($orgs as $org) {
             $buttons[] = array(
                 $this->bot->buildInlineKeyBoardButton(
-                    $org->getName(),
+                    $org['name'],
                     false,
-                    "contact_with:{$org->getId()}"
+                    "contact_with:{$org['id']}"
                 )
             );
-            $org_list[] = $org->getName();
+            $org_list[] = $org['name'];
         }
 
         $text = $this->renderView('telegram_bot/contacts_list.html.twig');
@@ -450,7 +458,6 @@ class WebhookController extends Controller
 
     /**
      * Command: "Уведомлять о начале докладов"
-     * TODO: убрать html
      */
     private function _notifyMe($flag = null)
     {
@@ -485,8 +492,7 @@ class WebhookController extends Controller
             ));
             $content = array(
                 'chat_id' => $this->update['message']['chat']['id'],
-                'text' => '<strong>Уведомления</strong>' . "\n\n" .
-                    'Вы хотите получать уведомления за 15 минут до начала докладов, на которые вы подписаны?',
+                'text' => $this->renderView('telegram_bot/notify_setting.html.twig'),
                 'reply_markup' => $this->bot->buildInlineKeyBoard($option),
                 'parse_mode' => 'HTML'
             );
@@ -507,7 +513,7 @@ class WebhookController extends Controller
             $content = array(
                 'chat_id' => $this->update['callback_query']['message']['chat']['id'],
                 'message_id' => $this->update['callback_query']['message']['message_id'],
-                'text' => '<strong>Уведомления</strong>' . "\n\n" . '<i>' . $_status . '</i>',
+                'text' => $this->renderView('telegram_bot/notify_setting.html.twig', ['status' => $_status]),
                 'parse_mode' => 'HTML'
             );
             $this->bot->editMessageText($content);
@@ -561,6 +567,7 @@ class WebhookController extends Controller
      * Command: contact_with
      *
      * @throws OptimisticLockException
+     * @throws \Exception
      */
     private function _contactWith($org_id, $_name = null, $_company = null, $_phone = null)
     {
@@ -594,18 +601,39 @@ class WebhookController extends Controller
             $template_parameters['name'] = $_name;
             $template_parameters['company'] = $_company;
             $template_parameters['phone'] = $_phone;
+            $template_parameters['org'] = $org;
 
             $_TEXT = $this->renderView('telegram_bot/contact_with.html.twig', $template_parameters);
-            $_TEXT .= "\nЯ разошлю СМС сообщение со следующим текстом:\n".
-                "<i>Участник $_name из компании $_company хочет с вами пообщаться. Телефон: $_phone</i>,\n\n".
-                "всем из выбранной Вами организации:";
+
+            $chat_id = isset($this->update['message']) ? $this->update['message']['chat']['id'] : $this->update['callback_query']['message']['chat']['id'];
+            $em = $this->getDoctrine()->getManager();
+
+            $sms_text = $this->renderView('telegram_bot/_contact_sms.html.twig', $template_parameters);
+            $this->sms->setEntityClass('tg_connection');
+            $this->sms->setEntityId($chat_id);
             /** @var User $user */
             foreach ($org->getUsers() as $user) {
-                $_TEXT .= "\n{$user->getFirstName()} (Тел: {$user->getUsername()})";
+                $log = new Logs();
+                $log->setReaded(0);
+                $log->setDate(new \DateTime());
+                $log->setEntity('tg_connection');
+                $log->setElementId($chat_id);
+                $log->setEvent('{}');
+                $em->persist($log);
+                $em->flush($log);
+                $msg = $this->sms->addMessage('cros2018_'.$log->getId(), $user->getUsername(), $sms_text);
+                $log->setEvent(json_encode($msg));
+                $em->persist($log);
+                $em->flush($log);
+            }
+            try {
+                $res = $this->sms->send();
+            } catch (\Exception $e) {
+                $this->_error($e);
             }
 
             $content = array(
-                'chat_id' => isset($this->update['message']) ? $this->update['message']['chat']['id'] : $this->update['callback_query']['message']['chat']['id'],
+                'chat_id' => $chat_id,
                 //'message_id' => $this->update['callback_query']['message']['message_id'],
                 'text' => $_TEXT,
                 'parse_mode' => 'HTML'
@@ -968,7 +996,7 @@ class WebhookController extends Controller
             throw new \Exception("tg.bot.token is not set in parameters");
         }
 
-        $this->bot = new \Telegram($bot_token);
+        $this->bot = new Telegram($bot_token);
     }
 
     /**
@@ -1020,8 +1048,8 @@ class WebhookController extends Controller
     /**
      * Обработчик ошибок
      *
-     * Сообщение о неполадке для пользователя
-     * TODO: Сообщение отладки для администратора
+     * Отправляет сообщение о неполадке для пользователя
+     * и расширенное сообщение с указанием ошибки в чат админа (Евгений Н.)
      *
      * @param \Exception $e
      * @return Response
@@ -1030,9 +1058,16 @@ class WebhookController extends Controller
     {
         if (isset($this->bot)) {
             $msg = "Что-то пошло не так. Сообщение об ошибке отправлено специалистам.";
+            $chat_id = isset($this->update['message']) ? $this->update['message']['chat']['id'] : $this->update['callback_query']['message']['chat']['id'];
+
+            // Сообщение об ошибке в чат администратора
+            if ($chat_id == '285036678') {
+                $msg .= "\n\n"."Error: ".$e->getMessage()." Line: ".$e->getLine()." in ".$e->getFile();
+            }
+
             $content = array(
                 'chat_id' => isset($this->update['message']) ? $this->update['message']['chat']['id'] : $this->update['callback_query']['message']['chat']['id'],
-                'text' => $msg //. $e->getMessage()
+                'text' => $msg
             );
             $this->bot->sendMessage($content);
             return new Response('ok', 200);
@@ -1045,7 +1080,7 @@ class WebhookController extends Controller
 
     private function _debug($data)
     {
-        if (true || $this->container->getParameter('kernel.environment') == 'dev') {
+        if ($this->container->getParameter('kernel.environment') == 'dev') {
             file_put_contents('/home/cros/www/var/logs/tg_bot.log', print_r($data, true), FILE_APPEND);
         }
     }

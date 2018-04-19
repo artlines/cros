@@ -3,17 +3,18 @@
 namespace AppBundle\Command;
 
 use AppBundle\Service\Sms;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SmsTestCommand extends ContainerAwareCommand
+class TestCommand extends ContainerAwareCommand
 {
 
     protected function configure()
     {
         $this
-            ->setName('app:sms:test');
+            ->setName('app:test');
     }
 
     /**
@@ -23,18 +24,12 @@ class SmsTestCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var Sms $sms */
-        $sms = $this->getContainer()->get('sms.service');
+        /** @var EntityManager $em */
+        $em = $this->getContainer()->get('doctrine');
+        $orgRepo = $em->getRepository('AppBundle:Organization');
 
-        $sms->setEntityClass('tg_connection');
-        $sms->setEntityId(123);
+        $orgs = $orgRepo->findByIdsOrganizationApproved();
 
-        //$sms->addMessage('cros_test0418_12', '79221544365', 'test');
-
-        //$res = $sms->send();
-
-        //var_dump($res);
+        var_dump($orgs);
     }
-
-
 }

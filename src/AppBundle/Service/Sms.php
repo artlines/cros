@@ -3,8 +3,10 @@
 namespace AppBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use GuzzleHttp\Exception\RequestException;
 use \SimpleXMLElement;
 use AppBundle\Entity\Logs;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class Sms
 {
@@ -13,7 +15,7 @@ class Sms
      *
      * @var string
      */
-    private $url = 'https://www.contentum-it.ru/xml/';
+    private $url = 'http://alf1kksam.dev.nag.ru/xml/';
 
     /**
      * Login
@@ -122,13 +124,12 @@ class Sms
         }
 
         if ($errno = curl_errno($ch)) {
-            $error_message = curl_strerror($errno);
-            $result = "cURL error ({$errno}):\n {$error_message}";
+            throw new ResourceNotFoundException("Curl ($errno): ".curl_strerror($errno));
         }
 
         curl_close($ch);
 
-        return $result;
+        return [$result, $this->url];
     }
 
     /**
@@ -141,7 +142,7 @@ class Sms
         $messages = $this->messages;
 
         if (empty($messages)) {
-            throw new \Exception("Messages array is empty. Nothing to send.");
+            throw new \Exception("SMS Service: Messages array is empty. Nothing to send.");
         }
 
         /**
@@ -163,14 +164,6 @@ class Sms
          * Generate SMS
          */
         foreach ($messages as $msg) {
-            $log = new Logs();
-            $log->setReaded(0);
-            $log->setDate(new \DateTime());
-            $log->setElementId($this->entityId);
-            $log->setEntity($this->entityClass);
-            $log->setEvent(json_encode($msg));
-            $this->logs[] = $log;
-
             $sms = $xml->addChild('sms', $msg['text']);
             $sms->addAttribute('sms_id', $msg['id']);
             $sms->addAttribute('number', $msg['dst_number']);
@@ -186,6 +179,8 @@ class Sms
      * @param $id           string
      * @param $dst_number   string
      * @param $text         string
+     *
+     * @return array
      */
     public function addMessage($id, $dst_number, $text)
     {
@@ -195,6 +190,8 @@ class Sms
             'text'      => $text
         ];
         $this->messages[$id] = $msg;
+
+        return $msg;
     }
 
     /**
