@@ -20,7 +20,7 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use Monolog\Logger;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,7 +49,7 @@ class WebhookController extends Controller
     /** @var Sms */
     private $sms;
 
-    /** @var Logger */
+    /** @var LoggerInterface */
     private $logger;
 
     /** @var string */
@@ -65,8 +65,12 @@ class WebhookController extends Controller
      * @param $token
      * @return Response
      */
-    public function update($token)
+    public function update($token, LoggerInterface $logger)
     {
+        $this->logger = $logger;
+        $this->sms = $this->get('sms.service');
+        $this->tsm = $this->get('tg.chat.manager');
+
         if ($this->access_token === $token) {
             // Для очистки повисших запросов
             //return new Response('ok', 200);
@@ -75,10 +79,6 @@ class WebhookController extends Controller
                 $this->update = json_decode(file_get_contents('php://input'), true);
                 $this->_debug($this->update);
                 $this->tgChat = $this->_findTgChat();
-
-                $this->logger = $this->get('logger');
-                $this->tsm = $this->get('tg.chat.manager');
-                $this->sms = $this->get('sms.service');
 
                 $this->process();
             } catch (\Exception $e) {
@@ -156,7 +156,7 @@ class WebhookController extends Controller
             $callback_data = trim($this->update['callback_query']['data']);
             $args = explode(":", $callback_data);
 
-            $this->logger->info("[TgBot:".$this->tgChat->getChatId()."] Callback_data: $callback_data | State: ".json_encode($tgState));
+            $this->logger->info("[TgBot:".$this->tgChat->getChatId()."] Callback_data: $callback_data | State: ".json_encode($this->tgChat->getState()));
 
             // log
             $this->_debug($args);
@@ -1058,11 +1058,12 @@ class WebhookController extends Controller
      */
     private function _error($e)
     {
+        $err_str = "Error: ".$e->getMessage()." Line: ".$e->getLine()." in ".$e->getFile();
+        $this->logger->error($err_str);
+
         if (isset($this->bot)) {
             $msg = "Что-то пошло не так. Сообщение об ошибке отправлено специалистам.";
             $chat_id = isset($this->update['message']) ? $this->update['message']['chat']['id'] : $this->update['callback_query']['message']['chat']['id'];
-
-            $err_str = "Error: ".$e->getMessage()." Line: ".$e->getLine()." in ".$e->getFile();
 
             // Сообщение об ошибке в чат администратора
             if ($chat_id == '285036678') {
@@ -1076,8 +1077,6 @@ class WebhookController extends Controller
             $this->bot->sendMessage($content);
             return new Response('ok', 200);
         }
-
-        $this->logger->error("WebhookController | Line: " . $e->getLine() . "| Error: ".$e->getMessage());
     }
 
     private function _debug($data)
