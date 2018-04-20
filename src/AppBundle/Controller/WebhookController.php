@@ -76,7 +76,7 @@ class WebhookController extends Controller
                 $this->_debug($this->update);
                 $this->tgChat = $this->_findTgChat();
 
-                $this->logger = $this->get('monolog.logger');
+                $this->logger = $this->get('logger');
                 $this->tsm = $this->get('tg.chat.manager');
                 $this->sms = $this->get('sms.service');
 
