@@ -939,8 +939,8 @@ class AdminMemberController extends Controller
 
         return $this->render('admin/sponsor/edit.html.twig', array(
             'form' => $form->createView(),
-            'h1' => 'Редактирование докладчика ',
-            'avatar' => 'asd',
+            'h1' => 'Редактирование спонсора ',
+            'avatar' => $sponsor->getLogo(),
         ));
     }
     /**
