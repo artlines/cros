@@ -43,11 +43,10 @@ class ProgramController extends Controller
      */
     public function programAction()
     {
-
         /** @var Conference $conf */
         $lectures = $this->getDoctrine()
             ->getRepository('AppBundle:Lecture')
-            ->findAll();
+            ->findBy([], ['date' => 'ASC', 'startTime' => 'ASC', 'endTime' => 'ASC']);
 
         $all_halls = [self::DEFAULT_HALL];
         $program = [];
@@ -65,8 +64,6 @@ class ProgramController extends Controller
                 if (!in_array($_hall_key, $all_halls)) $all_halls[] = $_hall_key;
             };
         }
-
-        //var_dump($program); exit();
 
         return $this->render('frontend/program/show_new.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
