@@ -46,14 +46,39 @@ class DefaultController extends Controller
      */
     public function newMainAction()
     {
+        $year = date("Y");
         $reg_time = $this->getDoctrine()->getRepository('AppBundle:Conference')
             ->findOneBy(array('year' => date("Y")));
+        /** @var ConferenceRepository $conferenceRepository */
+        $conferenceRepository = $this->getDoctrine()->getRepository('AppBundle:Conference');
+        /** @var Conference $conf */
+        $conf = $conferenceRepository->findOneBy(array('year' => $year));
+
+        /** @var SpeakerRepository $speakerRepository */
+        $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
+        /** @var Speaker $speakers */
+        $speakers = $speakerRepository->findByConf($conf->getId());
+        /*
+        $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
+        $speaker = $speakerRepository->findBy(array('conferenceId' => $reg_time->getId()));
+        */
+        $speakerList = NULL;
+        foreach ($speakers as $key =>  $value){
+            $speakerList[$key]['id'] = $value->getid();
+            $speakerList[$key]['AvatarSmall'] = $value->getAvatarSmall();
+            $speakerList[$key]['Organization'] = $value->getUser()->getOrganization()->getName();
+            $speakerList[$key]['SpeakerFirstName'] = $value->getUser()->getFirstName();
+            $speakerList[$key]['SpeakerLastName'] = $value->getUser()->getLastName();
+            $speakerList[$key]['SpeakerMiddleName'] = $value->getUser()->getMiddleName();
+        }
 
         $reg_start = $reg_time->getRegistrationStart()->getTimestamp();
 
         return $this->render('cros2/main/base.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
             'reg_start' => $reg_start,
+            'speaker_list' => $speakerList,
+
 
         ));
     }
@@ -172,5 +197,11 @@ class DefaultController extends Controller
             'countdown_text' => 'До начала мероприятия',
             'main_page' => $isMainPage
         ));
+    }
+
+    public function viewSpeakers()
+    {
+        $countdown_date = 'value';
+
     }
 }

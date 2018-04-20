@@ -1,0 +1,49 @@
+{% extends 'admin.html.twig' %}
+{% block body %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">{{ h1 }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+
+            <div class="img-new" style="display: none;"><i class="fa fa-chevron-left fa-fw"></i> <img src="" width="250" style="border: 1px dashed silver;"></div>
+            {{ form_start(form, {'method': 'POST'}) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+        <div id="editor"></div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/admin.js') }}"></script>
+    <script src="{{ asset('assets/js/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery/jquery.inputmask.js') }}"></script>
+    <script>
+        CKEDITOR.replace('form_description');
+        function echoNewImage(input){
+            if(input.files && input.files[0]){
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('.img-new').css('display', 'inline-block').children('img').attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $('#form_avatarFile_file').on('change', function(){
+            echoNewImage(this);
+        });
+        $(function(){
+            $("#form_phone").mask("8(999) 999-9999");
+        });
+    </script>
+{% endblock %}

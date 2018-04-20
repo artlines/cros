@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="{{ asset('assets/cros2/assets/cros/slick-slider/slick.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/bases.css?t=20180313') }}">
     <!-- CSS Template -->
-    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/styles.css?t=2018040402') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/styles.css?t=1523863448') }}">
     <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/light-blue.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/custom.css?t=2018041901') }}">
     <meta name="theme-color" content="#6ca0dc">
@@ -380,6 +380,37 @@
             </div>
         </div>
     </section>
+    {% if speaker_list != null %}
+    <section id="ourguests" class="cs-pt-30 cs-mb-100 cs-bg-img-layer-middle" style="background-image: url({{ asset('assets/cros2/img/blue_bg_middle.png') }});">
+        <div class="container">
+            <div class="align-self-center w-100 cs-mb-30">
+                <h2 class="h2-white text-uppercase cs-font-weight-700 cs-font-size-23 cs-color-white cs-mb-10 text-center">
+                    Наши спикеры
+                </h2>
+            </div>
+            {% set uc = speaker_list|length %}
+            {% if uc > 4 %}
+            <div class="row">
+                {% else %}
+                <div class="row justify-content-center">
+                    {% endif %}
+                {% for spec in speaker_list %}
+                <div class=" col-xs-2 col-md-3">
+                    <div class="card mb-4 box-shadow">
+                        <img src="{{ asset('uploads/speakers/'~ spec.AvatarSmall) }}" class="img-fluid">
+                        <div class="card-body">
+                            <p class="card-text text-center"><b>{{ spec.SpeakerFirstName }} {{ spec.SpeakerLastName}} {{ spec.SpeakerMiddleName }}</b><br />{{ spec.Organization }}</p>
+                        </div>
+                        <div class="text-center">
+                        <a class="btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 speaker_button_container" href="{{ path('speaker', {'id': spec.id}) }}" style="margin-bottom: 5px;">подробнее</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
     <section id="testimonials" class="cs-mb-100 cs-bg-primary_block">
         <div class="container">
             <div class="text-center cs-mb-30">
