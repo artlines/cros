@@ -10,11 +10,14 @@ services:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
     tg.chat.manager:
-            class: AppBundle\Manager\TgChatManager
-            public: true
-            arguments: ['@doctrine.orm.entity_manager', '%tg.bot.token%', '@twig']
+        class: AppBundle\Manager\TgChatManager
+        public: true
+        arguments: ['@doctrine.orm.entity_manager', '%tg.bot.token%', '@twig']
 
     sms.service:
-            class: AppBundle\Service\Sms
-            public: true
-            arguments: ['@doctrine.orm.entity_manager']
+        class: AppBundle\Service\Sms
+        public: true
+        arguments: ['@doctrine.orm.entity_manager']
+
+    monolog.logger:
+        public: true
