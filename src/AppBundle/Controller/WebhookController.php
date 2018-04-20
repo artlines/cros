@@ -571,13 +571,10 @@ class WebhookController extends Controller
      */
     private function _contactWith($org_id, $_name = null, $_company = null, $_phone = null)
     {
-        //&& (strlen($_phone) < 8 && strlen($_phone) > 16)
-        //&& !preg_match("/(7|8)\d{10}/", $_phone, $matches)
-
         $isValid = true;
         if (isset($_name) && strlen($_name) > 50) {
             $isValid = false;
-        } elseif (isset($_company) && strlen($_name) > 50) {
+        } elseif (isset($_company) && strlen($_company) > 50) {
             $isValid = false;
         }
         if (isset($_phone)) {
