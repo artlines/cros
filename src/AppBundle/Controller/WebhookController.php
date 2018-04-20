@@ -49,6 +49,9 @@ class WebhookController extends Controller
     /** @var Sms */
     private $sms;
 
+    /** @var Logger */
+    private $logger;
+
     /** @var string */
     private $access_token = 'c2hhbWJhbGEyMykxMiUh';
 
@@ -69,17 +72,14 @@ class WebhookController extends Controller
             //return new Response('ok', 200);
             try {
                 $this->init_bot();
-
-                $this->update = json_decode(file_get_contents('php://input'), true);
-                $this->_debug($this->update);
-
-                $this->tgChat = $this->_findTgChat();
+                $this->logger = $this->get('monolog.logger');
                 $this->tsm = $this->get('tg.chat.manager');
                 $this->sms = $this->get('sms.service');
+                $this->update = json_decode(file_get_contents('php://input'), true);
+                $this->_debug($this->update);
+                $this->tgChat = $this->_findTgChat();
 
                 $this->process();
-            } catch (OptimisticLockException $e) {
-                $this->_error($e);
             } catch (\Exception $e) {
                 $this->_error($e);
             }
@@ -99,10 +99,11 @@ class WebhookController extends Controller
     private function process()
     {
         if (isset($this->update['message'])) {
+            $_text = trim($this->update['message']['text']);
+            $tgState = $this->tgChat->getState();
+            $this->logger->info("[TgBot:".$this->tgChat->getChatId()."] Msg: $_text | State: ".json_encode($tgState));
             if (isset($this->update['message']['reply_to_message'])) {
-                $tgState = $this->tgChat->getState();
                 if (isset($tgState['reply_type'])) {
-                    $_text = trim($this->update['message']['text']);
                     switch ($tgState['reply_type']) {
                         case 'contact_with':
                             $this->_debug(['$tgState' => $tgState]);
@@ -151,7 +152,10 @@ class WebhookController extends Controller
                 }
             }
         } else {
-            $args = explode(":", trim($this->update['callback_query']['data']));
+            $callback_data = trim($this->update['callback_query']['data']);
+            $args = explode(":", $callback_data);
+
+            $this->logger->info("[TgBot:".$this->tgChat->getChatId()."] Callback_data: $callback_data | State: ".json_encode($tgState));
 
             // log
             $this->_debug($args);
@@ -1057,9 +1061,11 @@ class WebhookController extends Controller
             $msg = "Что-то пошло не так. Сообщение об ошибке отправлено специалистам.";
             $chat_id = isset($this->update['message']) ? $this->update['message']['chat']['id'] : $this->update['callback_query']['message']['chat']['id'];
 
+            $err_str = "Error: ".$e->getMessage()." Line: ".$e->getLine()." in ".$e->getFile();
+
             // Сообщение об ошибке в чат администратора
             if ($chat_id == '285036678') {
-                $msg .= "\n\n"."Error: ".$e->getMessage()." Line: ".$e->getLine()." in ".$e->getFile();
+                $msg .= "\n\n".$err_str;
             }
 
             $content = array(
@@ -1070,9 +1076,7 @@ class WebhookController extends Controller
             return new Response('ok', 200);
         }
 
-        /** @var Logger $logger */
-        $logger = $this->get('monolog.logger');
-        $logger->error("EROORROROOROROROROROROORRRRRRR: ".$e->getMessage());
+        $this->logger->error("WebhookController | Line: " . $e->getLine() . "| Error: ".$e->getMessage());
     }
 
     private function _debug($data)
