@@ -24,7 +24,7 @@ monolog:
             content_type: text/html
         syslog:
             type: syslog
-            level: notice
+            level: info
             facility: local0
 
 parameters:

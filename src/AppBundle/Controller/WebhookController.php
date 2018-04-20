@@ -72,12 +72,13 @@ class WebhookController extends Controller
             //return new Response('ok', 200);
             try {
                 $this->init_bot();
-                $this->logger = $this->get('monolog.logger');
-                $this->tsm = $this->get('tg.chat.manager');
-                $this->sms = $this->get('sms.service');
                 $this->update = json_decode(file_get_contents('php://input'), true);
                 $this->_debug($this->update);
                 $this->tgChat = $this->_findTgChat();
+
+                $this->logger = $this->get('monolog.logger');
+                $this->tsm = $this->get('tg.chat.manager');
+                $this->sms = $this->get('sms.service');
 
                 $this->process();
             } catch (\Exception $e) {
