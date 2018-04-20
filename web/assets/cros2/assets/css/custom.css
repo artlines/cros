@@ -109,3 +109,6 @@ input.cs-p-text-white--checked[type="radio"]:checked + * p {
     color: #fff;
     border-color: #eceeef #eceeef #ddd;
 }
+#programContent thead th {
+    white-space: nowrap;
+}

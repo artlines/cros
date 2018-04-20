@@ -62,14 +62,14 @@ class Lecture
     /**
      * @var string
      *
-     * @ORM\Column(name="speaker", type="string", length=50)
+     * @ORM\Column(name="speaker", type="string", length=255)
      */
     private $speaker;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="company", type="string", length=50)
+     * @ORM\Column(name="company", type="string", length=255)
      */
     private $company;
 

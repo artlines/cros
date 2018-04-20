@@ -7,6 +7,7 @@ use AppBundle\Entity\Lecture;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Debug\Exception\ContextErrorException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -185,9 +186,23 @@ class AdminLectureController extends Controller
         		/* SAVE ROWS */
 		        foreach ($values as $row) {
         
-		            $_date = new \DateTime($row[0]);
-		            $_start_time = new \DateTime($row[1]);
-		            $_end_time = new \DateTime($row[2]);
+		            try {
+		                $_date = new \DateTime($row[0]);
+                        $_start_time = new \DateTime($row[1]);
+                        $_end_time = new \DateTime($row[2]);
+                    } catch (ContextErrorException $e) {
+                        return new JsonResponse(array(
+                            'code' => 'ERROR',
+                            'error' => "В таблице есть не полностью заполненные строки. "
+                                        ."Удалите либо дополните их."
+                        ));
+                    } catch (\Exception $e) {
+                        return new JsonResponse(array(
+                            'code' => 'ERROR',
+                            'error' => "Что-то пошло не так. Свяжитесь с администратором."
+                        ));
+                    }
+
 		            $_hall = isset($row[3]) ? $row[3] : '';
 		            $_speaker = isset($row[4]) ? $row[4] : '';
 		            $_company = isset($row[5]) ? $row[5] : '';

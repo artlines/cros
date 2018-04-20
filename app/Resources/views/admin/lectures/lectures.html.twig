@@ -33,6 +33,18 @@
 			</table>
         </div>
     </div>
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+asdasdasd
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Ясно</button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block stylesheets %}
@@ -65,7 +77,7 @@
                     });
                 }
                 else if (data.code == 'SUCCESS') {
-		    		t_body = '';
+                    t_body = '';
                     data.values.forEach(function(row) {
                         t_body += '<tr>';
                         row.forEach(function(cell) {
@@ -73,9 +85,16 @@
                         });
                         t_body += '</tr>';
                     });
-                    
+
                     $('#lecture-table tbody').html(t_body);
                     $('#refreshLectures').attr("disabled", false);
+                }
+                else if (data.code == 'ERROR') {
+                    $('#errorModal .modal-body').html('<div class="alert alert-danger" role="alert">'+data.error+'</div>');
+                    $('#errorModal').modal();
+                    $('#errorModal').on('hidden.bs.modal', function() {
+                        $('#refreshLectures').attr("disabled", false);
+                    });
                 };
             });
             
