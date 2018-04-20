@@ -22,7 +22,7 @@
             <h1 class="page-header">Спонсоры{% if uc %} <small>{{ uc }} человек</small>{% endif %}</h1><a href="{{ path('sponsor-add')}}" class="btn btn-success">
                 Добавить спонсора
             </a>
-            <a href="{{ path('sponsor-add')}}" class="btn btn-warning">
+            <a href="{{ path('sponsor-add')}}" class="btn btn-warning importcsv">
                 Импортировать спонсоров из csv
             </a>
         </div>
@@ -105,6 +105,31 @@
             </div>
         </div>
     </div>
+
+    <div id="import" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                {{ form_start(form,{'action': path('admin-sponsor-import-scv')}) }}
+                <div class="modal-header">
+                    <h4 class="modal-title">Импортирование спонсоров</h4>
+                </div>
+                <div class="modal-body">
+                    CSV - файл
+                    {{ form_widget(form.csv) }}
+                    ZIP - архив
+                    {{ form_widget(form.zip) }}
+                <a href="#">Скачать пример csv</a>
+                </div>
+                <div class="modal-footer">
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-success btn-ok-add-confirm'}}) }}
+                    <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">Отмена</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block stylesheets %}
@@ -120,7 +145,11 @@
             linkforemove = $(this).attr('href');
             $('#remove-confirm').modal();
         });
-
+        $('.importcsv').on('click', function(e){
+            e.preventDefault();
+            linkforemove = $(this).attr('href');
+            $('#import').modal();
+        })
         $('.btn-ok').on('click', function () {
             window.location = linkforemove;
         });

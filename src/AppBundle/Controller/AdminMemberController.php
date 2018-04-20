@@ -42,6 +42,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Repository\OrganizationRepository;
+use ZipArchive;
 class AdminMemberController extends Controller
 {
     /**
@@ -787,8 +788,15 @@ class AdminMemberController extends Controller
         $RepositorySponsor = $this->getDoctrine()->getRepository('AppBundle:Sponsor');
         /** @var Sponsor $sponsor */
         $sponsor = $RepositorySponsor->findAll();
+        $formImport = $this->createFormBuilder()
+            ->add('csv', FileType::class, array('label' => 'csv','required' => true))
+            ->add('zip', FileType::class, array('label' => 'архив с логотипами','required' => true))
+            ->add('save', SubmitType::class,array('label' => 'Сохранить'))
+            ->getForm();
+
         return $this->render('admin/sponsor/list.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
+            'form' => $formImport->createView(),
             'list' => $sponsor,
         ));
     }
@@ -950,6 +958,98 @@ class AdminMemberController extends Controller
         $em->remove($sponsor);
         $em->flush();
 
+        return $this->redirectToRoute('admin-sponsor-list');
+
+    }
+    /**
+     * Импорт спонсоров из csv
+     *
+     * @Route("/admin/sponsor/csv-import", name="admin-sponsor-import-scv")
+     *
+     * @param Request $request
+     * @return object
+     */
+    public function importCsvSponsorAction(Request $request){
+        $form = $this->createFormBuilder()
+            ->add('csv', FileType::class, array('label' => 'csv','required' => true))
+            ->add('zip', FileType::class, array('label' => 'архив с логотипами','required' => true))
+            ->add('save', SubmitType::class,array('label' => 'Сохранить'))
+            ->getForm();
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $RepositoryTypeSponsor = $this->getDoctrine()->getRepository('AppBundle:TypeSponsor');
+            $resizeService = $this->get('resizeImages');
+            $patchSave = $this->get('kernel')->getRootDir().'/../web/uploads/sponsor/';
+            $postefixOriginal = '_original';
+            $postefixResize = '_resize';
+            $csv = $form->get('csv')->getData();
+            $zip = $form->get('zip')->getData();
+            $_extenZip = $zip->getClientOriginalExtension();
+            $_extenCsv = $csv->getClientOriginalExtension();
+            $uniqid = uniqid();
+            $zip->move($patchSave, $uniqid.'.'.$_extenZip);
+            $csv->move($patchSave, $uniqid.'.'.$_extenCsv);
+            $zip = new ZipArchive();
+            $zip->open($patchSave.$uniqid.'.'.$_extenZip);
+            $numFiles = $zip->numFiles;
+            $listZipFiles = NULL;
+            for ($i=0; $i<$numFiles; $i++) {
+                $zipIndex = $zip->statIndex($i)['name'];
+                $filename = explode(".", $zipIndex);
+                $listZipFiles[$zipIndex]['name'] = uniqid();
+                $listZipFiles[$zipIndex]['ex'] = '.'.end($filename);
+            }
+            $zip->extractTo($patchSave);
+            $zip->close();
+            unlink($patchSave.$uniqid.'.'.$_extenZip);
+            foreach ($listZipFiles as $key => $value){
+                rename($patchSave.$key,$patchSave.$value['name'].$postefixOriginal.$value['ex']);
+            }
+            foreach ($listZipFiles as $value){
+                $resizeService->load($patchSave.$value['name'].$postefixOriginal.$value['ex']);
+                $resizeService->resize(400, 200);
+                $resizeService->save($patchSave .$value['name'].$postefixResize.$value['ex']);
+            }
+            $csvimport=NULL;
+            if (($handle = fopen($patchSave.$uniqid.'.'.$_extenCsv, "r")) !== FALSE) {
+                while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                    $csvimport[] = $data;
+                }
+                fclose($handle);
+            }
+            unset($csvimport[0]);
+            unlink($patchSave.$uniqid.'.'.$_extenCsv);
+            $em = $this->getDoctrine()->getManager();
+            foreach ($csvimport as $key => $value){
+                $fileLoad = $listZipFiles[$value[2]];
+                $sponsor = new Sponsor();
+                $sponsor->setActive($value[3]);
+                $sponsor->setLogo($fileLoad['name'].$postefixOriginal.$fileLoad['ex']);
+                $sponsor->setLogoResize($fileLoad['name'].$postefixResize.$fileLoad['ex']);
+                $sponsor->setName($value[0]);
+                $sponsor->setPhone($value[1]);
+                $sponsor->setDescription($value[5]);
+                /*
+                $sponsor->setLogo($uniqid.$postefixOriginal.'.'.$_exten);
+                $sponsor->setLogoResize($uniqid.$postefixResize.'.'.$_exten);
+                $sponsor->setName($form['name']);
+                $sponsor->setPhone($form['phone']);
+                $sponsor->setUrl($form['url']);
+                $sponsor->setDescription($form['description']);
+                $sponsor->setTypeSponsor($RepositoryTypeSponsor->find($form['type']));
+                */
+                //$em->persist($sponsor);
+                //$em->flush();
+
+            }
+
+
+
+
+        }
+//var_dump($RepositoryTypeSponsor->findOneBy(array('name_type' => 'Золотой')));
+var_dump($csvimport,$listZipFiles);
+        die();
         return $this->redirectToRoute('admin-sponsor-list');
 
     }
