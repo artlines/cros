@@ -62,14 +62,14 @@ class Lecture
     /**
      * @var string
      *
-     * @ORM\Column(name="speaker", type="string", length=50)
+     * @ORM\Column(name="speaker", type="string", length=255)
      */
     private $speaker;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="company", type="string", length=50)
+     * @ORM\Column(name="company", type="string", length=255)
      */
     private $company;
 
@@ -97,7 +97,7 @@ class Lecture
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="TgChat", mappedBy="lectures")
+     * @ORM\ManyToMany(targetEntity="TgChat", mappedBy="lectures", fetch="EXTRA_LAZY")
      */
     private $chats;
 

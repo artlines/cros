@@ -101,3 +101,14 @@ input.cs-p-text-white--checked[type="radio"]:checked + * p {
     height: 3900px;
     overflow-x:hidden;
 }
+#program.nav-tabs .nav-link {
+    color: #6ca0dc;
+}
+#program.nav-tabs .nav-link.active {
+    background: #6ea1e1;
+    color: #fff;
+    border-color: #eceeef #eceeef #ddd;
+}
+#programContent thead th {
+    white-space: nowrap;
+}

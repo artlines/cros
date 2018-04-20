@@ -38,6 +38,13 @@ class TgChat
     private $isActive;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="allow_notify", type="boolean", nullable=false, options={"default": "1"})
+     */
+    private $allowNotify;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="joined", type="datetime", options={"default": "CURRENT_TIMESTAMP"})
@@ -57,17 +64,26 @@ class TgChat
      *          @ORM\JoinColumn(name="lecture_id", referencedColumnName="id")
      *      }
      *  )
+     * @ORM\OrderBy({"date" = "ASC", "startTime" = "ASC"})
      */
     private $lectures;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="state", type="text", nullable=true)
+     */
+    private $state;
 
-
-
-
+    /**
+     * TgChat constructor.
+     */
     public function __construct()
     {
-        $this->lectures = new ArrayCollection();
-        $this->isActive = true;
+        $this->lectures     = new ArrayCollection();
+        $this->isActive     = true;
+        $this->allowNotify  = true;
+        $this->state        = json_encode(array());
     }
 
     /**
@@ -135,20 +151,13 @@ class TgChat
     }
 
     /**
-     * @param mixed $lectures
-     */
-    public function setLectures($lectures)
-    {
-        $this->lectures = $lectures;
-    }
-
-    /**
      * @param Lecture $lecture
      */
     public function addLecture($lecture)
     {
-        if (!$this->lectures->contains($lecture))
+        if (!$this->lectures->contains($lecture)) {
             $this->lectures->add($lecture);
+        }
     }
 
     /**
@@ -156,9 +165,44 @@ class TgChat
      */
     public function removeLecture($lecture)
     {
-        if ($this->lectures->contains($lecture))
+        if ($this->lectures->contains($lecture)) {
             $this->lectures->removeElement($lecture);
+        }
     }
 
+    public function denyNotify()
+    {
+        $this->allowNotify = false;
+    }
+
+    public function allowNotify()
+    {
+        $this->allowNotify = true;
+    }
+
+    public function isAllowNotify()
+    {
+        return (boolean) $this->allowNotify;
+    }
+
+    /**
+     * @return array
+     */
+    public function getState()
+    {
+        if (is_null($this->state)) {
+            return array();
+        }
+
+        return json_decode($this->state, true);
+    }
+
+    /**
+     * @param array $state
+     */
+    public function setState($state)
+    {
+        $this->state = json_encode($state);
+    }
 }
 

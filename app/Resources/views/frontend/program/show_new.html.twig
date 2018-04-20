@@ -7,30 +7,26 @@
     {% if program is empty %}
         <h3>Нет данных</h3>
     {% else %}
-		<div class="row">
+        <div class="row">
 			<div class="col-md-12">
 				<!-- Specify for bootstrap 4 position please wait next upgrades! -->
 				<!-- Nav tabs -->
-				<ul class="nav nav-tabs{# u-nav-v1#}"
-                    {#
-					data-target="nav-7-1-default-hor-left">
-					#}
-                    data-btn-classes="btn btn-md btn-block u-btn-outline-primary"
-                    data-tabs-mobile-type="slide-up-down"
-                    role="tablist"
-                    id="program"
-                >
+				<ul class="nav nav-tabs"
+                        data-btn-classes="btn btn-md btn-block u-btn-outline-primary"
+                        data-tabs-mobile-type="slide-up-down"
+                        {#role="tablist"#}
+                        id="program">
                     {% set j = 1 %}
-                    {% for date in program %}
+                    {% for date, times in program %}
                         <li class="nav-item">
-                            <a class="nav-link"
+                            <a class="nav-link{% if j == 1 %} active{% endif %}"
                                data-toggle="tab"
                                role="tab"
                                href="#day-{{ j }}"
                                id="day-{{ j }}-tab"
                                aria-controls="day-{{ j }}"
                                aria-expanded="{% if j == 1 %}true{% else %}false{% endif %}">
-                                День {{ j }}
+                                {{ date }}
                             </a>
                         </li>
                         {% set j = j + 1 %}
@@ -39,428 +35,62 @@
 				<!-- End Nav tabs -->
 				<!-- Tab panes -->
 				<div id="programContent" class="tab-content cs-pt-20">
-				{% set i = 1 %}
-				{% for date, times in program %}
-					<div class="tab-pane fade{% if i == 1 %} show active{% endif %}" id="day-{{ i }}" role="tabpanel">
-						<p>Расписание занятий {{ date }}</p>
-						<!-- Table Schedule   text-uppercase  -->
-						<div class="table-responsive">
-							<table class="table table-bordered table-hover u-table--v2 text-left cs-col-border-side-0">
-								<thead>
-								<tr class="cs-bcs-blue cs-color-white cs-col-border-top-0">
-									<th class="cs-brd-white-opacity-0_1"></th>
-                                    {% for hall_name in all_halls %}
-                                        <th class="cs-brd-white-opacity-0_1">{{ hall_name }}</th>
-                                    {% endfor %}
-								</tr>
-								</thead>
-								<tbody class="cs-font-size-11">
+                    {% set i = 1 %}
+                    {% for date, times in program %}
+                        <div class="tab-pane fade{% if i == 1 %} show active{% endif %}" id="day-{{ i }}" role="tabpanel">
+                            {#<p>Расписание докладов {{ date }}</p>#}
+                            <!-- Table Schedule   text-uppercase  -->
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover u-table--v2 text-left cs-col-border-side-0">
+                                    <thead>
+                                    <tr class="cs-bcs-blue cs-color-white cs-col-border-top-0">
+                                        <th class="cs-brd-white-opacity-0_1"></th>
+                                        {% for hall_name in all_halls %}
+                                            <th class="cs-brd-white-opacity-0_1">{{ hall_name }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                    </thead>
+                                    <tbody class="cs-font-size-11">
                                     {% for time, halls in times %}
                                         <tr >
                                             <th class="" scope="row">{{ time }}</th>
-                                                {% for hall_col in all_halls %}
-                                                    {% if halls[hall_col] is defined %}
-                                                        {% if halls[hall_col].speaker is empty %}
-                                                            <td class="cs-bcs-blue cs-color-white d-flex justify-content-between">
-                                                                <div>
-                                                                    {{ halls[hall_col].hall }}
-                                                                </div>
-                                                                <div class="cs-font-size-14 cs-line-height-1 py-1">
-                                                                    <i class="fa fa-coffee"></i>
-                                                                </div>
-                                                            </td>
-                                                        {% else %}
-                                                            <td>
-                                                                <div class="mb-2 font-italic font-weight-bold">{{ halls[hall_col].speaker }}</div>
-                                                                <strong>{{ halls[hall_col].title }}</strong><br/>
-                                                                {{ halls[hall_col].theses|nl2br }}
-                                                                <br/><br/>
-                                                            </td>
-                                                        {% endif %}
+                                            {% for hall_col in all_halls %}
+                                                {% if halls[hall_col] is defined %}
+                                                    {% if halls[hall_col].speaker is empty %}
+                                                        <td class="cs-bcs-blue cs-color-white d-flex justify-content-between">
+                                                            <div>
+                                                                {{ halls[hall_col].hall }}
+                                                            </div>
+                                                            <div class="cs-font-size-14 cs-line-height-1 py-1">
+                                                                <i class="fa fa-coffee"></i>
+                                                            </div>
+                                                        </td>
                                                     {% else %}
-                                                        <td><i class="fa fa-minus"></i></td>
+                                                        <td>
+                                                            <div class="mb-2 font-italic font-weight-bold">{{ halls[hall_col].speaker }}</div>
+                                                            <strong>{{ halls[hall_col].title }}</strong><br/>
+                                                            {{ halls[hall_col].theses|nl2br }}
+                                                            <br/><br/>
+                                                        </td>
                                                     {% endif %}
-                                                {% endfor %}
+                                                {% else %}
+                                                    <td><i class="fa fa-minus"></i></td>
+                                                {% endif %}
+                                            {% endfor %}
                                         </tr>
                                     {% endfor %}
 
-								</tbody>
-							</table>
-						</div>
-						<!-- End Table Schedule -->
-					</div>
-					{% set i = i + 1 %}
-				{% endfor %}
-
-{#
-					<div class="tab-pane fade" id="nav-7-1-default-hor-left--2" role="tabpanel">
-						<p>Расписание занятий День Второй!</p>
-						<!-- Table Schedule   text-uppercase  -->
-						<div class="table-responsive">
-							<table class="table table-bordered table-hover u-table--v2 text-left cs-col-border-side-0">
-								<thead>
-								<tr class="cs-bcs-blue cs-color-white cs-col-border-top-0">
-									<th class="cs-brd-white-opacity-0_1"></th>
-									<th class="cs-brd-white-opacity-0_1">Зал #1</th>
-									<th class="cs-brd-white-opacity-0_1">Зал #2</th>
-									<th class="cs-brd-white-opacity-0_1">Зал #3</th>
-								</tr>
-								</thead>
-								<tbody class="cs-font-size-11">
-								<tr>
-									<th class="" scope="row">07:00 - 08:00</th>
-									<td class="cs-bcs-blue cs-color-white">
-										Регистрация участников. <br />Стойка Reception отеля.
-										<!--i-->
-										<ul class="list-inline mb-0 cs-ml-minus-5">
-											<li class="list-inline-item">
-												<a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white cs-bg-transparent cs-color-white-bordered--hover cs-transition-0_2 cs-transition--ease-in" href="#"><span class="fa fa-bus cs-absolute-centered"></span></a>
-											</li>
-											<li class="list-inline-item">
-												<a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white cs-bg-transparent cs-color-white-bordered--hover cs-transition-0_2 cs-transition--ease-in" href="#"><span class="fa fa-coffee cs-absolute-centered"></span></a>
-											</li>
-											<li class="list-inline-item">
-												<a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white cs-bg-transparent cs-color-white-bordered--hover cs-transition-0_2 cs-transition--ease-in" href="#"><span class="fa fa-check-circle cs-absolute-centered"></span></a>
-											</li>
-											<li class="list-inline-item">
-												<a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white cs-bg-transparent cs-color-white-bordered--hover cs-transition-0_2 cs-transition--ease-in" href="#"><span class="fa fa-edit cs-absolute-centered"></span></a>
-											</li>
-										</ul>
-									</td>
-									<td><i class="fa fa-minus"></i></td>
-									<td><i class="fa fa-minus"></i></td>
-								</tr>
-								<tr >
-									<th class="" scope="row">08:00 - 09:00</th>
-									<td>
-										Доклад Генерального секретаря о работе Организации
-										<ul  class="">
-											<li>стандартное условное обозначение: A/сессия/1</li>
-											<li>например: A/72/1</li>
-											<li>кратко описывает основные мероприятия ООН в мире</li>
-											<li>дает ссылки к другим докладам, представляющим более подробную информацию</li>
-										</ul>
-									</td>
-									<td >
-										<ul class="">
-											<li>
-												Дополнение 1: Доклад <strong>Генерального секретаря</strong> о работе Организации
-												<ul>
-													<li>стандартное условное обозначение: A/сессия/1</li>
-													<li>например: <a href="http://www.un.org/ru/documents/ods.asp?m=A/72/1">A/72/1</a></li>
-													<li>кратко описывает основные мероприятия ООН в мире</li>
-													<li>дает ссылки к другим докладам, представляющим более подробную информацию</li>
-												</ul>
-											</li>
-										</ul>
-									</td>
-									<td>
-										<ul  class="">
-											<li>
-												Дополнение 1: Доклад <strong>Генерального секретаря</strong> о работе Организации
-												<ul>
-													<li>стандартное условное обозначение: A/сессия/1</li>
-													<li>например: <a href="http://www.un.org/ru/documents/ods.asp?m=A/72/1">A/72/1</a></li>
-													<li>кратко описывает основные мероприятия ООН в мире</li>
-													<li>дает ссылки к другим докладам, представляющим более подробную информацию</li>
-												</ul>
-											</li>
-										</ul>
-									</td>
-								</tr>
-								<tr>
-									<th class="" scope="row">09:00 - 11:00</th>
-									<td>Некоторые доклады препровождаются письмом, нотой или вербальной нотой.<br />
-										Это нередко происходит в связи с докладами, выпускаемыми:<br />
-										Вспомогательными органами Совета Безопасности:<br />
-										Докладчик: <strong>Иван Бунин</strong><br />
-										Аудитория: <strong>3.11, Зал 1</strong>
-									</td>
-									<td>
-										<i class="fa fa-minus"></i>
-									</td>
-									<td>
-										<i class="fa fa-minus"></i>
-									</td>
-								</tr>
-								<tr>
-									<th class="" scope="row">11:00 - 13:00</th>
-									<td><i class="fa fa-minus"></i></td>
-									<td>
-										<p>Ведущие доклады программ и фондов ООН, а также специализированных учреждений ООН включают:</p>
-										Органы ООН издают ведущие доклады в целях предоставления общественности информации о работе Организации. <br />
-										Докладчик: <strong>Александр Пушкин</strong><br />
-										Аудитория: <strong>Зал 3</strong>
-									</td>
-									<td>
-										<i class="fa fa-minus"></i>
-									</td>
-								</tr>
-								<tr>
-									<th class="" scope="row">13:00 - 16:00</th>
-									<td class="cs-bcs-blue cs-color-white">
-										Обед
-										<ul class="list-inline mb-0 cs-ml-minus-5">
-											<li class="list-inline-item">
-												<a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white cs-bg-transparent cs-color-white-bordered--hover cs-transition-0_2 cs-transition--ease-in" href="#"><span class="fa fa-coffee cs-absolute-centered"></span></a>
-											</li>
-										</ul>
-									</td>
-									<td>
-										<i class="fa fa-minus"></i>
-									</td>
-									<td>
-										<i class="fa fa-minus"></i>
-									</td>
-								</tr>
-								<tr>
-									<th class="" scope="row">16:00 - 23:00</th>
-									<td >
-										<p>Генеральная Ассамблея собирается ежегодно на очередную сессию. Могут также созываться специальные и чрезвычайные специальные сессии.
-											Докладчик: <strong>Владимир Маяковский</strong><br />
-											Аудитория: <strong>Зал 3</strong>
-									</td>
-									</p>
-									<td>
-										<p>Генеральная Ассамблея является главным совещательным органом Организации Объединенных Наций. Генеральной Ассамблее посвящены статьи 9-22 главы IV Устава Организации Объединенных Наций.
-											В работе Генеральной Ассамблеи принимают участие все государства-члены, и каждое государство имеет один голос.
-										</p>
-										Докладчик: <strong>Лев Толстой</strong><br />
-										Аудитория: <strong>Зал 1</strong>
-									</td>
-									<td>
-										<p>Генеральная Ассамблея является главным совещательным органом Организации Объединенных Наций.
-											Генеральной Ассамблее посвящены статьи 9-22 главы IV Устава Организации Объединенных Наций.
-											Докладчик: <strong>Сергей Есенин</strong><br />
-											Аудитория: <strong>Зал 2</strong>
-										</p>
-									</td>
-								</tr>
-								<tr>
-									<th class="" scope="row">23:00 - 06:00</th>
-									<td class="cs-bcs-blue cs-color-white">
-										Вечеринка до утра. Бар бесплатно.
-										<ul class="list-inline mb-0 cs-ml-minus-5">
-											<li class="list-inline-item">
-												<a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white cs-bg-transparent cs-color-white-bordered--hover cs-transition-0_2 cs-transition--ease-in" href="#"><span class="fa fa-music cs-absolute-centered"></span></a>
-											</li>
-										</ul>
-									</td>
-									<td>
-										<i class="fa fa-minus"></i>
-									</td>
-									<td>
-										<i class="fa fa-minus"></i>
-									</td>
-								</tr>
-								</tbody>
-							</table>
-						</div>
-						<!-- End Table Schedule -->
-					</div>
-					<div class="tab-pane fade" id="nav-7-1-default-hor-left--3" role="tabpanel">
-						<p>Расписание занятий День Третий!</p>
-						<!-- Table Schedule   text-uppercase  -->
-						<div class="table-responsive">
-							<table class="table table-bordered table-hover u-table--v2 text-left cs-col-border-side-0">
-								<thead>
-								<tr class="cs-bcs-blue cs-color-white cs-col-border-top-0">
-									<th class="cs-brd-white-opacity-0_1"></th>
-									<th class="cs-brd-white-opacity-0_1">Зал #1</th>
-									<th class="cs-brd-white-opacity-0_1">Зал #2</th>
-									<th class="cs-brd-white-opacity-0_1">Зал #3</th>
-								</tr>
-								</thead>
-								<tbody class="cs-font-size-11">
-								<tr>
-									<th class="" scope="row">07:00 - 08:00</th>
-									<td class="cs-bcs-blue cs-color-white">
-										Регистрация участников. <br />Стойка Reception отеля.
-										<!--i-->
-										<ul class="list-inline mb-0 cs-ml-minus-5">
-											<li class="list-inline-item">
-												<a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white cs-bg-transparent cs-color-white-bordered--hover cs-transition-0_2 cs-transition--ease-in" href="#"><span class="fa fa-bus cs-absolute-centered"></span></a>
-											</li>
-											<li class="list-inline-item">
-												<a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white cs-bg-transparent cs-color-white-bordered--hover cs-transition-0_2 cs-transition--ease-in" href="#"><span class="fa fa-coffee cs-absolute-centered"></span></a>
-											</li>
-											<li class="list-inline-item">
-												<a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white cs-bg-transparent cs-color-white-bordered--hover cs-transition-0_2 cs-transition--ease-in" href="#"><span class="fa fa-check-circle cs-absolute-centered"></span></a>
-											</li>
-											<li class="list-inline-item">
-												<a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white cs-bg-transparent cs-color-white-bordered--hover cs-transition-0_2 cs-transition--ease-in" href="#"><span class="fa fa-edit cs-absolute-centered"></span></a>
-											</li>
-										</ul>
-									</td>
-									<td><i class="fa fa-minus"></i></td>
-									<td><i class="fa fa-minus"></i></td>
-								</tr>
-								<tr >
-									<th class="" scope="row">08:00 - 09:00</th>
-									<td>
-										Доклад Генерального секретаря о работе Организации
-										<ul  class="">
-											<li>стандартное условное обозначение: A/сессия/1</li>
-											<li>например: A/72/1</li>
-											<li>кратко описывает основные мероприятия ООН в мире</li>
-											<li>дает ссылки к другим докладам, представляющим более подробную информацию</li>
-										</ul>
-									</td>
-									<td >
-										<ul class="">
-											<li>
-												Дополнение 1: Доклад <strong>Генерального секретаря</strong> о работе Организации
-												<ul>
-													<li>стандартное условное обозначение: A/сессия/1</li>
-													<li>например: <a href="http://www.un.org/ru/documents/ods.asp?m=A/72/1">A/72/1</a></li>
-													<li>кратко описывает основные мероприятия ООН в мире</li>
-													<li>дает ссылки к другим докладам, представляющим более подробную информацию</li>
-												</ul>
-											</li>
-										</ul>
-									</td>
-									<td>
-										<ul  class="">
-											<li>
-												Дополнение 1: Доклад <strong>Генерального секретаря</strong> о работе Организации
-												<ul>
-													<li>стандартное условное обозначение: A/сессия/1</li>
-													<li>например: <a href="http://www.un.org/ru/documents/ods.asp?m=A/72/1">A/72/1</a></li>
-													<li>кратко описывает основные мероприятия ООН в мире</li>
-													<li>дает ссылки к другим докладам, представляющим более подробную информацию</li>
-												</ul>
-											</li>
-										</ul>
-									</td>
-								</tr>
-								<tr>
-									<th class="" scope="row">09:00 - 11:00</th>
-									<td>Некоторые доклады препровождаются письмом, нотой или вербальной нотой.<br />
-										Это нередко происходит в связи с докладами, выпускаемыми:<br />
-										Вспомогательными органами Совета Безопасности:<br />
-										Докладчик: <strong>Иван Бунин</strong><br />
-										Аудитория: <strong>3.11, Зал 1</strong>
-									</td>
-									<td>
-										<i class="fa fa-minus"></i>
-									</td>
-									<td>
-										<i class="fa fa-minus"></i>
-									</td>
-								</tr>
-								<tr>
-									<th class="" scope="row">11:00 - 13:00</th>
-									<td><i class="fa fa-minus"></i></td>
-									<td>
-										<p>Ведущие доклады программ и фондов ООН, а также специализированных учреждений ООН включают:</p>
-										Органы ООН издают ведущие доклады в целях предоставления общественности информации о работе Организации. <br />
-										Докладчик: <strong>Александр Пушкин</strong><br />
-										Аудитория: <strong>Зал 3</strong>
-									</td>
-									<td>
-										<i class="fa fa-minus"></i>
-									</td>
-								</tr>
-								<tr>
-									<th class="" scope="row">13:00 - 16:00</th>
-									<td class="cs-bcs-blue cs-color-white">
-										Обед
-										<ul class="list-inline mb-0 cs-ml-minus-5">
-											<li class="list-inline-item">
-												<a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white cs-bg-transparent cs-color-white-bordered--hover cs-transition-0_2 cs-transition--ease-in" href="#"><span class="fa fa-coffee cs-absolute-centered"></span></a>
-											</li>
-										</ul>
-									</td>
-									<td>
-										<i class="fa fa-minus"></i>
-									</td>
-									<td>
-										<i class="fa fa-minus"></i>
-									</td>
-								</tr>
-								<tr>
-									<th class="" scope="row">16:00 - 23:00</th>
-									<td >
-										<p>Генеральная Ассамблея собирается ежегодно на очередную сессию. Могут также созываться специальные и чрезвычайные специальные сессии.
-											Докладчик: <strong>Владимир Маяковский</strong><br />
-											Аудитория: <strong>Зал 3</strong>
-									</td>
-									</p>
-									<td>
-										<p>Генеральная Ассамблея является главным совещательным органом Организации Объединенных Наций. Генеральной Ассамблее посвящены статьи 9-22 главы IV Устава Организации Объединенных Наций.
-											В работе Генеральной Ассамблеи принимают участие все государства-члены, и каждое государство имеет один голос.
-										</p>
-										Докладчик: <strong>Лев Толстой</strong><br />
-										Аудитория: <strong>Зал 1</strong>
-									</td>
-									<td>
-										<p>Генеральная Ассамблея является главным совещательным органом Организации Объединенных Наций.
-											Генеральной Ассамблее посвящены статьи 9-22 главы IV Устава Организации Объединенных Наций.
-											Докладчик: <strong>Сергей Есенин</strong><br />
-											Аудитория: <strong>Зал 2</strong>
-										</p>
-									</td>
-								</tr>
-								<tr>
-									<th class="" scope="row">23:00 - 06:00</th>
-									<td class="cs-bcs-blue cs-color-white">
-										Вечеринка до утра. Бар бесплатно.
-										<ul class="list-inline mb-0 cs-ml-minus-5">
-											<li class="list-inline-item">
-												<a class="u-icon-social cs-width-35 cs-height-35 cs-font-size-14 cs-color-white cs-bg-transparent cs-color-white-bordered--hover cs-transition-0_2 cs-transition--ease-in" href="#"><span class="fa fa-music cs-absolute-centered"></span></a>
-											</li>
-										</ul>
-									</td>
-									<td>
-										<i class="fa fa-minus"></i>
-									</td>
-									<td>
-										<i class="fa fa-minus"></i>
-									</td>
-								</tr>
-								</tbody>
-							</table>
-						</div>
-						<!-- End Table Schedule -->
-					</div>
-				</div>
-				<!-- End Tab panes -->
-				<div class="text-center">
-					<a class="btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 cs-py-18 mb-0 cs-mt-15" href="#">Подробное расписание</a>
-				</div>
-			</div>
-		</div>
-#}
-
-{#
-		<table class="table">
-			<thead>
-			<tr>
-				<td>Дата начала</td><td>Время начала</td><td>Время окончания</td><td>Зал</td><td>Докладчик</td>
-				<td>Компания</td><td>Модератор</td><td>Наименование доклада</td><td>Тезисы</td>
-			</tr>
-			</thead>
-			<tbody>
-			{% for row in lectures %}
-				<tr>
-				<td>{{ row.date|date("d.m.Y") }}</td>
-				<td>{{ row.startTime|date("H:i") }}</td>
-				<td>{{ row.endTime|date("H:i") }}</td>
-				<td>{{ row.hall }}</td>
-				<td>{{ row.speaker }}</td>
-				<td>{{ row.company }}</td>
-				<td>{{ row.moderator }}</td>
-				<td>{{ row.title }}</td>
-				<td>{{ row.theses|nl2br }}</td>
-				</tr>
-			{% endfor %}
-			</tr>
-			</tbody>
-		</table>
-#}
-
-
-
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- End Table Schedule -->
+                        </div>
+                        <!-- End Table Schedule -->
+                        {% set i = i + 1 %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     {% endif %}
 {% endblock %}
 

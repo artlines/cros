@@ -11,12 +11,7 @@ monolog:
     handlers:
         main:
             type:         fingers_crossed
-            action_level: error
-            handler:      nested
-        nested:
-            type:  stream
-            path:  "%kernel.logs_dir%/%kernel.environment%.log"
-            level: debug
+            handler:      syslog
         console:
             type:  console
         swift:
@@ -27,9 +22,14 @@ monolog:
             level: critical
             formatter: monolog.formatter.html
             content_type: text/html
+        syslog:
+            type: syslog
+            level: info
+            facility: local0
 
 parameters:
     cros_emails: [ 'e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru', 'cros@nag.ru' ]
+
 twig:
     globals:
         theme_template: 'base.html.twig'

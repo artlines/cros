@@ -3,8 +3,10 @@
 namespace AppBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use GuzzleHttp\Exception\RequestException;
 use \SimpleXMLElement;
 use AppBundle\Entity\Logs;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class Sms
 {
@@ -13,7 +15,7 @@ class Sms
      *
      * @var string
      */
-    private $url = 'https://www.contentum-it.ru/xml/';
+    private $url = 'http://alf1kksam.dev.nag.ru/xml/';
 
     /**
      * Login
@@ -94,23 +96,24 @@ class Sms
     {
         $this->prepareToSend();
 
-        var_dump($this->messages);
-
-        //$debug = $this->xml;
-        //return $debug;
-
         $ch = curl_init();
+
+        $header = [
+            "Content-Type: application/x-www-form-urlencoded",
+            "Content-Charset: UTF-8"
+        ];
+
         curl_setopt($ch, CURLOPT_URL, $this->url);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $this->xml);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
         curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_SSLVERSION, 3);
-        $result = curl_exec($ch);
-        curl_close($ch);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSLVERSION, 6);
 
+        $result = curl_exec($ch);
 
         if ($result) {
             /** @var Logs $log */
@@ -120,7 +123,13 @@ class Sms
             $this->em->flush();
         }
 
-        return $result;
+        if ($errno = curl_errno($ch)) {
+            throw new ResourceNotFoundException("Curl ($errno): ".curl_strerror($errno));
+        }
+
+        curl_close($ch);
+
+        return [$result, $this->url];
     }
 
     /**
@@ -133,7 +142,7 @@ class Sms
         $messages = $this->messages;
 
         if (empty($messages)) {
-            throw new \Exception("Messages array is empty. Nothing to send.");
+            throw new \Exception("SMS Service: Messages array is empty. Nothing to send.");
         }
 
         /**
@@ -155,14 +164,6 @@ class Sms
          * Generate SMS
          */
         foreach ($messages as $msg) {
-            $log = new Logs();
-            $log->setReaded(0);
-            $log->setDate(new \DateTime());
-            $log->setElementId($this->entityId);
-            $log->setEntity($this->entityClass);
-            $log->setEvent(json_encode($msg));
-            $this->logs[] = $log;
-
             $sms = $xml->addChild('sms', $msg['text']);
             $sms->addAttribute('sms_id', $msg['id']);
             $sms->addAttribute('number', $msg['dst_number']);
@@ -178,6 +179,8 @@ class Sms
      * @param $id           string
      * @param $dst_number   string
      * @param $text         string
+     *
+     * @return array
      */
     public function addMessage($id, $dst_number, $text)
     {
@@ -187,6 +190,8 @@ class Sms
             'text'      => $text
         ];
         $this->messages[$id] = $msg;
+
+        return $msg;
     }
 
     /**

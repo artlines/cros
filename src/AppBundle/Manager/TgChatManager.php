@@ -4,25 +4,42 @@ namespace AppBundle\Manager;
 
 use AppBundle\Entity\Lecture;
 use AppBundle\Entity\TgChat;
+use AppBundle\Service\Telegram;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityNotFoundException;
+use Twig_Environment;
 
 class TgChatManager
 {
     /** @var EntityManager */
     private $em;
 
+    /** @var Twig_Environment */
+    private $twig;
+
+    /** @var \Telegram  */
+    private $bot;
+
     /**
      * TgChatManager constructor.
      * @param EntityManager $entityManager
+     * @param $bot_token
+     * @throws \Exception
      */
-    public function __construct(EntityManager $entityManager, $bot_token)
+    public function __construct(EntityManager $entityManager, $bot_token, Twig_Environment $twig)
     {
         $this->em = $entityManager;
-        $this->bot_token = $bot_token;
+        $this->twig = $twig;
+
+        if (!$bot_token) {
+            throw new \Exception("Bot token is not set in parameters.yml");
+        }
+        $this->bot = new Telegram($bot_token);
     }
 
     /**
+     * Add Lecture with lectureId to TgChat subscribes
+     *
      * @param TgChat $tgChat
      * @param integer $lectureId
      * @return bool
@@ -49,6 +66,8 @@ class TgChatManager
     }
 
     /**
+     * Remove Lecture with lectureId from TgChat subscribes
+     *
      * @param TgChat $tgChat
      * @param integer $lectureId
      * @return bool
@@ -74,11 +93,72 @@ class TgChatManager
         return true;
     }
 
+    /**
+     * Look for coming soon lectures and notify TgChats about lecture start time
+     */
     public function checkAndNotifySubscribes()
     {
-        $deb = $this->em->getRepository('AppBundle:TgChat')->findBy(['allowNotify' => true]);
+        date_default_timezone_set("Europe/Moscow");
+        $moscow_tz = new \DateTimeZone('Europe/Moscow');
+        $time_now = (new \DateTime())->setTimezone($moscow_tz);
+        $time_plus_15 = (new \DateTime('+ 15 minutes'))->setTimezone($moscow_tz);
 
-        return $deb;
+        $qb = $this->em->getRepository('AppBundle:Lecture')->createQueryBuilder('l');
+        $lectures = $qb->where(
+            "l.date = ?1 AND l.startTime >= ?2 AND l.startTime <= ?3"
+        )->setParameters(array(
+            '1' => $time_now->format("Y-m-d"),
+            '2' => $time_now->format("H:i"),
+            '3' => $time_plus_15->format("H:i")
+        ))->getQuery()->getResult();
+
+        /** @var Lecture $lecture */
+        foreach ($lectures as $lecture)
+        {
+            $lectureDate = $lecture->getDate();
+            $lectureStart = $lecture->getStartTime()->setDate($lectureDate->format("Y"), $lectureDate->format("m"), $lectureDate->format("d"));
+            $minDiff = date_diff($time_now, $lectureStart)->i;
+
+            /** @var TgChat $chat */
+            foreach ($lecture->getChats() as $chat)
+            {
+                if ($chat->getIsActive() && $chat->isAllowNotify()) {
+                    $this->_sendMsg(
+                        $chat,
+                        $this->twig->render('telegram_bot/notify.html.twig', [
+                            'minDiff' => $minDiff,
+                            'startTime' => $lectureStart->format("H:i"),
+                            'lecture' => $lecture
+                        ])
+                    );
+                }
+            }
+        }
+    }
+
+    /**
+     * Update current state of TgChat
+     *
+     * @param TgChat $tgChat
+     * @param array $newState
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function updateState($tgChat, $newState)
+    {
+        $tgChat->setState($newState);
+        $this->em->persist($tgChat);
+        $this->em->flush();
+    }
+
+    /**
+     * Reset state of TgChat
+     *
+     * @param TgChat $tgChat
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function resetState($tgChat)
+    {
+        $this->updateState($tgChat, array());
     }
 
     /**
@@ -95,11 +175,17 @@ class TgChatManager
         return $lecture;
     }
 
+    /**
+     * @param TgChat $tgChat
+     * @param $msg
+     */
     private function _sendMsg($tgChat, $msg)
     {
-        $bot = new \Telegram($this->bot_token);
-
-
+        $this->bot->sendMessage([
+            'chat_id' => $tgChat->getChatId(),
+            'parse_mode' => 'HTML',
+            'text' => $msg
+        ]);
     }
 
 }

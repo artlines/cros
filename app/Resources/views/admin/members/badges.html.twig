@@ -213,6 +213,10 @@
                                 <input type="text" class="form-control" id="middle_name" name="middle_name">
                             </div>
                             <div class="form-group">
+                                <label for="middle_name">Nickname</label>
+                                <input type="text" class="form-control" id="nickname" name="nickname">
+                            </div>
+                            <div class="form-group">
                                 <label for="post">Должность</label>
                                 <input type="text" class="form-control" id="post" name="post">
                             </div>
@@ -302,13 +306,14 @@
             var po = $('#post').val();
             var or = $('#org').val();
             var ci = $('#city').val();
+            var nn = $('#nickname').val();
             $(".bg_load").fadeIn("slow");
             $(".wrapper").fadeIn("slow");
             $.ajax({
                 url: "{{ url('admin-generate-badges') }}",
                 type: "post",
                 method: "post",
-                data: {man: true, type: bt, last_name: ln, first_name: fn, middle_name: mn, post: po, organization: or, city: ci},
+                data: {man: true, type: bt, last_name: ln, first_name: fn, middle_name: mn, post: po, organization: or, city: ci, nickname: nn},
                 success: function(data){
                     var d = data.split('.');
                     var dl = d.length - 1;
@@ -337,6 +342,7 @@
                 var po = $(this).attr('data-post');
                 var or = $(this).attr('data-organization');
                 var ci = $(this).attr('data-city');
+                var nn = $(this).attr('data-nickname');
                 $('#search').val('');
                 $('.search_result').html('');
                 $('#last_name').val(ln);
@@ -345,6 +351,7 @@
                 $('#post').val(po);
                 $('#org').val(or);
                 $('#city').val(ci);
+                $('#nickname').val(nn);
             });
         }
 
