@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\Request;
 class ProgramController extends Controller
 {
 
-    const DEFAULT_HALL = 'Большой зал';
+    const DEFAULT_HALL = 'Зал Валдай';
 
     /**
      * client
