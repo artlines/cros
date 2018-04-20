@@ -53,7 +53,7 @@
                         {% for sponsor in silvern %}
                             <div class=" col-xs-2 col-md-3">
                                 <div class="card mb-4 box-shadow">
-                                    <img src="{{ asset('uploads/speakers/'~ sponsor.logoresize) }}" class="img-fluid">
+                                    <img src="{{ asset('uploads/sponsor/'~ sponsor.logoresize) }}" class="img-fluid">
                                     <div class="card-body">
                                         <p class="card-text text-center"><b>{{ sponsor.name }}</b></p>
                                     </div>
@@ -68,29 +68,93 @@
         </section>
     {% endif %}
 
-    <div id="silvern-8" class="modal fade" role="dialog">
-        <div class="modal-dialog">
+{% if silvern != null %}
+    {% for sponsor in silvern %}
+    <div id="silvern-{{ sponsor.id }}" class="modal fade" role="dialog">
+        <div class="modal-dialog" style="max-width: 1000px;">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Модальное окно</h4>
+                    <h4 class="modal-title">{{ sponsor.name }}</h4>
+                    <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">Закрыть</button>
                 </div>
                 <div class="modal-body">
-                        Окно
+                        <!-- -->
+                    <div class="row no-gutters cs-pb-30">
+                        <div class="col-sm-3 col-lg-3">
+                            <img src="{{ asset('uploads/sponsor/'~ sponsor.logo) }}" class="img-fluid" alt="" title="Участники КРОС"/>
+                        </div>
+                        <div class="col-sm-8 col-lg-8 w-100 pl-3 text-justify">
+
+
+                                    {{ sponsor.description }}
+
+                            <br>   <a href="{{ sponsor.url }}" target="_blank" class="btn btn-success">
+                                Перейти на сайт спонсора
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                    <!-- -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">Отмена</button>
                 </div>
 
             </div>
         </div>
     </div>
     </div>
+    {% endfor %}
+{% endif %}
+
+    {% if gold != null %}
+        {% for sponsor in gold %}
+            <div id="silvern-{{ sponsor.id }}" class="modal fade" role="dialog">
+                <div class="modal-dialog" style="max-width: 1000px;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">{{ sponsor.name }}</h4>
+                            <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">Закрыть</button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- -->
+                            <div class="row no-gutters cs-pb-30">
+                                <div class="col-sm-3 col-lg-3">
+                                    <img src="{{ asset('uploads/sponsor/'~ sponsor.logo) }}" class="img-fluid" alt="" title="Участники КРОС"/>
+                                </div>
+                                <div class="col-sm-8 col-lg-8 w-100 pl-3 text-justify">
 
 
-    <a href="" class="btn btn-warning importcsv">
-        Импортировать спонсоров из csv
-    </a>
-    <div class="elemClass" id="first">clicme</div>
+                                    {{ sponsor.description }}
+
+                                    <br>   <a href="{{ sponsor.url }}" target="_blank" class="btn btn-success">
+                                        Перейти на сайт спонсора
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- -->
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+
+                </div>
+            </div>
+            </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+
+
+
+
+
 
 {% endblock %}
 
