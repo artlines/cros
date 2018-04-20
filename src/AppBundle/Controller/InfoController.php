@@ -65,6 +65,25 @@ class InfoController extends Controller
      */
     public function infoAction($alias, Request $request)
 	{
+        /* SPONSOR */
+        if ($alias == 'sponsors') {
+            $RepositoryTypeSponsor = $this->getDoctrine()->getRepository('AppBundle:TypeSponsor');
+            $typeSponsorGold = $RepositoryTypeSponsor->findOneBy(array('name_type' => 'Золотой'));
+            $typeSponsorSilvern = $RepositoryTypeSponsor->findOneBy(array('name_type' => 'Серебряный'));
+
+
+
+            //dump($typeSponsor->getId());
+            $RepositorySponsor = $this->getDoctrine()->getRepository('AppBundle:Sponsor');
+            $goldSponsor = $RepositorySponsor->findBy(array('type'=>$typeSponsorGold->getId()));
+            $silvernSponsor = $RepositorySponsor->findBy(array('type'=>$typeSponsorSilvern->getId()));
+
+            return $this->render('frontend/info/show-sponsor.html.twig', array(
+                'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
+                'gold' => $goldSponsor,
+                'silvern' => $silvernSponsor,
+            ));
+        };
 		/* ORGANIZE */
 		if ($alias == 'organize') {
 			$_dates = $this->getDoctrine()->getRepository('AppBundle:Conference')
