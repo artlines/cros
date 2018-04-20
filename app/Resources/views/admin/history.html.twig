@@ -64,7 +64,7 @@
                                                             <li><a href="{{ path('admin-text-edit', {'id': info.id}) }}"><i class="fa fa-trophy fa-fw"></i> {{ info.title }}</a>
                                                             </li>
                                                         {% elseif info.alias == "sponsors" %}
-                                                            <li><a href="{{ path('admin-text-edit', {'id': info.id}) }}"><i class="fa fa-money fa-fw"></i> {{ info.title }}</a>
+                                                            <li><a href="{{ path('admin-sponsor-list') }}"><i class="fa fa-money fa-fw"></i> {{ info.title }}</a>
                                                             </li>
                                                         {% elseif info.alias == "organize" %}
                                                             <li><a href="{{ path('admin-text-edit', {'id': info.id}) }}"><i class="fa fa-money fa-fw"></i> {{ info.title }}</a>
