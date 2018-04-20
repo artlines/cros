@@ -1027,7 +1027,7 @@ class AdminMemberController extends Controller
                 $sponsor->setLogo($fileLoad['name'].$postefixOriginal.$fileLoad['ex']);
                 $sponsor->setLogoResize($fileLoad['name'].$postefixResize.$fileLoad['ex']);
                 $sponsor->setName($value[0]);
-                $sponsor->setPhone($value[1]);
+                $sponsor->setPhone(str_replace("+", '', $value[1]));
                 $sponsor->setDescription($value[5]);
                 $sponsor->setUrl($value[6]);
                 $typeSponsor = $RepositoryTypeSponsor->findOneBy(array('name_type' => $value[4]));
