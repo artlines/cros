@@ -1029,30 +1029,14 @@ class AdminMemberController extends Controller
                 $sponsor->setName($value[0]);
                 $sponsor->setPhone($value[1]);
                 $sponsor->setDescription($value[5]);
-                /*
-                $sponsor->setLogo($uniqid.$postefixOriginal.'.'.$_exten);
-                $sponsor->setLogoResize($uniqid.$postefixResize.'.'.$_exten);
-                $sponsor->setName($form['name']);
-                $sponsor->setPhone($form['phone']);
-                $sponsor->setUrl($form['url']);
-                $sponsor->setDescription($form['description']);
-                $sponsor->setTypeSponsor($RepositoryTypeSponsor->find($form['type']));
-                */
-                //$em->persist($sponsor);
-                //$em->flush();
+                $sponsor->setUrl($value[6]);
+                $typeSponsor = $RepositoryTypeSponsor->findOneBy(array('name_type' => $value[4]));
+                $sponsor->setTypeSponsor($typeSponsor);
+                $em->persist($sponsor);
+                $em->flush();
 
             }
-
-
-
-
         }
-//var_dump($RepositoryTypeSponsor->findOneBy(array('name_type' => 'Золотой')));
-var_dump($csvimport,$listZipFiles);
-        die();
         return $this->redirectToRoute('admin-sponsor-list');
-
     }
-
-
 }
