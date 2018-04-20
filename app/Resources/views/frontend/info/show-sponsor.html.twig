@@ -68,6 +68,28 @@
         </section>
     {% endif %}
 
+    <div id="import" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Модальное окно</h4>
+                </div>
+                <div class="modal-body">
+                        Окно
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">Отмена</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+
+
+
 {% endblock %}
 
 
@@ -81,5 +103,6 @@
 
 {% block javascripts %}
 	<script src="{{ asset('assets/js/lightbox.min.js') }}"></script>
+
 {% endblock %}
 

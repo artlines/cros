@@ -372,7 +372,7 @@ class AdminMemberController extends Controller
      * @return object
      */
     public function speakerEditAction($id, Request $request){
-
+        $resizeParametr = $this->container->getParameter('speakers.resize');
         /** @var SpeakerRepository $speakerRepository */
         $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
 
@@ -434,11 +434,11 @@ class AdminMemberController extends Controller
                 $files->move($patchSave, $uniqid . $postefixOriginal . '.' . $_exten);
                 /* small  */
                 $resizeService->load($patchSave . $uniqid . $postefixOriginal . '.' . $_exten);
-                $resizeService->resize(400, 200);
+                $resizeService->resize($resizeParametr['small']['width'], $resizeParametr['small']['height']);
                 $resizeService->save($patchSave . $uniqid . $postefixSmall . '.' . $_exten);
                 /* big */
                 $resizeService->load($patchSave . $uniqid . $postefixOriginal . '.' . $_exten);
-                $resizeService->resize(800, 800);
+                $resizeService->resize($resizeParametr['big']['width'], $resizeParametr['big']['height']);
                 $resizeService->save($patchSave . $uniqid . $postefixBig . '.' . $_exten);
             }
 
@@ -598,6 +598,7 @@ class AdminMemberController extends Controller
      * @return object
      */
     public function speakerAddAction(Request $request){
+        $resizeParametr = $this->container->getParameter('speakers.resize');
         $patchSave = $this->get('kernel')->getRootDir().'/../web/uploads/speakers/';
         $resize_patch = str_replace("app/../", '', $patchSave);
 
@@ -648,11 +649,11 @@ class AdminMemberController extends Controller
             $files->move($patchSave,$uniqid.$postefixOriginal.'.'.$_exten);
             /* small  */
             $resizeService->load($patchSave.$uniqid.$postefixOriginal.'.'.$_exten);
-            $resizeService->resize(400, 200);
+            $resizeService->resize($resizeParametr['small']['width'], $resizeParametr['small']['height']);
             $resizeService->save($patchSave.$uniqid.$postefixSmall.'.'.$_exten);
             /* big */
             $resizeService->load($patchSave.$uniqid.$postefixOriginal.'.'.$_exten);
-            $resizeService->resize(800, 800);
+            $resizeService->resize($resizeParametr['big']['width'], $resizeParametr['big']['height']);
             $resizeService->save($patchSave.$uniqid.$postefixBig.'.'.$_exten);
             $form = $form->getData();
             $orgsts = $this->getDoctrine()->getRepository('AppBundle:Organization')->find($form['organization']);
@@ -785,6 +786,7 @@ class AdminMemberController extends Controller
      * @return object
      */
     public function sponsorListAction(Request $request){
+      
         $RepositorySponsor = $this->getDoctrine()->getRepository('AppBundle:Sponsor');
         /** @var Sponsor $sponsor */
         $sponsor = $RepositorySponsor->findAll();
@@ -808,6 +810,7 @@ class AdminMemberController extends Controller
      * @return object
      */
     public function addSponsorAction(Request $request){
+        $resizeParametr = $this->container->getParameter('sponsor.resize');
         $RepositoryTypeSponsor = $this->getDoctrine()->getRepository('AppBundle:TypeSponsor');
         $typeSponsor = $RepositoryTypeSponsor->findAll();
         $typeSponsorList = null;
@@ -842,7 +845,7 @@ class AdminMemberController extends Controller
             $files->move($patchSave,$uniqid.$postefixOriginal.'.'.$_exten);
             /* resize  */
             $resizeService->load($patchSave.$uniqid.$postefixOriginal.'.'.$_exten);
-            $resizeService->resize(400, 200);
+            $resizeService->resize($resizeParametr['width'], $resizeParametr['height']);
             $resizeService->save($patchSave.$uniqid.$postefixResize.'.'.$_exten);
             $form = $form->getData();
             $em = $this->getDoctrine()->getManager();
@@ -878,6 +881,7 @@ class AdminMemberController extends Controller
      * @return object
      */
     public function sponsorEditAction($id, Request $request){
+        $resizeParametr = $this->container->getParameter('sponsor.resize');
         $RepositoryTypeSponsor = $this->getDoctrine()->getRepository('AppBundle:TypeSponsor');
         $RepositorySponsor = $this->getDoctrine()->getRepository('AppBundle:Sponsor');
         $typeSponsor = $RepositoryTypeSponsor->findAll();
@@ -913,7 +917,7 @@ class AdminMemberController extends Controller
                 $files->move($patchSave, $uniqid . $postefixOriginal . '.' . $_exten);
                 /* resize  */
                 $resizeService->load($patchSave . $uniqid . $postefixOriginal . '.' . $_exten);
-                $resizeService->resize(400, 200);
+                $resizeService->resize($resizeParametr['width'], $resizeParametr['height']);
                 $resizeService->save($patchSave . $uniqid . $postefixResize . '.' . $_exten);
             }
             $form = $form->getData();
