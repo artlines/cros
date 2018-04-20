@@ -58,7 +58,7 @@
                                         <p class="card-text text-center"><b>{{ sponsor.name }}</b></p>
                                     </div>
                                     <div class="text-center">
-                                        <a class="btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 speaker_button_container" href="#" style="margin-bottom: 5px;">подробнее</a>
+                                        <a id="{{sponsor.id}}" class="olpen-modal-botton btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 speaker_button_container" href="#" style="margin-bottom: 5px;">подробнее</a>
                                     </div>
                                 </div>
                             </div>
@@ -68,7 +68,7 @@
         </section>
     {% endif %}
 
-    <div id="import" class="modal fade" role="dialog">
+    <div id="silvern-8" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -87,8 +87,10 @@
     </div>
 
 
-
-
+    <a href="" class="btn btn-warning importcsv">
+        Импортировать спонсоров из csv
+    </a>
+    <div class="elemClass" id="first">clicme</div>
 
 {% endblock %}
 
@@ -103,6 +105,14 @@
 
 {% block javascripts %}
 	<script src="{{ asset('assets/js/lightbox.min.js') }}"></script>
-
+<script>
+    $(document).ready(function(){
+        $('.olpen-modal-botton').click(function() {
+            var idm = $(this).attr('id');
+            $('#silvern-'+idm).modal();
+            console.log(idm);
+        });
+    });
+</script>
 {% endblock %}
 
