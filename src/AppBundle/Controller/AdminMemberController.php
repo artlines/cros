@@ -1018,7 +1018,7 @@ class AdminMemberController extends Controller
             }
             foreach ($listZipFiles as $value){
                 $resizeService->load($patchSave.$value['name'].$postefixOriginal.$value['ex']);
-                $resizeService->resizeToWidth($resizeParametr['width']);
+                $resizeService->resizeToWidth(200);
                 $resizeService->save($patchSave .$value['name'].$postefixResize.$value['ex']);
             }
             $csvimport=NULL;
