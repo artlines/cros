@@ -61,9 +61,8 @@ class ResizeImages {
     }
     function resize($width,$height) {
         $new_image = imagecreatetruecolor($width, $height);
-
-        imagesavealpha($new_image, true);
-        imagecolorallocatealpha($new_image, 255, 255, 255, 127);
+        $transparent = imagecolortransparent($new_image, imagecolorallocatealpha($new_image, 255, 255, 255, 127));
+        imagefill($new_image, 0, 0, $transparent);
         imagecopyresampled($new_image, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
         $this->image = $new_image;
     }
