@@ -26,6 +26,11 @@
     <script src="{{ asset('assets/js/ckeditor/ckeditor.js') }}"></script>
     <script src="{{ asset('assets/js/jquery/jquery.maskedinput.js') }}"></script>
     <script>
+        jQuery(function($){
+            $("#form_phone").mask("(999) 999-9999");
+        });
+    <script>
+    <script>
         CKEDITOR.replace('form_description');
         function echoNewImage(input){
             if(input.files && input.files[0]){
@@ -41,9 +46,6 @@
 
         $('#form_avatarFile_file').on('change', function(){
             echoNewImage(this);
-        });
-        jQuery(function($){
-            $("#form_phone").mask("8(999)9999999",{placeholder:"8(___)___-__-__"});
         });
     </script>
 {% endblock %}
