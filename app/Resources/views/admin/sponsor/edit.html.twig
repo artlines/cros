@@ -24,7 +24,7 @@
 {% block javascripts %}
     <script src="{{ asset('assets/js/admin.js') }}"></script>
     <script src="{{ asset('assets/js/ckeditor/ckeditor.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery/jquery.inputmask.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery/jquery.maskedinput.js') }}"></script>
     <script>
         CKEDITOR.replace('form_description');
         function echoNewImage(input){
@@ -43,7 +43,7 @@
             echoNewImage(this);
         });
         jQuery(function($){
-            $("#form_phone").mask("8(999)99999",{placeholder:"8(999)99999"});
+            $("#form_phone").mask("99/99/9999",{placeholder:"mm/dd/yyyy"});
         });
     </script>
 {% endblock %}
