@@ -847,7 +847,8 @@ class AdminMemberController extends Controller
             $files->move($patchSave,$uniqid.$postefixOriginal.'.'.$_exten);
             /* resize  */
             $resizeService->load($patchSave.$uniqid.$postefixOriginal.'.'.$_exten);
-            $resizeService->resize($resizeParametr['width'], $resizeParametr['height']);
+            //$resizeService->resize($resizeParametr['width'], $resizeParametr['height']);
+            $resizeService->resizeToWidth($resizeParametr['width']);
             $resizeService->save($patchSave.$uniqid.$postefixResize.'.'.$_exten);
             $form = $form->getData();
             $em = $this->getDoctrine()->getManager();
@@ -921,7 +922,7 @@ class AdminMemberController extends Controller
                 $files->move($patchSave, $uniqid . $postefixOriginal . '.' . $_exten);
                 /* resize  */
                 $resizeService->load($patchSave . $uniqid . $postefixOriginal . '.' . $_exten);
-                $resizeService->resize($resizeParametr['width'], $resizeParametr['height']);
+                $resizeService->resizeToWidth($resizeParametr['width']);
                 $resizeService->save($patchSave . $uniqid . $postefixResize . '.' . $_exten);
             }
             $form = $form->getData();
@@ -1017,7 +1018,7 @@ class AdminMemberController extends Controller
             }
             foreach ($listZipFiles as $value){
                 $resizeService->load($patchSave.$value['name'].$postefixOriginal.$value['ex']);
-                $resizeService->resize(400, 200);
+                $resizeService->resizeToWidth($resizeParametr['width']);
                 $resizeService->save($patchSave .$value['name'].$postefixResize.$value['ex']);
             }
             $csvimport=NULL;
