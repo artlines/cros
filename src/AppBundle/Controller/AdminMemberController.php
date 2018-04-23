@@ -848,7 +848,7 @@ class AdminMemberController extends Controller
             /* resize  */
             $resizeService->load($patchSave.$uniqid.$postefixOriginal.'.'.$_exten);
             //$resizeService->resize($resizeParametr['width'], $resizeParametr['height']);
-            $resizeService->resizeToWidth($resizeParametr['width']);
+            $resizeService->resizeToWidth(200);
             $resizeService->save($patchSave.$uniqid.$postefixResize.'.'.$_exten);
             $form = $form->getData();
             $em = $this->getDoctrine()->getManager();
