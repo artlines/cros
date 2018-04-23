@@ -61,6 +61,8 @@ class ResizeImages {
     }
     function resize($width,$height) {
         $new_image = imagecreatetruecolor($width, $height);
+        imagealphablending($new_image, false);
+        imagesavealpha($new_image, true);
         imagecopyresampled($new_image, $this->image, 0, 0, 0, 0, $width, $height, $this->getWidth(), $this->getHeight());
         $this->image = $new_image;
     }
