@@ -5,9 +5,10 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Conference;
 use AppBundle\Entity\Organization;
 use AppBundle\Entity\Organizations;
-use AppBundle\Entity\Speaker;
+use AppBundle\Entity\SpeakerReports;
 use AppBundle\Entity\User;
 use AppBundle\Repository\SpeakerRepository;
+use AppBundle\Repository\SpeakerReportsRepository;
 use AppBundle\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -72,9 +73,24 @@ class SpeakersController extends Controller
         $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
         /** @var Speaker $speakers */
         $speaker = $speakerRepository->find($id);
+        $speakerReportsRepository = $this->getDoctrine()->getRepository('AppBundle:SpeakerReports');
+        $report = $speakerReportsRepository->findBy(array('speaker_id' => $id));
+        $orgname = $speaker->getUser()->getOrganization()->getName();
+        $firstName = $speaker->getUser()->getFirstName();
+        $LastName = $speaker->getUser()->getLastName();
+        $MiddleName = $speaker->getUser()->getMiddleName();
+        $Description = $speaker->getDescription();
+        $avatar = $speaker->getAvatarBig();
 
         return $this->render('frontend/speakers/show.html.twig', array(
-            'speaker' => $speaker
+            'speaker' => $speaker,
+            'orgname' => $orgname,
+            'firstName' => $firstName,
+            'Lastname' => $LastName,
+            'MiddleName' => $MiddleName,
+            'report_list' => $report,
+            'description' => $Description,
+            'avatar' => $avatar
         ));
     }
 }

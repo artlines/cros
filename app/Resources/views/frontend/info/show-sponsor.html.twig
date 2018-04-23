@@ -1,0 +1,179 @@
+{% extends theme_template %}
+
+{% block title %}Конференция Российских Операторов Связи{% endblock %}
+
+{% block body %}
+
+    {% if gold != null %}
+        <section id="ourguests" class="cs-pt-30 cs-mb-100 cs-bg-img-layer-middle">
+            <div class="container">
+                <div class="text-center cs-mb-30">
+                    <h2 class="text-uppercase cs-line-height-1 cs-font-weight-700 cs-font-size-23 cs-letter-spacing-0 cs-color-header">
+                        Золотые спонсоры
+                    </h2>
+                </div>
+                {% set uc = gold|length %}
+                {% if uc > 3 %}
+                <div class="row">
+                    {% else %}
+                    <div class="row justify-content-center">
+                        {% endif %}
+                        {% for sponsor in gold %}
+                            <div class=" col-xs-2 col-md-4">
+                                <div class="card mb-4 box-shadow">
+                                    <img src="{{ asset('uploads/sponsor/'~ sponsor.logoresize) }}">
+                                    <div class="card-body">
+                                        <p class="card-text text-center"><b>{{ sponsor.name }}</b></p>
+                                    </div>
+                                    <div class="text-center">
+                                        <a id="{{ sponsor.id }}"
+                                           class="olpen-modal-botton-gold btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 speaker_button_container"
+                                           href="#" style="margin-bottom: 5px;">Подробнее</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+        </section>
+    {% endif %}
+    {% if silvern != null %}
+        <section id="ourguests" class="cs-pt-30 cs-mb-100 cs-bg-img-layer-middle">
+            <div class="container">
+                <div class="text-center cs-mb-30">
+                    <h2 class="text-uppercase cs-line-height-1 cs-font-weight-700 cs-font-size-23 cs-letter-spacing-0 cs-color-header">
+                        Cеребрянные спонсоры
+                    </h2>
+                </div>
+                {% set uc = silvern|length %}
+                {% if uc > 4 %}
+                <div class="row">
+                    {% else %}
+                    <div class="row justify-content-center">
+                        {% endif %}
+                        {% for sponsor in silvern %}
+                            <div class=" col-xs-2 col-md-3">
+                                <div class="card mb-4 box-shadow">
+                                    <img src="{{ asset('uploads/sponsor/'~ sponsor.logoresize) }}">
+                                    <div class="card-body">
+                                        <p class="card-text text-center"><b>{{ sponsor.name }}</b></p>
+                                    </div>
+                                    <div class="text-center">
+                                        <a id="{{ sponsor.id }}"
+                                           class="olpen-modal-botton-silvern btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 speaker_button_container"
+                                           href="#" style="margin-bottom: 5px;">Подробнее</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+        </section>
+    {% endif %}
+    {% if silvern != null %}
+        {% for sponsor in silvern %}
+            <div id="silvern-{{ sponsor.id }}" class="modal fade" role="dialog">
+                <div class="modal-dialog" style="max-width: 1000px;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">{{ sponsor.name }}</h4>
+                            <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">Закрыть
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- -->
+                            <div class="row no-gutters cs-pb-30">
+                                <div class="col-sm-3 col-lg-3">
+                                    <img src="{{ asset('uploads/sponsor/'~ sponsor.logo) }}" class="img-fluid" alt=""
+                                         title="Участники КРОС"/>
+                                </div>
+                                <div class="col-sm-8 col-lg-8 w-100 pl-3 text-justify">
+
+
+                                    {{ sponsor.description }}
+
+                                    <br> <a href="{{ sponsor.url }}" target="_blank" class="btn btn-success">
+                                        Перейти на сайт спонсора
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- -->
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+
+                </div>
+            </div>
+            </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if gold != null %}
+        {% for sponsor in gold %}
+            <div id="gold-{{ sponsor.id }}" class="modal fade" role="dialog">
+                <div class="modal-dialog" style="max-width: 1000px;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">{{ sponsor.name }}</h4>
+                            <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">Закрыть
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- -->
+                            <div class="row no-gutters cs-pb-30">
+                                <div class="col-sm-3 col-lg-3">
+                                    <img src="{{ asset('uploads/sponsor/'~ sponsor.logo) }}" class="img-fluid" alt=""
+                                         title="Участники КРОС"/>
+                                </div>
+                                <div class="col-sm-8 col-lg-8 w-100 pl-3 text-justify">
+                                    {{ sponsor.description | raw}}
+                                    <br> <a href="{{ sponsor.url }}" target="_blank" class="btn btn-success">
+                                        Перейти на сайт спонсора
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- -->
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+
+                </div>
+            </div>
+            </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+{% block stylesheets %}
+    <style>
+        .img-show-link img {
+            width: 175px;
+        }
+    </style>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('assets/js/lightbox.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('.olpen-modal-botton-silvern').click(function () {
+                var idm = $(this).attr('id');
+                $('#silvern-' + idm).modal();
+            });
+        });
+        $(document).ready(function () {
+            $('.olpen-modal-botton-gold').click(function () {
+                var idm = $(this).attr('id');
+                $('#gold-' + idm).modal();
+            });
+        });
+    </script>
+{% endblock %}
+

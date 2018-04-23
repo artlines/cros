@@ -7,8 +7,39 @@
 {% block page_image %}info_terms{% endblock %}
 
 {% block body %}
-    <h2>{{ speaker.user.firstname }} {{ speaker.user.lastname }}</h2>
-    <p>{{ speaker.description|raw }}</p>
+    <h2>Докладчик {{ speaker.user.firstname }} {{ speaker.user.lastname }} {{ speaker.user.middlename }}</h2>
+    <div class="row no-gutters cs-pb-30">
+        <div class="col-sm-3 col-lg-3">
+            <img src="{{ asset('uploads/speakers/'~ avatar) }}" class="img-fluid" alt="" title="Участники КРОС"/>
+        </div>
+        <div class="col-sm-8 col-lg-8 w-100 pl-3 text-justify">
+            <p class="mb-0">
+            <div class="row no-gutters">
+                <div class="col-xs-2">
+                    <b> Компания: </b>
+                </div>
+                <div class="col-sm-8 col-lg-8 w-100 pl-3">
+                    {{ orgname }}
+                </div>
+            </div>
+
+            <!-- -->
+            <div class="row no-gutters">
+                {% if report_list != null %}
+                <div class="col-xs-2">
+                    <b> Доклады: </b>
+                </div>
+                {% endif %}
+                <div class="col-sm-8 col-lg-8 w-100">
+                    {% for report in report_list %}
+                    <div class="col-sm-8 col-lg-8 w-100 pl-4">{{ report.report }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+           {{ description | raw }}
+        </div>
+    </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}

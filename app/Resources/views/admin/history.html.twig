@@ -64,13 +64,15 @@
                                                             <li><a href="{{ path('admin-text-edit', {'id': info.id}) }}"><i class="fa fa-trophy fa-fw"></i> {{ info.title }}</a>
                                                             </li>
                                                         {% elseif info.alias == "sponsors" %}
-                                                            <li><a href="{{ path('admin-text-edit', {'id': info.id}) }}"><i class="fa fa-money fa-fw"></i> {{ info.title }}</a>
+                                                            <li><a href="{{ path('admin-sponsor-list') }}"><i class="fa fa-money fa-fw"></i> {{ info.title }}</a>
                                                             </li>
                                                         {% elseif info.alias == "organize" %}
                                                             <li><a href="{{ path('admin-text-edit', {'id': info.id}) }}"><i class="fa fa-money fa-fw"></i> {{ info.title }}</a>
                                                             </li>
                                                         {% endif %}
                                                     {% endfor %}
+                                                    <li><a href="{{ path('admin-speakers')}}"><i class="fa fa-wechat fa-fw"></i>Докладчики</a>
+                                                    </li>
                                                     <li class="divider"></li>
                                                     <li><a href="{{ path('admin-members', {'year': conf.year}) }}"><i class="fa fa-users fa-fw"></i> Расселение по комнатам</a>
                                                     </li>
