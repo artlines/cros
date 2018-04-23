@@ -21,7 +21,7 @@
                         {% for sponsor in gold %}
                             <div class=" col-xs-2 col-md-4">
                                 <div class="card mb-4 box-shadow">
-                                    <img src="{{ asset('uploads/sponsor/'~ sponsor.logoresize) }}" class="img-fluid">
+                                    <img src="{{ asset('uploads/sponsor/'~ sponsor.logoresize) }}">
                                     <div class="card-body">
                                         <p class="card-text text-center"><b>{{ sponsor.name }}</b></p>
                                     </div>
@@ -54,7 +54,7 @@
                         {% for sponsor in silvern %}
                             <div class=" col-xs-2 col-md-3">
                                 <div class="card mb-4 box-shadow">
-                                    <img src="{{ asset('uploads/sponsor/'~ sponsor.logoresize) }}" class="img-fluid">
+                                    <img src="{{ asset('uploads/sponsor/'~ sponsor.logoresize) }}">
                                     <div class="card-body">
                                         <p class="card-text text-center"><b>{{ sponsor.name }}</b></p>
                                     </div>
