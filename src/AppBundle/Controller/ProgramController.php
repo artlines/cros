@@ -48,7 +48,6 @@ class ProgramController extends Controller
             ->getRepository('AppBundle:Lecture')
             ->findBy([], ['date' => 'ASC', 'startTime' => 'ASC', 'endTime' => 'ASC']);
 
-        $all_halls = [self::DEFAULT_HALL];
         $program = [];
         /** @var Lecture $lecture */
         foreach ($lectures as $lecture)
@@ -57,20 +56,18 @@ class ProgramController extends Controller
             $_time_key = $lecture->getStartTime()->format("H:i")." - ".$lecture->getEndTime()->format("H:i");
             $_hall_key = $lecture->getHall();
 
-            if (!$lecture->getSpeaker()) {
-                $program[$_day_key][$_time_key][self::DEFAULT_HALL] = $lecture;
+            if (!$lecture->getSpeaker() || !preg_match("/зал/", mb_strtolower($lecture->getHall()))) {
+                // какой-то перерыв слеш кофе-брейк
+                //$program[$_day_key][self::DEFAULT_HALL][$_time_key] = $lecture;
             } else {
-                $program[$_day_key][$_time_key][$_hall_key] = $lecture;
-                if (!in_array($_hall_key, $all_halls)) $all_halls[] = $_hall_key;
+                $program[$_day_key][$_hall_key][$_time_key] = $lecture;
             };
         }
 
-        return $this->render('frontend/program/show_new.html.twig', array(
+        return $this->render('frontend/program/show_new2.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
             'program' => $program,
-            'lectures' => $lectures,
-            'all_halls' => $all_halls,
-            'cars' => []
+            'lectures' => $lectures
         ));
     }
 
