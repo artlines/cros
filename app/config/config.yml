@@ -7,7 +7,16 @@ parameters:
     locale: ru
     tg.bot.token: "527782633:AAFPLooKU0KwINR_CwRj7R-1Z_nHv9b5t0o"
     tg.bot.token_test: "560591203:AAGbR2dImWaYdY1LzT5qZfE4wmRoleMU9vc"
-
+    speakers.resize:
+        small:
+            width: 253
+            height: 253
+        big:
+            width: 277
+            height: 252
+    sponsor.resize:
+        width: 338
+        height: 220
 framework:
     #esi:             ~
     translator:      { fallbacks: ["%locale%"] }
