@@ -466,6 +466,7 @@ class AdminMemberController extends Controller
             }
             $speaker->setPublish($isActive);
             $speaker->setConferenceId($form['conference']);
+            $speaker->setDescription($form['description']);
             $em->persist($speaker);
             $em->flush();
             return $this->redirectToRoute('admin-speakers');
@@ -684,6 +685,7 @@ class AdminMemberController extends Controller
             $speaker->setAvatarBig($uniqid.$postefixBig.'.'.$_exten);
             $speaker->setPublish($isActive);
             $speaker->setConferenceId($form['conference']);
+            $speaker->setDescription($form['description']);
             $em->persist($speaker);
             $em->flush();
 
