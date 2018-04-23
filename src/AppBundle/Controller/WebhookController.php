@@ -52,43 +52,64 @@ class WebhookController extends Controller
     /** @var LoggerInterface */
     private $logger;
 
+    /**
+     * Test flag
+     *
+     * @var bool
+     */
+    private $test = false;
+
     /** @var string */
     private $access_token = 'c2hhbWJhbGEyMykxMiUh';
+
+    /** @var string */
+    private $access_token_test = 'pM6abW8ExMum0yk8BiUh';
 
     // setWebhook / stage.cros.nag.ru
     // https://api.telegram.org/bot527782633:AAFPLooKU0KwINR_CwRj7R-1Z_nHv9b5t0o/setWebhook?url=https://proxy-web.nag.how:88/webhook/update/c2hhbWJhbGEyMykxMiUh
 
     /**
-     * Прием обновлений
+     * Вебхук
      *
      * @Route("/webhook/update/{token}", name="webhook-update")
+     *
      * @param $token
+     * @param LoggerInterface $logger
      * @return Response
      */
     public function update($token, LoggerInterface $logger)
     {
+        /**
+         * Сервисы
+         */
         $this->logger = $logger;
         $this->sms = $this->get('sms.service');
         $this->tsm = $this->get('tg.chat.manager');
 
+        /**
+         * Проверка токена
+         */
         if ($this->access_token === $token) {
-            // Для очистки повисших запросов
-            //return new Response('ok', 200);
-            try {
-                $this->init_bot();
-                $this->update = json_decode(file_get_contents('php://input'), true);
-                $this->_debug($this->update);
-                $this->tgChat = $this->_findTgChat();
-
-                $this->process();
-            } catch (\Exception $e) {
-                $this->_error($e);
-            }
-
-            return new Response('ok', 200);
+            $bot_token = $this->container->getParameter('tg.bot.token');
+        } elseif ($this->access_token_test === $token) {
+            $bot_token = $this->container->getParameter('tg.bot.token_test');
+            $this->test = true;
         } else {
-            return new Response('Permission denied.', 403);
+            return new Response('Permission denied', 403);
         }
+
+        try {
+            $this->init_bot($bot_token);
+
+            $this->update = json_decode(file_get_contents('php://input'), true);
+            $this->_debug($this->update);
+
+            $this->process();
+        } catch (\Exception $e) {
+            $this->_error($e);
+        }
+
+        return new Response('ok', 200);
     }
 
     /**
@@ -99,6 +120,8 @@ class WebhookController extends Controller
      */
     private function process()
     {
+        $this->tgChat = $this->_findTgChat();
+
         if (isset($this->update['message'])) {
             $_text = trim($this->update['message']['text']);
             $tgState = $this->tgChat->getState();
@@ -155,34 +178,32 @@ class WebhookController extends Controller
         } else {
             $callback_data = trim($this->update['callback_query']['data']);
             $args = explode(":", $callback_data);
+            $cmd = array_shift($args);
 
             $this->logger->info("[TgBot:".$this->tgChat->getChatId()."] Callback_data: $callback_data | State: ".json_encode($this->tgChat->getState()));
 
-            // log
-            $this->_debug($args);
-
-            switch ($args[0]) {
+            switch ($cmd) {
                 case 'show_dates':
                     $this->_showDates();
                     break;
                 case 'show_halls':
-                    $this->_showHalls($args[1]);
+                    call_user_func_array(array($this, "_showHalls"), $args);
                     break;
                 case 'show_lectures':
-                    $this->_showLectures($args[1], $args[2], $args[3], $args[4], $args[5], $args[6]);
+                    call_user_func_array(array($this, "_showLectures"), $args);
                     break;
                 case 'my_subscribes':
-                    $this->_mySubscribes($args[1], $args[2], $args[3]);
+                    call_user_func_array(array($this, "_mySubscribes"), $args);
                     break;
                 case 'notify':
-                    $this->_notifyMe($args[1]);
+                    call_user_func_array(array($this, "_notifyMe"), $args);
                     break;
                 case 'contact_list':
-                    $this->_contactList($args[1]);
+                    call_user_func_array(array($this, "_contactList"), $args);
                     break;
                 case 'contact_with':
                     $this->tsm->resetState($this->tgChat);
-                    $this->_contactWith($args[1], $args[2], $args[3], $args[4]);
+                    call_user_func_array(array($this, "_contactWith"), $args);
                     break;
                 default:
                     break;
@@ -271,7 +292,7 @@ class WebhookController extends Controller
     }
 
     /**
-     * Command: "МЕНЮ"
+     * Command: "МЕНЮ", "/menu"
      */
     private function _menu()
     {
@@ -607,35 +628,35 @@ class WebhookController extends Controller
 
             $_TEXT = $this->renderView('telegram_bot/contact_with.html.twig', $template_parameters);
 
-            $chat_id = isset($this->update['message']) ? $this->update['message']['chat']['id'] : $this->update['callback_query']['message']['chat']['id'];
-            $em = $this->getDoctrine()->getManager();
-
-            $sms_text = $this->renderView('telegram_bot/_contact_sms.html.twig', $template_parameters);
-            $this->sms->setEntityClass('tg_connection');
-            $this->sms->setEntityId($chat_id);
-            /** @var User $user */
-            foreach ($org->getUsers() as $user) {
-                $log = new Logs();
-                $log->setReaded(0);
-                $log->setDate(new \DateTime());
-                $log->setEntity('tg_connection');
-                $log->setElementId($chat_id);
-                $log->setEvent('{}');
-                $em->persist($log);
-                $em->flush($log);
-                $msg = $this->sms->addMessage('cros2018_'.$log->getId(), $user->getUsername(), $sms_text);
-                $log->setEvent(json_encode($msg));
-                $em->persist($log);
-                $em->flush($log);
-            }
-            try {
-                $res = $this->sms->send();
-            } catch (\Exception $e) {
-                $this->_error($e);
+            if (!$this->test) {
+                $em = $this->getDoctrine()->getManager();
+                $sms_text = $this->renderView('telegram_bot/_contact_sms.html.twig', $template_parameters);
+                $this->sms->setEntityClass('tg_connection');
+                $this->sms->setEntityId($this->tgChat->getChatId());
+                /** @var User $user */
+                foreach ($org->getUsers() as $user) {
+                    $log = new Logs();
+                    $log->setReaded(0);
+                    $log->setDate(new \DateTime());
+                    $log->setEntity('tg_connection');
+                    $log->setElementId($this->tgChat->getChatId());
+                    $log->setEvent('{}');
+                    $em->persist($log);
+                    $em->flush($log);
+                    $msg = $this->sms->addMessage('cros2018_'.$log->getId(), $user->getUsername(), $sms_text);
+                    $log->setEvent(json_encode($msg));
+                    $em->persist($log);
+                    $em->flush($log);
+                }
+                try {
+                    $res = $this->sms->send();
+                } catch (\Exception $e) {
+                    $this->_error($e);
+                }
             }
 
             $content = array(
-                'chat_id' => $chat_id,
+                'chat_id' => $this->tgChat->getChatId(),
                 //'message_id' => $this->update['callback_query']['message']['message_id'],
                 'text' => $_TEXT,
                 'parse_mode' => 'HTML'
@@ -698,7 +719,6 @@ class WebhookController extends Controller
         }
 
         $this->bot->sendMessage($content);
-        //$this->bot->editMessageText($content);
     }
 
     /**
@@ -991,13 +1011,13 @@ class WebhookController extends Controller
         $this->bot->editMessageText($content);
     }
 
-    private function init_bot()
+    /**
+     * Initial Telegram bot
+     *
+     * @param $bot_token
+     */
+    private function init_bot($bot_token)
     {
-        $bot_token = $this->container->getParameter('tg.bot.token');
-        if (!$bot_token) {
-            throw new \Exception("tg.bot.token is not set in parameters");
-        }
-
         $this->bot = new Telegram($bot_token);
     }
 

@@ -12,16 +12,9 @@ monolog:
         main:
             type:         fingers_crossed
             handler:      syslog
+            action_level: info
         console:
             type:  console
-        swift:
-            type:   swift_mailer
-            from_email: "cros@nag.ru"
-            to_email: "xvanok@nag.ru"
-            subject: "Ошибка на сайте КРОС"
-            level: critical
-            formatter: monolog.formatter.html
-            content_type: text/html
         syslog:
             type: syslog
             level: info
