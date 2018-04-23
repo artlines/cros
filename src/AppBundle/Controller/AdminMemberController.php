@@ -856,6 +856,8 @@ class AdminMemberController extends Controller
             $sponsor->setLogo($uniqid.$postefixOriginal.'.'.$_exten);
             $sponsor->setLogoResize($uniqid.$postefixResize.'.'.$_exten);
             $sponsor->setName($form['name']);
+            $form['phone'] = str_replace("(", '', $form['phone']);
+            $form['phone'] = str_replace(")", '', $form['phone']);
             $sponsor->setPhone($form['phone']);
             $sponsor->setUrl($form['url']);
             $sponsor->setDescription($form['description']);
@@ -931,6 +933,8 @@ class AdminMemberController extends Controller
                 $sponsor->setLogoResize($uniqid . $postefixResize . '.' . $_exten);
             }
             $sponsor->setName($form['name']);
+            $form['phone'] = str_replace("(", '', $form['phone']);
+            $form['phone'] = str_replace(")", '', $form['phone']);
             $sponsor->setPhone($form['phone']);
             $sponsor->setUrl($form['url']);
             $sponsor->setDescription($form['description']);
