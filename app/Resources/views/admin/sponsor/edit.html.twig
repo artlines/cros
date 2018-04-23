@@ -42,10 +42,8 @@
         $('#form_avatarFile_file').on('change', function(){
             echoNewImage(this);
         });
-        $(document).ready(function($) {
-            $(function () {
-                $("#form_phone").mask("8(999) 999-9999");
-            });
-        }
+        jQuery(function($){
+            $("#phone").mask("+7(999)999-9999");
+        });
     </script>
 {% endblock %}
