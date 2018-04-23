@@ -131,7 +131,7 @@
                                          title="Участники КРОС"/>
                                 </div>
                                 <div class="col-sm-8 col-lg-8 w-100 pl-3 text-justify">
-                                    {{ sponsor.description }}
+                                    {{ sponsor.description | raw}}
                                     <br> <a href="{{ sponsor.url }}" target="_blank" class="btn btn-success">
                                         Перейти на сайт спонсора
                                     </a>
