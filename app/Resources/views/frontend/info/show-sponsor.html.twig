@@ -21,7 +21,7 @@
                         {% for sponsor in gold %}
                             <div class=" col-xs-2 col-md-4">
                                 <div class="card mb-4 box-shadow cursor-pointer">
-                                    <a id="{{ sponsor.id }}" class="olpen-modal-botton-gold cursor-pointer">  <img src="{{ asset('uploads/sponsor/'~ sponsor.logoresize) }}" class="cursor-pointer"></a>
+                                    <img id="{{ sponsor.id }}" src="{{ asset('uploads/sponsor/'~ sponsor.logoresize) }}" class="cursor-pointer olpen-modal-botton-gold">
                                     <div class="card-body">
                                         <p class="card-text text-center mb-2"></p>
                                     </div>
@@ -54,7 +54,7 @@
                         {% for sponsor in silvern %}
                             <div class=" col-xs-2 col-md-3">
                                 <div class="card mb-4 box-shadow cursor-pointer">
-                                    <a id="{{ sponsor.id }}" class="olpen-modal-botton-silvern cursor-pointer"> <img src="{{ asset('uploads/sponsor/'~ sponsor.logoresize) }}" class="cursor-pointer"></a>
+                                    <img id="{{ sponsor.id }}" src="{{ asset('uploads/sponsor/'~ sponsor.logoresize) }}" class="cursor-pointer olpen-modal-botton-silvern">
                                     <div class="card-body">
                                         <p class="card-text text-center mb-2"></p>
                                     </div>
