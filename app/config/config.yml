@@ -15,8 +15,8 @@ parameters:
             width: 277
             height: 252
     sponsor.resize:
-        width: 200
-        height: 220
+        width: 400
+        height: 200
 framework:
     #esi:             ~
     translator:      { fallbacks: ["%locale%"] }
