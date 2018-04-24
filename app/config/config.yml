@@ -10,10 +10,10 @@ parameters:
     speakers.resize:
         small:
             width: 253
-            height: 253
+            height: 300
         big:
             width: 277
-            height: 252
+            height: 300
     sponsor.resize:
         width: 400
         height: 200
