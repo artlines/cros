@@ -112,3 +112,6 @@ input.cs-p-text-white--checked[type="radio"]:checked + * p {
 #programContent thead th {
     white-space: nowrap;
 }
+.margin-image-sponsor {
+    margin: 2px;
+}
