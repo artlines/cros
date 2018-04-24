@@ -21,7 +21,10 @@
                         {% for sponsor in gold %}
                             <div class=" col-xs-2 col-md-4">
                                 <div class="card mb-4 box-shadow">
-                                    <a id="{{ sponsor.id }}" class="olpen-modal-botton-gold">  <img src="{{ asset('uploads/sponsor/'~ sponsor.logoresize) }}"> </a>
+                                    <a id="{{ sponsor.id }}" class="olpen-modal-botton-gold">  <img src="{{ asset('uploads/sponsor/'~ sponsor.logoresize) }}"></a>
+                                    <div class="card-body">
+                                        <p class="card-text text-center"></p>
+                                    </div>
                                     <div class="text-center">
                                         <a id="{{ sponsor.id }}"
                                            class="olpen-modal-botton-gold btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 speaker_button_container"
@@ -52,6 +55,9 @@
                             <div class=" col-xs-2 col-md-3">
                                 <div class="card mb-4 box-shadow">
                                     <a id="{{ sponsor.id }}" class="olpen-modal-botton-silvern"> <img src="{{ asset('uploads/sponsor/'~ sponsor.logoresize) }}"></a>
+                                    <div class="card-body">
+                                        <p class="card-text text-center"></p>
+                                    </div>
                                     <div class="text-center">
                                         <a id="{{ sponsor.id }}"
                                            class="olpen-modal-botton-silvern btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 speaker_button_container"
