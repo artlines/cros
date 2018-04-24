@@ -19,7 +19,7 @@
                     <div class="row justify-content-center">
                         {% endif %}
                         {% for sponsor in gold %}
-                            <div class=" col-xs-2 col-md-4 resize-401-767-sponsor-gold">
+                            <div class=" col-xs-2 col-md-4">
                                 <div class="card mb-4 box-shadow cursor-pointer">
                                     <img id="{{ sponsor.id }}" src="{{ asset('uploads/sponsor/'~ sponsor.logoresize) }}" class="cursor-pointer olpen-modal-botton-gold">
                                     <div class="card-body">
@@ -47,12 +47,13 @@
                 </div>
                 {% set uc = silvern|length %}
                 {% if uc > 4 %}
+                <div style="max-width: 800px;margin-left: 13%;">
                 <div class="row">
                     {% else %}
                     <div class="row justify-content-center">
                         {% endif %}
                         {% for sponsor in silvern %}
-                            <div class=" col-xs-2 col-md-3 resize-401-767-sponsor-silv">
+                            <div class=" col-xs-2 col-md-4">
                                 <div class="card mb-4 box-shadow cursor-pointer">
                                     <img id="{{ sponsor.id }}" src="{{ asset('uploads/sponsor/'~ sponsor.logoresize) }}" class="cursor-pointer olpen-modal-botton-silvern">
                                     <div class="card-body">
@@ -67,7 +68,7 @@
                             </div>
                         {% endfor %}
                     </div>
-                </div>
+                </div></div>
         </section>
     {% endif %}
     {% if silvern != null %}
