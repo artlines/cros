@@ -13,7 +13,7 @@ parameters:
             height: 300
         big:
             width: 277
-            height: 300
+            height: 350
     sponsor.resize:
         width: 400
         height: 200
