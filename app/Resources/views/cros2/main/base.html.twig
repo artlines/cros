@@ -400,7 +400,7 @@
                     <div class="card mb-4 box-shadow">
                         <img src="{{ asset('uploads/speakers/'~ spec.AvatarSmall) }}" class="img-fluid">
                         <div class="card-body">
-                            <p class="card-text text-center"><b>{{ spec.SpeakerFirstName }} {{ spec.SpeakerLastName}} {{ spec.SpeakerMiddleName }}</b><br />{{ spec.Organization }}</p>
+                            <p class="card-text text-center"><b>{{ spec.SpeakerFirstName }} {{ spec.SpeakerLastName}}</b><br />{{ spec.Organization }}</p>
                         </div>
                         <div class="text-center">
                         <a class="btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 speaker_button_container" href="{{ path('speaker', {'id': spec.id}) }}" style="margin-bottom: 5px;">подробнее</a>
