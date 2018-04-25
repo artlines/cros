@@ -75,8 +75,8 @@ class InfoController extends Controller
 
             //dump($typeSponsor->getId());
             $RepositorySponsor = $this->getDoctrine()->getRepository('AppBundle:Sponsor');
-            $goldSponsor = $RepositorySponsor->findBy(array('type'=>$typeSponsorGold->getId()));
-            $silvernSponsor = $RepositorySponsor->findBy(array('type'=>$typeSponsorSilvern->getId()));
+            $goldSponsor = $RepositorySponsor->findBy(array('type'=>$typeSponsorGold->getId()),array('priority'=>'DESC'));
+            $silvernSponsor = $RepositorySponsor->findBy(array('type'=>$typeSponsorSilvern->getId()),array('priority'=>'DESC'));
             return $this->render('frontend/info/show-sponsor.html.twig', array(
                 'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
                 'gold' => $goldSponsor,

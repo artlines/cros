@@ -69,6 +69,12 @@ class Sponsor
      */
     private $active;
     /**
+     * @var int
+     *
+     * @ORM\Column(name="priority", type="bigint")
+     */
+    private $priority;
+    /**
      * Get id
      *
      * @return integer
@@ -76,6 +82,15 @@ class Sponsor
     public function getId()
     {
         return $this->id;
+    }
+    /**
+     * Get priority
+     *
+     * @return integer
+     */
+    public function getPriority()
+    {
+        return $this->priority;
     }
     /**
      * Get name
@@ -250,6 +265,19 @@ class Sponsor
     public function setActive($active)
     {
         $this->active = $active;
+
+        return $this;
+    }
+    /**
+     * Set priority
+     *
+     * @param int $priority
+     *
+     * @return Sponsor
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = $priority;
 
         return $this;
     }
