@@ -1284,9 +1284,12 @@ class AdminController extends Controller
               corp.id as corpus,
               flat.real_id AS room_num,
               type.title AS class,
-              user.first_name,
-              user.last_name,
-              user.middle_name,
+              CONCAT_WS(
+                  ' ',
+                  user.last_name,
+                  user.first_name,
+                  user.middle_name
+              ) AS member,
               org.name
             FROM tmp_corp corp
               INNER JOIN tmp_stage          stage ON corp.stage = stage.id
@@ -1301,7 +1304,7 @@ class AdminController extends Controller
             
             DROP TABLE tmp_corp;
             DROP TABLE tmp_stage;
-            drop table tmp_flat;
+            DROP TABLE tmp_flat;
             ";
 
         /** @var Statement $statement */
