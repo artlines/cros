@@ -471,7 +471,7 @@ class AdminController extends Controller
         header('Cache-Control: must-revalidate');
         header('Pragma: public');
         header('Content-Type: text/html; charset=windows-1251');
-        
+
         $Response = $this->render('admin/table/print.html.twig', array(
             'fulltable' => $full_table,
             'conf' => $conf,
@@ -482,11 +482,11 @@ class AdminController extends Controller
             'groupsort' => $group_sort,
         ));
 //        var_dump( $Response->Content );
-			$Response->setCharset("WINDOWS-1251");
+        $Response->setCharset("WINDOWS-1251");
         $Response->setContent( mb_convert_encoding( $Response->getContent() , "WINDOWS-1251",  "UTF-8" ));
-        
+
         return  $Response;
-        
+
         //exit();
     }
 
@@ -1070,25 +1070,22 @@ class AdminController extends Controller
             $userstoconf = $UserToConfRepository->findByConfWithPost($conf->getId());
 
             if (!$print) {
-                $content =  $this->renderView('admin/download/csv_forexcel.html.twig', array(
+                $response =  $this->render('admin/download/csv_forexcel.html.twig', array(
                     'userstoconf' => $userstoconf,
                 ));
 
-                $file = 'uploads/' . $format . '/' . $filename . '.' . $format;
-                file_put_contents($file, $content);
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/octet-stream');
+                header('Content-Disposition: attachment; filename=members.csv');
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate');
+                header('Pragma: public');
+                header('Content-Type: text/html; charset=windows-1251');
 
-                if (file_exists($file)) {
-                    header('Content-Description: File Transfer');
-                    header('Content-Type: application/octet-stream');
-                    header('Content-Disposition: attachment; filename=' . basename($file));
-                    header('Expires: 0');
-                    header('Cache-Control: must-revalidate');
-                    header('Pragma: public');
-                    header('Content-Length: ' . filesize($file));
-                    readfile($file);
-                    exit();
-                }
-                return $this->redirectToRoute("downloads");
+                $response->setCharset("WINDOWS-1251");
+                $response->setContent( mb_convert_encoding( $response->getContent() , "WINDOWS-1251",  "UTF-8" ));
+
+                return $response;
             }
 
             return $this->render('admin/download/print_forexcel.html.twig', array(
