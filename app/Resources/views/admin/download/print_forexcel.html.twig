@@ -55,7 +55,7 @@
 <table>
     <thead>
     <tr>
-        <th>ФИ</th>
+        <th>ФИО</th>
         <th>Компания</th>
         <th>Должность</th>
         <th>Город</th>
@@ -69,7 +69,7 @@
         {% if utc.user.organization.id != 1 %}
             {% if "Уточняется" not in utc.user.lastname %}
                 <tr>
-                    <td>{{ utc.user.lastname }} {{ utc.user.firstname }}</td>
+                    <td>{{ utc.user.lastname }} {{ utc.user.firstname }} {{ utc.user.middlename }}</td>
                     <td>{{ utc.user.organization.name|replace({'ООО"ЭйрЛинк"': 'ЭйрЛинк', 'ООО ': '', 'ЗАО ': '', 'ОАО ': '', 'НОУ ': '', 'ПАО ': '', 'АО ': '', 'ТОО ': '', 'РУП': '', 'AО ': '', '"': '', "'": '', '«': '', '»': '', 'Докладчик': ''}) }}</td>
                     <td>{% if utc.user.organization.name != "Докладчик" %}{{ post }}{% else %}Докладчик{% endif %}</td>
                     <td>{{ utc.user.organization.city }}</td>
