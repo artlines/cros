@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Hall;
 use AppBundle\Entity\Lecture;
 
+use GuzzleHttp\Exception\ConnectException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Debug\Exception\ContextErrorException;
@@ -173,7 +174,21 @@ class AdminLectureController extends Controller
                 /* WORK WITH SPREADSHEET HERE */
                 $spreadsheetId = '1Olv8L8yGdhqXSWC3Eq3AOL0wqExKwDzkhGgwPrklF74';
                 $range = 'Расписание докладов и КС!A:I';
-                $response = $service->spreadsheets_values->get($spreadsheetId, $range);
+
+                try {
+                    $response = $service->spreadsheets_values->get($spreadsheetId, $range);
+                } catch (ConnectException $e) {
+                    return new JsonResponse(array(
+                        'code' => 'ERROR',
+                        'error' => "Невозможно установить связь с Google. Попробуйте обновить еще раз"
+                    ));
+                } catch (\Exception $e) {
+                    return new JsonResponse(array(
+                        'code' => 'ERROR',
+                        'error' => "Что-то пошло не так. Свяжитесь с администратором."
+                    ));
+                }
+
                 $values = $response->getValues();
 				unset($values[0]); $values = array_values($values);
 		        $em = $this->getDoctrine()->getManager();

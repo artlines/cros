@@ -471,7 +471,7 @@ class AdminController extends Controller
         header('Cache-Control: must-revalidate');
         header('Pragma: public');
         header('Content-Type: text/html; charset=windows-1251');
-        
+
         $Response = $this->render('admin/table/print.html.twig', array(
             'fulltable' => $full_table,
             'conf' => $conf,
@@ -482,11 +482,11 @@ class AdminController extends Controller
             'groupsort' => $group_sort,
         ));
 //        var_dump( $Response->Content );
-			$Response->setCharset("WINDOWS-1251");
+        $Response->setCharset("WINDOWS-1251");
         $Response->setContent( mb_convert_encoding( $Response->getContent() , "WINDOWS-1251",  "UTF-8" ));
-        
+
         return  $Response;
-        
+
         //exit();
     }
 
@@ -928,6 +928,7 @@ class AdminController extends Controller
         $woinvoice = $request->query->has('woinvoice');
         $wopaid = $request->query->has('wopaid');
         $gupandorkk_check = $request->query->has('gupandorkk');
+
         if($gupandorkk_check){
             $gupandorkk = array(4, 5);
         }
@@ -1067,6 +1068,25 @@ class AdminController extends Controller
                 ->getRepository('AppBundle:UserToConf');
             /** @var UserToConf $users */
             $userstoconf = $UserToConfRepository->findByConfWithPost($conf->getId());
+
+            if (!$print) {
+                $response =  $this->render('admin/download/csv_forexcel.html.twig', array(
+                    'userstoconf' => $userstoconf,
+                ));
+
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/octet-stream');
+                header('Content-Disposition: attachment; filename=members.csv');
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate');
+                header('Pragma: public');
+                header('Content-Type: text/html; charset=windows-1251');
+
+                $response->setCharset("WINDOWS-1251");
+                $response->setContent( mb_convert_encoding( $response->getContent() , "WINDOWS-1251",  "UTF-8" ));
+
+                return $response;
+            }
 
             return $this->render('admin/download/print_forexcel.html.twig', array(
                 'userstoconf' => $userstoconf,

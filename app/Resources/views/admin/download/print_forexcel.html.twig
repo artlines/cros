@@ -54,13 +54,14 @@
 <body>
 <table>
     <thead>
-        <tr>
-            <th>ФИ</th>
-            <th>Компания</th>
-            <th>Должность</th>
-            <th>Почта</th>
-            <th>Телефон</th>
-        </tr>
+    <tr>
+        <th>ФИ</th>
+        <th>Компания</th>
+        <th>Должность</th>
+        <th>Город</th>
+        <th>Почта</th>
+        <th>Телефон</th>
+    </tr>
     </thead>
     <tbody>
     {% for utc in userstoconf %}
@@ -71,6 +72,7 @@
                     <td>{{ utc.user.lastname }} {{ utc.user.firstname }}</td>
                     <td>{{ utc.user.organization.name|replace({'ООО"ЭйрЛинк"': 'ЭйрЛинк', 'ООО ': '', 'ЗАО ': '', 'ОАО ': '', 'НОУ ': '', 'ПАО ': '', 'АО ': '', 'ТОО ': '', 'РУП': '', 'AО ': '', '"': '', "'": '', '«': '', '»': '', 'Докладчик': ''}) }}</td>
                     <td>{% if utc.user.organization.name != "Докладчик" %}{{ post }}{% else %}Докладчик{% endif %}</td>
+                    <td>{{ utc.user.organization.city }}</td>
                     <td>{% if utc.user.email != "needsetemail@gmail.com" %}{% if 'illumi-nation.ru' not in utc.user.email %}{{ utc.user.email }}{% endif %}{% endif %}</td>
                     <td>{% if utc.user.username|length < 16 %}
                             {% if post != "Менеджер по работе с партнерами" or utc.user.organization.name != "ЛАЙФСТРИМ" %}
@@ -80,7 +82,7 @@
                         {% endif %}</td>
                 </tr>
             {% endif %}
-    {% endif %}
+        {% endif %}
     {% endfor %}
     </tbody>
 </table>
