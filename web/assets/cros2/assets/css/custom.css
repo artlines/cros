@@ -127,6 +127,8 @@ input.cs-p-text-white--checked[type="radio"]:checked + * p {
     .resize-gold-partners{
         max-width: 350px;
     }
+}
+@media screen and (max-width: 577px) {
     .gold-justify-576{
         -webkit-box-pack: center !important;
         -webkit-justify-content: center !important;
