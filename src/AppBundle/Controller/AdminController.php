@@ -1146,6 +1146,7 @@ class AdminController extends Controller
             if (!$print) {
                 /** @var array $data */
                 $data = $this->__getDataToHotel();
+                dump($data);
 
                 $response =  $this->render('admin/download/csv_hotel_2018.html.twig', array(
                     'data' => $data,
