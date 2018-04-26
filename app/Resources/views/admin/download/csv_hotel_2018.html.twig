@@ -1,0 +1,8 @@
+{% block body %}
+Корпус;Номер комнаты;;Категория;Количество гостей;ФИО;Компания
+{% for row in data %}{#
+#}{{ row['corpus'] }};{{ row['room_num'] }};{{ row['class'] }};{{ row['corpus'] }};{#
+#}{{ row['first_name'] }} {{ row['last_name'] }} {{ row['middle_name'] }};{#
+#}{{ row['organization'] }}
+{% endfor %}
+{% endblock %}

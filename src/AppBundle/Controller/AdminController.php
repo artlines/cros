@@ -25,6 +25,8 @@ use AppBundle\Repository\OrganizationRepository;
 use AppBundle\Repository\OrgToConfRepository;
 use AppBundle\Repository\UserRepository;
 use AppBundle\Repository\UserToConfRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\DBAL\Statement;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -1140,6 +1142,32 @@ class AdminController extends Controller
                 'pairs' => $pairs,
             ));
 
+        } elseif($filename == 'hotel_2018'){
+            if (!$print) {
+                /** @var array $data */
+                $data = $this->__getDataToHotel();
+
+                $response =  $this->render('admin/download/csv_hotel_2018.html.twig', array(
+                    'data' => $data,
+                ));
+
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/octet-stream');
+                header('Content-Disposition: attachment; filename=hotel.csv');
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate');
+                header('Pragma: public');
+                header('Content-Type: text/html; charset=windows-1251');
+
+                $response->setCharset("WINDOWS-1251");
+                $response->setContent( mb_convert_encoding( $response->getContent() , "WINDOWS-1251",  "UTF-8" ));
+
+                return $response;
+            }
+
+            return $this->render('admin/download/print_hotel.html.twig', array(
+            ));
+
         } else {
             $response = new Response('Не удалось получить данные');
             return $response;
@@ -1186,5 +1214,95 @@ class AdminController extends Controller
             }
         }
         die();
+    }
+
+    /**
+     * SQL select data to hotel CROS-2018
+     *
+     * Get result array of SQL query
+     *
+     * @return array
+     */
+    private function __getDataToHotel()
+    {
+        /** @var ManagerRegistry $em */
+        $em = $this->getDoctrine()->getManager();
+
+        $RAW = "
+          CREATE TEMPORARY TABLE tmp_corp AS
+              SELECT id, stage1 AS stage
+              FROM corpuses
+              UNION
+              SELECT id, stage2
+              FROM corpuses
+              UNION
+              SELECT id, stage3
+              FROM corpuses
+            ;
+            CREATE TEMPORARY TABLE tmp_stage AS
+              SELECT id, flat1 AS flat
+              FROM stage
+              WHERE flat1 IS NOT NULL
+              UNION
+              SELECT id, flat2
+              FROM stage
+              WHERE flat2 IS NOT NULL
+              UNION
+              SELECT id, flat3
+              FROM stage WHERE flat3 IS NOT NULL
+              UNION
+              SELECT id, flat4
+              FROM stage WHERE flat4 IS NOT NULL
+            ;
+            CREATE TEMPORARY TABLE tmp_flat AS
+              SELECT id, room1 AS room, real_id
+              FROM flat
+              WHERE room1 IS NOT NULL
+              UNION
+              SELECT id, room2 AS room, real_id
+              FROM flat
+              WHERE room2 IS NOT NULL
+              UNION
+              SELECT id, room3 AS room, real_id
+              FROM flat
+              WHERE room3 IS NOT NULL
+              UNION
+              SELECT id, room4 AS room, real_id
+              FROM flat
+              WHERE room4 IS NOT NULL
+              UNION
+              SELECT id, room5 AS room, real_id
+              FROM flat
+              WHERE room5 IS NOT NULL
+            ;
+            
+            SELECT
+              corp.id as corpus,
+              flat.real_id AS room_num,
+              type.title AS class,
+              user.first_name,
+              user.last_name,
+              user.middle_name,
+              org.name
+            FROM tmp_corp corp
+              INNER JOIN tmp_stage          stage ON corp.stage = stage.id
+              INNER JOIN tmp_flat           flat  ON stage.flat = flat.id
+              INNER JOIN apartament_id      apart ON flat.room = apart.id
+              INNER JOIN apartament         type  ON apart.apartament_id = type.id
+              INNER JOIN user_to_apartament uta   ON apart.id = uta.apartaments_id
+              INNER JOIN user               user  ON uta.user_id = user.id
+              INNER JOIN organization       org   ON user.organization_id = org.id
+            ORDER BY room_num ASC
+            ;
+            
+            DROP TABLE tmp_corp;
+            DROP TABLE tmp_stage;
+            drop table tmp_flat;
+            ";
+
+        /** @var Statement $statement */
+        $statement = $em->getConnection()->prepare($RAW);
+
+        return $statement->fetchAll();
     }
 }

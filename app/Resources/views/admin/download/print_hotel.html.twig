@@ -56,6 +56,27 @@
     </style>
 </head>
 <body>
+
+<table>
+    <thead>
+    <tr>
+        <th>Корпус</th>
+        <th>Комната</th>
+        <th>&nbsp;</th>
+        <th>Категория</th>
+        <th>Количество гостей</th>
+        <th>ФИО</th>
+        <th>Компания</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for corpus in corpuses %}
+        {% set cell_corpus = corpus.id %}
+asd
+    {% endfor %}
+    </tbody>
+</table>
+
 <table>
     <tbody>
     {% for corpus in corpuses %}
@@ -405,7 +426,7 @@
                 {% if corpus.stage3 != null %}
                     <div class="panel-group">
                         <div class="panel panel-default">
-                            <div class="panlel-body">
+                            <div class="panel-body">
                                 <div class="drag_field">
                                     <div id="stage{{ corpus.stages3.id }}" ondrop="drop(event)"
                                          ondragover="allowDrop(event)" class="real_drag"
