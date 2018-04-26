@@ -24,7 +24,7 @@ class SpeakerRepository extends \Doctrine\ORM\EntityRepository
                     JOIN u.organization o
                     LEFT JOIN o.otc otc
                     JOIN otc.conference c
-                    WHERE c.id = :id AND s.publish = 1
+                    WHERE c.id = :id AND s.publish = 1 ORDER BY u.id DESC
                 ')->setParameter('id', $conf);
         try{
             return $query->getResult();
