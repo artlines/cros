@@ -118,16 +118,28 @@ input.cs-p-text-white--checked[type="radio"]:checked + * p {
 .cursor-pointer{
     cursor: pointer
 }
-@media screen and (min-width: 401px) and (max-width: 767px) {
-    .resize-401-767-sponsor-gold{
-        max-width:308px;
+@media screen and (max-width: 576px) {
+    .centering-silver-partners{
+        max-width: 300px;
+        margin: 0 auto;
+        float: none;
     }
-    .resize-401-767-sponsor-silv{
-        max-width:270px;
+    .resize-gold-partners{
+        max-width: 350px;
     }
 }
-.centering-silver-partners{
-    max-width: 800px;
-    margin: 0 auto;
-    float: none;
+@media screen and (max-width: 577px) {
+    .gold-justify-576{
+        -webkit-box-pack: center !important;
+        -webkit-justify-content: center !important;
+        -ms-flex-pack: center !important;
+        justify-content: center !important;
+    }
+}
+@media screen and (min-width: 577px) {
+    .centering-silver-partners{
+        max-width: 800px;
+        margin: 0 auto;
+        float: none;
+    }
 }
