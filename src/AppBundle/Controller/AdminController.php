@@ -928,6 +928,7 @@ class AdminController extends Controller
         $woinvoice = $request->query->has('woinvoice');
         $wopaid = $request->query->has('wopaid');
         $gupandorkk_check = $request->query->has('gupandorkk');
+
         if($gupandorkk_check){
             $gupandorkk = array(4, 5);
         }
@@ -1067,6 +1068,28 @@ class AdminController extends Controller
                 ->getRepository('AppBundle:UserToConf');
             /** @var UserToConf $users */
             $userstoconf = $UserToConfRepository->findByConfWithPost($conf->getId());
+
+            if (!$print) {
+                $content =  $this->renderView('admin/download/csv_forexcel.html.twig', array(
+                    'userstoconf' => $userstoconf,
+                ));
+
+                $file = 'uploads/' . $format . '/' . $filename . '.' . $format;
+                file_put_contents($file, $content);
+
+                if (file_exists($file)) {
+                    header('Content-Description: File Transfer');
+                    header('Content-Type: application/octet-stream');
+                    header('Content-Disposition: attachment; filename=' . basename($file));
+                    header('Expires: 0');
+                    header('Cache-Control: must-revalidate');
+                    header('Pragma: public');
+                    header('Content-Length: ' . filesize($file));
+                    readfile($file);
+                    exit();
+                }
+                return $this->redirectToRoute("downloads");
+            }
 
             return $this->render('admin/download/print_forexcel.html.twig', array(
                 'userstoconf' => $userstoconf,

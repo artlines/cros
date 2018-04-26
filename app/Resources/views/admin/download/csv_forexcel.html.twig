@@ -1,0 +1,19 @@
+{% block body %}
+ФИ;Компания;Должность;Город;Почта;Телефон;
+{% for utc in userstoconf %}{% set post = utc.user.post %}{% if utc.user.organization.id != 1 %}{#
+              #}{% if "Уточняется" not in utc.user.lastname %}{#
+                  #}"{{ utc.user.lastname }} {{ utc.user.firstname }}";{#
+                  #}"{{ utc.user.organization.name|replace({'ООО"ЭйрЛинк"': 'ЭйрЛинк', 'ООО ': '', 'ЗАО ': '', 'ОАО ': '', 'НОУ ': '', 'ПАО ': '', 'АО ': '', 'ТОО ': '', 'РУП': '', 'AО ': '', '"': '', "'": '', '«': '', '»': '', 'Докладчик': ''}) }}";{#
+                  #}"{% if utc.user.organization.name != "Докладчик" %}{{ post }}{% else %}Докладчик{% endif %}";{#
+                  #}"{{ utc.user.organization.city }}";{#
+                  #}"{% if utc.user.email != "needsetemail@gmail.com" %}{% if 'illumi-nation.ru' not in utc.user.email %}{{ utc.user.email }}{% endif %}{% endif %}";{#
+                  #}"{% if utc.user.username|length < 16 %}{#
+                        #}{% if post != "Менеджер по работе с партнерами" or utc.user.organization.name != "ЛАЙФСТРИМ" %}{#
+                            #}{% if utc.user.username not in ["+1111111111", "+179857776075", "+77777777777", "+70000000000", "+7989999999999", "+9114688286"] %}тел. {{ utc.user.username }}{% endif %}{#
+                        #}{% endif %}{#
+                  #}{% endif %}";
+{#
+              #}{% endif %}{#
+#}{% endif %}{#
+#}{% endfor %}
+{% endblock %}
