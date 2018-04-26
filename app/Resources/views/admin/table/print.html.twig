@@ -1,12 +1,12 @@
 {% block body %}
-Код;Компания;Комментарий;Наш Комментарий;Статус;ИНН;КПП;Группа;Участник;Должность;Ник;Телефон;EMail;Номер Машины;Класс Размещения;{#
+Код;Компания;Город;Комментарий;Наш Комментарий;Статус;ИНН;КПП;Группа;Участник;Должность;Ник;Телефон;EMail;Номер Машины;Класс Размещения;{#
 #}Стоимость;Номер;Заселение;Счет;Оплата;
 {% if fulltable is empty %}
 {% else %}
 {% for organization in organizations %}
 {% if organization.users|length >= 1 %}
 {% for user in organization.users %}
-{{ organization.id }};" {{ organization.name|raw }} ";" {{ organization.comment }} ";"{{ organization.ourcomment }} ";" {{ organization.txtstatus.title }} ";{#
+{{ organization.id }};" {{ organization.name|raw }} ";"{{ organization.city|raw }} ";" {{ organization.comment }} ";"{{ organization.ourcomment }} ";" {{ organization.txtstatus.title }} ";{#
 #}="{{ organization.inn }}";="{{ organization.kpp }}";{#
 #}{% if organization.managers is not null %}"{{ organization.managers.title }}"{% else %}-{% endif %};{#
 #}"{{ user.lastname }} {{ user.firstname }} {{ user.middlename }}";{#
