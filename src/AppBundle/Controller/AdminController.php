@@ -1146,9 +1146,8 @@ class AdminController extends Controller
             if (!$print) {
                 /** @var array $data */
                 $data = $this->__getDataToHotel();
-                dump($data);
 
-                $response =  $this->render('admin/download/csv_hotel_2018.html.twig', array(
+                $response = $this->render('admin/download/csv_hotel_2018.html.twig', array(
                     'data' => $data,
                 ));
 
@@ -1166,9 +1165,13 @@ class AdminController extends Controller
                 return $response;
             }
 
-            return $this->render('admin/download/print_hotel.html.twig', array(
-            ));
+            /** @var array $data */
+            $data = $this->__getDataToHotel();
+            dump($data);
 
+            return $this->render('admin/download/csv_hotel_2018.html.twig', array(
+                'data' => $data,
+            ));
         } else {
             $response = new Response('Не удалось получить данные');
             return $response;
