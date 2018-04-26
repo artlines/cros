@@ -1,8 +1,8 @@
 {% block body %}
-ФИ;Компания;Должность;Город;Почта;Телефон;
-{% for utc in userstoconf %}{% set post = utc.user.post %}{% if utc.user.organization.id != 1 %}{#
+ФИО;Компания;Должность;Город;Почта;Телефон;
+{% for utc in userstoconf %}{% set post = utc.user.post %}{% if utc.user.organization.id != 0 %}{#
               #}{% if "Уточняется" not in utc.user.lastname %}{#
-                  #}"{{ utc.user.lastname }} {{ utc.user.firstname }}";{#
+                  #}"{{ utc.user.lastname }} {{ utc.user.firstname }} {{ utc.user.middlename }}";{#
                   #}"{{ utc.user.organization.name|replace({'ООО"ЭйрЛинк"': 'ЭйрЛинк', 'ООО ': '', 'ЗАО ': '', 'ОАО ': '', 'НОУ ': '', 'ПАО ': '', 'АО ': '', 'ТОО ': '', 'РУП': '', 'AО ': '', '"': '', "'": '', '«': '', '»': '', 'Докладчик': ''}) }}";{#
                   #}"{% if utc.user.organization.name != "Докладчик" %}{{ post }}{% else %}Докладчик{% endif %}";{#
                   #}"{{ utc.user.organization.city }}";{#
