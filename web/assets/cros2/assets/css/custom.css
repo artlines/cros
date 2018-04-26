@@ -127,6 +127,12 @@ input.cs-p-text-white--checked[type="radio"]:checked + * p {
     .resize-gold-partners{
         max-width: 350px;
     }
+    .gold-justify-576{
+        -webkit-box-pack: center !important;
+        -webkit-justify-content: center !important;
+        -ms-flex-pack: center !important;
+        justify-content: center !important;
+    }
 }
 @media screen and (min-width: 577px) {
     .centering-silver-partners{
