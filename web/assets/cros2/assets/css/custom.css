@@ -143,3 +143,10 @@ input.cs-p-text-white--checked[type="radio"]:checked + * p {
         float: none;
     }
 }
+
+.prohibit-changes-images{
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0 auto;
+}
