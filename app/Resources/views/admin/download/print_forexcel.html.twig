@@ -66,7 +66,7 @@
     <tbody>
     {% for utc in userstoconf %}
         {% set post = utc.user.post %}
-        {% if utc.user.organization.id != 1 %}
+        {% if utc.user.organization.id != 0 %}
             {% if "Уточняется" not in utc.user.lastname %}
                 <tr>
                     <td>{{ utc.user.lastname }} {{ utc.user.firstname }} {{ utc.user.middlename }}</td>
