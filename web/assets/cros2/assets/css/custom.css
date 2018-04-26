@@ -142,7 +142,4 @@ input.cs-p-text-white--checked[type="radio"]:checked + * p {
         margin: 0 auto;
         float: none;
     }
-    .resize-gold-partners{
-        max-width: none;
-    }
 }
