@@ -118,16 +118,17 @@ input.cs-p-text-white--checked[type="radio"]:checked + * p {
 .cursor-pointer{
     cursor: pointer
 }
-@media screen and (min-width: 401px) and (max-width: 767px) {
-    .resize-401-767-sponsor-gold{
-        max-width:308px;
-    }
-    .resize-401-767-sponsor-silv{
-        max-width:270px;
+@media screen and (max-width: 576px) {
+    .centering-silver-partners{
+        max-width: 300px;
+        margin: 0 auto;
+        float: none;
     }
 }
-.centering-silver-partners{
-    max-width: 800px;
-    margin: 0 auto;
-    float: none;
+@media screen and (min-width: 577px) {
+    .centering-silver-partners{
+        max-width: 800px;
+        margin: 0 auto;
+        float: none;
+    }
 }
