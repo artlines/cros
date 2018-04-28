@@ -434,12 +434,10 @@ class AdminMemberController extends Controller
                 $files->move($patchSave, $uniqid . $postefixOriginal . '.' . $_exten);
                 /* small  */
                 $resizeService->load($patchSave . $uniqid . $postefixOriginal . '.' . $_exten);
-                $resizeService->resize($resizeParametr['small']['width'], $resizeParametr['small']['height']);
-                $resizeService->save($patchSave . $uniqid . $postefixSmall . '.' . $_exten);
+                $resizeService->resizeSpeakers($resizeParametr['small']['width'], $resizeParametr['small']['height'],$patchSave . $uniqid . $postefixSmall . '.' . $_exten);
                 /* big */
                 $resizeService->load($patchSave . $uniqid . $postefixOriginal . '.' . $_exten);
-                $resizeService->resize($resizeParametr['big']['width'], $resizeParametr['big']['height']);
-                $resizeService->save($patchSave . $uniqid . $postefixBig . '.' . $_exten);
+                $resizeService->resizeSpeakers($resizeParametr['big']['width'], $resizeParametr['big']['height'],$patchSave . $uniqid . $postefixBig . '.' . $_exten);
             }
 
             $form = $form->getData();
@@ -650,12 +648,10 @@ class AdminMemberController extends Controller
             $files->move($patchSave,$uniqid.$postefixOriginal.'.'.$_exten);
             /* small  */
             $resizeService->load($patchSave.$uniqid.$postefixOriginal.'.'.$_exten);
-            $resizeService->resize($resizeParametr['small']['width'], $resizeParametr['small']['height']);
-            $resizeService->save($patchSave.$uniqid.$postefixSmall.'.'.$_exten);
+            $resizeService->resizeSpeakers($resizeParametr['small']['width'], $resizeParametr['small']['height'],$patchSave.$uniqid.$postefixSmall.'.'.$_exten);
             /* big */
             $resizeService->load($patchSave.$uniqid.$postefixOriginal.'.'.$_exten);
-            $resizeService->resize($resizeParametr['big']['width'], $resizeParametr['big']['height']);
-            $resizeService->save($patchSave.$uniqid.$postefixBig.'.'.$_exten);
+            $resizeService->resizeSpeakers($resizeParametr['big']['width'], $resizeParametr['big']['height'],$patchSave.$uniqid.$postefixBig.'.'.$_exten);
             $form = $form->getData();
             $orgsts = $this->getDoctrine()->getRepository('AppBundle:Organization')->find($form['organization']);
 
@@ -847,9 +843,7 @@ class AdminMemberController extends Controller
             $files->move($patchSave,$uniqid.$postefixOriginal.'.'.$_exten);
             /* resize  */
             $resizeService->load($patchSave.$uniqid.$postefixOriginal.'.'.$_exten);
-            //$resizeService->resize($resizeParametr['width'], $resizeParametr['height']);
-            $resizeService->resizeToWidth(200);
-            $resizeService->save($patchSave.$uniqid.$postefixResize.'.'.$_exten);
+            $resizeService->resizeSponsor($resizeParametr['width'], $resizeParametr['height'],$patchSave.$uniqid.$postefixResize.'.'.$_exten);
             $form = $form->getData();
             $em = $this->getDoctrine()->getManager();
             $sponsor = new Sponsor();
@@ -922,8 +916,8 @@ class AdminMemberController extends Controller
                 $files->move($patchSave, $uniqid . $postefixOriginal . '.' . $_exten);
                 /* resize  */
                 $resizeService->load($patchSave . $uniqid . $postefixOriginal . '.' . $_exten);
-                $resizeService->resizeToWidth($resizeParametr['width']);
-                $resizeService->save($patchSave . $uniqid . $postefixResize . '.' . $_exten);
+                $resizeService->resizeSponsor($resizeParametr['width'],$resizeParametr['height'],$patchSave . $uniqid . $postefixResize . '.' . $_exten);
+               // $resizeService->save($patchSave . $uniqid . $postefixResize . '.' . $_exten);
             }
             $form = $form->getData();
             $em = $this->getDoctrine()->getManager();
