@@ -50,7 +50,7 @@
 
                             <nav class="nav nav-pills nav-justified" id="hall" role="tablist">
                                 {% set g = 1 %}
-                                {% for hall_name, times in halls|sort|reverse %}
+                                {% for hall_name, times in halls %}
                                     <a class="nav-item nav-link{% if g == 1 %} active{% endif %}"
                                        data-toggle="pill" role="tab"
                                        href="#hall-{{ i }}{{ g }}"

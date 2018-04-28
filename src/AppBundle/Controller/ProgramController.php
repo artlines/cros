@@ -64,9 +64,18 @@ class ProgramController extends Controller
             };
         }
 
+        /**
+         * Сортировка залов
+         */
+        $sortedProgram = [];
+        foreach ($program as $day => $halls) {
+            arsort($halls);
+            $sortedProgram[$day] = $halls;
+        }
+
         return $this->render('frontend/program/show_new2.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-            'program' => $program,
+            'program' => $sortedProgram,
             'lectures' => $lectures
         ));
     }
