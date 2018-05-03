@@ -26,7 +26,7 @@
     <!-- CSS Template -->
     <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/styles.css?t=1523863448') }}">
     <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/light-blue.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/custom.css?t=2018042005') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/custom.css?t=2018042006') }}">
     <meta name="theme-color" content="#6ca0dc">
     <link rel="icon" sizes="192x192" href="{{ asset('temp/cros-logo_192px.png') }}">
 </head>
@@ -395,13 +395,17 @@
             {% set uc = speaker_list|length %}
             {% if uc > 4 %}
             <div class="row">
+                <div class="col-sm-12">
+                    <div class="row centering-speaker">
                 {% else %}
-                <div class="row justify-content-center">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="row justify-content-center centering-speaker">
                     {% endif %}
                 {% for spec in speaker_list %}
-                <div class=" col-xs-2 col-md-3">
+                <div class=" col-xs-2 col-md-3 col-sm-6">
                     <div class="card mb-4 box-shadow">
-                        <img src="{{ asset('uploads/speakers/'~ spec.AvatarSmall) }}" class="img-fluid">
+                        <img src="{{ asset('uploads/speakers/'~ spec.AvatarSmall) }}" class="img-fluid prohibit-changes-images">
                         <div class="card-body">
                             <p class="card-text text-center"><b>{{ spec.SpeakerFirstName }} {{ spec.SpeakerLastName}}</b><br />{{ spec.Organization }}</p>
                         </div>
@@ -412,7 +416,7 @@
                 </div>
                 {% endfor %}
             </div>
-        </div>
+                </div></div></div>
     </section>
     {% endif %}
     <section id="testimonials" class="cs-mb-100 cs-bg-primary_block">

@@ -124,6 +124,11 @@ input.cs-p-text-white--checked[type="radio"]:checked + * p {
         margin: 0 auto;
         float: none;
     }
+    .centering-speaker{
+        max-width: 300px;
+        margin: 0 auto;
+        float: none;
+    }
     .resize-gold-partners{
         max-width: 350px;
     }
