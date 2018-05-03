@@ -125,7 +125,7 @@ input.cs-p-text-white--checked[type="radio"]:checked + * p {
         float: none;
     }
     .centering-speaker{
-        max-width: 300px;
+        max-width: 253px;
         margin: 0 auto;
         float: none;
     }
