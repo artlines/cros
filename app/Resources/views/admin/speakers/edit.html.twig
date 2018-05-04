@@ -5,6 +5,7 @@
             <h1 class="page-header">{{ h1 }}</h1>
         </div>
     </div>
+    <div id="warningMesseges" align="center"> <span id="valid"></span></div>
     <div class="row">
         <div class="col-lg-12">
             <img src="/uploads/speakers/{{ avatar }}" width="250" style="border: 1px dashed silver;">
@@ -40,6 +41,28 @@
 
         $('#form_avatarFile_file').on('change', function(){
             echoNewImage(this);
+        });
+        jQuery(function($){
+            $("#form_phone").mask("8(999)9999999",{placeholder:"_"});
+        });
+        $(document).ready(function() {
+            $('#form_email').blur(function() {
+                if($(this).val() != '') {
+                    var pattern = /^([a-z0-9_\.-])+@[a-z0-9-]+\.([a-z]{2,4}\.)?[a-z]{2,4}$/i;
+                    if(pattern.test($(this).val())){
+                        $(this).css({'border' : '1px solid #569b44'});
+                        $(':input[type="submit"]').prop('disabled', false);
+                        $('#warningMesseges').css("visibility","hidden");
+                    } else {
+                        $(this).css({'border' : '1px solid #ff0000'});
+                        $(':input[type="submit"]').prop('disabled', true);
+                        $('#valid').text('Вы ввели не правельный Email');
+                        $('#warningMesseges').css("visibility","visible");
+                        $('#warningMesseges').css("color","red");
+                        $('#warningMesseges').css("font-size","20px");
+                    }
+                }
+            });
         });
     </script>
 {% endblock %}
