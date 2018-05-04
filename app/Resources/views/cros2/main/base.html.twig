@@ -55,9 +55,24 @@
                             <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg active">
                                 <a href="{{ url('homepage') }}" class="nav-link p-0">Главная <span class="sr-only">(current)</span></a>
                             </li>
-                            <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
-                                <a href="{{ path('info', {'alias': 'targets'}) }}" class="nav-link p-0">О Крос</a>
+                            <!-- --- -->
+                            <li class="nav-item cs-has-sub-menu cs-mb-7 cs-mb-0--lg submenu2" id="submenu2" >
+                                <a href="#" class="nav-link p-0" id="nav-link-1"
+                                   aria-haspopup="true"
+                                   aria-expanded="false"
+                                   aria-controls="nav-submenu-2"
+                                ><span class="d-lg-none d-xl-inline">О Крос</span></a>
+                                <!-- Submenu -->
+                                <ul class="cs-sub-menu-home cs-sub-menu list-unstyled cs-mt-20 cs-mt-10--lcs--scrolling u-shadow-v18 cs-font-weight-700 cs-font-size-12 nav-submenu-2" id="nav-submenu-2"
+                                    aria-labelledby="nav-link-2" style="margin-top: 0px;">
+                                    <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('info', {'alias': 'targets'}) }}">Что такое КРОС</a></li>
+                                    <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('info', {'alias': 'organize'}) }}">Место проведения</a></li>
+                                    <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('info', {'alias': 'sponsors'}) }}">Спонсоры</a></li>
+                                    <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('speakers', {'year': '2018'}) }}">Спикеры</a></li>
+                                </ul>
+                                <!-- End Submenu -->
                             </li>
+                            <!-- --- -->
                             <!-- submenu -->
                             <li class="nav-item cs-has-sub-menu cs-mb-7 cs-mb-0--lg submenu" id="submenu" >
                                 <a href="#" class="nav-link p-0" id="nav-link-1"
@@ -71,7 +86,6 @@
                                     <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('members') }}">Участники</a></li>
                                     <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('price') }}">Стоимость участия</a></li>
                                     <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('registration') }}">Регистрация</a></li>
-                                    <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('info', {'alias': 'organize'}) }}">Место проведения</a></li>
                                     <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('program') }}">Программа</a></li>
                                 </ul>
                                 <!-- End Submenu -->
@@ -417,7 +431,9 @@
                 {% endfor %}
             </div>
                 </div></div>
-                        <div class="row justify-content-center">   <a class="btn u-btn-green cs-font-size-27 cs-px-10 cs-py-10 bt-pdb-25 cs-mt-15" href="https://cros.nag.ru/registration">Все спикеры</a> </div>
+                        <div class="row justify-content-center">
+                            <a class="btn u-btn-green cs-font-size-27 cs-px-10 cs-py-10 bt-pdb-25 cs-mt-15" href="{{ path('speakers', {'year': '2018'}) }}">Все спикеры</a>
+                        </div>
                     </div>
 
     </section>
@@ -760,12 +776,28 @@
 
         });
     });
+    $(function(){
+        $("#test").bind('cssClassChanged', function(){
+            if($("#test").hasClass("js-header-change-moment")){
+                $('#nav-submenu-2').addClass('cs-sub-menu-home-dow');
+            }else{
+                $("#nav-submenu-2").removeClass('cs-sub-menu-home-dow');
+            }
 
+        });
+    });
     $(function(){
         $('.submenu').hover(function(){
             $('.submenu').addClass('cs-sub-menu-opened');
         }, function(){
             $('.submenu').removeClass('cs-sub-menu-opened');
+        })
+    });
+    $(function(){
+        $('.submenu2').hover(function(){
+            $('.submenu2').addClass('cs-sub-menu-opened');
+        }, function(){
+            $('.submenu2').removeClass('cs-sub-menu-opened');
         })
     });
     $('.sub-menu').SubMenu({
