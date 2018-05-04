@@ -60,8 +60,21 @@
                                 <li class="nav-item cs-mr-15--lg cs-mb-7 cs-mb-0--lg d-lg-none d-xl-block">
                                     <a href="{{ url('homepage') }}" class="nav-link cs-py-5">Главная</a>
                                 </li>
-                                <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
-                                    <a href="{{ path('info', {'alias': 'targets'}) }}" class="nav-link cs-py-5">О Крос</a>
+                                <li class="nav-item cs-has-sub-menu cs-mx-20--lg">
+                                    <a href="#" class="nav-link cs-py-5" id="nav-link-1"
+                                       aria-haspopup="true"
+                                       aria-expanded="false"
+                                       aria-controls="nav-submenu-1"
+                                    ><span class="d-lg-none d-xl-inline"> О Крос</span></a>
+                                    <!-- Submenu -->
+                                    <ul class="cs-sub-menu list-unstyled cs-mt-20 cs-mt-10--lcs--scrolling u-shadow-v18 cs-font-weight-700 cs-font-size-12" id="nav-submenu-1"
+                                        aria-labelledby="nav-link-2">
+                                        <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('info', {'alias': 'targets'}) }}">Что такое КРОС</a></li>
+                                        <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('info', {'alias': 'organize'}) }}">Место проведения</a></li>
+                                        <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('info', {'alias': 'sponsors'}) }}">Спонсоры</a></li>
+                                        <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('speakers', {'year': '2018'}) }}">Спикеры</a></li>
+                                    </ul>
+                                    <!-- End Submenu -->
                                 </li>
                                 {#
                                 <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
@@ -80,7 +93,6 @@
                                         <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('members') }}">Участники</a></li>
                                         <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('price') }}">Стоимость участия</a></li>
                                         <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('registration') }}">Регистрация</a></li>
-                                        <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('info', {'alias': 'organize'}) }}">Место проведения</a></li>
                                         <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('program') }}">Программа</a></li>
                                     </ul>
                                     <!-- End Submenu -->
