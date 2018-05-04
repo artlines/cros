@@ -177,3 +177,7 @@ input.cs-p-text-white--checked[type="radio"]:checked + * p {
 .bt-pdb-25{
     margin-bottom: 25px;
 }
+#submenu2 {
+    margin-right: 15px;
+    margin-left: 15px;
+}
