@@ -15,46 +15,42 @@
             width: 100%;
         }
     </style>
-    {% set yearcount = 0 %}
-    <nav class="navbar navbar-default yearselect">
-        <div class="container-fluid">
-            <ul class="nav navbar-nav">
-                {% for year in conferences %}
-                    {% if year.year >= 2017 %}
-                        <li {% if year.year == selectedyear %}class="active"{% endif %}>
-                            <a href="{{ path('speakers', {'year': year.year}) }}">{{ year.year }}</a>
-                        </li>
-                        {% set yearcount = yearcount + 1 %}
-                    {% endif %}
-                {% endfor %}
-            </ul>
-        </div>
-    </nav>
-    {% if yearcount < 2 %}
-        <style>nav.yearselect{display: none;}</style>
-    {% endif %}
     {% if list is empty %}
         <h3>Докладчики еще не добавлены</h3>
     {% else %}
-        <div class="row text-center">
-            {% for speaker in list %}
-                {% set user = speaker.user %}
-                <div class="col-sm-4">
-                    <div class="thumbnail" style="height: 475px;">
-                        <div class="topimg">
-                            <img src="/uploads/speakers/{% if speaker.avatar %}{{ speaker.avatar }}{% else %}no_photo.jpg{% endif %}" alt="{{ user.lastname }} {{ user.firstname }}" width="400">
-                        </div>
-                        <div class="btmtxt">
-                        <p>
-                            <strong>{{ user.firstname }} {{ user.lastname }}</strong>
-                        </p>
-                        <p style="min-height: 40px; max-height: 90px; overflow-y: auto;">{% if speaker.report %}"{{ speaker.report }}"{% else %}Нет доклада{% endif %}</p>
-                        <a href="{{ path('speaker', {'id': speaker.id}) }}" class="btn btn-default">Профайл</a>
-                        </div>
-                    </div>
+        <section id="ourguests" class="cs-pt-30 cs-mb-100 cs-bg-img-layer-middle">
+            <div class="container">
+                <div class="align-self-center w-100 cs-mb-30">
+                    <h2 class="text-uppercase cs-font-weight-700 cs-font-size-23 cs-mb-10 text-center">
+                        Наши спикеры
+                    </h2>
                 </div>
-            {% endfor %}
-        </div>
+                {% set uc = list|length %}
+                {% if uc > 4 %}
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="row centering-speaker">
+                            {% else %}
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="row justify-content-center centering-speaker">
+                                        {% endif %}
+                                        {% for spec in list %}
+                                            <div class=" col-xs-2 col-md-3 col-sm-6">
+                                                <div class="card mb-4 box-shadow">
+                                                    <img src="{{ asset('uploads/speakers/'~ spec.AvatarSmall) }}" class="img-fluid prohibit-changes-images">
+                                                    <div class="card-body">
+                                                        <p class="card-text text-center"><b>{{ spec.SpeakerFirstName }} {{ spec.SpeakerLastName}}</b><br />{{ spec.Organization }}</p>
+                                                    </div>
+                                                    <div class="text-center">
+                                                        <a class="btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 speaker_button_container" href="{{ path('speaker', {'id': spec.id}) }}" style="margin-bottom: 5px;">подробнее</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div></div></div>
+        </section>
     {% endif %}
 {% endblock %}
 

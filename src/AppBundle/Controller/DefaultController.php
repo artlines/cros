@@ -58,12 +58,16 @@ class DefaultController extends Controller
         $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
         /** @var Speaker $speakers */
         $speakers = $speakerRepository->findByConf($conf->getId());
+        $rand_keys = array_rand($speakers, 4);
+        foreach ($rand_keys as $val) {
+            $speakers_rand[] = $speakers[$val];
+        }
         /*
         $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
         $speaker = $speakerRepository->findBy(array('conferenceId' => $reg_time->getId()));
         */
         $speakerList = NULL;
-        foreach ($speakers as $key =>  $value){
+        foreach ($speakers_rand as $key =>  $value){
             $speakerList[$key]['id'] = $value->getid();
             $speakerList[$key]['AvatarSmall'] = $value->getAvatarSmall();
             $speakerList[$key]['Organization'] = $value->getUser()->getOrganization()->getName();
@@ -71,9 +75,7 @@ class DefaultController extends Controller
             $speakerList[$key]['SpeakerLastName'] = $value->getUser()->getLastName();
             $speakerList[$key]['SpeakerMiddleName'] = $value->getUser()->getMiddleName();
         }
-
         $reg_start = $reg_time->getRegistrationStart()->getTimestamp();
-
         return $this->render('cros2/main/base.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
             'reg_start' => $reg_start,

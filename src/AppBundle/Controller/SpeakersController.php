@@ -41,25 +41,30 @@ class SpeakersController extends Controller
             $year = date("Y");
         }
 
+        $reg_time = $this->getDoctrine()->getRepository('AppBundle:Conference')
+            ->findOneBy(array('year' => date("Y")));
+        /** @var ConferenceRepository $conferenceRepository */
         $conferenceRepository = $this->getDoctrine()->getRepository('AppBundle:Conference');
-
-        $conferences = $conferenceRepository->findBy(array(), array('id' => 'DESC'));
-
         /** @var Conference $conf */
-        $conf = $this->getDoctrine()
-            ->getRepository('AppBundle:Conference')
-            ->findOneBy(array('year' => $year));
+        $conf = $conferenceRepository->findOneBy(array('year' => $year));
 
         /** @var SpeakerRepository $speakerRepository */
         $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
         /** @var Speaker $speakers */
         $speakers = $speakerRepository->findByConf($conf->getId());
-
+        $speakerList = NULL;
+        foreach ($speakers as $key =>  $value){
+            $speakerList[$key]['id'] = $value->getid();
+            $speakerList[$key]['AvatarSmall'] = $value->getAvatarSmall();
+            $speakerList[$key]['Organization'] = $value->getUser()->getOrganization()->getName();
+            $speakerList[$key]['SpeakerFirstName'] = $value->getUser()->getFirstName();
+            $speakerList[$key]['SpeakerLastName'] = $value->getUser()->getLastName();
+            $speakerList[$key]['SpeakerMiddleName'] = $value->getUser()->getMiddleName();
+        }
+        shuffle ($speakerList);
         return $this->render('frontend/speakers/list.html.twig', array(
             'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-            'list' => $speakers,
-            'conferences' => $conferences,
-            'selectedyear' => $year,
+            'list' => $speakerList,
         ));
     }
 
@@ -91,6 +96,42 @@ class SpeakersController extends Controller
             'report_list' => $report,
             'description' => $Description,
             'avatar' => $avatar
+        ));
+    }
+    /**
+     * @Route("speaker/all", name="speaker-all")
+     * @return object
+     */
+    public function speakerAll($id){
+        $year = date("Y");
+        $reg_time = $this->getDoctrine()->getRepository('AppBundle:Conference')
+            ->findOneBy(array('year' => date("Y")));
+        /** @var ConferenceRepository $conferenceRepository */
+        $conferenceRepository = $this->getDoctrine()->getRepository('AppBundle:Conference');
+        /** @var Conference $conf */
+        $conf = $conferenceRepository->findOneBy(array('year' => $year));
+
+        /** @var SpeakerRepository $speakerRepository */
+        $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
+        /** @var Speaker $speakers */
+        $speakers = $speakerRepository->findByConf($conf->getId());
+        $speakerList = NULL;
+        foreach ($speakers as $key =>  $value){
+            $speakerList[$key]['id'] = $value->getid();
+            $speakerList[$key]['AvatarSmall'] = $value->getAvatarSmall();
+            $speakerList[$key]['Organization'] = $value->getUser()->getOrganization()->getName();
+            $speakerList[$key]['SpeakerFirstName'] = $value->getUser()->getFirstName();
+            $speakerList[$key]['SpeakerLastName'] = $value->getUser()->getLastName();
+            $speakerList[$key]['SpeakerMiddleName'] = $value->getUser()->getMiddleName();
+        }
+        $reg_start = $reg_time->getRegistrationStart()->getTimestamp();
+
+        return $this->render('cros2/main/base.html.twig', array(
+            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
+            'reg_start' => $reg_start,
+            'speaker_list' => $speakerList,
+
+
         ));
     }
 }
