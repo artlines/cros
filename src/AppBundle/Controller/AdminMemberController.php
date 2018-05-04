@@ -449,6 +449,7 @@ class AdminMemberController extends Controller
             $user->setFirstName($form['name']);
             $user->setLastName($form['family']);
             $user->setMiddleName($form['middle_name']);
+            $form['phone'] = preg_replace('/[^0-9]/', '', $form['phone']);
             $user->setUsername($form['phone']); // It's actually a phone
             $user->setEmail($form['email']);
             $user->setIsActive($isActive);
@@ -654,37 +655,36 @@ class AdminMemberController extends Controller
             $resizeService->resizeSpeakers($resizeParametr['big']['width'], $resizeParametr['big']['height'],$patchSave.$uniqid.$postefixBig.'.'.$_exten);
             $form = $form->getData();
             $orgsts = $this->getDoctrine()->getRepository('AppBundle:Organization')->find($form['organization']);
+            $form['phone'] = preg_replace('/[^0-9]/', '', $form['phone']);
+            //$userCheck = $this->getDoctrine()->getRepository('AppBundle:User')->findOneBy(array('username' => $form['phone']));
+                $isActive = (int)$form['isActive'];
+                $em = $this->getDoctrine()->getManager();
+                $user = new User();
+                $user->setOrganization($orgsts);
+                $user->setFirstName($form['name']);
+                $user->setLastName($form['family']);
+                $user->setMiddleName($form['middle_name']);
+                $user->setUsername($form['phone']); // It's actually a phone
+                $user->setEmail($form['email']);
+                $user->setIsActive($isActive);
+                $password = substr(md5($user->getLastName() . $user->getFirstName()), 0, 6);
+                $encoder = $this->container->get('security.password_encoder');
+                $encoded = $encoder->encodePassword($user, $password);
+                $user->setPassword($encoded);
+                $user->setRoles(array("ROLE_USER"));
+                $em->persist($user);
+                $em->flush();
 
-            $isActive = (int) $form['isActive'];
-            $em = $this->getDoctrine()->getManager();
-
-            $user = new User();
-            $user->setOrganization($orgsts);
-            $user->setFirstName($form['name']);
-            $user->setLastName($form['family']);
-            $user->setMiddleName($form['middle_name']);
-            $user->setUsername($form['phone']); // It's actually a phone
-            $user->setEmail($form['email']);
-            $user->setIsActive($isActive);
-            $password = substr(md5($user->getLastName().$user->getFirstName()), 0, 6);
-            $encoder = $this->container->get('security.password_encoder');
-            $encoded = $encoder->encodePassword($user, $password);
-            $user->setPassword($encoded);
-            $user->setRoles(array("ROLE_USER"));
-            $em->persist($user);
-            $em->flush();
-
-            $speaker = new Speaker();
-            $speaker->setUser($user);
-            $speaker->setAvatar($uniqid.$postefixOriginal.'.'.$_exten);
-            $speaker->setAvatarSmall($uniqid.$postefixSmall.'.'.$_exten);
-            $speaker->setAvatarBig($uniqid.$postefixBig.'.'.$_exten);
-            $speaker->setPublish($isActive);
-            $speaker->setConferenceId($form['conference']);
-            $speaker->setDescription($form['description']);
-            $em->persist($speaker);
-            $em->flush();
-
+                $speaker = new Speaker();
+                $speaker->setUser($user);
+                $speaker->setAvatar($uniqid . $postefixOriginal . '.' . $_exten);
+                $speaker->setAvatarSmall($uniqid . $postefixSmall . '.' . $_exten);
+                $speaker->setAvatarBig($uniqid . $postefixBig . '.' . $_exten);
+                $speaker->setPublish($isActive);
+                $speaker->setConferenceId($form['conference']);
+                $speaker->setDescription($form['description']);
+                $em->persist($speaker);
+                $em->flush();
 
             //$speaker = $form->getData();
             return $this->redirectToRoute('admin-speakers');
@@ -851,8 +851,7 @@ class AdminMemberController extends Controller
             $sponsor->setLogo($uniqid.$postefixOriginal.'.'.$_exten);
             $sponsor->setLogoResize($uniqid.$postefixResize.'.'.$_exten);
             $sponsor->setName($form['name']);
-            $form['phone'] = str_replace("(", '', $form['phone']);
-            $form['phone'] = str_replace(")", '', $form['phone']);
+            $form['phone'] = preg_replace('/[^0-9]/', '', $form['phone']);
             $sponsor->setPhone($form['phone']);
             $sponsor->setUrl($form['url']);
             $sponsor->setDescription($form['description']);
@@ -928,8 +927,7 @@ class AdminMemberController extends Controller
                 $sponsor->setLogoResize($uniqid . $postefixResize . '.' . $_exten);
             }
             $sponsor->setName($form['name']);
-            $form['phone'] = str_replace("(", '', $form['phone']);
-            $form['phone'] = str_replace(")", '', $form['phone']);
+            $form['phone'] = preg_replace('/[^0-9]/', '', $form['phone']);
             $sponsor->setPhone($form['phone']);
             $sponsor->setUrl($form['url']);
             $sponsor->setDescription($form['description']);
