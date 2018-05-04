@@ -174,3 +174,6 @@ input.cs-p-text-white--checked[type="radio"]:checked + * p {
     max-height: 100%;
     margin: 0 auto;
 }
+.bt-pdb-25{
+    margin-bottom: 25px;
+}
