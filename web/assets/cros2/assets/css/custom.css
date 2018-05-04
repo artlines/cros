@@ -174,19 +174,3 @@ input.cs-p-text-white--checked[type="radio"]:checked + * p {
     max-height: 100%;
     margin: 0 auto;
 }
-
-#warningMesseges {
-    height: 100px;
-    bottom: 0px;
-    left: 50%;
-    margin: -50px 0 0 -50px;
-    position: fixed;
-    z-index: 100000;
-    border-radius: 15px 15px 0px 0px;
-    -moz-border-radius: 15px 15px 10px 10px;
-    -webkit-border-radius: 15px 15px 10px 10px;
-    border: 2px dashed #ff003c;
-    background-color: #ffff00;
-    width: 300px;
-    font-size: 25px;
-}
