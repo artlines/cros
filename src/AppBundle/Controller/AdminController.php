@@ -1120,6 +1120,25 @@ class AdminController extends Controller
             /** @var UserToConf $users */
             $userstoconf = $UserToConfRepository->findByConfWithPost($conf->getId(), 'u.lastName, u.firstName');
 
+            if (!$print) {
+                $response =  $this->render('admin/download/csv_security.html.twig', array(
+                    'userstoconf' => $userstoconf,
+                ));
+
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/octet-stream');
+                header('Content-Disposition: attachment; filename=security.csv');
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate');
+                header('Pragma: public');
+                header('Content-Type: text/html; charset=windows-1251');
+
+                $response->setCharset("WINDOWS-1251");
+                $response->setContent( mb_convert_encoding( $response->getContent() , "WINDOWS-1251",  "UTF-8" ));
+
+                return $response;
+            }
+
             return $this->render('admin/download/print_security.html.twig', array(
                 'userstoconf' => $userstoconf,
             ));
@@ -1167,7 +1186,6 @@ class AdminController extends Controller
 
             /** @var array $data */
             $data = $this->__getDataToHotel();
-            dump($data);
 
             return $this->render('admin/download/csv_hotel_2018.html.twig', array(
                 'data' => $data,
