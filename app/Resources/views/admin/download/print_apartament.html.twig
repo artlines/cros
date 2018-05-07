@@ -60,7 +60,7 @@
                 <tr>
                     <td><strong>Номер: {{ flat.realid }} (id: {{ flat.id }})</strong> {% if flat.finished == 1 %}<span style="color: red; font-weight: bold;">🔒</span>{% endif %}<br>{{ pair.title }}<br>
                         {{ type.title }},&nbsp;{{ type.flats.first.maxroom }}к<br><br>
-                        </td>
+                    </td>
                     <td>
                         {% if flat.realroom1 is not null %}
                             <div class="room">
@@ -70,9 +70,9 @@
                                         <div {% if uta.user.organizationid == 1 %}class="nag"{% endif %}>
                                             {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }}{% if uta.user.post %}
                                                 <span style="color: #656565;"> - {{ uta.user.post }}</span>
-                                            {% endif %}
+                                            {% endif %}{#
                                             - {{ uta.user.organization.name }}{% if uta.user.organization.sponsor %} - СПОНСОР{% endif %}
-                                            - {% if uta.user.organization.managers is empty %}Нет менеджера{% else %}{{ uta.user.organization.managers.title }}{% endif %}
+                                            - {% if uta.user.organization.managers is empty %}Нет менеджера{% else %}{{ uta.user.organization.managers.title }}{% endif %}#}
                                         </div>
                                     {% endif %}
                                 {% endfor %}
@@ -86,9 +86,9 @@
                                         <div {% if uta.user.organizationid == 1 %}class="nag"{% endif %}>
                                             {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }}{% if uta.user.post %}
                                                 <span style="color: #656565;"> - {{ uta.user.post }}</span>
-                                            {% endif %}
+                                            {% endif %}{#
                                             - {{ uta.user.organization.name }}{% if uta.user.organization.sponsor %} - СПОНСОР{% endif %}
-                                            - {% if uta.user.organization.managers is empty %}Нет менеджера{% else %}{{ uta.user.organization.managers.title }}{% endif %}
+                                            - {% if uta.user.organization.managers is empty %}Нет менеджера{% else %}{{ uta.user.organization.managers.title }}{% endif %}#}
                                         </div>
                                     {% endif %}
                                 {% endfor %}
@@ -102,9 +102,9 @@
                                         <div {% if uta.user.organizationid == 1 %}class="nag"{% endif %}>
                                             {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }}{% if uta.user.post %}
                                                 <span style="color: #656565;"> - {{ uta.user.post }}</span>
-                                            {% endif %}
+                                            {% endif %}{#
                                             - {{ uta.user.organization.name }}{% if uta.user.organization.sponsor %} - СПОНСОР{% endif %}
-                                            - {% if uta.user.organization.managers is empty %}Нет менеджера{% else %}{{ uta.user.organization.managers.title }}{% endif %}
+                                            - {% if uta.user.organization.managers is empty %}Нет менеджера{% else %}{{ uta.user.organization.managers.title }}{% endif %}#}
                                         </div>
                                     {% endif %}
                                 {% endfor %}
@@ -118,9 +118,9 @@
                                         <div {% if uta.user.organizationid == 1 %}class="nag"{% endif %}>
                                             {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }}{% if uta.user.post %}
                                                 <span style="color: #656565;"> - {{ uta.user.post }}</span>
-                                            {% endif %}
+                                            {% endif %}{#
                                             - {{ uta.user.organization.name }}{% if uta.user.organization.sponsor %} - СПОНСОР{% endif %}
-                                            - {% if uta.user.organization.managers is empty %}Нет менеджера{% else %}{{ uta.user.organization.managers.title }}{% endif %}
+                                            - {% if uta.user.organization.managers is empty %}Нет менеджера{% else %}{{ uta.user.organization.managers.title }}{% endif %}#}
                                         </div>
                                     {% endif %}
                                 {% endfor %}
@@ -134,9 +134,9 @@
                                         <div {% if uta.user.organizationid == 1 %}class="nag"{% endif %}>
                                             {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }}{% if uta.user.post %}
                                                 <span style="color: #656565;"> - {{ uta.user.post }}</span>
-                                            {% endif %}
+                                            {% endif %}{#
                                             - {{ uta.user.organization.name }}{% if uta.user.organization.sponsor %} - СПОНСОР{% endif %}
-                                            - {% if uta.user.organization.managers is empty %}Нет менеджера{% else %}{{ uta.user.organization.managers.title }}{% endif %}
+                                            - {% if uta.user.organization.managers is empty %}Нет менеджера{% else %}{{ uta.user.organization.managers.title }}{% endif %}#}
                                         </div>
                                     {% endif %}
                                 {% endfor %}
