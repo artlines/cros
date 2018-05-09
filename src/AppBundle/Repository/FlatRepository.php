@@ -12,7 +12,7 @@ class FlatRepository extends \Doctrine\ORM\EntityRepository
 {
     public function findAllToHotel()
     {
-        return $this->getEnitityManager()->createQuery("
+        $query = $this->getEntityManager()->createQuery("
             SELECT
               '',
               flat.real_id as ap_num,
@@ -51,5 +51,7 @@ class FlatRepository extends \Doctrine\ORM\EntityRepository
               ap_num ASC
             ;
         ");
+
+        return $query->getResult();
     }
 }
