@@ -17,9 +17,12 @@ class FlatRepository extends \Doctrine\ORM\EntityRepository
               '',
               flat.real_id as ap_num,
               '',
-              CONCAT_WS(' ', apart_type.code, apartment.code_hotel) as category,
+              apart_type.code as category_1,
+              apartment.code_hotel as category_2,
               apartment.places as places,
-              CONCAT_WS(' ', user.last_name, user.first_name, user.middle_name) as fio,
+              user.last_name as f,
+              user.first_name as i,
+              user.middle_name as o,
               org.name as org_name
             FROM
               (SELECT id, room1 AS room, real_id, type_id
