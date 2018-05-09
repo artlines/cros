@@ -6,6 +6,7 @@
         <thead>
             <tr>
                 <th>Общая</th>
+                <th>Для отеля 2018</th>
                 <th>По номерам</th>
                 <th>По корпусам</th>
                 <th>По должностям</th>
@@ -45,9 +46,12 @@
                     <a href="{{ path('download', {'format': 'csv', 'filename': 'forexcel'}) }}" class="btn btn-info"><i class="fa fa-print fa-fw"></i> Скачать</a><br>
                 </td>
                 <td>
-                    <a href="{{ path('download', {'format': 'csv', 'filename': 'apartament'}) }}?print" class="btn btn-default"><i class="fa fa-print fa-fw"></i> Напечатать</a>
+                    <a href="{{ path('download-hotel-csv-2018') }}" class="btn btn-success"><i class="fa fa-print fa-fw"></i>Скачать</a>
                 </td>
                 <td>
+                <td>
+                    <a href="{{ path('download', {'format': 'csv', 'filename': 'apartament'}) }}?print" class="btn btn-default"><i class="fa fa-print fa-fw"></i> Напечатать</a>
+                </td>
                     <a href="{{ path('download', {'format': 'csv', 'filename': 'corpus'}) }}?print" class="btn btn-default"><i class="fa fa-print fa-fw"></i> Напечатать</a>
                 </td>
                 <td>

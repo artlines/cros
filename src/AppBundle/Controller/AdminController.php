@@ -178,7 +178,7 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("/admin/download/csv-hotel-2018")
+     * @Route("/admin/download/csv-hotel-2018", name="download-hotel-csv-2018")
      */
     public function getCsvHotel()
     {
