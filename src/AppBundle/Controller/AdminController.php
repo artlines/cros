@@ -184,7 +184,22 @@ class AdminController extends Controller
     {
         $data = $this->getDoctrine()->getRepository('AppBundle:Flat')->findAllToHotel();
 
-        dump($data);
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename=hotel_2018.csv');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Type: text/html; charset=windows-1251');
+
+        $Response = $this->render('admin/csv_hotel_2018.html.twig', array(
+            'data' => $data
+        ));
+
+        $Response->setCharset("WINDOWS-1251");
+        $Response->setContent( mb_convert_encoding( $Response->getContent() , "WINDOWS-1251",  "UTF-8" ));
+
+        return  $Response;
     }
 
     /**

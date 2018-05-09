@@ -14,9 +14,8 @@ class FlatRepository extends \Doctrine\ORM\EntityRepository
     {
         $query = "
             SELECT
-              '',
+              '' as corpus,
               flat.real_id as ap_num,
-              '',
               CONCAT_WS(' ', apart_type.code, apartment.code_hotel) as category,
               apartment.places as places,
               CONCAT_WS(' ', user.last_name, user.first_name, user.middle_name) as fio,
