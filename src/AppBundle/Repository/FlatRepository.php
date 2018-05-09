@@ -12,17 +12,14 @@ class FlatRepository extends \Doctrine\ORM\EntityRepository
 {
     public function findAllToHotel()
     {
-        $query = $this->getEntityManager()->createQuery("
+        $query = "
             SELECT
               '',
               flat.real_id as ap_num,
               '',
-              apart_type.code as category_1,
-              apartment.code_hotel as category_2,
+              CONCAT_WS(' ', apart_type.code, apartment.code_hotel) as category,
               apartment.places as places,
-              user.last_name as f,
-              user.first_name as i,
-              user.middle_name as o,
+              CONCAT_WS(' ', user.last_name, user.first_name, user.middle_name) as fio,
               org.name as org_name
             FROM
               (SELECT id, room1 AS room, real_id, type_id
@@ -53,8 +50,14 @@ class FlatRepository extends \Doctrine\ORM\EntityRepository
             ORDER BY
               ap_num ASC
             ;
-        ");
+        ";
 
-        return $query->getResult();
+        $em = $this->getEntityManager(); // ...or getEntityManager() prior to Symfony 2.1
+        $connection = $em->getConnection();
+        $statement = $connection->prepare($query);
+        $statement->execute();
+        $results = $statement->fetchAll();
+
+        return $results;
     }
 }
