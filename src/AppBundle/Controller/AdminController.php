@@ -192,7 +192,7 @@ class AdminController extends Controller
         header('Pragma: public');
         header('Content-Type: text/html; charset=windows-1251');
 
-        $Response = $this->render('admin/csv_hotel_2018.html.twig', array(
+        $Response = $this->render('admin/download/csv_hotel_2018.html.twig', array(
             'data' => $data
         ));
 
