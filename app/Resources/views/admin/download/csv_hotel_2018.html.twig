@@ -3,6 +3,6 @@
 {% for row in data %}{#
 #}{{ row['corpus'] }};{{ row['ap_num'] }};;{{ row['category'] }};{{ row['places'] }};{#
 #}{{ row['fio'] }};{#
-#}{{ row['org_name'] }}
+#}{{ row['org_name']|replace({'"': '', "'": '', '«': '', '»': '', ',': '', '&': 'and'}) }}
 {% endfor %}
 {% endblock %}
