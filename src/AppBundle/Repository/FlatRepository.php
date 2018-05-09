@@ -10,4 +10,46 @@ namespace AppBundle\Repository;
  */
 class FlatRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findAllToHotel()
+    {
+        return $this->getEnitityManager()->createQuery("
+            SELECT
+              '',
+              flat.real_id as ap_num,
+              '',
+              CONCAT_WS(' ', apart_type.code, apartment.code_hotel) as category,
+              apartment.places as places,
+              CONCAT_WS(' ', user.last_name, user.first_name, user.middle_name) as fio,
+              org.name as org_name
+            FROM
+              (SELECT id, room1 AS room, real_id, type_id
+               FROM flat
+               WHERE room1 IS NOT NULL
+               UNION
+               SELECT id, room2 AS room, real_id, type_id
+               FROM flat
+               WHERE room2 IS NOT NULL
+               UNION
+               SELECT id, room3 AS room, real_id, type_id
+               FROM flat
+               WHERE room3 IS NOT NULL
+               UNION
+               SELECT id, room4 AS room, real_id, type_id
+               FROM flat
+               WHERE room4 IS NOT NULL
+               UNION
+               SELECT id, room5 AS room, real_id, type_id
+               FROM flat
+               WHERE room5 IS NOT NULL) as flat
+              INNER JOIN apartament_type apart_type ON flat.type_id = apart_type.id
+              INNER JOIN apartament_id  apart ON flat.room = apart.id
+              INNER JOIN apartament apartment ON apart.apartament_id = apartment.id
+              INNER JOIN user_to_apartament uta ON uta.apartaments_id = flat.room
+              INNER JOIN user user ON user.id = uta.user_id
+              INNER JOIN organization org ON user.organization_id = org.id
+            ORDER BY
+              ap_num ASC
+            ;
+        ");
+    }
 }

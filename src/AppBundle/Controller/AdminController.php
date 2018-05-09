@@ -178,6 +178,16 @@ class AdminController extends Controller
     }
 
     /**
+     * @Route("/admin/download/csv-hotel-2018")
+     */
+    public function getCsvHotel()
+    {
+        $data = $this->getDoctrine()->getRepository('AppBundle:Flat')->findAllToHotel();
+
+        dump($data);
+    }
+
+    /**
      * История
      *
      * @Route("/admin/history", name="admin-history")
