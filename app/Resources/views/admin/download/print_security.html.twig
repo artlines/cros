@@ -60,6 +60,7 @@
                 <td>{{ utc.user.organization.name }}</td>
                 <td>{% if utc.user.carnumber %}{{ utc.user.carnumber }}{% else %}-{% endif %}</td>
                 <td>{% if utc.user.arrival %}{{ utc.user.arrival|date("d.m.Y") }}{% else %}Дата заезда неизвестна{% endif %}</td>
+                <td>{% if utc.user.departures %}{{ utc.user.departures|date("d.m.Y") }}{% else %}Дата выезда неизвестна{% endif %}</td>
             </tr>
     {% endfor %}
     </tbody>

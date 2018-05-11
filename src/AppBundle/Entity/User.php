@@ -164,6 +164,12 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(name="arrival", type="datetime", options={"default": "2018-05-16 14:00"})
      */
     private $arrival;
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="departures", type="datetime", options={"default": "2018-05-19 14:00"})
+     */
+    private $departures;
 
     /**
      * @var \DateTime
@@ -221,6 +227,7 @@ class User implements UserInterface, \Serializable
         $this->utocs = new ArrayCollection();
         $this->speakers = new ArrayCollection();
         $this->arrival = new \DateTime("2018-05-16 14:00");
+        $this->departures = new \DateTime("2018-05-19 14:00");
         $this->leaving = new \DateTime("2018-05-19 12:00");
     }
 
@@ -935,7 +942,19 @@ class User implements UserInterface, \Serializable
 
         return $this;
     }
+    /**
+     * Set departures
+     *
+     * @param \DateTime $departures
+     *
+     * @return User
+     */
+    public function setDepartures($departures)
+    {
+        $this->departures = $departures;
 
+        return $this;
+    }
     /**
      * Get arrival
      *
@@ -945,7 +964,15 @@ class User implements UserInterface, \Serializable
     {
         return $this->arrival;
     }
-
+    /**
+     * Get departures
+     *
+     * @return \DateTime
+     */
+    public function getDepartures()
+    {
+        return $this->departures;
+    }
     /**
      * @return \DateTime
      */

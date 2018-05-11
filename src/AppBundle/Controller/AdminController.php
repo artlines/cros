@@ -1144,7 +1144,6 @@ class AdminController extends Controller
                 ->getRepository('AppBundle:UserToConf');
             /** @var UserToConf $users */
             $userstoconf = $UserToConfRepository->findByConfWithPost($conf->getId(), 'u.lastName, u.firstName');
-
             if (!$print) {
                 $response =  $this->render('admin/download/csv_security.html.twig', array(
                     'userstoconf' => $userstoconf,
