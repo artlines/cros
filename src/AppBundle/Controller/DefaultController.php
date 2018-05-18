@@ -59,9 +59,9 @@ class DefaultController extends Controller
             ->add('organization', ChoiceType::class, array(
                 'label' => 'Организация',
                 'choices'  => $boxOrgsts))
-            ->add('name', TextType::class, array('label' => 'Ваше имя'))
+            ->add('name', TextType::class, array('label' => '2. Ваше имя'))
             ->add('visits', ChoiceType::class, array(
-                'label' => 'Сколько раз Вы посещали КРОС?',
+                'label' => '3. Сколько раз Вы посещали КРОС?',
                 'choices'  => array(
                     '1'=>'1',
                     '2'=>'2',
@@ -78,7 +78,7 @@ class DefaultController extends Controller
                     '13'=>'13',
                 )))
             ->add('QualityOrganization', ChoiceType::class, array(
-                'label' => 'Оцените, пожалуйста, качество организации и проведения КРОС 2.0-18 в целом. Что нам стоит улучшить при подготовке КРОС 2.0-19',
+                'label' => '4. Оцените, пожалуйста, качество организации и проведения КРОС 2.0-18 в целом. Что нам стоит улучшить при подготовке КРОС 2.0-19',
                 'choices'  => array(
                     'Очень плохо'=>'1',
                     'Есть над чем работать'=>'2',
@@ -92,7 +92,7 @@ class DefaultController extends Controller
                 ))
             ->add('Presentations',ChoiceType::class,
                 array(
-                    'label' => 'Оцените, пожалуйста, актуальность и качество подготовки презентаций/докладов',
+                    'label' => '5. Оцените, пожалуйста, актуальность и качество подготовки презентаций/докладов',
                     'choices' => array(
                     '1' => '1',
                     '2' => '2',
@@ -102,11 +102,11 @@ class DefaultController extends Controller
                     'choices_as_values' => true,'multiple'=>false,'expanded'=>true))
             ->add('PresentationsComents', TextareaType::class, array(
                 'required' => false,
-                'label' => 'Ваш комментарий подготовки презентаций/докладов',
+                'label' => 'Ваш комментарий',
             ))
             ->add('tables',ChoiceType::class,
                 array(
-                    'label' => 'Оцените, пожалуйста, актуальность и качество проведения круглых столов',
+                    'label' => '6. Оцените, пожалуйста, актуальность и качество проведения круглых столов',
                     'choices' => array(
                         '1' => '1',
                         '2' => '2',
@@ -116,11 +116,11 @@ class DefaultController extends Controller
                     'choices_as_values' => true,'multiple'=>false,'expanded'=>true))
             ->add('tablesComents', TextareaType::class, array(
                 'required' => false,
-                'label' => 'Ваш комментарий подготовки проведения круглых столов',
+                'label' => 'Ваш комментарий',
             ))
             ->add('Entertainment',ChoiceType::class,
                 array(
-                    'label' => 'Оцените развлекательную часть мероприятия',
+                    'label' => '7. Оцените развлекательную часть мероприятия',
                     'choices' => array(
                         '1' => '1',
                         '2' => '2',
@@ -130,10 +130,10 @@ class DefaultController extends Controller
                     'choices_as_values' => true,'multiple'=>false,'expanded'=>true))
             ->add('EntertainmentComents', TextareaType::class, array(
                 'required' => false,
-                'label' => 'Ваш комментарий к проведению развлекательных мероприятий',
+                'label' => 'Ваш комментарий',
             ))
             ->add('Food', ChoiceType::class, array(
-                'label' => 'Оцените, пожалуйста, качество организации питания: кухню и сервис',
+                'label' => '8. Оцените, пожалуйста, качество организации питания: кухню и сервис',
                 'choices'  => array(
                     'Неудобно и блюда так себе'=>'Неудобно и блюда так себе',
                     'Нормально, но время организовано неудачно'=>'Нормально, но время организовано неудачно',
@@ -143,11 +143,11 @@ class DefaultController extends Controller
                 )))
             ->add('FoodComents', TextareaType::class, array(
                 'required' => false,
-                'label' => 'Ваш комментарий к организации питания',
+                'label' => 'Ваш комментарий',
             ))
             ->add('Search',ChoiceType::class,
                 array(
-                    'label' => 'Насколько удобно Вам было искать информацию о мероприятии с помощью наших информационных ресурсов (группа в Telegram, мобильное приложение, сайт)?',
+                    'label' => '9. Насколько удобно Вам было искать информацию о мероприятии с помощью наших информационных ресурсов (группа в Telegram, мобильное приложение, сайт)?',
                     'choices' => array(
                         '1' => '1',
                         '2' => '2',
@@ -157,10 +157,10 @@ class DefaultController extends Controller
                     'choices_as_values' => true,'multiple'=>false,'expanded'=>true))
             ->add('SearchComents', TextareaType::class, array(
                 'required' => false,
-                'label' => 'Ваш комментарий к поиску информациb о мероприятии',
+                'label' => 'Ваш комментарий',
             ))
             ->add('InformationalResources', ChoiceType::class, array(
-                'label' => 'Каким информационным ресурсом Вы в основном пользовались?',
+                'label' => '10. Каким информационным ресурсом Вы в основном пользовались?',
                 'choices'  => array(
                     'Группа в Telegram и бот КРОС'=>'Группа в Telegram и бот КРОС',
                     'Мобильное приложение'=>'Мобильное приложение',
@@ -170,10 +170,10 @@ class DefaultController extends Controller
                 )))
             ->add('InformationalResourcesComents', TextareaType::class, array(
                 'required' => false,
-                'label' => 'Ваш комментарий к информационным ресурсом',
+                'label' => 'Ваш комментарий',
             ))
             ->add('WhatImportant',ChoiceType::class,array(
-                'label' => 'Что для Вас особенно важно на КРОС?',
+                'label' => '11. Что для Вас особенно важно на КРОС?',
                 'multiple'=>true,
                 'expanded'=>true,
                 'choices'=>array(
@@ -192,7 +192,7 @@ class DefaultController extends Controller
                 'required' => false,
                 'label' => 'Ваш комментарий',
             ))
-            ->add('save', SubmitType::class,array('label' => 'Сохранить') )
+            ->add('save', SubmitType::class,array('label' => 'Отправить ответы') )
             ->getForm();
 
         $form->handleRequest($request);
@@ -202,7 +202,11 @@ class DefaultController extends Controller
             $form = $form->getData();
 
             $Interview->setName($form['name']);
-            $Interview->setCompany($form['organization']);
+            if($form['QualityOrganizationComents'] != null) {
+                $Interview->setCompany($form['organization']);
+            }else{
+                $Interview->setCompany(0);
+            }
             $Interview->setVisits($form['visits']);
             $Interview->setQualityOrganization($form['QualityOrganization']);
             //$Interview->setQualityOrganizationComents($form['QualityOrganizationComents']);
@@ -240,6 +244,7 @@ class DefaultController extends Controller
             }
             $em->persist($Interview);
             $em->flush();
+            //dump($Interview-getId());
             return $this->redirectToRoute('homepage');
         }
 

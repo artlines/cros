@@ -2,6 +2,34 @@
 
 {% block body %}
     <style>
+        #form_save{
+            background-color: green;
+            color: white;
+        }
+        div.form-group:nth-child(5) > label:nth-child(1),
+        div.form-group:nth-child(7) > label:nth-child(1),
+        div.form-group:nth-child(9) > label:nth-child(1),
+        div.form-group:nth-child(11) > label:nth-child(1),
+        div.form-group:nth-child(13) > label:nth-child(1),
+        div.form-group:nth-child(15) > label:nth-child(1),
+        div.form-group:nth-child(17) > label:nth-child(1),
+        div.form-group:nth-child(19) > label:nth-child(1),
+        div.checkbox:nth-child(1) > label:nth-child(1),
+        div.checkbox:nth-child(1) > label:nth-child(1),
+        div.checkbox:nth-child(2) > label:nth-child(1),
+        div.checkbox:nth-child(3) > label:nth-child(1),
+        div.checkbox:nth-child(4) > label:nth-child(1),
+        div.checkbox:nth-child(5) > label:nth-child(1),
+        div.checkbox:nth-child(6) > label:nth-child(1),
+        div.checkbox:nth-child(7) > label:nth-child(1),
+        div.checkbox:nth-child(8) > label:nth-child(1),
+        div.checkbox:nth-child(9) > label:nth-child(1)
+        {
+            font-weight: inherit;
+        }
+        label {
+            font-weight: bold;
+        }
         .radio{
             width: 50px;
             float: left;
@@ -53,8 +81,9 @@
             width: 400px !important;
         }
     </style>
-    Название вашей компании
-    <input type="text" value="" id="input_search" class="form-control">
+    <div class="form-group"><label>1. Название вашей компании</label>
+    <input type="text" value="" id="input_search" class="form-control" required="required">
+    </div>
     {{ form_start(form, {'method': 'POST'}) }}
     {{ form_widget(form) }}
     {{ form_end(form) }}
