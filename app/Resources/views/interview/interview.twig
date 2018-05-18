@@ -1,0 +1,44 @@
+{% extends theme_template %}
+
+{% block body %}
+    <style>
+        .form-control{
+            color: #000000;
+        }
+        #city {
+            display: none;
+        }
+    </style>
+    <input type="text" value="" id="input_search">
+    {{ form_start(form, {'method': 'POST'}) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+    {% block javascripts %}
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        var options = $('#city option');
+        var array_option = new Array();
+
+        for(var i=1; i<options.length; i++)  {
+            array_option.push(options[i].text);
+        }
+
+        $("#input_search").autocomplete({
+            source: array_option,
+            minLength: 3 // Количество символов, от скольки начинать поиск
+        });
+
+        $.expr[":"].exact = $.expr.createPseudo(function(arg) {
+            return function(element) {
+                return $(element).text() === arg.trim();
+            };
+        });
+
+        $(document).on("click", ".ui-widget-content li div",function() {
+            var target_option = $(this).text();
+            $("#city option:exact("+target_option+")").attr("selected", "selected");
+        });
+    </script>
+    {% endblock %}
+{% endblock %}

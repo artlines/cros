@@ -19,8 +19,10 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-
-
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -40,7 +42,149 @@ class DefaultController extends Controller
         $this->client = static::createClient();
     }
 
+    /**
+     * @Route("/interview", name="interview")
+     */
+    public function interview()
+    {
+        $orgsts = $this->getDoctrine()->getRepository('AppBundle:Organization');
+        $orgsts = $orgsts->findBy(array(), array('id' => 'ASC'));
+        foreach ($orgsts as $org){
+            $boxOrgsts[$org->getName()] = $org->getId();
+        }
 
+        $form = $this->createFormBuilder()
+            ->add('city', ChoiceType::class, array(
+                'label' => 'Организация',
+                'choices'  => $boxOrgsts))
+            ->add('name', TextType::class, array('label' => 'Ваше имя'))
+            ->add('visits', ChoiceType::class, array(
+                'label' => 'Сколько раз Вы посещали КРОС?',
+                'choices'  => array(
+                    '1'=>'1',
+                    '2'=>'2',
+                    '3'=>'3',
+                    '4'=>'4',
+                    '5'=>'5',
+                    '6'=>'6',
+                    '7'=>'7',
+                    '8'=>'8',
+                    '9'=>'9',
+                    '10'=>'10',
+                    '11'=>'11',
+                    '12'=>'12',
+                    '13'=>'13',
+                )))
+            ->add('QualityOrganization', ChoiceType::class, array(
+                'label' => 'Оцените, пожалуйста, качество организации и проведения КРОС 2.0-18 в целом. Что нам стоит улучшить при подготовке КРОС 2.0-19',
+                'choices'  => array(
+                    'Очень плохо'=>'1',
+                    'Есть над чем работать'=>'2',
+                    'Нормально'=>'3',
+                    'Хорошо'=>'4',
+                    'На высшем уровне'=>'5',
+                )))
+            ->add('QualityOrganizationComents', TextareaType::class, array(
+                'label' => 'Ваш комментарий',
+                ))
+            ->add('Presentations',ChoiceType::class,
+                array(
+                    'label' => 'Оцените, пожалуйста, актуальность и качество подготовки презентаций/докладов',
+                    'choices' => array(
+                    '1' => '1',
+                    '2' => '2',
+                    '3' => '3',
+                    '4' => '4'),
+                    'choices_as_values' => true,'multiple'=>false,'expanded'=>true))
+            ->add('PresentationsComents', TextareaType::class, array(
+                'label' => 'Ваш комментарий подготовки презентаций/докладов',
+            ))
+            ->add('tables',ChoiceType::class,
+                array(
+                    'label' => 'Оцените, пожалуйста, актуальность и качество проведения круглых столов',
+                    'choices' => array(
+                        '1' => '1',
+                        '2' => '2',
+                        '3' => '3',
+                        '4' => '4'),
+                    'choices_as_values' => true,'multiple'=>false,'expanded'=>true))
+            ->add('tablesComents', TextareaType::class, array(
+                'label' => 'Ваш комментарий подготовки проведения круглых столов',
+            ))
+            ->add('Entertainment',ChoiceType::class,
+                array(
+                    'label' => 'Оцените развлекательную часть мероприятия',
+                    'choices' => array(
+                        '1' => '1',
+                        '2' => '2',
+                        '3' => '3',
+                        '4' => '4'),
+                    'choices_as_values' => true,'multiple'=>false,'expanded'=>true))
+            ->add('EntertainmentComents', TextareaType::class, array(
+                'label' => 'Ваш комментарий к проведению развлекательных мероприятий',
+            ))
+            ->add('Food', ChoiceType::class, array(
+                'label' => 'Оцените, пожалуйста, качество организации питания: кухню и сервис',
+                'choices'  => array(
+                    'Неудобно и блюда так себе'=>'1',
+                    'Нормально, но время организовано неудачно'=>'2',
+                    'Довольно вкусно и удобно по времени'=>'3',
+                    'Хорошая кухня, удобный график'=>'4',
+                    'Отличная кухня, своевременная и удобная подача'=>'5',
+                )))
+            ->add('FoodComents', TextareaType::class, array(
+                'label' => 'Ваш комментарий к организации питания',
+            ))
+            ->add('Search',ChoiceType::class,
+                array(
+                    'label' => 'Насколько удобно Вам было искать информацию о мероприятии с помощью наших информационных ресурсов (группа в Telegram, мобильное приложение, сайт)?',
+                    'choices' => array(
+                        '1' => '1',
+                        '2' => '2',
+                        '3' => '3',
+                        '4' => '4'),
+                    'choices_as_values' => true,'multiple'=>false,'expanded'=>true))
+            ->add('SearchComents', TextareaType::class, array(
+                'label' => 'Ваш комментарий к поиску информациb о мероприятии',
+            ))
+            ->add('InformationalResources', ChoiceType::class, array(
+                'label' => 'Каким информационным ресурсом Вы в основном пользовались?',
+                'choices'  => array(
+                    'Группа в Telegram и бот КРОС'=>'Группа в Telegram и бот КРОС',
+                    'Мобильное приложение'=>'Мобильное приложение',
+                    'Сайт cros.nag.ru'=>'Сайт cros.nag.ru',
+                    'Стенды и указатели в отеле'=>'Стенды и указатели в отеле',
+                    'Другое (укажите)'=>'Другое',
+                )))
+            ->add('InformationalResourcesComents', TextareaType::class, array(
+                'label' => 'Ваш комментарий к информационным ресурсом',
+            ))
+            ->add('WhatImportant',ChoiceType::class,array(
+                'label' => 'Что для Вас особенно важно на КРОС?',
+                'multiple'=>true,
+                'expanded'=>true,
+                'choices'=>array(
+                    'Доклады и дискуссии'=>'value1',
+                    'Круглые столы'=>'value2',
+                    'Кулуарное общение с коллегами и новые бизнес-связи'=>'value2',
+                    'Развлекательная программа'=>'value2',
+                    'Вкусная еда и алкоголь'=>'value2',
+                    'Возможность отдохнуть от работы'=>'value2',
+                    'Познакомиться с техническими новинками в show-room'=>'value2',
+                    'Встретиться с сотрудниками НАГ'=>'value2',
+                    'Другое (укажите)'=>'value2',
+                )
+            ))
+            ->add('WhatImportantComent', TextareaType::class, array(
+                'label' => 'Ваш комментарий',
+            ))
+            ->add('save', SubmitType::class,array('label' => 'Сохранить') )
+            ->getForm();
+
+        return $this->render('interview/interview.twig',array(
+            'form' => $form->createView(),
+        ));
+    }
     /**
      * @Route("/", name="homepage")
      */
