@@ -85,6 +85,7 @@ class DefaultController extends Controller
                     'На высшем уровне'=>'5',
                 )))
             ->add('QualityOrganizationComents', TextareaType::class, array(
+                'required' => false,
                 'label' => 'Ваш комментарий',
                 ))
             ->add('Presentations',ChoiceType::class,
@@ -97,6 +98,7 @@ class DefaultController extends Controller
                     '4' => '4'),
                     'choices_as_values' => true,'multiple'=>false,'expanded'=>true))
             ->add('PresentationsComents', TextareaType::class, array(
+                'required' => false,
                 'label' => 'Ваш комментарий подготовки презентаций/докладов',
             ))
             ->add('tables',ChoiceType::class,
@@ -109,6 +111,7 @@ class DefaultController extends Controller
                         '4' => '4'),
                     'choices_as_values' => true,'multiple'=>false,'expanded'=>true))
             ->add('tablesComents', TextareaType::class, array(
+                'required' => false,
                 'label' => 'Ваш комментарий подготовки проведения круглых столов',
             ))
             ->add('Entertainment',ChoiceType::class,
@@ -121,6 +124,7 @@ class DefaultController extends Controller
                         '4' => '4'),
                     'choices_as_values' => true,'multiple'=>false,'expanded'=>true))
             ->add('EntertainmentComents', TextareaType::class, array(
+                'required' => false,
                 'label' => 'Ваш комментарий к проведению развлекательных мероприятий',
             ))
             ->add('Food', ChoiceType::class, array(
@@ -133,6 +137,7 @@ class DefaultController extends Controller
                     'Отличная кухня, своевременная и удобная подача'=>'5',
                 )))
             ->add('FoodComents', TextareaType::class, array(
+                'required' => false,
                 'label' => 'Ваш комментарий к организации питания',
             ))
             ->add('Search',ChoiceType::class,
@@ -145,6 +150,7 @@ class DefaultController extends Controller
                         '4' => '4'),
                     'choices_as_values' => true,'multiple'=>false,'expanded'=>true))
             ->add('SearchComents', TextareaType::class, array(
+                'required' => false,
                 'label' => 'Ваш комментарий к поиску информациb о мероприятии',
             ))
             ->add('InformationalResources', ChoiceType::class, array(
@@ -157,6 +163,7 @@ class DefaultController extends Controller
                     'Другое (укажите)'=>'Другое',
                 )))
             ->add('InformationalResourcesComents', TextareaType::class, array(
+                'required' => false,
                 'label' => 'Ваш комментарий к информационным ресурсом',
             ))
             ->add('WhatImportant',ChoiceType::class,array(
@@ -176,6 +183,7 @@ class DefaultController extends Controller
                 )
             ))
             ->add('WhatImportantComent', TextareaType::class, array(
+                'required' => false,
                 'label' => 'Ваш комментарий',
             ))
             ->add('save', SubmitType::class,array('label' => 'Сохранить') )
