@@ -124,9 +124,9 @@ class Interview
      */
     private $informationalResourcesComents;
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="whatImportant", type="integer")
+     * @ORM\Column(name="whatImportant", type="string", length=2048, unique=false)
      */
     private $whatImportant;
     /**
@@ -255,7 +255,7 @@ class Interview
         return $this->informationalResourcesComents;
     }
     /**
-     * @return int
+     * @return string
      */
     public function getWhatImportant()
     {
@@ -442,7 +442,7 @@ class Interview
         return $this;
     }
     /**
-     * @param integer $whatImportant
+     * @param string $whatImportant
      *
      * @return Interview
      */

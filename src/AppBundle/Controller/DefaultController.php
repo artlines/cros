@@ -41,7 +41,15 @@ class DefaultController extends Controller
     public function setUp(){
         $this->client = static::createClient();
     }
-
+    /**
+     * @Route("/thankyou", name="end-interview")
+     * @param Request $request
+     * @return object
+     */
+    public function interviewend()
+    {
+        return $this->render('interview/interviewend.twig',array());
+    }
     /**
      * @Route("/interview", name="interview")
      * @param Request $request
@@ -177,15 +185,15 @@ class DefaultController extends Controller
                 'multiple'=>true,
                 'expanded'=>true,
                 'choices'=>array(
-                    'Доклады и дискуссии'=>'1',
-                    'Круглые столы'=>'2',
-                    'Кулуарное общение с коллегами и новые бизнес-связи'=>'3',
-                    'Развлекательная программа'=>'4',
-                    'Вкусная еда и алкоголь'=>'5',
-                    'Возможность отдохнуть от работы'=>'6',
-                    'Познакомиться с техническими новинками в show-room'=>'7',
-                    'Встретиться с сотрудниками НАГ'=>'8',
-                    'Другое (укажите)'=>'9',
+                    'Доклады и дискуссии'=>'Доклады и дискуссии',
+                    'Круглые столы'=>'Круглые столы',
+                    'Кулуарное общение с коллегами и новые бизнес-связи'=>'Кулуарное общение с коллегами и новые бизнес-связи',
+                    'Развлекательная программа'=>'Развлекательная программа',
+                    'Вкусная еда и алкоголь'=>'Вкусная еда и алкоголь',
+                    'Возможность отдохнуть от работы'=>'Возможность отдохнуть от работы',
+                    'Познакомиться с техническими новинками в show-room'=>'Познакомиться с техническими новинками в show-room',
+                    'Встретиться с сотрудниками НАГ'=>'Встретиться с сотрудниками НАГ',
+                    'Другое (укажите)'=>'Другое',
                 )
             ))
             ->add('WhatImportantComent', TextareaType::class, array(
@@ -242,10 +250,13 @@ class DefaultController extends Controller
             if($form['WhatImportantComent'] != null){
                 $Interview->setWhatImportantComent($form['WhatImportantComent']);
             }
+            if($form['WhatImportant'] != null){
+                $shops = implode(';', $form['WhatImportant']);
+                $Interview->setWhatImportant($shops);
+            }
             $em->persist($Interview);
             $em->flush();
-            //dump($Interview-getId());
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('end-interview');
         }
 
         return $this->render('interview/interview.twig',array(
