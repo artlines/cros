@@ -5,20 +5,36 @@
         .form-control{
             color: #000000;
         }
-        #city {
+        #form > div:nth-child(1) {
             display: none;
         }
+        .ui-autocomplete{
+            margin-left: 0;
+            padding-left: 0;
+        }
+        .ui-menu-item {
+            list-style-type: none;
+            cursor: pointer;
+        }
+        .ui-menu{
+            background-color: #FFF;
+            border-color: #6ca0dc;
+            border-width: 2px;
+            border-style: dotted;
+            padding:15px;
+            width: 400px !important;
+        }
     </style>
-    <input type="text" value="" id="input_search">
+    Название вашей компании
+    <input type="text" value="" id="input_search" class="form-control">
     {{ form_start(form, {'method': 'POST'}) }}
     {{ form_widget(form) }}
     {{ form_end(form) }}
 
     {% block javascripts %}
-        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
     <script>
-        var options = $('#city option');
+        var options = $('#form_organization option');
         var array_option = new Array();
 
         for(var i=1; i<options.length; i++)  {
@@ -27,7 +43,7 @@
 
         $("#input_search").autocomplete({
             source: array_option,
-            minLength: 3 // Количество символов, от скольки начинать поиск
+            minLength: 2 // Количество символов, от скольки начинать поиск
         });
 
         $.expr[":"].exact = $.expr.createPseudo(function(arg) {
@@ -38,7 +54,7 @@
 
         $(document).on("click", ".ui-widget-content li div",function() {
             var target_option = $(this).text();
-            $("#city option:exact("+target_option+")").attr("selected", "selected");
+            $("#form_organization option:exact("+target_option+")").attr("selected", "selected");
         });
     </script>
     {% endblock %}

@@ -54,7 +54,7 @@ class DefaultController extends Controller
         }
 
         $form = $this->createFormBuilder()
-            ->add('city', ChoiceType::class, array(
+            ->add('organization', ChoiceType::class, array(
                 'label' => 'Организация',
                 'choices'  => $boxOrgsts))
             ->add('name', TextType::class, array('label' => 'Ваше имя'))
