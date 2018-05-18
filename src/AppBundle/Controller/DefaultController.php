@@ -62,7 +62,6 @@ class DefaultController extends Controller
         foreach ($orgsts as $org){
             $boxOrgsts[$org->getName()] = $org->getId();
         }
-        dump($boxOrgsts);
         $form = $this->createFormBuilder()
             ->add('organization', ChoiceType::class, array(
                 'label' => 'Организация',
