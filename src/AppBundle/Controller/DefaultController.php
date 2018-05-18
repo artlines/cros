@@ -13,7 +13,7 @@ use AppBundle\Entity\OrgToConf;
 use AppBundle\Entity\User;
 use AppBundle\Entity\UserToApartament;
 use AppBundle\Entity\UserToConf;
-
+use AppBundle\Entity\Interview;
 
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -44,8 +44,10 @@ class DefaultController extends Controller
 
     /**
      * @Route("/interview", name="interview")
+     * @param Request $request
+     * @return object
      */
-    public function interview()
+    public function interview(Request $request)
     {
         $orgsts = $this->getDoctrine()->getRepository('AppBundle:Organization');
         $orgsts = $orgsts->findBy(array(), array('id' => 'ASC'));
@@ -95,7 +97,8 @@ class DefaultController extends Controller
                     '1' => '1',
                     '2' => '2',
                     '3' => '3',
-                    '4' => '4'),
+                    '4' => '4',
+                     '5' => '5'),
                     'choices_as_values' => true,'multiple'=>false,'expanded'=>true))
             ->add('PresentationsComents', TextareaType::class, array(
                 'required' => false,
@@ -108,7 +111,8 @@ class DefaultController extends Controller
                         '1' => '1',
                         '2' => '2',
                         '3' => '3',
-                        '4' => '4'),
+                        '4' => '4',
+                        '5' => '5'),
                     'choices_as_values' => true,'multiple'=>false,'expanded'=>true))
             ->add('tablesComents', TextareaType::class, array(
                 'required' => false,
@@ -121,7 +125,8 @@ class DefaultController extends Controller
                         '1' => '1',
                         '2' => '2',
                         '3' => '3',
-                        '4' => '4'),
+                        '4' => '4',
+                        '5' => '5'),
                     'choices_as_values' => true,'multiple'=>false,'expanded'=>true))
             ->add('EntertainmentComents', TextareaType::class, array(
                 'required' => false,
@@ -130,11 +135,11 @@ class DefaultController extends Controller
             ->add('Food', ChoiceType::class, array(
                 'label' => 'Оцените, пожалуйста, качество организации питания: кухню и сервис',
                 'choices'  => array(
-                    'Неудобно и блюда так себе'=>'1',
-                    'Нормально, но время организовано неудачно'=>'2',
-                    'Довольно вкусно и удобно по времени'=>'3',
-                    'Хорошая кухня, удобный график'=>'4',
-                    'Отличная кухня, своевременная и удобная подача'=>'5',
+                    'Неудобно и блюда так себе'=>'Неудобно и блюда так себе',
+                    'Нормально, но время организовано неудачно'=>'Нормально, но время организовано неудачно',
+                    'Довольно вкусно и удобно по времени'=>'Довольно вкусно и удобно по времени',
+                    'Хорошая кухня, удобный график'=>'Хорошая кухня, удобный график',
+                    'Отличная кухня, своевременная и удобная подача'=>'Отличная кухня, своевременная и удобная подача',
                 )))
             ->add('FoodComents', TextareaType::class, array(
                 'required' => false,
@@ -147,7 +152,8 @@ class DefaultController extends Controller
                         '1' => '1',
                         '2' => '2',
                         '3' => '3',
-                        '4' => '4'),
+                        '4' => '4',
+                        '5' => '5'),
                     'choices_as_values' => true,'multiple'=>false,'expanded'=>true))
             ->add('SearchComents', TextareaType::class, array(
                 'required' => false,
@@ -171,15 +177,15 @@ class DefaultController extends Controller
                 'multiple'=>true,
                 'expanded'=>true,
                 'choices'=>array(
-                    'Доклады и дискуссии'=>'value1',
-                    'Круглые столы'=>'value2',
-                    'Кулуарное общение с коллегами и новые бизнес-связи'=>'value2',
-                    'Развлекательная программа'=>'value2',
-                    'Вкусная еда и алкоголь'=>'value2',
-                    'Возможность отдохнуть от работы'=>'value2',
-                    'Познакомиться с техническими новинками в show-room'=>'value2',
-                    'Встретиться с сотрудниками НАГ'=>'value2',
-                    'Другое (укажите)'=>'value2',
+                    'Доклады и дискуссии'=>'1',
+                    'Круглые столы'=>'2',
+                    'Кулуарное общение с коллегами и новые бизнес-связи'=>'3',
+                    'Развлекательная программа'=>'4',
+                    'Вкусная еда и алкоголь'=>'5',
+                    'Возможность отдохнуть от работы'=>'6',
+                    'Познакомиться с техническими новинками в show-room'=>'7',
+                    'Встретиться с сотрудниками НАГ'=>'8',
+                    'Другое (укажите)'=>'9',
                 )
             ))
             ->add('WhatImportantComent', TextareaType::class, array(
@@ -188,6 +194,54 @@ class DefaultController extends Controller
             ))
             ->add('save', SubmitType::class,array('label' => 'Сохранить') )
             ->getForm();
+
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()) {
+            $Interview = new Interview();
+            $em = $this->getDoctrine()->getManager();
+            $form = $form->getData();
+
+            $Interview->setName($form['name']);
+            $Interview->setCompany($form['organization']);
+            $Interview->setVisits($form['visits']);
+            $Interview->setQualityOrganization($form['QualityOrganization']);
+            //$Interview->setQualityOrganizationComents($form['QualityOrganizationComents']);
+            $Interview->setPresentations($form['Presentations']);
+            $Interview->setTables($form['tables']);
+            $Interview->setEntertainment($form['Entertainment']);
+            $Interview->setFood($form['Food']);
+            $Interview->setSearch($form['Search']);
+            $Interview->setInformationalResources($form['InformationalResources']);
+            $Interview->setWhatImportant(1);
+
+            if($form['QualityOrganizationComents'] != null){
+                $Interview->setQualityOrganizationComents($form['QualityOrganizationComents']);
+            }
+            if($form['PresentationsComents'] != null){
+                $Interview->setPresentationsComents($form['PresentationsComents']);
+            }
+            if($form['tablesComents'] != null){
+                $Interview->setTablesComents($form['tablesComents']);
+            }
+            if($form['EntertainmentComents'] != null){
+                $Interview->setEntertainmentComents($form['EntertainmentComents']);
+            }
+            if($form['FoodComents'] != null){
+                $Interview->setFoodComents($form['FoodComents']);
+            }
+            if($form['SearchComents'] != null){
+                $Interview->setSearchComents($form['SearchComents']);
+            }
+            if($form['InformationalResourcesComents'] != null){
+                $Interview->setInformationalResourcesComents($form['InformationalResourcesComents']);
+            }
+            if($form['WhatImportantComent'] != null){
+                $Interview->setWhatImportantComent($form['WhatImportantComent']);
+            }
+            $em->persist($Interview);
+            $em->flush();
+            return $this->redirectToRoute('homepage');
+        }
 
         return $this->render('interview/interview.twig',array(
             'form' => $form->createView(),
