@@ -22,15 +22,24 @@ class TgNotifyCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $output->writeln("[КРОС-2.0-18] Оповещение чатов Telegram о скором старте лекций");
+        $output->writeln("");
+
         /** @var TgChatManager $tgChatManager */
         $tgChatManager = $this->getContainer()->get('tg.chat.manager');
 
         $current_date_in_sochi = (new \DateTime())->setTimezone(new \DateTimeZone('Europe/Moscow'));
-        $output->writeln("In Sochi now ".$current_date_in_sochi->format("H:i d.m.Y"));
+        $output->writeln("В Сочи сейчас ".$current_date_in_sochi->format("H:i d.m.Y"));
 
-        $res = $tgChatManager->checkAndNotifySubscribes();
+        $res_arr = $tgChatManager->checkAndNotifySubscribes();
 
-        $output->writeln("Done.");
+        if ($res_arr[0] !== 0) {
+            $output->writeln("");
+            $output->writeln("Было оповещено {$res_arr[1]} чатов о скором старте {$res_arr[0]} лекции(й)");
+        } else {
+            $output->writeln("");
+            $output->writeln("Оповещения не производились");
+        }
     }
 
 }

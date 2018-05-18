@@ -101,7 +101,7 @@ class TgChatManager
         date_default_timezone_set("Europe/Moscow");
         $moscow_tz = new \DateTimeZone('Europe/Moscow');
         $time_now = (new \DateTime())->setTimezone($moscow_tz);
-        $time_plus_15 = (new \DateTime('+ 15 minutes'))->setTimezone($moscow_tz);
+        $time_plus_15 = (new \DateTime('+ 16 minutes'))->setTimezone($moscow_tz);
 
         $qb = $this->em->getRepository('AppBundle:Lecture')->createQueryBuilder('l');
         $lectures = $qb->where(
@@ -112,6 +112,8 @@ class TgChatManager
             '3' => $time_plus_15->format("H:i")
         ))->getQuery()->getResult();
 
+        $lecturesCount = count($lectures);
+        $chatsNotified = 0;
         /** @var Lecture $lecture */
         foreach ($lectures as $lecture)
         {
@@ -131,9 +133,12 @@ class TgChatManager
                             'lecture' => $lecture
                         ])
                     );
+                    $chatsNotified++;
                 }
             }
         }
+
+        return [$lecturesCount, $chatsNotified];
     }
 
     /**
