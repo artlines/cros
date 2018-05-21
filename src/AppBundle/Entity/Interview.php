@@ -28,6 +28,11 @@ class Interview
      */
     private $company;
     /**
+     * @ORM\ManyToOne(targetEntity="Organization", inversedBy="users")
+     * @ORM\JoinColumn(name="company", referencedColumnName="id")
+     */
+    private $companyName;
+    /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, unique=false)
@@ -141,6 +146,22 @@ class Interview
     public function getId()
     {
         return $this->id;
+    }
+    /**
+     * Get companyName
+     *
+     * @return \AppBundle\Entity\Organization
+     */
+    public function getCompanyName()
+    {
+        return $this->companyName;
+    }
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
     /**
      * @return int

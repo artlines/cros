@@ -1166,7 +1166,30 @@ class AdminController extends Controller
             return $this->render('admin/download/print_security.html.twig', array(
                 'userstoconf' => $userstoconf,
             ));
-        } elseif($filename == 'hotel'){
+        }elseif($filename == 'interview'){
+            /** @var InterviewRepository $interviewRepository */
+            $interviewRepository = $this->getDoctrine()->getRepository('AppBundle:Interview');
+            /** @var OrganizationRepository $orgsts */
+            $orgsts = $this->getDoctrine()->getRepository('AppBundle:Organization');
+            /** @var Interview $interview */
+            $interview = $interviewRepository->findAll();
+            $response =  $this->render('admin/download/csv_interview.html.twig', array(
+                'data' => $interview,
+            ));
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename=security.csv');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Type: text/html; charset=windows-1251');
+
+            $response->setCharset("WINDOWS-1251");
+            $response->setContent( mb_convert_encoding( $response->getContent() , "WINDOWS-1251",  "UTF-8" ));
+
+            return $response;
+        }
+        elseif($filename == 'hotel'){
             /** @var CorpusesRepository $corpusesRepository */
             $corpusesRepository = $this->getDoctrine()->getRepository('AppBundle:Corpuses');
             /** @var Corpuses $corpuses */
