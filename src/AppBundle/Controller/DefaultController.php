@@ -51,6 +51,15 @@ class DefaultController extends Controller
         return $this->render('interview/interviewend.twig',array());
     }
     /**
+     * @Route("/oops", name="error-interview")
+     * @param Request $request
+     * @return object
+     */
+    public function interviewerr()
+    {
+        return $this->render('interview/interviewerr.twig',array());
+    }
+    /**
      * @Route("/interview", name="interview")
      * @param Request $request
      * @return object
@@ -209,10 +218,12 @@ class DefaultController extends Controller
             $form = $form->getData();
 
             $Interview->setName($form['name']);
-            if($form['QualityOrganizationComents'] != null) {
-                $Interview->setCompany($form['organization']);
+            if($form['organization'] != null) {
+                $orgsts = $this->getDoctrine()->getRepository('AppBundle:Organization');
+                $organization = $orgsts->find($form['organization']);
+                $Interview->setCompany($organization);
             }else{
-                $Interview->setCompany(0);
+                return $this->redirectToRoute('error-interview');
             }
             $Interview->setVisits($form['visits']);
             $Interview->setQualityOrganization($form['QualityOrganization']);
@@ -255,6 +266,7 @@ class DefaultController extends Controller
             }
             $em->persist($Interview);
             $em->flush();
+
             return $this->redirectToRoute('end-interview');
         }
 

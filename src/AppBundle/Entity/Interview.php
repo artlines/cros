@@ -22,16 +22,10 @@ class Interview
      */
     private $id;
     /**
-     * @var int
-     *
-     * @ORM\Column(name="company", type="integer")
-     */
-    private $company;
-    /**
      * @ORM\ManyToOne(targetEntity="Organization", inversedBy="users")
      * @ORM\JoinColumn(name="company", referencedColumnName="id")
      */
-    private $companyName;
+    private $company;
     /**
      * @var string
      *
