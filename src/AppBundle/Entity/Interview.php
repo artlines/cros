@@ -125,7 +125,7 @@ class Interview
     /**
      * @var string
      *
-     * @ORM\Column(name="whatImportant", type="string", length=2048, unique=false)
+     * @ORM\Column(name="whatImportant", type="string", length=2048, unique=false,nullable=true)
      */
     private $whatImportant;
     /**

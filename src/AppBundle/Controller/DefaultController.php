@@ -94,13 +94,12 @@ class DefaultController extends Controller
                     '13'=>'13',
                 )))
             ->add('QualityOrganization', ChoiceType::class, array(
-                'label' => '4. Оцените, пожалуйста, качество организации и проведения КРОС 2.0-18 в целом. Что нам стоит улучшить при подготовке КРОС 2.0-19',
+                'label' => '4. Оцените, пожалуйста, качество организации и проведения КРОС 2.0-18 в целом.',
                 'choices'  => array(
-                    'Очень плохо'=>'1',
-                    'Есть над чем работать'=>'2',
-                    'Нормально'=>'3',
-                    'Хорошо'=>'4',
-                    'На высшем уровне'=>'5',
+                    'Есть над чем работать'=>'1',
+                    'Нормально'=>'2',
+                    'Хорошо'=>'3',
+                    'На высшем уровне'=>'4',
                 )))
             ->add('QualityOrganizationComents', TextareaType::class, array(
                 'required' => false,
@@ -118,7 +117,7 @@ class DefaultController extends Controller
                     'choices_as_values' => true,'multiple'=>false,'expanded'=>true))
             ->add('PresentationsComents', TextareaType::class, array(
                 'required' => false,
-                'label' => 'Ваш комментарий',
+                'label' => 'Ваш комментарий, можно описать свои впечатления, в том числе, и по сравнению с прошлыми годами. ',
             ))
             ->add('tables',ChoiceType::class,
                 array(
@@ -146,16 +145,15 @@ class DefaultController extends Controller
                     'choices_as_values' => true,'multiple'=>false,'expanded'=>true))
             ->add('EntertainmentComents', TextareaType::class, array(
                 'required' => false,
-                'label' => 'Ваш комментарий',
+                'label' => 'Какие развлечения вы хотели бы увидеть в следующем году?',
             ))
             ->add('Food', ChoiceType::class, array(
                 'label' => '8. Оцените, пожалуйста, качество организации питания: кухню и сервис',
                 'choices'  => array(
-                    'Неудобно и блюда так себе'=>'Неудобно и блюда так себе',
+                    'Организация питания оставляет желать лучшего'=>'Организация питания оставляет желать лучшего',
                     'Нормально, но время организовано неудачно'=>'Нормально, но время организовано неудачно',
-                    'Довольно вкусно и удобно по времени'=>'Довольно вкусно и удобно по времени',
                     'Хорошая кухня, удобный график'=>'Хорошая кухня, удобный график',
-                    'Отличная кухня, своевременная и удобная подача'=>'Отличная кухня, своевременная и удобная подача',
+                    'Питание организовано идеально, ничего менять не требуется'=>'Питание организовано идеально, ничего менять не требуется',
                 )))
             ->add('FoodComents', TextareaType::class, array(
                 'required' => false,
@@ -163,7 +161,7 @@ class DefaultController extends Controller
             ))
             ->add('Search',ChoiceType::class,
                 array(
-                    'label' => '9. Насколько удобно Вам было искать информацию о мероприятии с помощью наших информационных ресурсов (группа в Telegram, мобильное приложение, сайт)?',
+                    'label' => '9. Оцените информационное сопровождение конференции: удобство и своевременность получения информации, возможность связаться с коллегами, подсказки об изменении в расписании. В комментариях можно предложить варианты улучшения информационного обмена.',
                     'choices' => array(
                         '1' => '1',
                         '2' => '2',
@@ -175,38 +173,9 @@ class DefaultController extends Controller
                 'required' => false,
                 'label' => 'Ваш комментарий',
             ))
-            ->add('InformationalResources', ChoiceType::class, array(
-                'label' => '10. Каким информационным ресурсом Вы в основном пользовались?',
-                'choices'  => array(
-                    'Группа в Telegram и бот КРОС'=>'Группа в Telegram и бот КРОС',
-                    'Мобильное приложение'=>'Мобильное приложение',
-                    'Сайт cros.nag.ru'=>'Сайт cros.nag.ru',
-                    'Стенды и указатели в отеле'=>'Стенды и указатели в отеле',
-                    'Другое (укажите)'=>'Другое',
-                )))
-            ->add('InformationalResourcesComents', TextareaType::class, array(
-                'required' => false,
-                'label' => 'Ваш комментарий',
-            ))
-            ->add('WhatImportant',ChoiceType::class,array(
-                'label' => '11. Что для Вас особенно важно на КРОС?',
-                'multiple'=>true,
-                'expanded'=>true,
-                'choices'=>array(
-                    'Доклады и дискуссии'=>'Доклады и дискуссии',
-                    'Круглые столы'=>'Круглые столы',
-                    'Кулуарное общение с коллегами и новые бизнес-связи'=>'Кулуарное общение с коллегами и новые бизнес-связи',
-                    'Развлекательная программа'=>'Развлекательная программа',
-                    'Вкусная еда и алкоголь'=>'Вкусная еда и алкоголь',
-                    'Возможность отдохнуть от работы'=>'Возможность отдохнуть от работы',
-                    'Познакомиться с техническими новинками в show-room'=>'Познакомиться с техническими новинками в show-room',
-                    'Встретиться с сотрудниками НАГ'=>'Встретиться с сотрудниками НАГ',
-                    'Другое (укажите)'=>'Другое',
-                )
-            ))
             ->add('WhatImportantComent', TextareaType::class, array(
                 'required' => false,
-                'label' => 'Ваш комментарий',
+                'label' => '10. Чего вам не хватило, чтобы ощутить себя на идеально организованной провайдерской конференции?',
             ))
             ->add('save', SubmitType::class,array('label' => 'Отправить ответы') )
             ->getForm();
@@ -233,8 +202,8 @@ class DefaultController extends Controller
             $Interview->setEntertainment($form['Entertainment']);
             $Interview->setFood($form['Food']);
             $Interview->setSearch($form['Search']);
-            $Interview->setInformationalResources($form['InformationalResources']);
-            $Interview->setWhatImportant(1);
+            //$Interview->setInformationalResources($form['InformationalResources']);
+            //$Interview->setWhatImportant(1);
 
             if($form['QualityOrganizationComents'] != null){
                 $Interview->setQualityOrganizationComents($form['QualityOrganizationComents']);
@@ -254,16 +223,20 @@ class DefaultController extends Controller
             if($form['SearchComents'] != null){
                 $Interview->setSearchComents($form['SearchComents']);
             }
+            /*
             if($form['InformationalResourcesComents'] != null){
                 $Interview->setInformationalResourcesComents($form['InformationalResourcesComents']);
             }
+            */
             if($form['WhatImportantComent'] != null){
                 $Interview->setWhatImportantComent($form['WhatImportantComent']);
             }
+            /*
             if($form['WhatImportant'] != null){
                 $shops = implode(';', $form['WhatImportant']);
                 $Interview->setWhatImportant($shops);
             }
+            */
             $em->persist($Interview);
             $em->flush();
 
