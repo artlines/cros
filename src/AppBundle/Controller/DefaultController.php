@@ -94,7 +94,7 @@ class DefaultController extends Controller
                     '13'=>'13',
                 )))
             ->add('QualityOrganization', ChoiceType::class, array(
-                'label' => '4. Оцените, пожалуйста, качество организации и проведения КРОС 2.0-18 в целом.',
+                'label' => '4. Оцените, пожалуйста, качество организации и проведения КРОС 2.0-18 в целом',
                 'choices'  => array(
                     'Есть над чем работать'=>'1',
                     'Нормально'=>'2',
