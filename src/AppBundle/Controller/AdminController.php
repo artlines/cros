@@ -1176,14 +1176,7 @@ class AdminController extends Controller
             $response =  $this->render('admin/download/csv_interview.html.twig', array(
                 'data' => $interview,
             ));
-            header('Content-Description: File Transfer');
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename=security.csv');
-            header('Expires: 0');
-            header('Cache-Control: must-revalidate');
-            header('Pragma: public');
-            header('Content-Type: text/csv; charset=windows-1251');
-
+            $response->headers->set('Content-Type', 'text/csv');
             $response->setCharset("WINDOWS-1251");
             $response->setContent( mb_convert_encoding( $response->getContent() , "WINDOWS-1251",  "UTF-8" ));
 
