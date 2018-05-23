@@ -1182,7 +1182,7 @@ class AdminController extends Controller
             header('Expires: 0');
             header('Cache-Control: must-revalidate');
             header('Pragma: public');
-            header('Content-Type: text/html; charset=windows-1251');
+            header('Content-Type: text/csv; charset=windows-1251');
 
             $response->setCharset("WINDOWS-1251");
             $response->setContent( mb_convert_encoding( $response->getContent() , "WINDOWS-1251",  "UTF-8" ));
