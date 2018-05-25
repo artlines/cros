@@ -41,6 +41,19 @@ class DefaultController extends Controller
     public function setUp(){
         $this->client = static::createClient();
     }
+
+    /**
+     * @Route("/rate", name="rate-form")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function ratePage()
+    {
+
+
+        return $this->render('rate/index.html.twig');
+    }
+
     /**
      * @Route("/thankyou", name="end-interview")
      * @param Request $request
