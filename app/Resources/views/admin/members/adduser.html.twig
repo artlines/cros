@@ -1,0 +1,28 @@
+{% extends 'admin.html.twig' %}
+{% block body %}
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Создание нового пользователя</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {% if status %}
+            <h2>Пользователь успешно добавлен</h2> <a href="{{ path('creation-by-admin-user') }}" class="btn btn-success">Добавить еще</a>
+            {% else %}
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/admin.js') }}"></script>
+{% endblock %}

@@ -4,6 +4,7 @@ namespace AppBundle\Repository;
 
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\Mapping AS ORM;
 
 /**
@@ -52,21 +53,6 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
             return null;
         }
 
-    }
-
-    public function findByConf($conf_id){
-        $query = $this->getEntityManager()
-            ->createQuery('
-                SELECT u FROM AppBundle:User u
-                LEFT JOIN u.utocs utocs
-                WHERE utocs.id = :conf
-            ')->setParameter('conf', $conf_id);
-
-        try {
-            return $query->getResult();
-        } catch (\Doctrine\ORM\NoResultException $e) {
-            return null;
-        }
     }
 
     public function findManagers($conf_id, $year)
@@ -148,7 +134,7 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
                 OR u.middleName IN (:strings)
                 OR o.name IN (:strings)
                 OR o.name LIKE :string
-            ')->setParameter('strings', $strings)->setParameter('string', '%'.$string.'%');
+            ')->setParameter('strings', $strings)->setParameter('string', '%' . $string . '%');
         } else {
             $query = $this->getEntityManager()
                 ->createQuery('
@@ -159,11 +145,46 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
                     OR (u.firstName IN (:strings)
                     AND u.middleName IN (:strings))
                     OR (o.name LIKE :string)
-                ')->setParameter('strings', $strings)->setParameter('string', '%'.$string.'%');
+                ')->setParameter('strings', $strings)->setParameter('string', '%' . $string . '%');
         }
 
         try {
             return $query->setMaxResults(5)->getResult();
+        } catch (\Doctrine\ORM\NoResultException $e) {
+            return null;
+        }
+    }
+
+    /**
+     * Search user
+     * @param string $string
+     * @param int $offset
+     * @param int $limit
+     * @return object|null
+     */
+    public function easySearchUser($string, $offset, $limit)
+    {
+        $query = $this->getEntityManager()
+            ->createQuery('
+                    SELECT u FROM AppBundle:User u
+                    WHERE (u.firstName LIKE :string  
+                    OR u.middleName LIKE :string
+                    OR u.username LIKE :string
+                    OR u.email LIKE :string
+                    OR u.nickname LIKE :string
+                    OR u.lastName LIKE :string
+                    )
+                ')
+            ->setParameter('string', '%' . $string . '%')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset);
+        $paginator = new Paginator($query, $fetchJoinCollection = true);
+        $c = count($paginator);
+        $search = new \stdClass();
+        $search->query = $query->getResult();
+        $search->count = $c;
+        try {
+            return $search;
         } catch (\Doctrine\ORM\NoResultException $e) {
             return null;
         }

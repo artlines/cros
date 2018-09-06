@@ -2,22 +2,26 @@
 {% block body %}
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Зарегистрированные пользователи</h1>
+            <h1 class="page-header">Зарегистрированные пользователи <a href="{{ path('creation-by-admin-user') }}" class="btn btn-success"><i class="fa fa-plus-circle fa-fw"></i></a></h1>
         </div>
     </div>
+    {{ form_start(form) }}
+    {{ form_widget(form.search) }}
+    {{ form_widget(form.save) }}
+    {{ form_end(form) }}
     <div class="row">
         <div class="col-lg-12">
             {% if users is empty %}
-                <h3>Нет зарегистрированных пользователей</h3>
+                <h3>Не чего не найдено</h3>
             {% else %}
                 <table class="table">
                     <thead>
                     <tr>
-                        <th>Компания</th>
+                        <th>id</th>
                         <th>ФИО</th>
-                        <th>Должность</th>
-                        <th>Телефон</th>
-                        <th>Другие контакты</th>
+                        <th>Email</th>
+                        {#<th>Телефон</th>#}
+                        {#<th>Другие контакты</th>#}
                         <th>Роли</th>
                         <th>Действия</th>
                     </tr>
@@ -25,14 +29,14 @@
                     <tbody>
                     {%  for user in users %}
                         <tr>
-                            <td>{{ user.organization.name }}</td>
+                            <td>{{ user.id }}</td>
                             <td>{{ user.lastname }} {{ user.firstname }} {{ user.middlename }}</td>
-                            <td>{{ user.post }}</td>
-                            <td>+{{ user.username }}</td>
-                            <td>
-                                <p>E-mail: <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
-                                <p>Telegram: <a href="https://telegram.me/{{ user.telegram }}">{{ user.telegram }}</a></p>
-                            </td>
+                            <td>{{ user.email }}</td>
+                            {#<td>+{{ user.username }}</td>#}
+                            {#<td>#}
+                                {#<p>E-mail: <a href="mailto:{{ user.email }}">{{ user.email }}</a></p>#}
+                                {#<p>Telegram: <a href="https://telegram.me/{{ user.telegram }}">{{ user.telegram }}</a></p>#}
+                            {#</td>#}
                             <td>
                                 {% for role in user.roles %}
                                     {{ role|slice(5) }}
@@ -40,12 +44,21 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    <a href="{{ path('admin-faq-edit', {'id': user.id }) }}" class="btn btn-default" role="button">
-                                        <i class="fa fa-edit fa-fw"></i> Редактировать
+                                    <a href="#" class="btn btn-default password-user" role="button" user="{{ user.id }}">
+                                        <i class="fa fa-unlock fa-fw"></i> сменить пароль
                                     </a>
-                                    <a href="{{ path('admin-faq-remove', {'id': user.id}) }}" class="btn btn-danger remove-faq" role="button">
-                                        <i class="fa fa-remove fa-fw"></i> Удалить
+                                    <a href="#" class="btn btn-default edit-user" role="button" user="{{ user.id }}">
+                                        <i class="fa fa-key fa-fw"></i> изменить роль
                                     </a>
+                                    {%if user.isactive %}
+                                    <a href="#" class="btn btn-danger remove-user" role="button" user="{{ user.id }}">
+                                        <i class="fa fa-remove fa-fw"></i> Заблокировать
+                                    </a>
+                                    {% else %}
+                                    <a href="#" class="btn btn-success restore-user" role="button" user="{{ user.id }}">
+                                        <i class="fa fa-unlock-alt fa-fw"></i> Разблокировать
+                                    </a>
+                                    {% endif %}
                                 </div>
                             </td>
                         </tr>
@@ -53,12 +66,17 @@
                     </tbody>
                 </table>
             {% endif %}
-            <h2>Роли</h2>
-            SUPER_ADMIN - полные права<br>
-            ADMIN - администратор сайта, имеет доступ к панели управления сайтом<br>
-            MANAGER - менеджер компании НАГ, может просматривать список зарегистрированных по приглашению участников<br>
-            ORG - представитель организации, имеет доступ к личному кабинету организации для регистрации сотрудников<br>
-            USER - участник КРОС, имеет доступ только к основному сайту<br>
+  <paginator>
+      {% set page = count/default_limit %}
+      {% set page = page|round(0, 'ceil') %}
+      {% if page > 1 %}
+      {% set offset = 0-default_limit %}
+      {% for i in 1..page  %}
+          {% set offset = offset+default_limit %}
+          <a href="?{{url_output}}&offset={{ offset }}" class="btn btn-default" role="button" >{{ i }}</a>
+      {% endfor %}
+      {% endif %}
+  </paginator>
         </div>
         <div id="editor"></div>
     </div>
@@ -66,13 +84,54 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
+                    <h4 class="modal-title">Заблокировать пользователя</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Вы уверены, что хотите заблокировать пользователя?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning btn-ok-remove" data-dismiss="modal">Заблокировать</button>
+                    <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="edit-confirm" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Выберите роль для пользователя</h4>
+                </div>
+                <div class="modal-body">
+                    {{ form_start(form_roles) }}
+                    {{ form_widget(form_roles.roles) }}
+                    {{ form_end(form_roles) }}
+                    <br>
+                    <b>SUPER_ADMIN</b> - полные права<br>
+                    <b>ADMIN</b> - администратор сайта, имеет доступ к панели управления сайтом<br>
+                    <b>MANAGER</b> - менеджер компании НАГ, может просматривать список зарегистрированных по приглашению участников<br>
+                    <b>ORG</b> - представитель организации, имеет доступ к личному кабинету организации для регистрации сотрудников<br>
+                    <b>USER</b> - участник Академии, имеет доступ только к основному сайту<br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning btn-ok-reset-role" data-dismiss="modal">Изменить роль</button>
+                    <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="password-confirm" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
                     <h4 class="modal-title">Подтвердите удаление</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Вы точно хотите удалить вопрос?</p>
+                    <p>Новый пароль:</p>
+                    <input required="required" type="text" id="reset-password">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-warning btn-ok" data-dismiss="modal">Удалить</button>
+                    <button type="button" class="btn btn-warning btn-ok-reset-password" data-dismiss="modal">Сбросить</button>
                     <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">Отмена</button>
                 </div>
             </div>
@@ -88,15 +147,69 @@
     <script src="{{ asset('assets/js/admin.js') }}"></script>
     <script>
         var linkforemove = false;
-        $('.remove-faq').on('click', function(e){
+        var user_id = false;
+        /* reset password */
+        $('.password-user').on('click', function(e){
             e.preventDefault();
-            linkforemove = $(this).attr('href');
+            user_id = $(this).attr('user');
+            $('#password-confirm').modal();
+        });
+        $('.btn-ok-reset-password').on('click', function () {
+            var password = $('#reset-password').val();
+            $.get(
+                'https://academy-stas.nag.how/app_dev.php/admin/reset-password-by-admin',{'new_password':password, id:user_id},
+            function(data) {
+                //TODO
+            }
+        );
+        });
+        /* end code reset password */
+        /*         reset role      */
+        $('.edit-user').on('click', function(e){
+            e.preventDefault();
+            user_id = $(this).attr('user');
+            $('#edit-confirm').modal();
+        });
+        $('.btn-ok-reset-role').on('click', function () {
+            var role = $('#form_roles').val();
+            $.get(
+                'https://academy-stas.nag.how/app_dev.php/admin/reset-roles-by-admin',{'role':role, id:user_id},
+                function(data) {
+                    //$("#search_form").submit();
+                    location.reload();
+                }
+            );
+        });
+        /*       end reset role    */
+        /*       disable user      */
+        $('.remove-user').on('click', function(e){
+            e.preventDefault();
+            user_id = $(this).attr('user');
             $('#remove-confirm').modal();
         });
-
-        $('.btn-ok').on('click', function () {
-            window.location = linkforemove;
+        $('.btn-ok-remove').on('click', function () {
+            var role = $('#form_roles').val();
+            $.get(
+                'https://academy-stas.nag.how/app_dev.php/admin/lock-by-admin',{id:user_id},
+                function(data) {
+                    //$("#search_form").submit();
+                    location.reload();
+                }
+            );
         });
+        /*      end disable user   */
+        /*       enable user       */
+        $('.restore-user').on('click', function(e){
+            e.preventDefault();
+            user_id = $(this).attr('user');
+            $.get(
+                'https://academy-stas.nag.how/app_dev.php/admin/unlock-by-admin',{id:user_id},
+                function(data) {
+                    location.reload();
+                }
+            );
+        });
+        /*       end enable user   */
 
         $('.btn-cancel').on('click', function () {
             linkforemove = false;
