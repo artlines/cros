@@ -173,7 +173,7 @@
         $('.btn-ok-reset-role').on('click', function () {
             var role = $('#form_roles').val();
             $.get(
-                'https://academy-stas.nag.how/app_dev.php/admin/reset-roles-by-admin',{'role':role, id:user_id},
+                '/admin/reset-roles-by-admin',{'role':role, id:user_id},
                 function(data) {
                     //$("#search_form").submit();
                     location.reload();
@@ -190,7 +190,7 @@
         $('.btn-ok-remove').on('click', function () {
             var role = $('#form_roles').val();
             $.get(
-                'https://academy-stas.nag.how/app_dev.php/admin/lock-by-admin',{id:user_id},
+                '/admin/lock-by-admin',{id:user_id},
                 function(data) {
                     //$("#search_form").submit();
                     location.reload();
@@ -203,7 +203,7 @@
             e.preventDefault();
             user_id = $(this).attr('user');
             $.get(
-                'https://academy-stas.nag.how/app_dev.php/admin/unlock-by-admin',{id:user_id},
+                '/admin/unlock-by-admin',{id:user_id},
                 function(data) {
                     location.reload();
                 }
