@@ -47,6 +47,5 @@
 # custom
 /.idea/
 /app/google_sheets/cros.google-sheets.credentials.json
-/web/uploads
 /app/Resources/views/cros2/main/.idea/
 /web/TelegramErrorLogger.txt
