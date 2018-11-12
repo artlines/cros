@@ -187,7 +187,7 @@
                     <a class="btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ url('program') }}" id="TitleBotton">Программа КРОС</a>
                 </div>
                 <div class="col-md-6 text-right align-middle">
-                    {{ render(controller('AppBundle:Default:newcountdown')) }}
+                    {{ render(controller('AppBundle:Default:countdown')) }}
                     <a class="btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ url('registration') }}">Принять участие</a>
                     <a class="btn u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ path('info', {'alias': 'become-speaker'}) }}">Стать докладчиком</a>
                     <a class="btn u-btn-yellow cs-color-white cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ path('info', {'alias': 'become-sponsor'}) }}">Стать спонсором</a>
@@ -304,14 +304,46 @@
         }, 200);
     });
 </script>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-749542-17"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'UA-749542-17');
-</script>
+{% if app.environment == 'prod' %}
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+        (function (d, w, c) {
+            (w[c] = w[c] || []).push(function() {
+                try {
+                    w.yaCounter48079550 = new Ya.Metrika({
+                        id:48079550,
+                        clickmap:true,
+                        trackLinks:true,
+                        accurateTrackBounce:true
+                    });
+                } catch(e) { }
+            });
+
+            var n = d.getElementsByTagName("script")[0],
+                s = d.createElement("script"),
+                f = function () { n.parentNode.insertBefore(s, n); };
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+            if (w.opera == "[object Opera]") {
+                d.addEventListener("DOMContentLoaded", f, false);
+            } else { f(); }
+        })(document, window, "yandex_metrika_callbacks");
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/48079550" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-749542-17"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-749542-17');
+    </script>
+{% endif %}
+
 </body>
 </html>
