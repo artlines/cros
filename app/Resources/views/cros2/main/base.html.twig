@@ -181,7 +181,7 @@
         {% endif %}
         <!-- cs-max-width-750  -->
         <div class="container u-bg-overlay__inner cs-color-white mb-0 cs-pt-40">
-            {{ render(controller('AppBundle:Default:countdown')) }}
+            {{ render(controller('AppBundle:Default:countdown', { mainPage: true })) }}
             <div class="row cs-mb-0 cs-mt-100">
                 <div class="col-md-6  text-left">
                     <p class="cs-font-size-20 mb-0 cs-color-white">

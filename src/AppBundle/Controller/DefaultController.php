@@ -2,37 +2,22 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Apartament;
-use AppBundle\Entity\ApartamentId;
 use AppBundle\Entity\Conference;
-use AppBundle\Entity\Info;
-use AppBundle\Entity\Logs;
-use AppBundle\Entity\Organization;
-use AppBundle\Entity\Organizations;
-use AppBundle\Entity\OrgToConf;
-use AppBundle\Entity\User;
-use AppBundle\Entity\UserToApartament;
-use AppBundle\Entity\UserToConf;
+use AppBundle\Entity\Setting;
+use AppBundle\Entity\Speaker;
 use AppBundle\Entity\Interview;
-
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use AppBundle\Repository\ConferenceRepository;
+use AppBundle\Repository\SpeakerRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\RadioType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class DefaultController extends Controller
 {
-
     /**
      * client
      */
@@ -49,8 +34,6 @@ class DefaultController extends Controller
      */
     public function ratePage()
     {
-
-
         return $this->render('rate/index.html.twig');
     }
 
@@ -266,25 +249,25 @@ class DefaultController extends Controller
     public function newMainAction()
     {
         $year = date("Y");
-        $reg_time = $this->getDoctrine()->getRepository('AppBundle:Conference')
-            ->findOneBy(array('year' => date("Y")));
+
         /** @var ConferenceRepository $conferenceRepository */
         $conferenceRepository = $this->getDoctrine()->getRepository('AppBundle:Conference');
         /** @var Conference $conf */
-        $conf = $conferenceRepository->findOneBy(array('year' => $year));
+        $conf = $conferenceRepository->findOneBy(['year' => $year]);
 
         /** @var SpeakerRepository $speakerRepository */
         $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
-        /** @var Speaker $speakers */
+        /** @var Speaker[] $speakers */
         $speakers = $speakerRepository->findByConf($conf->getId());
-        $rand_keys = array_rand($speakers, 4);
-        foreach ($rand_keys as $val) {
-            $speakers_rand[] = $speakers[$val];
+
+        $speakers_rand = [];
+        if (count($speakers) > 1) {
+            $rand_keys = array_rand($speakers, 4);
+            foreach ($rand_keys as $val) {
+                $speakers_rand[] = $speakers[$val];
+            }
         }
-        /*
-        $speakerRepository = $this->getDoctrine()->getRepository('AppBundle:Speaker');
-        $speaker = $speakerRepository->findBy(array('conferenceId' => $reg_time->getId()));
-        */
+
         $speakerList = NULL;
         foreach ($speakers_rand as $key =>  $value){
             $speakerList[$key]['id'] = $value->getid();
@@ -294,52 +277,10 @@ class DefaultController extends Controller
             $speakerList[$key]['SpeakerLastName'] = $value->getUser()->getLastName();
             $speakerList[$key]['SpeakerMiddleName'] = $value->getUser()->getMiddleName();
         }
-        $reg_start = $reg_time->getRegistrationStart()->getTimestamp();
+
         return $this->render('cros2/main/base.html.twig', array(
-            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-            'reg_start' => $reg_start,
-            'speaker_list' => $speakerList,
-
-
-        ));
-    }
-
-    /**
-     * @Route("/old", name="cros-old")
-     */
-    public function indexAction()
-    {
-        $monthes = array(
-            '01' => 'января',
-            '02' => 'февраля',
-            '03' => 'марта',
-            '04' => 'апреля',
-            '05' => 'мая',
-            '06' => 'июня',
-            '07' => 'июля',
-            '08' => 'августа',
-            '09' => 'сентября',
-            '10' => 'октября',
-            '11' => 'ноября',
-            '12' => 'декабря'
-        );
-
-        /** @var Conference $conf */
-        $conf = $this->getDoctrine()
-            ->getRepository('AppBundle:Conference')
-            ->findOneBy(array('year' => date('Y')));
-        $event_date = $conf->getStart()->format('m');
-        $sday = $conf->getStart()->format('d');
-        $eday = $conf->getFinish()->format('d');
-        $year= $conf->getStart()->format('Y');
-        $month = $monthes[$event_date];
-
-        return $this->render('default/door.html.twig', array(
-            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-            'month' => $month,
-            'sday' => $sday,
-            'eday' => $eday,
-            'year' => $year,
+            'base_dir'      => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
+            'speaker_list'  => $speakerList,
         ));
     }
 
@@ -361,68 +302,71 @@ class DefaultController extends Controller
         ));
     }
 
-    /**
-     */
-    public function countdownAction()
+    public function countdownAction($mainPage = false)
     {
-        $reg_time = $this->getDoctrine()->getRepository('AppBundle:Conference')
-            ->findOneBy(array('year' => date("Y")));
+        /** @var ConferenceRepository $confRepo */
+        $confRepo = $this->getDoctrine()->getRepository('AppBundle:Conference');
 
-        $reg_start = $reg_time->getRegistrationStart()->getTimestamp();
-        $reg_finish = $reg_time->getRegistrationFinish()->getTimestamp();
+        /**
+         * @var Conference $conf
+         * @var Conference $nextConf
+         */
+        $conf = $confRepo->findOneBy(['year' => date("Y")]);
+        $nextConf = $confRepo->findOneBy(['year' => date("Y") + 1]);
+
+        $reg_start = $conf->getRegistrationStart()->getTimestamp();
+        $reg_finish = $conf->getRegistrationFinish()->getTimestamp();
+        $event_start = $conf->getStart()->getTimestamp();
+        $event_finish = $conf->getFinish()->getTimestamp();
+        $reg_start_next_year = isset($nextConf) ? $nextConf->getRegistrationStart()->getTimestamp() : false;
         $now = time();
 
-        $countdown_date = false;
-        $text = false;
-        if ($now < $reg_start) {
-            // before reg
-            $countdown_date = $reg_start;
-            $text = "До начала регистрации";
-        } elseif ($now > $reg_start && $now < $reg_finish) {
-            // regtime
-            $countdown_date = $reg_finish;
-            $text = "До конца регистрации";
-        } elseif ($now > $reg_finish) {
-            // after reg
-            $text = "Регистрация окончена";
-        };
+        switch (true) {
+            /**
+             * Pre registration time
+             */
+            case ($now < $reg_start):
+                $countdown_date = $reg_start;
+                $text = "До начала регистрации";
+                break;
+            /**
+             * Registration time
+             */
+            case ($reg_start < $now && $now < $reg_finish):
+                $countdown_date = $reg_finish;
+                $text = "До конца регистрации";
+                break;
+
+            /**
+             * Pre event time
+             */
+            case ($reg_finish < $now && $now < $event_start):
+                $countdown_date = $event_start;
+                $text = "До начала мероприятия";
+                break;
+
+            /**
+             * Pre registration time for next year
+             */
+            case ($reg_start_next_year && $event_finish < $now && $now < $reg_start_next_year):
+                $countdown_date = $reg_start_next_year;
+                $text = "До начала регистрации";
+                break;
+
+            /**
+             * Default
+             */
+            default:
+                $countdown_date = false;
+                $text = false;
+                break;
+        }
 
         return $this->render('default/countdown.html.twig', array(
-            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-            'countdown_date' => $countdown_date,
-            'text' => $text
+            'base_dir'          => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
+            'countdown_date'    => $countdown_date,
+            'text'              => $text,
+            'mainPage'          => $mainPage
         ));
-    }
-
-    /**
-     */
-    public function newcountdownAction($isMainPage = false)
-    {
-        $countdown_date = new \DateTime("1970-01-01 00:00");
-        $now = new \DateTime('now');
-
-        /** @var Conference $conf */
-        $conf = $this->getDoctrine()->getRepository('AppBundle:Conference')
-            ->findOneBy(array('year' => date("Y")));
-
-        $reg_start = $conf->getRegistrationStart();
-        $event_start = $conf->getStart();
-
-        if ($now < $event_start) {
-            $countdown_date = $event_start;
-        };
-
-        return $this->render('cros2/misc/_countdown.html.twig', array(
-            'base_dir' => realpath($this->container->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-            'countdown_date' => $countdown_date,
-            'countdown_text' => 'До начала мероприятия',
-            'main_page' => $isMainPage
-        ));
-    }
-
-    public function viewSpeakers()
-    {
-        $countdown_date = 'value';
-
     }
 }
