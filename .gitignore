@@ -49,3 +49,6 @@
 /app/google_sheets/cros.google-sheets.credentials.json
 /app/Resources/views/cros2/main/.idea/
 /web/TelegramErrorLogger.txt
+
+public
+web/index.php
