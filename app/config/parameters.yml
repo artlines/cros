@@ -1,12 +1,12 @@
 # This file is auto-generated during the composer install
 parameters:
     database_host: 127.0.0.1
-    database_port: null
-    database_name: nag_cros
-    database_user: nag_admin
-    database_password: crNaAd4we
+    database_port: 3300
+    database_name: cros_prod
+    database_user: cros_prod
+    database_password: zOFamiyA
     mailer_transport: smtp
-    mailer_host: localhost
+    mailer_host: 127.0.0.1
     mailer_user: null
     mailer_password: null
     secret: 26e54874178fa9471ba2e9eb73459e797fce2e34
