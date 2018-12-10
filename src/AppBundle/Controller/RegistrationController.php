@@ -59,10 +59,10 @@ class RegistrationController extends Controller
                 ->getRepository('AppBundle:Conference')
                 ->findOneBy(array('year' => $year));
 
-            /** @var User $users_yet */
+            /** @var UserToConf $users_yet */
             $users_yet = $this->getDoctrine()
-                ->getRepository('AppBundle:User')
-                ->findByConf($conf->getId());
+                ->getRepository('AppBundle:UserToConf')
+                ->findBy(['conferenceId' => $conf->getId()]);
             $uc = count($users_yet);
 
             // Получаем разрешенные даты регистрации
