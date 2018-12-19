@@ -33,9 +33,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 use Symfony\Component\Form\FormError;
 
-use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType as RecaptchaType;
-use Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
-//use AppBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
+//use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType as RecaptchaType;
+//use Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
 
 class InfoController extends Controller
 {
@@ -125,15 +124,15 @@ class InfoController extends Controller
 										)),
 									),
 				))
-				->add('recaptcha', RecaptchaType::class, array(
-									'label' => false, 
-									'mapped' => false,
-									'constraints' => array(
-										new RecaptchaTrue(array(
-											'message' => '',
-										)),
-									)
-				))
+//				->add('recaptcha', RecaptchaType::class, array(
+//									'label' => false,
+//									'mapped' => false,
+//									'constraints' => array(
+//										new RecaptchaTrue(array(
+//											'message' => '',
+//										)),
+//									)
+//				))
                 ->add('send', SubmitType::class, array('label' => 'Отправить', 'attr' => array('class' => 'btn-success')))
 				->getForm();
 
@@ -223,15 +222,15 @@ class InfoController extends Controller
                     'choice_attr' => array('Выберите тип пакета' => array('disabled' => '')),
                 ))
                 ->add('present', TextAreaType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Что будет представлено'))
-				->add('recaptcha', RecaptchaType::class, array(
-									'label' => false, 
-									'mapped' => false,
-									'constraints' => array(
-										new RecaptchaTrue(array(
-											'message' => '',
-										)),
-									)
-				))
+//				->add('recaptcha', RecaptchaType::class, array(
+//									'label' => false,
+//									'mapped' => false,
+//									'constraints' => array(
+//										new RecaptchaTrue(array(
+//											'message' => '',
+//										)),
+//									)
+//				))
                 ->add('send', SubmitType::class, array('label' => 'Отправить', 'attr' => array('class' => 'btn-success')))
 				->getForm();
 
@@ -284,15 +283,15 @@ class InfoController extends Controller
             $form = $this->createFormBuilder($defaultData)
                 ->add('company', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Компания'))
                 ->add('mobile', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Контактный телефон'))
-                ->add('recaptcha', RecaptchaType::class, array(
-                    'label' => false,
-                    'mapped' => false,
-                    'constraints' => array(
-                        new RecaptchaTrue(array(
-                            'message' => '',
-                        )),
-                    )
-                ))
+//                ->add('recaptcha', RecaptchaType::class, array(
+//                    'label' => false,
+//                    'mapped' => false,
+//                    'constraints' => array(
+//                        new RecaptchaTrue(array(
+//                            'message' => '',
+//                        )),
+//                    )
+//                ))
                 ->add('send', SubmitType::class, array('label' => 'Отправить', 'attr' => array('class' => 'btn-success')))
                 ->getForm();
 
