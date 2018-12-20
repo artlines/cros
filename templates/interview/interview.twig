@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <style>
+        #form_save{
+            background-color: green;
+            color: white;
+        }
+        div.form-group:nth-child(5) > label:nth-child(1),
+        div.form-group:nth-child(7) > label:nth-child(1),
+        div.form-group:nth-child(9) > label:nth-child(1),
+        div.form-group:nth-child(11) > label:nth-child(1),
+        div.form-group:nth-child(13) > label:nth-child(1),
+        div.form-group:nth-child(15) > label:nth-child(1),
+        div.form-group:nth-child(17) > label:nth-child(1),
+        div.form-group:nth-child(19) > label:nth-child(1),
+        div.checkbox:nth-child(1) > label:nth-child(1),
+        div.checkbox:nth-child(1) > label:nth-child(1),
+        div.checkbox:nth-child(2) > label:nth-child(1),
+        div.checkbox:nth-child(3) > label:nth-child(1),
+        div.checkbox:nth-child(4) > label:nth-child(1),
+        div.checkbox:nth-child(5) > label:nth-child(1),
+        div.checkbox:nth-child(6) > label:nth-child(1),
+        div.checkbox:nth-child(7) > label:nth-child(1),
+        div.checkbox:nth-child(8) > label:nth-child(1),
+        div.checkbox:nth-child(9) > label:nth-child(1)
+        {
+            font-weight: inherit;
+        }
+        label {
+            font-weight: bold;
+        }
+        .radio{
+            width: 50px;
+            float: left;
+        }
+        #input_search,
+        #form_name,
+        #form_visits,
+        #form_QualityOrganization,
+        #form_QualityOrganizationComents,
+        #form_PresentationsComents,
+        #form_tablesComents,
+        #form_EntertainmentComents,
+        #form_Food,
+        #form_FoodComents,
+        #form_SearchComents,
+        #form_InformationalResources,
+        #form_InformationalResourcesComents,
+        #form_WhatImportantComent{
+            color: #000000 !important;
+        }
+
+        #form_Entertainment,
+        #form_tables,
+        #form_Presentations,
+        #form_Search
+        {
+            height: 20px;
+        }
+        .form-control{
+            color: #000000;
+        }
+        #form > div:nth-child(1) {
+            display: none;
+        }
+        .ui-autocomplete{
+            margin-left: 0;
+            padding-left: 0;
+        }
+        .ui-menu-item {
+            list-style-type: none;
+            cursor: pointer;
+        }
+        .ui-menu{
+            background-color: #FFF;
+            border-color: #6ca0dc;
+            border-width: 2px;
+            border-style: dotted;
+            padding:15px;
+            width: 400px !important;
+        }
+    </style>
+    <div class="form-group"><label>1. Название вашей компании</label>
+    <input type="text" value="" id="input_search" class="form-control" required="required">
+    </div>
+    {{ form_start(form, {'method': 'POST'}) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+    {% block javascripts %}
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        var options = $('#form_organization option');
+        var array_option = new Array();
+
+        for(var i=1; i<options.length; i++)  {
+            array_option.push(options[i].text);
+        }
+
+        $("#input_search").autocomplete({
+            source: array_option,
+            minLength: 2 // Количество символов, от скольки начинать поиск
+        });
+
+        $.expr[":"].exact = $.expr.createPseudo(function(arg) {
+            return function(element) {
+                return $(element).text() === arg.trim();
+            };
+        });
+
+        $(document).on("click", ".ui-widget-content li div",function() {
+            var target_option = $(this).text();
+            $("#form_organization option:exact("+target_option+")").attr("selected", "selected");
+        });
+    </script>
+    {% endblock %}
+{% endblock %}

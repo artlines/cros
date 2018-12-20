@@ -1,0 +1,200 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Конференция Российских Операторов Связи{% endblock %}
+
+{% block text_image %}_organize{% endblock %}
+
+{% block header_title %}Место проведения и доставка участников{% endblock %}
+
+{% block stylesheets %}
+<style>
+.img-thumbnail {
+	height: 90px;
+	margin: 5px 0;
+}
+</style>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{ asset('assets/js/lightbox.min.js') }}"></script>
+{% endblock %}
+
+
+{% block body %}
+
+<h2>Место проведения</h2>
+
+<b>Место проведения:</b> г. Сочи, Красная Поляна, отель "<a href="https://polyana1389.ru/">Поляна 1389</a>"
+<br/>
+<b>Даты проведения:</b> 16 Мая - 19 Мая 2018
+
+<p>Отель Поляна 1389, один из самых высокогорных гостиничных комплексов Черноморского побережья, расположился на плато Псехако на высоте 1389 метров над уровнем моря. Отсюда открывается живописный вид на Сочинский национальный парк и завораживающие панорамы Кавказских гор</p>
+
+<div class="row text-center">
+	<a data-lightbox="polyana" href="/uploads/files/1389.jpg"><img class="img-thumbnail" src="/uploads/images/1389_s(1).jpg" alt="Красная Поляна - ГТК Газпром - Плато Псехако" /></a>
+	<a data-lightbox="polyana" href="/uploads/files/1389_1.jpg"><img class="img-thumbnail" src="/uploads/images/1389_1s.jpg" alt="Красная Поляна - ГТК Газпром - Плато Псехако" /></a>
+	<a data-lightbox="polyana" href="/uploads/files/1389_11.jpg"><img class="img-thumbnail" src="/uploads/images/polyana1389(1).jpg" alt="Красная Поляна - ГТК Газпром - Плато Псехако" /></a>
+	<a data-lightbox="polyana" href="/uploads/files/krasnaya-polyana-vid-otelya.jpg"><img class="img-thumbnail" src="/uploads/images/polyana1389_1(1).jpg" alt="Красная Поляна - ГТК Газпром - Плато Псехако" /></a>
+	<a data-lightbox="polyana" href="/uploads/files/1389_10.jpg"><img class="img-thumbnail" src="/uploads/images/1389_10s.jpg" alt="Красная Поляна - ГТК Газпром - Плато Псехако" /></a>
+	<a data-lightbox="polyana" href="/uploads/files/28761155.jpg"><img class="img-thumbnail" src="/uploads/images/1389_12s.jpg" alt="Красная Поляна - ГТК Газпром - Плато Псехако" /></a>
+	<a data-lightbox="polyana" href="/uploads/files/28761141.jpg"><img class="img-thumbnail" src="/uploads/images/1389_5s(1).jpg" alt="Красная Поляна - ГТК Газпром - Плато Псехако" /></a>
+	<a data-lightbox="polyana" href="/uploads/files/28761162.jpg"><img class="img-thumbnail" src="/uploads/images/1389_2s.jpg" alt="Красная Поляна - ГТК Газпром - Плато Псехако" /></a>
+	<a data-lightbox="polyana" href="/uploads/files/28761161.jpg"><img class="img-thumbnail" src="/uploads/images/1389_3s.jpg" alt="Красная Поляна - ГТК Газпром - Плато Псехако" /></a>
+	<a data-lightbox="polyana" href="/uploads/files/28761154.jpg"><img class="img-thumbnail" src="/uploads/images/1389_9s.jpg" alt="Красная Поляна - ГТК Газпром - Плато Псехако" /></a>
+	<a data-lightbox="polyana" href="/uploads/files/1389_6.jpg"><img class="img-thumbnail" src="/uploads/images/1389_6s.jpg" alt="Красная Поляна - ГТК Газпром - Плато Псехако" /></a>
+	<a data-lightbox="polyana" href="/uploads/files/28761144.jpg"><img class="img-thumbnail" src="/uploads/images/1389_8s(1).jpg" alt="Красная Поляна - ГТК Газпром - Плато Псехако" /></a>
+</div>
+<br/>
+
+<h2>Доставка участников</h2>
+	<div id="person-delivery">
+		<div class="card cs-mb-10">
+			<div class="card-header">
+				<h5 class="mb-0">
+					<a data-toggle="collapse" data-parent="#person-delivery" href="#collapse1"
+					   aria-controls="collapse1" aria-expanded="false" class="collapse-header-link">
+						Если вы приехали на поезде</a>
+				</h5>
+			</div>
+			<div id="collapse1" role="tabpanel" aria-labelledby="heading1" aria-expanded="false" class="collapse">
+				<div class="card-block">
+					<h3>Если вы приехали на поезде до ж/д вокзала Адлер</h3>
+
+					На электропоезде «Ласточка» от ж/д вокзала Адлер до остановки «Роза Хутор», далее вас встретят представители компании в футболках НАГ.
+					<br/><br/>
+					Расписание "Ласточек" от ж/д вокзала, Адлер до Роза Хутор можно посмотреть на Яндекс.Электрички
+					<br/><br/>
+					Можно воспользоваться Такси “Поляна” со скидкой для участников КРОС-2.0-18, при заказе такси за 1 сутки до приезда, кодовое слово "КРОС-2018".
+					<br/><br/>
+					Расценки с учетом скидки до нижней станции канатной дороги:
+					<br/><br/>
+					Легковой автомобиль (до 4 мест) 1300 руб.;<br/>
+					Микроавтобус (до 7 мест) 2000 руб.;<br/>
+					Микроавтобус ( до 19 мест) 4000 руб.<br/>
+					Телефоны: +7 (8622) 36-36-00,  +7 (9882) 36-36-00, +7 (9882) 31-60-55.
+					<br/><br/>
+					Стоимость такси непосредственно до отеля будет примерно на 500 руб. больше, причем последний этап пути пройдет по горному серпантину.
+					<br/><br/>
+					Если у вас не слишком тяжелый багаж, мы рекомендуем подняться наверх с помощью канатной дороги до станции "Приют Псехако". От нее до отеля будет постоянно ходить бесплатный микроавтобус.
+					<br/><br/>
+					<h3>Если вы приехали на поезде до ж/д вокзала Сочи</h3>
+
+					Тем, кто приезжает на поезде, мы рекомендуем доехать до ж/д вокзала Адлер.<br/>
+
+					Если вы приехали на ж/д вокзал Сочи, время на дорогу до отеля "Поляна 1389"и цена поездки вырастут в два раза. Рекомендуем в этом случае воспользоваться “Ласточкой” . Расписание можно посмотреть на Яндекс.Электрички.
+				</div>
+			</div>
+		</div>
+
+		<div class="card cs-mb-10">
+			<div class="card-header">
+				<h5 class="mb-0">
+					<a data-toggle="collapse" data-parent="#person-delivery" href="#collapse2"
+					   aria-controls="collapse2" aria-expanded="false" class="collapse-header-link">
+						Если вы прилетели на самолете</a>
+				</h5>
+			</div>
+			<div id="collapse2" role="tabpanel" aria-labelledby="heading2" aria-expanded="false" class="collapse">
+				<div class="card-block">
+					Можно воспользоваться Такси “Поляна” со скидкой для участников КРОС 2.0-18, при заказе такси за 1 сутки до прибытия, кодовое слово КРОС 2018.
+					<br/><br/>
+					Расценки с учетом скидки до нижней станции канатной дороги:
+					<br/><br/>
+					Легковой автомобиль (до 4 мест) 1300 руб.;<br/>
+					Микроавтобус (до 7 мест) 2000 руб.;<br/>
+					Микроавтобус ( до 19 мест) 4000 руб.<br/>
+					Телефоны: +7 (8622) 36-36-00,  +7 (9882) 36-36-00, +7 (9882) 31-60-55.
+					<br/><br/>
+					Стоимость такси непосредственно до отеля будет примерно на 500 руб. больше, причем последний этап пути пройдет по горному серпантину.
+					<br/><br/>
+					Если у вас не слишком тяжелый багаж, мы рекомендуем подняться наверх с помощью канатной дороги до станции "Приют Псехако". От нее до отеля будет постоянно ходить бесплатный микроавтобус.
+					<br/><br/>
+					- Маршрутным такси или автобусом № 105 «Сочи – Красная Поляна», № 135 «Адлер-Красная Поляна» до остановки ГТЦ ПАО «Газпром».
+					<br/><br/>
+					- Поездом "Ласточка" до ст.Роза Хутор, далее будет организован трансфер участников
+					<br/><br/>
+					С расписанием "Ласточек" из Аэропорта до Роза Хутор-ознакомиться можно на Яндекс.Электрички.
+					<br/><br/>
+					Время московское.<br/>
+					Вас доставят до станции канатной дороги КТЦ Газпром. За 12 минут вы подниметесь до отметки 1389м над уровнем моря, к отелю "Поляна 1389". Будет организован трансфер багажа.
+				</div>
+			</div>
+		</div>
+
+		<div class="card cs-mb-10">
+			<div class="card-header">
+				<h5 class="mb-0">
+					<a data-toggle="collapse" data-parent="#person-delivery" href="#collapse3"
+					   aria-controls="collapse3" aria-expanded="false" class="collapse-header-link">
+						Если вы приехали на машине</a>
+				</h5>
+			</div>
+			<div id="collapse3" role="tabpanel" aria-labelledby="heading3" aria-expanded="false" class="collapse">
+				<div class="card-block">
+					– Наверняка у вас есть навигатор. Координаты отеля -  43°41'42.99"С 40°19'2.89"В<br/>
+					– Обратите внимание, при въезде на ГТК "Газпром" вам нужно повернуть налево, и по горному серпантину подняться до отеля.<br/>
+					– Внимание! Для оформления пропуска нужно не менее, чем за 7 дней до прибытия подать организаторам данные: номер авто, ФИО делегатов.
+				</div>
+			</div>
+		</div>
+
+		<div class="card cs-mb-10">
+			<div class="card-header">
+				<h5 class="mb-0">
+					<a data-toggle="collapse" data-parent="#person-delivery" href="#collapse4"
+					   aria-controls="collapse4" aria-expanded="false" class="collapse-header-link">
+						Трансфер в отель</a>
+				</h5>
+			</div>
+			<div id="collapse4" role="tabpanel" aria-labelledby="heading4" aria-expanded="false" class="collapse">
+				<div class="card-block">
+					Как вы помните, отель находится на склоне горы. Подняться в отель можно двумя способами:<br/>
+					 - 15 минут на канатной дороге;<br/>
+					 - 17 км на автомобиле по серпантину.<br/>
+					Канатная дорога: самый простой и быстрый способ. Вы поднимаетесь на вершину, где вас ждет микроавтобус (до отеля примерно 300 метров).<br/><br/>
+
+					Такси (или свой автомобиль): не доезжая до подъемника канатной дороги нужно свернуть налево и по горному серпантину подняться до отеля. Если вы не успели оформить пропуск, сделать это можно, позвонив на ресепшн отеля  +7(928)854-64-67  и сообщив номер, марку автомобиля и ФИО участников конференции.
+				</div>
+			</div>
+		</div>
+
+		<div class="card cs-mb-10">
+			<div class="card-header">
+				<h5 class="mb-0">
+					<a data-toggle="collapse" data-parent="#person-delivery" href="#collapse5"
+					   aria-controls="collapse5" aria-expanded="false" class="collapse-header-link">
+						График работы канатных дорог</a>
+				</h5>
+			</div>
+			<div id="collapse5" role="tabpanel" aria-labelledby="heading5" aria-expanded="false" class="collapse">
+				<div class="card-block">
+					A1 - связывает нижнюю станцию канатной дороги (Газпром) и верхнюю станцию (Плато Псехако) на которой и расположен отель "Поляна 1389".<br/>
+					A2 - уходит еще выше, с Плато Псехако на стадион Лаура и верхнюю точку - Пихтовый Приют (1660м).<br/>
+					График работы канатных дорог:<br/>
+					16 мая:<br/>
+					А1 (для прибывающих участников) - круглосуточно;<br/>
+					А2 (для желающих подняться) - с 9.00 до 18:00.<br/>
+					17 мая:<br/>
+					А1 - 8:00 - 01:00;<br/>
+					А2 - 8:00 - 20:00 - на ней мы поедем на банкет.<br/>
+					18 мая<br/>
+					А1 - круглосуточно - для уезжающих участников;<br/>
+					А2 - 8:00 - 18:00.<br/>
+					19 мая<br/>
+					А1 - 8:00 - 18:00 - для уезжающих участников;<br/>
+					А2 - 8:00 - 18:00.
+				</div>
+			</div>
+		</div>
+	</div>
+<br/>
+
+<h2>Общая схема расположения объектов</h2>
+
+<div class="row text-center">
+	<a data-lightbox="schema" href="/uploads/files/Gazprom_b_maps.jpg"><img class="img-thumbnail" src="/uploads/images/Gazprom_b_maps_s.jpg" alt="Красная Поляна - ГТК Газпром - Плато Псехако" /></a>
+	<a data-lightbox="schema" href="/uploads/files/Sochi_b_maps.jpg"><img class="img-thumbnail" src="/uploads/images/Sochi_b_maps_s.jpg" alt="Сочи - Адлер - Красная Поляна" /></a>
+</div>
+
+{% endblock %}
+

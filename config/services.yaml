@@ -1,0 +1,58 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: 'ru'
+
+    tg.bot.token: "527782633:AAFPLooKU0KwINR_CwRj7R-1Z_nHv9b5t0o"
+    tg.bot.token_test: "560591203:AAGbR2dImWaYdY1LzT5qZfE4wmRoleMU9vc"
+
+    speakers.resize:
+        small:
+            width: 253
+            height: 300
+        big:
+            width: 277
+            height: 350
+
+    sponsor.resize:
+        width: 400
+        height: 200
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+
+
+    tg.chat.manager:
+        class: AppBundle\Manager\TgChatManager
+        public: true
+        arguments: ['@doctrine.orm.entity_manager', '%tg.bot.token%', '@twig']
+
+    sms.service:
+        class: AppBundle\Service\Sms
+        public: true
+        arguments: ['@doctrine.orm.entity_manager']
+
+    resizeImages:
+            class: AppBundle\Service\ResizeImages

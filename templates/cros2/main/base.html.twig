@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Title -->
+    <title>Конференция Российских Операторов Связи</title>
+    <!-- Required Meta Tags Always Come First -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <!-- Favicon -->
+     <link rel="shortcut icon" href="/favicon.ico"> 
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+    <!-- CSS Global Compulsory -->
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/cros/bootstrap/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/cros/icon-awesome/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/cros/hamburgers/hamburgers.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/cros/animate.css') }}">
+    <!-- CSS Implementing Plugins -->
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/cros/fancybox/jquery.fancybox.css') }}">
+    <!-- for menu -->
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/megamenu.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/lightbox.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/cros/slick-slider/slick.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/bases.css?t=20180313') }}">
+    <!-- CSS Template -->
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/styles.css?t=1523863448') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/light-blue.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/custom.css?t=2018042007') }}">
+    <meta name="theme-color" content="#6ca0dc">
+    <link rel="icon" sizes="192x192" href="{{ asset('temp/cros-logo_192px.png') }}">
+</head>
+<body>
+<main>
+    <header id="js-header" class="u-header u-header--sticky-top u-header--change-appearance g-z-index-9999"
+            data-header-fix-moment="100">
+        <div class="u-header__section cs-bg-darkblue-opacity-0_5 cs-transition-0_3 cs-py-0"
+             data-header-fix-moment-exclude="light-theme cs-bg-darkblue-opacity-0_5"
+             data-header-fix-moment-classes="dark-theme cs-bg-white-opacity-0_9" id="test">
+            <nav class="navbar navbar-toggleable-md cs-py-0">
+                <div class="container">
+                    <!-- Logo -->
+                    <a href="#" class="navbar-brand u-header__logo">
+                        <img class="u-header__logo-img u-header__logo-img--main d-block cs-width-80x" src="{{ asset('assets/cros2/img/logo-dark.png') }}" alt="Image description"
+                             data-header-fix-moment-exclude="d-block"
+                             data-header-fix-moment-classes="d-none">
+                        <!-- Temporary fix -->
+                        <img class="u-header__logo-img u-header__logo-img--main d-none cs-width-80x" src="{{ asset('assets/cros2/img/layer_height.png') }}" alt="Image description"
+                             data-header-fix-moment-exclude="d-none"
+                             data-header-fix-moment-classes="d-block">
+                    </a>
+                    <!-- End Logo -->
+                    <div class="collapse navbar-collapse align-items-center flex-sm-row" id="navBar">
+                        <ul id="js-scroll-nav" class="navbar-nav text-uppercase cs-font-weight-700 cs-font-size-11 cs-pt-20 cs-pt-0--lg ml-auto">
+                            <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg active">
+                                <a href="{{ url('homepage') }}" class="nav-link p-0">Главная <span class="sr-only">(current)</span></a>
+                            </li>
+                            <!-- --- -->
+                            <li class="nav-item cs-has-sub-menu cs-mb-7 cs-mb-0--lg submenu2" id="submenu2" >
+                                <a href="#" class="nav-link p-0" id="nav-link-1"
+                                   aria-haspopup="true"
+                                   aria-expanded="false"
+                                   aria-controls="nav-submenu-2"
+                                ><span class="d-lg-none d-xl-inline">О Крос</span></a>
+                                <!-- Submenu -->
+                                <ul class="cs-sub-menu-home cs-sub-menu list-unstyled cs-mt-20 cs-mt-10--lcs--scrolling u-shadow-v18 cs-font-weight-700 cs-font-size-12 nav-submenu-2" id="nav-submenu-2"
+                                    aria-labelledby="nav-link-2" style="margin-top: 0px;">
+                                    <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('info', {'alias': 'targets'}) }}">Что такое КРОС</a></li>
+                                    <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('info', {'alias': 'organize'}) }}">Место проведения</a></li>
+                                    <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('info', {'alias': 'sponsors'}) }}">Спонсоры</a></li>
+                                    <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('speakers', {'year': '2018'}) }}">Спикеры</a></li>
+                                </ul>
+                                <!-- End Submenu -->
+                            </li>
+                            <!-- --- -->
+                            <!-- submenu -->
+                            <li class="nav-item cs-has-sub-menu cs-mb-7 cs-mb-0--lg submenu" id="submenu" >
+                                <a href="#" class="nav-link p-0" id="nav-link-1"
+                                   aria-haspopup="true"
+                                   aria-expanded="false"
+                                   aria-controls="nav-submenu-1"
+                                >Участие<span class="d-lg-none d-xl-inline"> в КРОС</span></a>
+                                <!-- Submenu -->
+                                <ul class="cs-sub-menu-home cs-sub-menu list-unstyled cs-mt-20 cs-mt-10--lcs--scrolling u-shadow-v18 cs-font-weight-700 cs-font-size-12 nav-submenu-1" id="nav-submenu-1"
+                                    aria-labelledby="nav-link-2" style="margin-top: 0px;">
+                                    <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('members') }}">Участники</a></li>
+                                    <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('price') }}">Стоимость участия</a></li>
+                                    <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('registration') }}">Регистрация</a></li>
+                                    <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('program') }}">Программа</a></li>
+                                </ul>
+                                <!-- End Submenu -->
+                            </li>
+                            <!-- sub menu -->
+                            <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
+                                <a href="{{ url('faq') }}" class="nav-link p-0">FAQ</a>
+                            </li>
+                            <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
+                                <a href="{{ url('archive') }}" class="nav-link p-0">Архив</a>
+                            </li>
+                            <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
+                                <a href="javascript:void(0)" class="nav-link p-0">+7 (343) 379 98 38</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!— End Navigation —>
+                    <!-- Responsive Toggle Button -->
+                    <button class="navbar-toggler btn cs-line-height-1 cs-brd-none cs-pa-0 cs-mt-15 ml-auto" type="button"
+                            aria-label="Toggle navigation"
+                            aria-expanded="false"
+                            aria-controls="navBar"
+                            data-toggle="collapse"
+                            data-target="#navBar">
+                     <span class="hamburger hamburger--slider">
+                     <span class="hamburger-box">
+                     <span class="hamburger-inner"></span>
+                     </span>
+                     </span>
+                    </button>
+                    <!-- End Responsive Toggle Button -->
+                </div>
+            </nav>
+        </div>
+    </header>
+    <!-- Section Content -->
+    <section id="home" class="cs-bg-img-hero cs-pos-rel u-bg-overlay cs-bg-darkblue-opacity-0_5--after cs-pt-100" style="background-image: url({{ asset('assets/cros2/img/cros_main_1920.jpg') }});">
+
+        {% if not app.user %}
+        <div class="container text-right login-main">
+            <a href="#" id="login" class="login-link cs-py-5 cs-z-index-2 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+                &nbsp;<i class="login login-btn fa fa-key"></i>&nbsp;&nbsp;ВОЙТИ&nbsp;
+            </a>
+            <div class="login-open cs-pos-abs cs-pa-10 cs-z-index-4"
+                 style="padding: 14px;
+                    display: none;
+                    box-shadow: rgb(221, 221, 221) 0px 1px 3px;
+                    min-width: initial;
+                    right: 15px;
+                    top: 50px;
+                    background: rgb(255, 255, 255);">
+                <div class="animated InDown">
+                    <!--<div class="media cs-font-weight-300 cs-font-size-11 cs-mb-5">
+                        <span class="u-label u-label-danger cs-color-white ">Ошибка, неверный пароль!</span>
+                    </div>-->
+                    <!-- Start form -->
+                    <form action="{{ url('login') }}" method="POST">
+                        <div class="form-group ">
+                            <input id="email-login" name="_username" class="form-control cs-font-size-12 cs-theme-color-gray-dark-v3 cs-placeholder-inherit rounded-0 cs-pa-10 w-100" name="email-login" type="email" placeholder="Email">
+                            {#<a href="javascript:void(0)" class="font-size-11">Забыли логин?</a>#}
+                        </div>
+                        <div class="form-group">
+                            <input id="pass" name="_password" class="form-control cs-font-size-12 cs-theme-color-gray-dark-v3 cs-placeholder-inherit rounded-0 cs-pa-10 w-100" name="pass" type="password" placeholder="Пароль">
+                            {#<a href="javascript:void(0)" class="font-size-11 ">Забыли пароль?</a>#}
+                        </div>
+                        <button class="btn btn-md btn-block u-btn-green cs-color-white s-color-white--hover cs-bg-primary--hover text-uppercase cs-font-weight-700 cs-font-size-11 rounded-0 cs-py-17 cs-px-20" type="submit">Войти</button>
+                        {#<p>Еще нет аккаунта, <a href="javascript:void(0)" class="font-size-11 ">легко исправить.</a></p>
+                    #}</form>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if is_granted('ROLE_ORG') %}
+            <div class="container text-right login-main">
+                <a href="{{ url('registration-3') }}" class="cs-py-5 cs-font-size-11 cs-z-index-2 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+                    &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;ЛИЧНЫЙ КАБИНЕТ&nbsp;
+                </a>
+            </div>
+        {% endif %}
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="container text-right login-main">
+                <a href="{{ url('admin-history') }}" class="cs-py-5 cs-font-size-11 cs-z-index-2 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+                    &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;CMS&nbsp;
+                </a>
+            </div>
+        {% elseif is_granted('ROLE_MANAGER') %}
+            <div class="container text-right login-main">
+                <a href="{{ url('admin-table') }}" class="cs-py-5 cs-font-size-11 cs-z-index-2 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+                    &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;CMS&nbsp;
+                </a>
+            </div>
+        {% endif %}
+        <!-- cs-max-width-750  -->
+        <div class="container u-bg-overlay__inner cs-color-white mb-0 cs-pt-40">
+            {{ render(controller('App\\Controller\\DefaultController:countdown', { mainPage: true })) }}
+            <div class="row cs-mb-0 cs-mt-100">
+                <div class="col-md-6  text-left">
+                    <p class="cs-font-size-20 mb-0 cs-color-white">
+                        <!--
+                        <a href="{{ asset('uploads/files/promo_cros_2018.mp4') }}" class="js-fancybox nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
+
+                        <!--
+                        <a id="cros-video" href="#" class="nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
+                        -->
+
+                        <a href="https://www.youtube.com/embed/k5w08rgdPeY?rel=0&controls=0&showinfo=0&autoplay=1" class="js-fancybox nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
+
+                        <!--
+                        <a href="https://www.youtube.com/embed/XEfDYMngJeE?autoplay=1" class="js-fancybox nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
+                        -->
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p class="cs-font-size-27 mb-0 cs-color-white text-right">nag.ru представляет</p>
+                    <h1 class="text-right text-uppercase h2 cs-font-weight-700 cs-font-size-40 cs-font-size-60--md cs-color-white">
+                        КРОС-2.0-18
+                    </h1>
+                    <p class="cs-font-size-27 cs-mb-30 cs-mb-70--md cs-color-white text-right">16-18 мая 2018</p>
+                </div>
+            </div>
+        </div>
+        <div class="container u-bg-overlay__inner cs-bottom-minus-70 px-0">
+            <div class="row u-shadow-v23 cs-theme-bg-blue-dark-v2 mx-0 cs-bg-img-layer" style="background-image: url({{ asset('assets/cros2/img/white_lg_layer.png') }});">
+                <div class="col-md-12 d-flex cs-min-height-30vh cs-theme-color-gray-dark-v1 cs-py-80 cs-py-20--md cs-px-50">
+                    <div class="w-100">
+                        <!-- fix for wide monitor  -->
+                        <h2 class="h2-white text-uppercase cs-font-weight-700 cs-font-size-23 cs-letter-spacing-0  cs-color-white cs-mb-10 text-center">Конференция российских
+                            операторов связи
+                        </h2>
+                        <p class="cs-pt-20 cs-font-size-14 mb-0 cs-color-white text-center">Крупнейшее отраслевое мероприятие для специалистов и руководителей
+                            телекоммуникационной отрасли. Проводится с 2006 года. В программе - доклады и круглые столы, выставка новинок оборудования
+                            и решений для отрасли телекоммуникаций от компании “НАГ”, развлекательные мероприятия и много неформального общения.
+                        </p>
+                        <div class="text-center">
+                            <a class="btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 cs-py-18 mb-0 cs-mt-15" href="{{ url('registration') }}">Участвовать в КРОС-2.0-18</a>
+                            <a class="btn btn-lg text-uppercase u-btn-yellow cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 cs-py-18 mb-0 cs-mt-15" href="{{ path('info', {'alias': 'targets'}) }}">Узнать больше о КРОС</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Section Content -->
+    <section id="about" class="cs-pt-150 cs-pb-10 cs-mb-100 cs-bg-secondary_block">
+        <div class="container">
+            <div class="text-center cs-mb-70">
+                <h2 class="text-uppercase cs-line-height-1 cs-font-weight-700 cs-font-size-23 cs-letter-spacing-0  cs-mb-30 cs-color-header">КРОС - это люди</h2>
+                <p>Ежегодно Конференция собирает более 600 профессионалов отрасли из России и стран СНГ. Приезжают участники из Германии,
+                    Франции, США и Канады.  На несколько дней конкуренты превращаются в коллег и друзей. Обсуждение важнейших вопросов
+                    развития отрасли в неформальной обстановке - фирменный знак, секрет особой атмосферы КРОС.
+                </p>
+            </div>
+            <div class="row text-center cs-mb-70">
+                <div class="col-md-6 col-sm-12 col-lg-6">
+                    <div id="canvas-holder">
+                        <canvas id="chartarea"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12 col-lg-6">
+                    <div id="canvas-holder">
+                        <canvas id="chartarea2"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="why" class="cs-mb-100 cs-bg-primary_block cs-bg-img-layer-left" style="background-image: url({{ asset('assets/cros2/img/bg_layer_left.png') }});">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="text-uppercase cs-line-height-1 cs-font-weight-700 cs-font-size-23 cs-letter-spacing-0  cs-mb-30 cs-color-header">Почему Вам нужно попасть на КРОС
+                </h2>
+            </div>
+            <div class="row align-items-center cs-mt-50">
+                <div class="col-sm-4 col-lg-4 cs-mb-0 cs-mb-60--sm ">
+                    <!-- Icon Blocks -->
+                    <div class="media cs-mb-20">
+                        <div class="d-flex mr-4">
+                            <span class="u-icon-main icon-set" data-position="-146px -66px"></span>
+                        </div>
+                        <div class="media-body">
+                            <h3 class="cs-color-black cs-font-size-14">
+                                <span class="cs-color-black cs-text-underline--none--hover" href="javascript:void(0);">
+                                    Программа КРОС формируется с учётом мнения авторитетных представителей телекоммуникационной отрасли
+                                </span>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="media cs-mb-20">
+                        <div class="d-flex mr-4">
+                            <span class="u-icon-main icon-set" data-position="-146px -125px"></span>
+                        </div>
+                        <div class="media-body">
+                            <h3 class="cs-color-black cs-font-size-14">
+                                <span class="cs-color-black cs-text-underline--none--hover" href="javascript:void(0);">
+                                    Самая свежая информация о передовых разработках в отрасли
+                                </span>
+                            </h3>
+                        </div>
+                    </div>
+                    <!-- End Icon Blocks -->
+                </div>
+                <div class="col-sm-4 col-lg-4 cs-mb-0 cs-mb-60--sm ">
+                    <!-- Icon Blocks -->
+                    <div class="media cs-mb-20">
+                        <div class="d-flex mr-4">
+                            <span class="u-icon-main icon-set" data-position="-146px -14px"></span>
+                        </div>
+                        <div class="media-body">
+                            <h3 class="cs-color-black cs-font-size-14">
+                                <span class="cs-color-black cs-text-underline--none--hover" href="javascript:void(0);">
+                                    Актуальные темы и доклады от действующих игроков рынка
+                                </span>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="media cs-mb-20">
+                        <div class="d-flex mr-4">
+                            <span class="u-icon-main icon-set" data-position="-146px -178px"></span>
+                        </div>
+                        <div class="media-body">
+                            <h3 class="cs-color-black cs-font-size-14">
+                                <span class="cs-color-black cs-text-underline--none--hover" href="javascript:void(0);">
+                                    Демонстрация работающего оборудования на стендах
+                                </span>
+                            </h3>
+                        </div>
+                    </div>
+                    <!-- End Icon Blocks -->
+                </div>
+                <div class="col-sm-4 col-lg-4 cs-mb-0 cs-mb-60--sm ">
+                    <!-- Icon Blocks -->
+                    <div class="media cs-mb-20">
+                        <div class="d-flex mr-4">
+                            <span class="u-icon-main icon-set" data-position="-146px -238px"></span>
+                        </div>
+                        <div class="media-body">
+                            <h3 class="cs-color-black cs-font-size-14">
+                                <span class="cs-color-black cs-text-underline--none--hover" href="javascript:void(0);">
+                                    Присутствие ведущих мировых производителей оборудования
+                                </span>
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="media cs-mb-20">
+                        <div class="d-flex mr-4">
+                            <span class="u-icon-main icon-set" data-position="-146px -297px"></span>
+                        </div>
+                        <div class="media-body">
+                            <h3 class="cs-color-black cs-font-size-14">
+                                <span class="cs-color-black cs-text-underline--none--hover" href="javascript:void(0);">
+                                    Большие возможности неформального общения с коллегами
+                                </span>
+                            </h3>
+                        </div>
+                    </div>
+                    <!-- End Icon Blocks -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="ourguests" class="cs-pt-30 cs-mb-100 cs-bg-img-layer-middle" style="background-image: url({{ asset('assets/cros2/img/blue_bg_middle.png') }});">
+        <div class="container">
+            <div class="align-self-center w-100 cs-mb-30">
+                <h2 class="h2-white text-uppercase cs-font-weight-700 cs-font-size-23 cs-color-white cs-mb-10 text-center">
+                    К нам приезжают снова и снова
+                </h2>
+            </div>
+            <div class="row no-gutters text-center cs-pb-30">
+                <div class="col-sm-4 col-lg-4">
+                    <img src="{{ asset('assets/cros2/img/guests.jpg') }}" alt="" title="Участники КРОС"/>
+                </div>
+                <div class="col-sm-8 col-lg-8 w-100">
+                    <p class="cs-font-size-14 cs-color-white text-center">За 13 лет конференция КРОС стала для многих интернет-провайдеров, интеграторов, представителей промышленности и бизнеса одним из важнейших околопрофессиональных событий.
+                        Компании НАГ доверяют как эксперту.
+                        Перед каждой конференцией мы не только изучаем современные тенденции рынка, но и опрашиваем будущих участников КРОС. Нам важно, чтобы вы получили актуальную и полезную информацию.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="cs-pt-30 cs-mb-100 cs-bg-img-layer-middle">
+        <div class="container">
+            <div class="text-center cs-mb-30">
+                <h2 class="text-uppercase cs-line-height-1 cs-font-weight-700 cs-font-size-23 cs-letter-spacing-0 cs-color-header">
+                    Лидеры рынка ценят наш опыт
+                </h2>
+            </div>
+            <div class="row no-gutters text-center cs-pb-30 backedcontent">
+                <!-- 1 -->
+                <img src="{{ asset('assets/cros2/img/marketleaders/er-telecom.jpg') }}" title="Эр-телеком" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/marketleaders/megafon.png') }}" title="Мегафон" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/marketleaders/ttk.png') }}" title="ТТК" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/new_marketleaders/logo-rostele.png') }}" title="Ростелеком" class="marketleadersImg"/>
+                <!-- 2 -->
+                <img src="{{ asset('assets/cros2/img/new_marketleaders/logo-goodline.png') }}" title="GoodLine" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/new_marketleaders/logo-zt.png') }}" title="Зелёная точка" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/marketleaders/logo-ufanet.png') }}" title="Ufanet" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/new_marketleaders/logo-almatel.jpg') }}" title="Almatel" class="marketleadersImg"/>
+                <!-- 3 -->
+                <img src="{{ asset('assets/cros2/img/new_marketleaders/logo-kvanttele.gif') }}" title="Квант-телеком" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/new_marketleaders/logo-motiv.jpg') }}" title="Мотив" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/marketleaders/rent.png') }}" title="Retnnet" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/new_marketleaders/logo-zummer.png') }}" title="Зуммер" class="marketleadersImg" />
+                <!-- 4 -->
+                <img src="{{ asset('assets/cros2/img/marketleaders/ix.png') }}" title="Msk Ix" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/marketleaders/ihome.png') }}" title="Ihome" class="marketleadersImg"/>
+                <img src="{{ asset('assets/cros2/img/new_marketleaders/logo-mail.png') }}" title="Mail.ru" class="marketleadersImg" />
+                <img src="{{ asset('assets/cros2/img/new_marketleaders/logo-selectel.png') }}" title="Selectel" class="marketleadersImg" />
+                <img src="{{ asset('assets/cros2/img/new_marketleaders/photo_2018-05-14_09-38-06.jpg') }}" title="China Mobile" class="marketleadersImg" />
+            </div>
+        </div>
+    </section>
+    {% if speaker_list != null %}
+    <section id="ourguests" class="cs-pt-30 cs-mb-100 cs-bg-img-layer-middle" style="background-image: url({{ asset('assets/cros2/img/blue_bg_middle.png') }});">
+        <div class="container">
+            <div class="align-self-center w-100 cs-mb-30">
+                <h2 class="h2-white text-uppercase cs-font-weight-700 cs-font-size-23 cs-color-white cs-mb-10 text-center">
+                    Наши спикеры <a name="spikers"></a>
+                </h2>
+            </div>
+            {% set uc = speaker_list|length %}
+            {% if uc > 4 %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row centering-speaker">
+                {% else %}
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="row justify-content-center centering-speaker">
+                    {% endif %}
+                {% for spec in speaker_list %}
+                <div class=" col-xs-2 col-md-3 col-sm-6">
+                    <div class="card mb-4 box-shadow">
+                        <img src="{{ asset('uploads/speakers/'~ spec.AvatarSmall) }}" class="img-fluid prohibit-changes-images">
+                        <div class="card-body">
+                            <p class="card-text text-center"><b>{{ spec.SpeakerFirstName }} {{ spec.SpeakerLastName}}</b><br />{{ spec.Organization }}</p>
+                        </div>
+                        <div class="text-center">
+                        <a class="btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 speaker_button_container" href="{{ path('speaker', {'id': spec.id}) }}" style="margin-bottom: 5px;">подробнее</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+                </div></div>
+                        <div class="row justify-content-center">
+                            <a class="btn u-btn-green cs-font-size-27 cs-px-10 cs-py-10 bt-pdb-25 cs-mt-15" href="{{ path('speakers', {'year': '2018'}) }}">Все спикеры</a>
+                        </div>
+                    </div>
+
+    </section>
+    {% endif %}
+    <section id="testimonials" class="cs-mb-100 cs-bg-primary_block">
+        <div class="container">
+            <div class="text-center cs-mb-30">
+                <h2 class="text-uppercase cs-line-height-1 cs-font-weight-700 cs-font-size-23 cs-letter-spacing-0 cs-color-header">
+                    <a href="{{ path('archive', {'year': '2017'}) }}">Что говорят участники КРОС-2.0-17</a>
+                </h2>
+            </div>
+            <div class="row no-gutters cs-mb-50">
+                <div class="col-sm-6 col-lg-3">
+                    <!-- Icon Blocks -->
+                    <div class="u-shadow-v21--hover cs-brd-around cs-brd-gray-light-v4 cs-brd-transparent--hover h-100 cs-bg-white--hover cs-transition-0_3 cs-cursor-pointer cs-px-30 cs-pt-30 cs-pb-50">
+                        <header class="text-uppercase">
+                            <h3 class="cs-font-weight-700 cs-font-size-14 cs-mb-5">Андрей Панкратович</h3>
+                            <h4 class="cs-font-weight-700 cs-font-size-11 cs-color-primary mb-0">ЦентрИнформ, Новосибирск</h4>
+                        </header>
+                        <p class="cs-mb-5 cs-font-size-13">В первый раз я участвовал в конференции год назад. Ну и, судя
+                            по тому,
+                            что приехал снова - узнал здесь много интересного
+                            и полезного.</p>
+                    </div>
+                    <!-- End Icon Blocks -->
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <!-- Icon Blocks -->
+                    <div class="u-shadow-v21--hover cs-brd-around cs-brd-gray-light-v4 cs-brd-transparent--hover h-100 cs-bg-white--hover cs-transition-0_3 cs-cursor-pointer cs-px-30 cs-pt-30 cs-pb-50">
+                        <header class="text-uppercase">
+                            <h3 class="cs-font-weight-700 cs-font-size-14 cs-mb-5">Бикмурзин А.В.</h3>
+                            <h4 class="cs-font-weight-700 cs-font-size-11 cs-color-primary mb-0">Кабельные системы</h4>
+                        </header>
+                        <p class="cs-mb-5 cs-font-size-13">Из года в год планка мероприятия КРОС увеличивается, желаю двигаться в том же направлении и не сдавать позиций.</p>
+                    </div>
+                    <!-- End Icon Blocks -->
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <!-- Icon Blocks -->
+                    <div class="u-shadow-v21--hover cs-brd-around cs-brd-gray-light-v4 cs-brd-transparent--hover h-100 cs-bg-white--hover cs-transition-0_3 cs-cursor-pointer cs-px-30 cs-pt-30 cs-pb-50">
+                        <header class="text-uppercase">
+                            <h3 class="cs-font-weight-700 cs-font-size-14 cs-mb-5">Путиванов Владимир</h3>
+                            <h4 class="cs-font-weight-700 cs-font-size-11 cs-color-primary mb-0">Северное волокно</h4>
+                        </header>
+                        <p class="cs-mb-5 cs-font-size-13">На КРОС, прежде всего впечатлили:
+                            масштаб проведения, огромное число участников (более 600 чел.) не только из России но и из стран ближнего зарубежья;
+                            высокий уровень проведения тематических мероприятий (рабочей части), а также грамотная организация проживания и досуга гостей.
+                            место проведения, в одном из красивейших уголков России,
+                            в окружении Кавказских гор.</p>
+                    </div>
+                    <!-- End Icon Blocks -->
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <!-- Icon Blocks -->
+                    <div class="u-shadow-v21--hover cs-brd-around cs-brd-gray-light-v4 cs-brd-transparent--hover h-100 cs-bg-white--hover cs-transition-0_3 cs-cursor-pointer cs-px-30 cs-pt-30 cs-pb-50">
+                        <header class="text-uppercase">
+                            <h3 class="cs-font-weight-700 cs-font-size-14 cs-mb-5">Сергей Корчин</h3>
+                            <h4 class="cs-font-weight-700 cs-font-size-11 cs-color-primary mb-0">Зуммер</h4>
+                        </header>
+                        <p class="cs-mb-5 cs-font-size-13">На мой взгляд, лучшая площадка
+                            для общения
+                            в России.</p>
+                    </div>
+                    <!-- End Icon Blocks -->
+                </div>
+            </div>
+    </section>
+    <section id="hottopics" class="cs-mb-100 cs-bg-primary_block cs-bg-img-layer-left" style="background-image: url({{ asset('assets/cros2/img/bg_layer_left.png') }});">
+        <div class="container">
+            <div class="text-center cs-mb-70">
+                <h2 class="text-uppercase cs-line-height-1 cs-font-weight-700 cs-font-size-23 cs-letter-spacing-0  cs-mb-30 cs-color-header">
+                    Горячие темы КРОС-2.0-18
+                </h2>
+                <!-- <p>Ежегодно Конференция собирает более 600 профессионалов отрасли из России и стран СНГ. Приезжают участники из Германии,<br />
+                   Франции, США и Канады.  На несколько дней конкуренты превращаются в коллег и друзей. Обсуждение важнейших вопросов
+                   развития отрасли в неформальной обстановке - фирменный знак, секрет особой атмосферы КРОС.</p> -->
+            </div>
+            <div class="row align-items-center">
+                <div class="col-sm-6 col-lg-6 cs-mb-0 cs-mb-60--sm ">
+                    <!-- Icon Blocks -->
+                    <div class="media cs-mb-20">
+                        <div class="d-flex mr-4">
+                            <span class="u-icon-main icon-set" data-position="-17px -14px"></span>
+                        </div>
+                        <div class="media-body cs-mt-15">
+                            <h3 class="cs-color-black cs-font-size-17">
+                                <span class="cs-color-black cs-text-underline--none--hover" href="javascript:void(0);">
+                                    Юридические аспекты
+                                </span>
+                            </h3>
+                            <p class="cs-color-gray-dark-v4 cs-font-size-13 mb-0"></p>
+                        </div>
+                    </div>
+                    <!-- End Icon Blocks -->
+                    <!-- Icon Blocks -->
+                    <div class="media cs-mb-20">
+                        <div class="d-flex mr-4">
+                            <span class="u-icon-main icon-set" data-position="-17px -68px"></span>
+                        </div>
+                        <div class="media-body cs-mt-15">
+                            <h3 class="cs-color-black cs-font-size-17">
+                                <span class="cs-color-black cs-text-underline--none--hover" href="javascript:void(0);">
+                                    Актуальные вопросы
+                                    слияния и поглощения
+                                </span>
+                            </h3>
+                            <p class="cs-color-gray-dark-v4 cs-font-size-13 mb-0"></p>
+                        </div>
+                    </div>
+                    <!-- End Icon Blocks -->
+                    <!-- Icon Blocks -->
+                    <div class="media cs-mb-20">
+                        <div class="d-flex mr-4">
+                            <span class="u-icon-main icon-set" data-position="-17px -124px"></span>
+                        </div>
+                        <div class="media-body cs-mt-15">
+                            <h3 class="cs-color-black cs-font-size-17">
+                                <span class="cs-color-black cs-text-underline--none--hover" href="javascript:void(0);">
+                                    Обзор новинок и достижений
+                                </span>
+                            </h3>
+                            <p class="cs-color-gray-dark-v4 cs-font-size-13 mb-0"></p>
+                        </div>
+                    </div>
+                    <!-- End Icon Blocks -->
+                    <!-- Icon Blocks -->
+                    <div class="media cs-mb-20">
+                        <div class="d-flex mr-4">
+                            <span class="u-icon-main icon-set" data-position="-17px -180px"></span>
+                        </div>
+                        <div class="media-body cs-mt-15">
+                            <h3 class="cs-color-black cs-font-size-17">
+                                <span class="cs-color-black cs-text-underline--none--hover" href="javascript:void(0);">
+                                    Проводные
+                                    и беспроводные сети
+                                    передачи данных
+                                </span>
+                            </h3>
+                            <p class="cs-color-gray-dark-v4 cs-font-size-13 mb-0"></p>
+                        </div>
+                    </div>
+                    <!-- End Icon Blocks -->
+                    <!-- Icon Blocks -->
+                    <div class="media cs-mb-20 cs-mb-0--sm">
+                        <div class="d-flex mr-4">
+                            <span class="u-icon-main icon-set" data-position="-17px -236px"></span>
+                        </div>
+                        <div class="media-body cs-mt-15">
+                            <h3 class="cs-color-black cs-font-size-17">
+                                <span class="cs-color-black cs-text-underline--none--hover" href="javascript:void(0);">
+                                    Возможности маркетинга
+                                </span>
+                            </h3>
+                            <p class="cs-color-gray-dark-v4 cs-font-size-13 mb-0"></p>
+                        </div>
+                    </div>
+                    <!-- End Icon Blocks -->
+                </div>
+                <div class="col-sm-6 col-lg-6 cs-mb-60">
+                    <!-- Icon Blocks -->
+                    <div class="media cs-mb-20">
+                        <div class="d-flex mr-4">
+                            <span class="u-icon-main icon-set" data-position="-77px -14px"></span>
+                        </div>
+                        <div class="media-body cs-mt-15">
+                            <h3 class="cs-color-black cs-font-size-17">
+                                <span class="cs-color-black cs-text-underline--none--hover" href="javascript:void(0);">
+                                    Вопросы построения
+                                    систем телевещания КТВ и IPTV
+                                </span>
+                            </h3>
+                            <p class="cs-color-gray-dark-v4 cs-font-size-13 mb-0"></p>
+                        </div>
+                    </div>
+                    <!-- End Icon Blocks -->
+                    <!-- Icon Blocks -->
+                    <div class="media cs-mb-20">
+                        <div class="d-flex mr-4">
+                            <span class="u-icon-main icon-set" data-position="-77px -70px"></span>
+                        </div>
+                        <div class="media-body cs-mt-15">
+                            <h3 class="cs-color-black cs-font-size-17">
+                                <span class="cs-color-black cs-text-underline--none--hover" href="javascript:void(0);" title="Look here">
+                                    Современные системы видеонаблюдения
+                                </span>
+                            </h3>
+                            <p class="cs-color-gray-dark-v4 cs-font-size-13 mb-0"></p>
+                        </div>
+                    </div>
+                    <!-- End Icon Blocks -->
+                    <!-- Icon Blocks -->
+                    <div class="media cs-mb-20">
+                        <div class="d-flex mr-4">
+                            <span class="u-icon-main icon-set" data-position="-77px -126px"></span>
+                        </div>
+                        <div class="media-body cs-mt-15">
+                            <h3 class="cs-color-black cs-font-size-17">
+                                <span class="cs-color-black cs-text-underline--none--hover" href="javascript:void(0);">
+                                    Вопросы взаимодействия
+                                    в сфере ЖКХ
+                                </span>
+                            </h3>
+                            <p class="cs-color-gray-dark-v4 cs-font-size-13 mb-0"></p>
+                        </div>
+                    </div>
+                    <!-- End Icon Blocks -->
+                    <!-- Icon Blocks -->
+                    <div class="media cs-mb-20">
+                        <div class="d-flex mr-4">
+                            <span class="u-icon-main icon-set" data-position="-77px -182px"></span>
+                        </div>
+                        <div class="media-body cs-mt-15">
+                            <h3 class="cs-color-black cs-font-size-17">
+                                <span class="cs-color-black cs-text-underline--none--hover" href="javascript:void(0);">
+                                    Оптимизация процессов управления
+                                </span>
+                            </h3>
+                            <p class="cs-color-gray-dark-v4 cs-font-size-13 mb-0"></p>
+                        </div>
+                    </div>
+                    <!-- End Icon Blocks -->
+                    <!-- Icon Blocks -->
+                    <div class="media">
+                        <div class="d-flex mr-4">
+                            <span class="u-icon-main icon-set" data-position="-77px -238px"></span>
+                        </div>
+                        <div class="media-body cs-mt-15">
+                            <h3 class="cs-color-black cs-font-size-17">
+                                <span class="cs-color-black cs-text-underline--none--hover" href="javascript:void(0);">
+                                    Удаленный мониторинг параметров,
+                                    управление нагрузками
+                                </span>
+                            </h3>
+                            <p class="cs-color-gray-dark-v4 cs-font-size-13 mb-0"></p>
+                        </div>
+                    </div>
+                    <!-- End Icon Blocks -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="contact" class="cs-bg-img-hero cs-color-white cs-bg-darkblue-opacity-0_5--after cs-pt-40 cs-pb-10" style="background-image: url({{ asset('/assets/cros2/img/blue_bg_contacts.png') }});">
+        <div class="u-bg-overlay__inner cs-width-780 mx-auto">
+            <!-- cs-width-780 -->
+            <div class="u-heading-v8-2">
+                <h2 class="h2-white text-uppercase cs-font-weight-700 cs-font-size-23 cs-color-white cs-mb-10 text-center">Как стать участником КРОС-2.0-18
+                </h2>
+            </div>
+            <p class="cs-color-white cs-pt-20 text-center">Компания НАГ берет на себя все вопросы, касающиеся проживания и питания участников.
+                Зарегистрироваться и узнать подробности можно <a href="https://cros.nag.ru/price" class="cs-color-white"><u>на сайте КРОС</u></a><br>
+                Регистрация участников стартует 12 марта 2018 г. в 9:00 (мск)
+            </p>
+        </div>
+        <div class="container">
+            <div class="row cs-mb-40">
+                <div class="col-md-6 "><img src="{{ asset('assets/cros2/img/hotel.jpg') }}" class="img-fluid"></div>
+                <div class="col-md-6">
+                    <p class="cs-font-size-15 text-left">Чтобы стать спонсором Конференции,
+                        <a href="https://cros.nag.ru/info/become-sponsor" class="cs-color-white"><u>отправьте заявку</u></a> или свяжитесь с нами прямо сейчас:
+                    </p>
+                    <address class="text-uppercase cs-font-size-15 cs-overflow-x-hidden cs-py-5 text-left">
+                        <div class="row cs-mx-minus-5 cs-mb-10">
+                            <div class="col-md-6 col-lg-6 cs-mb-20 cs-mb-0--lg cs-px-5"> Email:
+                                <a class="cs-color-white" href="mailto:cros@nag.ru"><strong>cros@nag.ru</strong></a>
+                            </div>
+                            <div class="col-md-6 col-lg-6 cs-mb-20 cs-mb-0--lg cs-px-5"> Телефон:
+                                <strong><a href="tel:73433799838" rel="tel" class="cs-color-white">+7 (343) 379-98-38</a></strong>
+                            </div>
+                        </div>
+                        Место проведения:
+                        <strong>г. Сочи, <br/>Красная Поляна, отель Поляна 1389</strong><br />
+                        Дата проведения:
+                        <strong>16-18 мая 2018 г.</strong><br />
+                        <!--
+                        <hr class="cs-hr-white">
+                        <button class="btn u-btn-white btn-lg text-uppercase cs-font-weight-700 cs-font-size-12 rounded-0 cs-px-20 cs-py-15 mb-0" type="submit" role="button">Стать спонсором</button>
+                        -->
+                    </address>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    {% include 'cros2/misc/footer.html.twig' %}
+    <!-- End Footer -->
+    <a class="js-go-to u-go-to-v1" href="#"
+       data-type="fixed"
+       data-position='{
+            "bottom": 15,
+            "right": 15
+            }'
+       data-offset-top="400"
+       data-compensation="#js-header"
+       data-show-effect="zoomIn">
+        <i class="fa fa-angle-up"></i>
+    </a>
+</main>
+
+<!-- JS Global Compulsory -->
+<script src="{{ asset('assets/cros2/assets/cros/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('assets/cros2/assets/cros/jquery-migrate/jquery-migrate.min.js') }}"></script>
+<script src="{{ asset('assets/cros2/assets/cros/jquery.easing/js/jquery.easing.min.js') }}"></script>
+<script src="{{ asset('assets/cros2/assets/cros/tether/tether.min.js') }}"></script>
+<script src="{{ asset('assets/cros2/assets/cros/bootstrap/bootstrap.min.js?t=20180313') }}"></script>
+<script src="{{ asset('assets/cros2/assets/cros/fancybox/jquery.fancybox.min.js') }}"></script>
+<script src="{{ asset('assets/cros2/assets/cros/jquery.countdown.min.js') }}"></script>
+<script src="{{ asset('assets/cros2/assets/js/components/core.js') }}"></script>
+<script src="{{ asset('assets/cros2/assets/js/components/header.js') }}"></script>
+<script src="{{ asset('assets/cros2/assets/js/components/hamburgers.js') }}"></script>
+
+<script src="{{ asset('assets/cros2/assets/js/components/countdown.js') }}"></script>
+<script src="{{ asset('assets/cros2/assets/js/components/go-to.js') }}"></script>
+<script src="{{ asset('assets/cros2/assets/js/components/popup.js') }}"></script>
+<!-- Charts -->
+<script src="{{ asset('assets/cros2/assets/cros/charts/Chart.bundle.js') }}"></script>
+<script src="{{ asset('assets/cros2/assets/cros/charts/utils.js') }}"></script>
+<!-- JS Plugins Init. -->
+<!--JS Menu -->
+<script src="{{ asset('assets/cros2/assets/js/components/megamenu.min.js') }}"></script>
+{% block javascripts %}{% endblock %}
+<script>
+    (function(){
+        var originalAddClassMethod = jQuery.fn.addClass;
+        $.fn.addClass = function(){
+            var result = originalAddClassMethod.apply(this, arguments);
+            if ($(this).attr('id') == 'test') {
+                $(this).trigger('cssClassChanged');
+            }
+            return result;
+        }
+    })();
+    $(function(){
+        $("#test").bind('cssClassChanged', function(){
+            if($("#test").hasClass("js-header-change-moment")){
+                $('#nav-submenu-1').addClass('cs-sub-menu-home-dow');
+            }else{
+                $("#nav-submenu-1").removeClass('cs-sub-menu-home-dow');
+            }
+
+        });
+    });
+    $(function(){
+        $("#test").bind('cssClassChanged', function(){
+            if($("#test").hasClass("js-header-change-moment")){
+                $('#nav-submenu-2').addClass('cs-sub-menu-home-dow');
+            }else{
+                $("#nav-submenu-2").removeClass('cs-sub-menu-home-dow');
+            }
+
+        });
+    });
+    $(function(){
+        $('.submenu').hover(function(){
+            $('.submenu').addClass('cs-sub-menu-opened');
+        }, function(){
+            $('.submenu').removeClass('cs-sub-menu-opened');
+        })
+    });
+    $(function(){
+        $('.submenu2').hover(function(){
+            $('.submenu2').addClass('cs-sub-menu-opened');
+        }, function(){
+            $('.submenu2').removeClass('cs-sub-menu-opened');
+        })
+    });
+    $('.sub-menu').SubMenu({
+        event: 'hover',
+        pageContainer: $('.container'),
+        breakpoint: 991
+    });
+    $(window).on('resize', function () {
+        if ( $('.nav-item').hasClass('active') ) {
+            $('.nav-item').removeClass('active');
+        }
+        setTimeout(function () {
+            $.MainCore.components.B4Tabs.init('[role="tablist"]');
+        }, 200);
+    });
+</script>
+<script>
+    /*
+      Get html5 attr and set background pos from sprite png.
+    */
+    function setIconPosition() {
+        var icons = 'span[class*="u-icon-main"]';
+        $(document.querySelectorAll(icons)).each(function(){
+            pos =  $(this).attr("data-position"); //.split(",");
+            $(this).css('background-position', pos);
+        })
+    }
+
+    $(document).on('ready', function () {
+        setIconPosition();
+        // initialization of header
+        $.MainCore.components.HSHeader.init($('#js-header'));
+        $.MainCore.helpers.HSHamburgers.init('.hamburger');
+        // initialization of popups
+        $.MainCore.components.HSPopup.init('.js-fancybox');
+        // initialization of go to section
+        $.MainCore.components.HSGoTo.init('.js-go-to');
+        // initialization of countdowns
+        var countdowns = $.MainCore.components.HSCountdown.init('.js-countdown', {
+            yearsElSelector: '.js-cd-years',
+            monthElSelector: '.js-cd-month',
+            daysElSelector: '.js-cd-days',
+            hoursElSelector: '.js-cd-hours',
+            minutesElSelector: '.js-cd-minutes',
+            secondsElSelector: '.js-cd-seconds'
+        });
+
+        handleLogin();
+        // Search Box (Header)
+        function handleLogin() {
+            jQuery('.login-link').on("click", function () {
+                if(jQuery('.login-btn').hasClass('login-form-open')){
+                    jQuery('.login-open').fadeOut(500);
+                    jQuery('.login-btn').removeClass('login-form-open');
+                } else {
+                    jQuery('.login-open').fadeIn(500);
+                    jQuery('.login-btn').addClass('login-form-open');
+                }
+            });
+        }
+    });
+
+
+</script>
+<script>
+    var config = {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: [
+                    90,
+                    8,
+                    2,
+                ],
+                backgroundColor: [
+                    window.chartColors.cros_blue,
+                    window.chartColors.cros_yellow,
+                    window.chartColors.cros_green,
+                ],
+                label: 'Dataset 1'
+            }],
+            labels: [
+                'Операторы связи 90%',
+                'Интеграторы 8%',
+                'Производители оборудования 2%',
+            ]
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'Распределение аудитории КРОС по видам деятельности'
+            },
+            animation: {
+                animateScale: false,
+                animateRotate: true
+            }
+        }
+    };
+
+    var config2 = {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: [
+                    56,
+                    21,
+                    17,
+                    17,
+                ],
+                backgroundColor: [
+                    window.chartColors.cros_blue,
+                    window.chartColors.cros_yellow,
+                    window.chartColors.cros_green,
+                    window.chartColors.blue,
+                ],
+                label: 'Dataset 2'
+            }],
+            labels: [
+                'Руководство старшего звена 56%',
+                'Руководство среднего звена 21%',
+                'Технические специалисты 17%',
+                'Менеджеры 17%',
+            ]
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'Распределение аудитории КРОС по видам деятельности'
+            },
+            animation: {
+                animateScale: false,
+                animateRotate: true
+            }
+        }
+    };
+
+    window.onload = function() {
+        var ctx = document.getElementById('chartarea').getContext('2d');
+        window.myDoughnut = new Chart(ctx, config);
+
+        var ctx2 = document.getElementById('chartarea2').getContext('2d');
+        window.myDoughnut2 = new Chart(ctx2, config2);
+    };
+
+</script>
+
+{% if app.environment == 'prod' %}
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+        (function (d, w, c) {
+            (w[c] = w[c] || []).push(function() {
+                try {
+                    w.yaCounter48079550 = new Ya.Metrika({
+                        id:48079550,
+                        clickmap:true,
+                        trackLinks:true,
+                        accurateTrackBounce:true
+                    });
+                } catch(e) { }
+            });
+
+            var n = d.getElementsByTagName("script")[0],
+                s = d.createElement("script"),
+                f = function () { n.parentNode.insertBefore(s, n); };
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+            if (w.opera == "[object Opera]") {
+                d.addEventListener("DOMContentLoaded", f, false);
+            } else { f(); }
+        })(document, window, "yandex_metrika_callbacks");
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/48079550" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-749542-17"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-749542-17');
+    </script>
+{% endif %}
+
+</body>
+</html>
