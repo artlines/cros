@@ -20,6 +20,7 @@ parameters:
     sponsor.resize:
         width: 400
         height: 200
+    google_recaptcha_site_key: '%env(GOOGLE_RECAPTCHA_SITE_KEY)%'
 
 services:
     # default configuration for services in *this* file
@@ -42,7 +43,19 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-
+    # Configure Redis connection and session handler
+    # to store sessions in Redis
+    RedisConnection:
+        class: Redis
+        calls:
+            - method: connect
+              arguments: ['%env(REDIS_HOST)%', '%env(int:REDIS_PORT)%']
+            - method: auth
+              arguments: ['%env(REDIS_AUTH)%']
+            - method: select
+              arguments: ['%env(int:REDIS_DB)%']
+    Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
+        arguments: ['@RedisConnection']
 
     tg.chat.manager:
         class: AppBundle\Manager\TgChatManager

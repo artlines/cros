@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use AppBundle\Entity\Info;
+use App\Entity\Info;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -26,6 +26,8 @@ use Symfony\Component\Form\FormError;
 
 //use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType as RecaptchaType;
 //use Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
+use Beelab\Recaptcha2Bundle\Form\Type\RecaptchaType;
+use Beelab\Recaptcha2Bundle\Validator\Constraints\Recaptcha2 as RecaptchaTrue;
 
 class InfoController extends AbstractController
 {
@@ -33,28 +35,26 @@ class InfoController extends AbstractController
      * @Route("/info/{alias}", name="info")
      * @param $alias
      * @param Request $request
+     * @param \Swift_Mailer $mailer
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function info($alias, Request $request)
+    public function info($alias, Request $request, \Swift_Mailer $mailer)
 	{
         /* SPONSOR */
         if ($alias == 'sponsors') {
             $RepositoryTypeSponsor = $this->getDoctrine()->getRepository('App:TypeSponsor');
-            $typeSponsorGold = $RepositoryTypeSponsor->findOneBy(array('name_type' => 'Золотой'));
-            $typeSponsorSilvern = $RepositoryTypeSponsor->findOneBy(array('name_type' => 'Серебряный'));
 
+            $typeSponsorGold = $RepositoryTypeSponsor->findOneBy(['name_type' => 'Золотой']);
+            $typeSponsorSilvern = $RepositoryTypeSponsor->findOneBy(['name_type' => 'Серебряный']);
 
-
-            //dump($typeSponsor->getId());
             $RepositorySponsor = $this->getDoctrine()->getRepository('App:Sponsor');
-            $goldSponsor = $RepositorySponsor->findBy(array('type'=>$typeSponsorGold->getId()),array('priority'=>'DESC'));
-            $silvernSponsor = $RepositorySponsor->findBy(array('type'=>$typeSponsorSilvern->getId()),array('priority'=>'DESC'));
+            $goldSponsor = $RepositorySponsor->findBy(['type'=>$typeSponsorGold->getId()],['priority'=>'DESC']);
+            $silvernSponsor = $RepositorySponsor->findBy(['type'=>$typeSponsorSilvern->getId()],['priority'=>'DESC']);
 
-            return $this->render('frontend/info/show-sponsor.html.twig', array(
-
+            return $this->render('frontend/info/show-sponsor.html.twig', [
                 'gold' => $goldSponsor,
                 'silvern' => $silvernSponsor,
-            ));
+            ]);
         };
 		/* ORGANIZE */
 		if ($alias == 'organize') {
@@ -66,48 +66,38 @@ class InfoController extends AbstractController
 					$_dates->getFinish()->getTimestamp()
 				);
 
-			return $this->render('frontend/info/organize.html.twig', array(
-
-				'dates' => $dates
-            ));
+			return $this->render('frontend/info/organize.html.twig', ['dates' => $dates]);
 		};
 
 		/* BECOME-SPEAKER */
 		if ($alias == 'become-speaker') {
-			$good_extens = array('pdf', 'txt', 'rtf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx');
+			$good_extens = ['pdf', 'txt', 'rtf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'];
 			$mimeMsg = 'Допустимые расширения файлов: '.implode(', ', $good_extens);
 
             $defaultData = array(
                 //'theses' => 'asd'
             );
 			$form = $this->createFormBuilder($defaultData)
-				->add('speaker', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Имя'))
-				->add('email', EmailType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'E-mail'))
-				->add('mobile', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Контактный телефон'))
-				->add('title', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Тема доклада'))
-                ->add('theses', TextareaType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Тезисы'))
-                ->add('files', FileType::class, array(
+				->add('speaker', TextType::class, ['attr' => ['class' => 'cs-theme-color-gray-dark-v3'], 'label' => 'Имя'])
+				->add('email', EmailType::class, ['attr' => ['class' => 'cs-theme-color-gray-dark-v3'], 'label' => 'E-mail'])
+				->add('mobile', TextType::class, ['attr' => ['class' => 'cs-theme-color-gray-dark-v3'], 'label' => 'Контактный телефон'])
+				->add('title', TextType::class, ['attr' => ['class' => 'cs-theme-color-gray-dark-v3'], 'label' => 'Тема доклада'])
+                ->add('theses', TextareaType::class, ['attr' => ['class' => 'cs-theme-color-gray-dark-v3'], 'label' => 'Тезисы'])
+                ->add('files', FileType::class, [
 									'label' => 'Файлы', 
 									'multiple' => true,
-									'constraints' => array(
-										new Assert\All(array(
-											new Assert\File(array(
-												'maxSize' => '20M',
-												'mimeTypesMessage' => $mimeMsg
-											)),
-										)),
-									),
-				))
-//				->add('recaptcha', RecaptchaType::class, array(
-//									'label' => false,
-//									'mapped' => false,
-//									'constraints' => array(
-//										new RecaptchaTrue(array(
-//											'message' => '',
-//										)),
-//									)
-//				))
-                ->add('send', SubmitType::class, array('label' => 'Отправить', 'attr' => array('class' => 'btn-success')))
+									'constraints' => [
+										new Assert\All([
+											new Assert\File(['maxSize' => '20M', 'mimeTypesMessage' => $mimeMsg]),
+										]),
+									],
+				])
+				->add('recaptcha', RecaptchaType::class, [
+                    'constraints'       => [
+                        new RecaptchaTrue(['message' => 'Обязательное поле'])
+                    ],
+                ])
+                ->add('send', SubmitType::class, ['label' => 'Отправить', 'attr' => ['class' => 'btn-success']])
 				->getForm();
 
 			$form->handleRequest($request);
@@ -134,33 +124,33 @@ class InfoController extends AbstractController
 			/* end check */
 
 			if ($form->isSubmitted() && $form->isValid() && $_files_valid) {
-				    $data = $form->getData();
+                $data = $form->getData();
 
-					$files = $data['files'];
+                $files = $data['files'];
 
-					$message = \Swift_Message::newInstance()
-                        ->setSubject('КРОС-2.0-18: Заявка на добавление докладчика')
-                        ->setFrom('cros@nag.ru')
-                        ->setTo($data['email'])
-                        ->setBcc($this->container->getParameter('cros_emails'))
-                        ->setBody(
-                            $this->renderView(
-                                'Emails/become-speaker.html.twig',
-                                array(
-                                    'speaker' => $data['speaker'],
-                                    'email' => $data['email'],
-                                    'mobile' => $data['mobile'],
-                                    'title' => $data['title'],
-                                    'theses' => $data['theses'],
-                                )
-                            ), 'text/html');
+                $message = new \Swift_Message();
+                $message
+                    ->setSubject('КРОС-2.0-18: Заявка на добавление докладчика')
+                    ->setFrom('cros@nag.ru')
+                    ->setTo($data['email'])
+                    ->setBody(
+                        $this->renderView(
+                            'Emails/become-speaker.html.twig',
+                            [
+                                'speaker' => $data['speaker'],
+                                'email' => $data['email'],
+                                'mobile' => $data['mobile'],
+                                'title' => $data['title'],
+                                'theses' => $data['theses'],
+                            ]
+                        ), 'text/html');
 
-					foreach ($files as $file) {
-						$message->attach(\Swift_Attachment::fromPath($file)
-								->setFilename($file->getClientOriginalName()));
-					}
+                foreach ($files as $file) {
+                    $message->attach(\Swift_Attachment::fromPath($file)
+                            ->setFilename($file->getClientOriginalName()));
+                }
 
-                    $this->get('mailer')->send($message);
+                $mailer->send($message);
 
 				return $this->render('frontend/info/become-speaker.html.twig', array(
 					'form' => false,
@@ -197,15 +187,11 @@ class InfoController extends AbstractController
                     'choice_attr' => array('Выберите тип пакета' => array('disabled' => '')),
                 ))
                 ->add('present', TextAreaType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Что будет представлено'))
-//				->add('recaptcha', RecaptchaType::class, array(
-//									'label' => false,
-//									'mapped' => false,
-//									'constraints' => array(
-//										new RecaptchaTrue(array(
-//											'message' => '',
-//										)),
-//									)
-//				))
+                ->add('recaptcha', RecaptchaType::class, [
+                    'constraints' => [
+                        new RecaptchaTrue(['message' => 'Обязательное поле'])
+                    ],
+                ])
                 ->add('send', SubmitType::class, array('label' => 'Отправить', 'attr' => array('class' => 'btn-success')))
 				->getForm();
 
@@ -215,11 +201,11 @@ class InfoController extends AbstractController
 
 				$data = $form->getData();
 
-                $message = \Swift_Message::newInstance()
+                $message = new \Swift_Message();
+                $message
                     ->setSubject('КРОС-2.0-18: Заявка на добавление спонсора')
                     ->setFrom('cros@nag.ru')
-                    ->setTo($data['email'])
-                    ->setBcc($this->container->getParameter('cros_emails'))
+                    ->setTo('cros@nag.ru')
                     ->setBody(
                         $this->renderView(
                             'Emails/become-sponsor.html.twig',
@@ -232,7 +218,7 @@ class InfoController extends AbstractController
                             )
                         ), 'text/html');
 
-                $this->get('mailer')->send($message);
+                $mailer->send($message);
 
 				return $this->render('frontend/info/become-sponsor.html.twig', array(
 					'form' => false,
@@ -256,15 +242,11 @@ class InfoController extends AbstractController
             $form = $this->createFormBuilder($defaultData)
                 ->add('company', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Компания'))
                 ->add('mobile', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Контактный телефон'))
-//                ->add('recaptcha', RecaptchaType::class, array(
-//                    'label' => false,
-//                    'mapped' => false,
-//                    'constraints' => array(
-//                        new RecaptchaTrue(array(
-//                            'message' => '',
-//                        )),
-//                    )
-//                ))
+                ->add('recaptcha', RecaptchaType::class, [
+                    'constraints' => [
+                        new RecaptchaTrue(['message' => 'Обязательное поле'])
+                    ],
+                ])
                 ->add('send', SubmitType::class, array('label' => 'Отправить', 'attr' => array('class' => 'btn-success')))
                 ->getForm();
 
@@ -274,7 +256,8 @@ class InfoController extends AbstractController
 
                 $data = $form->getData();
 
-                $message = \Swift_Message::newInstance()
+                $message = new \Swift_Message();
+                $message
                     ->setSubject('КРОС-2.0-18: Заявка на напоминание освобождения брони')
                     ->setFrom('cros@nag.ru')
                     ->setTo('cros@nag.ru')
@@ -287,7 +270,7 @@ class InfoController extends AbstractController
                             )
                         ), 'text/html');
 
-                $this->get('mailer')->send($message);
+                $mailer->send($message);
 
                 return $this->render('frontend/info/reminder-sponsor.html.twig', array(
                     'form' => false,
