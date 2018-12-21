@@ -243,46 +243,6 @@ class DefaultController extends AbstractController
             'form' => $form->createView(),
         ));
     }
-    /**
-     * @Route("/", name="homepage")
-     */
-    public function newMain()
-    {
-        $year = date("Y");
-
-        /** @var ConferenceRepository $conferenceRepository */
-        $conferenceRepository = $this->getDoctrine()->getRepository('App:Conference');
-        /** @var Conference $conf */
-        $conf = $conferenceRepository->findOneBy(['year' => $year]);
-
-        /** @var SpeakerRepository $speakerRepository */
-        $speakerRepository = $this->getDoctrine()->getRepository('App:Speaker');
-        /** @var Speaker[] $speakers */
-        $speakers = $speakerRepository->findByConf($conf->getId());
-
-        $speakers_rand = [];
-        if (count($speakers) > 1) {
-            $rand_keys = array_rand($speakers, 4);
-            foreach ($rand_keys as $val) {
-                $speakers_rand[] = $speakers[$val];
-            }
-        }
-
-        $speakerList = NULL;
-        foreach ($speakers_rand as $key =>  $value){
-            $speakerList[$key]['id'] = $value->getid();
-            $speakerList[$key]['AvatarSmall'] = $value->getAvatarSmall();
-            $speakerList[$key]['Organization'] = $value->getUser()->getOrganization()->getName();
-            $speakerList[$key]['SpeakerFirstName'] = $value->getUser()->getFirstName();
-            $speakerList[$key]['SpeakerLastName'] = $value->getUser()->getLastName();
-            $speakerList[$key]['SpeakerMiddleName'] = $value->getUser()->getMiddleName();
-        }
-
-        return $this->render('cros2/main/base.html.twig', array(
-
-            'speaker_list'  => $speakerList,
-        ));
-    }
 
     /**
      * @Route("/footer", name="footer")
