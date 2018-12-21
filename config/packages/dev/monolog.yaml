@@ -5,7 +5,7 @@ monolog:
             path: "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
         console:
-            type:   console
+            type: console
 
 parameters:
     cros_emails: [ 'e.nachuychenko@nag.ru' ]
