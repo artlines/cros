@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Controller\Site;
+
 use App\Entity\Conference;
 use App\Entity\Speaker;
 use App\Repository\ConferenceRepository;
@@ -45,7 +47,7 @@ class DefaultController extends AbstractController
             $speakerList[$key]['SpeakerMiddleName'] = $value->getUser()->getMiddleName();
         }
 
-        return $this->render('cros2/main/base.html.twig', [
+        return $this->render('site/main_page.html.twig', [
             'speaker_list'  => $speakerList,
         ]);
     }
