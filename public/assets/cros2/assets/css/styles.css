@@ -1334,3 +1334,6 @@ button.navbar-toggler {
 .btn {
   line-height: 1.2rem;
 }
+.btn.btn-lg {
+  line-height: 0.975rem;
+}
