@@ -14,7 +14,7 @@
         {% set first = 1 %}
         {% for price in prices %}
             <label class="u-check d-block cs-mb-20">
-                <input class="hidden-xs-up cs-pos-abs cs-top-10 cs-right-10 cs-p-text-white--checked" name="plan_1" type="radio"{% if first == 1 %} checked{% set first = 0 %}{% endif %}>
+                <input class="d-none cs-pos-abs cs-top-10 cs-right-10 cs-p-text-white--checked" name="plan_1" type="radio"{% if first == 1 %} checked{% set first = 0 %}{% endif %}>
                 <div class="media d-block d-md-flex u-shadow-v18 cs-bg-primary--checked">
                     <div class="d-md-flex align-self-center cs-pa-30">
                         <div class="w-100">
