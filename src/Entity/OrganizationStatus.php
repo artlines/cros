@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * OrganizationStatus
  *
  * @ORM\Table(name="organization_status")
- * @ORM\Entity(repositoryClass="App\Repository\OrganizationStatusRepository")
+ * @ORM\Entity()
  */
 class OrganizationStatus
 {

@@ -2,32 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Conference;
+use App\Entity\Organization;
+use App\Entity\OrganizationStatus;
 use App\Repository\FlatRepository;
-use AppBundle\Entity\Apartament;
-use AppBundle\Entity\ApartamentId;
-use AppBundle\Entity\ApartamentPair;
-use AppBundle\Entity\Conference;
-use AppBundle\Entity\Corpuses;
-use AppBundle\Entity\Info;
-use AppBundle\Entity\InfoToConf;
-use AppBundle\Entity\ManagerGroup;
-use AppBundle\Entity\Organization;
-use AppBundle\Entity\OrganizationStatus;
-use AppBundle\Entity\OrgToConf;
-use AppBundle\Entity\User;
-use AppBundle\Entity\UserToApartament;
-use AppBundle\Entity\UserToConf;
-use AppBundle\Repository\ApartamentIdRepository;
-use AppBundle\Repository\ApartamentPairRepository;
-use AppBundle\Repository\ConferenceRepository;
-use AppBundle\Repository\CorpusesRepository;
-use AppBundle\Repository\ManagerGroupRepository;
-use AppBundle\Repository\OrganizationRepository;
-use AppBundle\Repository\OrgToConfRepository;
-use AppBundle\Repository\UserRepository;
-use AppBundle\Repository\UserToConfRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Statement;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -638,33 +619,21 @@ class AdminController extends AbstractController
      * @param Request $request
      * @return object
      */
-    public function editOrg($id = null, Request $request)
+    public function editOrg($id = null, Request $request, EntityManagerInterface $em)
     {
-
         $year = date('Y');
+        $pay_summ = $pay_date = $pay_invoice = $paid_summ = 0;
 
-        $pay_summ = 0;
-        $paid_summ = 0;
-        $pay_invoice = 0;
-        $pay_date = 0;
-
-        $conf = $this->getDoctrine()
-            ->getRepository('App:Conference')
-            ->findOneBy(array('year' => $year));
+        /** @var Conference $conf */
+        $conf = $em->getRepository('App:Conference')->findOneBy(['year' => $year]);
 
         /** @var Organization $org */
-        $org = $this->getDoctrine()
-            ->getRepository('App:Organization')
-            ->find($id);
+        $org = $em->getRepository('App:Organization')->find($id);
 
-        $em = $this->getDoctrine()->getManager();
-
-        $orgsts = $this->getDoctrine()
-            ->getRepository('App:OrganizationStatus')
-            ->findAll();
+        /** @var OrganizationStatus[] $orgsts */
+        $orgsts = $em->getRepository('App:OrganizationStatus')->findAll();
 
         $choices = array();
-        /** @var OrganizationStatus $orgst */
         foreach ($orgsts as $orgst) {
             $choices[$orgst->getTitle()] = $orgst->getId();
         }
