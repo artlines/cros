@@ -1315,10 +1315,22 @@ hr {
 }
 
 /* Bootstrap: after update */
+.container-fluid {
+  width: auto;
+}
 .navbar-brand {
   padding-top: .25rem;
   padding-bottom: .25rem;
 }
 .u-header__logo-img {
   width: 70%;
+}
+.navbar > .container {
+  justify-content: normal;
+}
+button.navbar-toggler {
+  top: 0;
+}
+.btn {
+  line-height: 1.2rem;
 }
