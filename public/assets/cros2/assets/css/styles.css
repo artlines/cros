@@ -1313,3 +1313,12 @@ hr {
   display: flex;
   justify-content: space-around;
 }
+
+/* Bootstrap: after update */
+.navbar-brand {
+  padding-top: .25rem;
+  padding-bottom: .25rem;
+}
+.u-header__logo-img {
+  width: 70%;
+}
