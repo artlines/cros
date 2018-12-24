@@ -57,9 +57,6 @@
 
                         <!-- User menu -->
                         <div class="d-flex align-items-center d-lg-none">
-                            {% if not app.user %}
-                                {{ render(controller('App\\Controller\\SecurityController:login')) }}
-                            {% endif %}
                             {% if is_granted('ROLE_ORG') %}
                                 <div class="login-v1">
                                     <a href="{{ url('registration-3') }}" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
