@@ -39,27 +39,6 @@ class Organization implements UserInterface, \Serializable
     private $city;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="phone", type="bigint")
-     */
-    private $username;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=255)
-     */
-    private $email;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="password", type="string", length=255)
-     */
-    private $password;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="requisites", type="text", nullable=true)
@@ -151,9 +130,13 @@ class Organization implements UserInterface, \Serializable
     private $txtstatus;
 
     /**
-     * @ORM\OneToMany(targetEntity="OrgToConf", mappedBy="organization")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Conference", inversedBy="organizations")
+     * @ORM\JoinTable(name="organizations_conferences",
+     *     joinColumns={@ORM\JoinColumn(name="organization_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="conference_id", referencedColumnName="id")}
+     * )
      */
-    private $otc;
+    private $conferences;
 
     /**
      * @var string

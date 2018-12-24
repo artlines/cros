@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Content\Info;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -58,20 +59,11 @@ class Conference
     private $finish;
 
     /**
-     * @ORM\OneToMany(targetEntity="InfoToConf", mappedBy="conference")
+     * @var ArrayCollection|Info[]
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Content\Info", mappedBy="conference")
      */
-    private $infotoconfs;
-
-    /**
-     * @ORM\OneToMany(targetEntity="OrgToConf", mappedBy="conference")
-     */
-    private $otc;
-
-    public function __construct()
-    {
-        $this->infotoconfs = new ArrayCollection();
-    }
-
+    private $info;
 
     /**
      * Get id
@@ -88,7 +80,7 @@ class Conference
      *
      * @param integer $year
      *
-     * @return Conferences
+     * @return Conference
      */
     public function setYear($year)
     {
@@ -112,7 +104,7 @@ class Conference
      *
      * @param \DateTime $registrationStart
      *
-     * @return Conferences
+     * @return Conference
      */
     public function setRegistrationStart($registrationStart)
     {
@@ -136,7 +128,7 @@ class Conference
      *
      * @param \DateTime $registrationFinish
      *
-     * @return Conferences
+     * @return Conference
      */
     public function setRegistrationFinish($registrationFinish)
     {
@@ -160,7 +152,7 @@ class Conference
      *
      * @param \DateTime $start
      *
-     * @return Conferences
+     * @return Conference
      */
     public function setStart($start)
     {
@@ -184,7 +176,7 @@ class Conference
      *
      * @param \DateTime $finish
      *
-     * @return Conferences
+     * @return Conference
      */
     public function setFinish($finish)
     {
@@ -204,70 +196,10 @@ class Conference
     }
 
     /**
-     * Add infotoconf
-     *
-     * @param \App\Entity\InfoToConf $infotoconf
-     *
-     * @return Conference
+     * @return Info[]|ArrayCollection
      */
-    public function addInfotoconf(\App\Entity\InfoToConf $infotoconf)
+    public function getInfo()
     {
-        $this->infotoconfs[] = $infotoconf;
-
-        return $this;
-    }
-
-    /**
-     * Remove infotoconf
-     *
-     * @param \App\Entity\InfoToConf $infotoconf
-     */
-    public function removeInfotoconf(\App\Entity\InfoToConf $infotoconf)
-    {
-        $this->infotoconfs->removeElement($infotoconf);
-    }
-
-    /**
-     * Get infotoconfs
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getInfotoconfs()
-    {
-        return $this->infotoconfs;
-    }
-
-    /**
-     * Add otc
-     *
-     * @param \App\Entity\OrgToConf $otc
-     *
-     * @return Conference
-     */
-    public function addOtc(\App\Entity\OrgToConf $otc)
-    {
-        $this->otc[] = $otc;
-
-        return $this;
-    }
-
-    /**
-     * Remove otc
-     *
-     * @param \App\Entity\OrgToConf $otc
-     */
-    public function removeOtc(\App\Entity\OrgToConf $otc)
-    {
-        $this->otc->removeElement($otc);
-    }
-
-    /**
-     * Get otc
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getOtc()
-    {
-        return $this->otc;
+        return $this->info;
     }
 }
