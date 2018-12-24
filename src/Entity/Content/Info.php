@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Content;
 
+use App\Entity\Conference;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Info
  *
- * @ORM\Table(name="info")
+ * @ORM\Table(schema="content", name="info")
  * @ORM\Entity(repositoryClass="App\Repository\InfoRepository")
  */
 class Info
@@ -44,15 +44,12 @@ class Info
     private $content;
 
     /**
-     * @ORM\OneToMany(targetEntity="InfoToConf", mappedBy="info")
+     * @var Conference
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Conference", inversedBy="info")
+     * @ORM\JoinColumn(name="conference_id", referencedColumnName="id")
      */
-    private $conftoinfos;
-
-    public function __construct()
-    {
-        $this->conftoinfos = new ArrayCollection();
-    }
-
+    private $conference;
 
     /**
      * Get id
@@ -137,36 +134,18 @@ class Info
     }
 
     /**
-     * Add conftoinfo
-     *
-     * @param \App\Entity\InfoToConf $conftoinfo
-     *
-     * @return Info
+     * @return Conference
      */
-    public function addConftoinfo(\App\Entity\InfoToConf $conftoinfo)
+    public function getConference()
     {
-        $this->conftoinfos[] = $conftoinfo;
-
-        return $this;
+        return $this->conference;
     }
 
     /**
-     * Remove conftoinfo
-     *
-     * @param \App\Entity\InfoToConf $conftoinfo
+     * @param Conference $conference
      */
-    public function removeConftoinfo(\App\Entity\InfoToConf $conftoinfo)
+    public function setConference($conference)
     {
-        $this->conftoinfos->removeElement($conftoinfo);
-    }
-
-    /**
-     * Get conftoinfos
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getConftoinfos()
-    {
-        return $this->conftoinfos;
+        $this->conference = $conference;
     }
 }

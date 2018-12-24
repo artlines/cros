@@ -2,16 +2,67 @@
 
 namespace App\Entity\Abode;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Corpus
+ * Class Housing
  * @package App\Entity\Abode
  *
- * @ORM\Table(schema="abode", name="corpus")
+ * @ORM\Table(schema="abode", name="housing")
  * @ORM\Entity()
  */
-class Corpus
+class Housing
 {
+    /**
+     * @var integer
+     *
+     * @ORM\Id
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="num_of_floors", type="integer", nullable=false)
+     */
+    private $numOfFloors;
+
+    /**
+     * @var ArrayCollection|Apartment[]
+     *
+     * @ORM\OneToMany(targetEntity="Apartment", mappedBy="housing")
+     */
+    private $apartments;
+
+    public function __construct()
+    {
+        $this->apartments = new ArrayCollection();
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumOfFloors()
+    {
+        return $this->numOfFloors;
+    }
+
+    /**
+     * @param int $numOfFloors
+     */
+    public function setNumOfFloors($numOfFloors)
+    {
+        $this->numOfFloors = $numOfFloors;
+    }
 }

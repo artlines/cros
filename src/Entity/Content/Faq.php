@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Content;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Faq
  *
- * @ORM\Table(name="faq")
+ * @ORM\Table(schema="content", name="faq")
  * @ORM\Entity()
  */
 class Faq
@@ -24,21 +24,21 @@ class Faq
     /**
      * @var string
      *
-     * @ORM\Column(name="question", type="text")
+     * @ORM\Column(name="question", type="text", nullable=false)
      */
     private $question;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="answer", type="text")
+     * @ORM\Column(name="answer", type="text", nullable=false)
      */
     private $answer;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="is_active", type="boolean")
+     * @ORM\Column(name="is_active", type="boolean", nullable=false)
      */
     private $isActive;
 

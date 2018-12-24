@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity\Abode;
+namespace App\Entity\Participating;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -33,7 +33,7 @@ class ParticipationClass
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="RoomType", mappedBy="participationClass")
+     * @ORM\OneToMany(targetEntity="App\Entity\Abode\RoomType", mappedBy="participationClass")
      */
     private $roomTypes;
 

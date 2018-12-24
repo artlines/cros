@@ -26,13 +26,6 @@ class User implements UserInterface, \Serializable
     private $id;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="organization_id", type="integer")
-     */
-    private $organizationId;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="first_name", type="string", length=255)
@@ -124,25 +117,11 @@ class User implements UserInterface, \Serializable
     private $saved;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="change_log", type="text", nullable=true)
-     */
-    private $changeLog;
-
-    /**
-     * @var date
+     * @var \DateTime
      *
      * @ORM\Column(name="regdate", type="datetime", nullable=true)
      */
     private $regdate;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="firstclass", type="integer", nullable=true)
-     */
-    private $firstclass;
 
     /**
      * @var integer
@@ -157,6 +136,7 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(name="arrival", type="datetime", options={"default": "2018-05-16 14:00"})
      */
     private $arrival;
+
     /**
      * @var \DateTime
      *
@@ -173,19 +153,15 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\ManyToOne(targetEntity="Organization", inversedBy="users")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", nullable=false)
      */
     private $organization;
-
-    /**
-     * @ORM\OneToMany(targetEntity="UserToConf", mappedBy="user")
-     */
-    private $utocs;
 
     /**
      * @ORM\OneToMany(targetEntity="Speaker", mappedBy="user")
      */
     private $speakers;
+
     /**
      * @var \DateTime
      *
@@ -194,6 +170,15 @@ class User implements UserInterface, \Serializable
     private $tmAdd;
 
     private $entityName = 'user';
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Conference", inversedBy="users")
+     * @ORM\JoinTable(name="users_conferences",
+     *     joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="conference_id", referencedColumnName="id")}
+     * )
+     */
+    private $conferences;
 
     /**
      * User constructor.
@@ -215,29 +200,6 @@ class User implements UserInterface, \Serializable
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set organizationId
-     *
-     * @param integer $organizationId
-     * @return User
-     */
-    public function setOrganizationId($organizationId)
-    {
-        $this->organizationId = $organizationId;
-
-        return $this;
-    }
-
-    /**
-     * Get organizationId
-     *
-     * @return integer
-     */
-    public function getOrganizationId()
-    {
-        return $this->organizationId;
     }
 
     /**
@@ -533,26 +495,6 @@ class User implements UserInterface, \Serializable
             ) = unserialize($serialized);
     }
 
-    public function isAccountNonExpired()
-    {
-        return true;
-    }
-
-    public function isAccountNonLocked()
-    {
-        return true;
-    }
-
-    public function isCredentialsNonExpired()
-    {
-        return true;
-    }
-
-    public function isEnabled()
-    {
-        return $this->isActive;
-    }
-
     /**
      * Set organization
      *
@@ -670,30 +612,6 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Set changeLog
-     *
-     * @param string $changeLog
-     *
-     * @return User
-     */
-    public function setChangeLog($changeLog)
-    {
-        $this->changeLog = $changeLog;
-
-        return $this;
-    }
-
-    /**
-     * Get changeLog
-     *
-     * @return string
-     */
-    public function getChangeLog()
-    {
-        return $this->changeLog;
-    }
-
-    /**
      * Set regdate
      *
      * @param \DateTime $regdate
@@ -715,30 +633,6 @@ class User implements UserInterface, \Serializable
     public function getRegdate()
     {
         return $this->regdate;
-    }
-
-    /**
-     * Set firstclass
-     *
-     * @param integer $firstclass
-     *
-     * @return User
-     */
-    public function setFirstclass($firstclass)
-    {
-        $this->firstclass = $firstclass;
-
-        return $this;
-    }
-
-    /**
-     * Get firstclass
-     *
-     * @return integer
-     */
-    public function getFirstclass()
-    {
-        return $this->firstclass;
     }
 
     /**
