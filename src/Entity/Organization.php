@@ -20,7 +20,7 @@ class Organization implements UserInterface, \Serializable
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -154,12 +154,6 @@ class Organization implements UserInterface, \Serializable
      * @ORM\OneToMany(targetEntity="OrgToConf", mappedBy="organization")
      */
     private $otc;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="ManagerGroup", inversedBy="managed")
-     * @ORM\JoinColumn(name="manager", referencedColumnName="id")
-     */
-    private $managers;
 
     /**
      * @var string
@@ -439,30 +433,6 @@ class Organization implements UserInterface, \Serializable
     public function getStatus()
     {
         return $this->status;
-    }
-
-    /**
-     * Set managers
-     *
-     * @param \App\Entity\ManagerGroup $managers
-     *
-     * @return Organization
-     */
-    public function setManagers(\App\Entity\ManagerGroup $managers = null)
-    {
-        $this->managers = $managers;
-
-        return $this;
-    }
-
-    /**
-     * Get managers
-     *
-     * @return \App\Entity\ManagerGroup
-     */
-    public function getManagers()
-    {
-        return $this->managers;
     }
 
     /**

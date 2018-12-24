@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * User
  *
- * @ORM\Table(name="user")
+ * @ORM\Table(schema="", name="user")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks()
  */
@@ -19,9 +19,9 @@ class User implements UserInterface, \Serializable
     /**
      * @var int
      *
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -124,13 +124,6 @@ class User implements UserInterface, \Serializable
     private $saved;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="manager_group_id", type="integer", nullable=true)
-     */
-    private $managerGroupId;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="change_log", type="text", nullable=true)
@@ -179,12 +172,6 @@ class User implements UserInterface, \Serializable
     private $leaving;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Apartament", inversedBy="users")
-     * @ORM\JoinColumn(name="firstclass", referencedColumnName="id")
-     */
-    private $apartament;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Organization", inversedBy="users")
      * @ORM\JoinColumn(name="organization_id", referencedColumnName="id")
      */
@@ -194,17 +181,6 @@ class User implements UserInterface, \Serializable
      * @ORM\OneToMany(targetEntity="UserToConf", mappedBy="user")
      */
     private $utocs;
-
-    /**
-     * @ORM\OneToMany(targetEntity="UserToApartament", mappedBy="user")
-     */
-    private $utoas;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="ManagerGroup", inversedBy="managers")
-     * @ORM\JoinColumn(name="manager_group_id", referencedColumnName="id")
-     */
-    private $managerGroup;
 
     /**
      * @ORM\OneToMany(targetEntity="Speaker", mappedBy="user")
@@ -636,40 +612,6 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Add utoa
-     *
-     * @param \App\Entity\UserToApartament $utoa
-     *
-     * @return User
-     */
-    public function addUtoa(\App\Entity\UserToApartament $utoa)
-    {
-        $this->utoas[] = $utoa;
-
-        return $this;
-    }
-
-    /**
-     * Remove utoa
-     *
-     * @param \App\Entity\UserToApartament $utoa
-     */
-    public function removeUtoa(\App\Entity\UserToApartament $utoa)
-    {
-        $this->utoas->removeElement($utoa);
-    }
-
-    /**
-     * Get utoas
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getUtoas()
-    {
-        return $this->utoas;
-    }
-
-    /**
      * Set carNumber
      *
      * @param string $carNumber
@@ -728,30 +670,6 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Set managerGroupId
-     *
-     * @param integer $managerGroupId
-     *
-     * @return User
-     */
-    public function setManagerGroupId($managerGroupId)
-    {
-        $this->managerGroupId = $managerGroupId;
-
-        return $this;
-    }
-
-    /**
-     * Get managerGroupId
-     *
-     * @return integer
-     */
-    public function getManagerGroupId()
-    {
-        return $this->managerGroupId;
-    }
-
-    /**
      * Set changeLog
      *
      * @param string $changeLog
@@ -800,30 +718,6 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Set managerGroup
-     *
-     * @param \App\Entity\ManagerGroup $managerGroup
-     *
-     * @return User
-     */
-    public function setManagerGroup(\App\Entity\ManagerGroup $managerGroup = null)
-    {
-        $this->managerGroup = $managerGroup;
-
-        return $this;
-    }
-
-    /**
-     * Get managerGroup
-     *
-     * @return \App\Entity\ManagerGroup
-     */
-    public function getManagerGroup()
-    {
-        return $this->managerGroup;
-    }
-
-    /**
      * Set firstclass
      *
      * @param integer $firstclass
@@ -845,30 +739,6 @@ class User implements UserInterface, \Serializable
     public function getFirstclass()
     {
         return $this->firstclass;
-    }
-
-    /**
-     * Set apartament
-     *
-     * @param \App\Entity\Apartament $apartament
-     *
-     * @return User
-     */
-    public function setApartament(\App\Entity\Apartament $apartament = null)
-    {
-        $this->apartament = $apartament;
-
-        return $this;
-    }
-
-    /**
-     * Get apartament
-     *
-     * @return \App\Entity\Apartament
-     */
-    public function getApartament()
-    {
-        return $this->apartament;
     }
 
     /**
