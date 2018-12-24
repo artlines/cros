@@ -85,9 +85,6 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="{{ url('admin-mailing') }}"><i class="fa fa-envelope fa-fw"></i> Рассылка</a>
-                    </li>
-                    <li>
                         <a href="{{ url('admin-badges') }}"><i class="fa fa-tag fa-fw"></i> Бейджи</a>
                     </li>
                     {% endif %}
@@ -96,9 +93,6 @@
                         <a href="{{ path('admin-table2', {'year':'now'|date('Y')}) }}"><i class="fa fa-table fa-fw"></i>CSV</a>
                     </li>
                     {% if is_granted('ROLE_ADMIN') %}
-                    <li>
-                        <a href="{{ url('admin-settings') }}"><i class="fa fa-wrench fa-fw"></i> Настройки</a>
-                    </li>
                     <li>
                         <a href="{{ url('downloads') }}"><i class="fa fa-download fa-fw"></i> Загрузки</a>
                     </li>
@@ -118,7 +112,6 @@
 
     <div id="page-wrapper">
             {% block body %}{% endblock %}
-
     </div>
 
     <div id="remove-confirm-txt" class="modal fade" role="dialog">
