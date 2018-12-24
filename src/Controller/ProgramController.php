@@ -2,41 +2,14 @@
 
 namespace App\Controller;
 
-use AppBundle\Entity\Apartament;
-use AppBundle\Entity\ApartamentId;
-use AppBundle\Entity\Conference;
-use AppBundle\Entity\Info;
-use AppBundle\Entity\Lecture;
-use AppBundle\Entity\Logs;
-use AppBundle\Entity\Organization;
-use AppBundle\Entity\Organizations;
-use AppBundle\Entity\OrgToConf;
-use AppBundle\Entity\Program;
-use AppBundle\Entity\User;
-use AppBundle\Entity\UserToApartament;
-use AppBundle\Entity\UserToConf;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use App\Entity\Conference;
+use App\Entity\Lecture;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 
 class ProgramController extends AbstractController
 {
-
     const DEFAULT_HALL = 'Зал Валдай';
-
-    /**
-     * client
-     */
-    private $client = null;
-
-    public function setUp(){
-        $this->client = static::createClient();
-    }
 
     /**
      * @Route("/program", name="program")
@@ -73,63 +46,9 @@ class ProgramController extends AbstractController
             $sortedProgram[$day] = $halls;
         }
 
-        return $this->render('frontend/program/show_new2.html.twig', array(
-
+        return $this->render('frontend/program/show_new2.html.twig', [
             'program' => $sortedProgram,
             'lectures' => $lectures
-        ));
-    }
-
-    /**
-     * @Route("/old-program", name="old-program")
-     */
-    public function oldProgram()
-    {
-        $monthes = array(
-            '01' => 'января',
-            '02' => 'февраля',
-            '03' => 'марта',
-            '04' => 'апреля',
-            '05' => 'мая',
-            '06' => 'июня',
-            '07' => 'июля',
-            '08' => 'августа',
-            '09' => 'сентября',
-            '10' => 'октября',
-            '11' => 'ноября',
-            '12' => 'декабря'
-        );
-
-        /** @var Conference $conf */
-        $conf = $this->getDoctrine()
-            ->getRepository('App:Conference')
-            ->findOneBy(array('year' => date('Y')));
-
-        $event_date = $conf->getStart()->format('m');
-        $month = $monthes[$event_date];
-
-        /** @var Program $programs */
-        $programs = $this->getDoctrine()
-            ->getRepository('App:Program')
-            ->findBy(array('conferenceId' => $conf->getId()), array('date' => 'ASC', 'start' => 'ASC'));
-
-        $days = array();
-
-        foreach ($programs as $program){
-            $days[$program->getDate()] = $program->getDate();
-        }
-
-        /** @var AppendText $append_text */
-        $append_text = $this->getDoctrine()
-            ->getRepository('App:AppendText')
-            ->findOneBy(array('alias' => 'program'));
-
-        return $this->render('frontend/program/show.html.twig', array(
-
-            'programs' => $programs,
-            'append_text' => $append_text,
-            'days' => $days,
-            'month' => $month,
-        ));
+        ]);
     }
 }

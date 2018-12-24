@@ -2,12 +2,9 @@
 
 namespace App\Controller;
 
-use AppBundle\Entity\Conference;
-use AppBundle\Entity\Setting;
-use AppBundle\Entity\Speaker;
-use AppBundle\Entity\Interview;
-use AppBundle\Repository\ConferenceRepository;
-use AppBundle\Repository\SpeakerRepository;
+use App\Entity\Conference;
+use App\Entity\Interview;
+use App\Repository\ConferenceRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -18,15 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController
 {
-    /**
-     * client
-     */
-    private $client = null;
-
-    public function setUp(){
-        $this->client = static::createClient();
-    }
-
     /**
      * @Route("/rate", name="rate-form")
      *
@@ -249,17 +237,7 @@ class DefaultController extends AbstractController
      */
     public function footer()
     {
-        /** @var Setting $settings */
-        $settings = $this->getDoctrine()
-            ->getRepository('App:Setting')
-            ->find(1);
-
-        $footer_text = $settings->getFooterText();
-
-        return $this->render('default/footer.html.twig', array(
-
-            'footer_text' => $footer_text,
-        ));
+        return $this->render('default/footer.html.twig');
     }
 
     public function countdown($mainPage = false)
@@ -322,11 +300,10 @@ class DefaultController extends AbstractController
                 break;
         }
 
-        return $this->render('default/countdown.html.twig', array(
-
+        return $this->render('default/countdown.html.twig', [
             'countdown_date'    => $countdown_date,
             'text'              => $text,
             'mainPage'          => $mainPage
-        ));
+        ]);
     }
 }

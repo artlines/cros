@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\AppendText;
-use AppBundle\Entity\Apartament;
+use App\Entity\Apartament;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
