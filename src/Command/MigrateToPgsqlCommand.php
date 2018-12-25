@@ -19,14 +19,56 @@ class MigrateToPgsqlCommand extends Command
     {
         $output->writeln("--== START ==--");
 
-        // TODO: migrate all conferences
-        // TODO: migrate all organizations
-        // TODO: migrate all users
-        // TODO: migrate site info 2018
-        // TODO: migrate full archive
-        // TODO: migrate speakers 2018
-        // TODO: migrate program 2018
+        $this->migrateConferences();
+        $this->migrateOrganizations();
+        $this->migrateUsers();
+        $this->migrateArchive();
+        $this->migrateSiteInfo2018();
+        $this->migrateProgram2018();
+        $this->migrateSpeakers2018();
 
         $output->writeln("--== END ==--");
+    }
+
+    // TODO:
+    private function migrateConferences()
+    {
+
+    }
+
+    // TODO:
+    private function migrateOrganizations()
+    {
+
+    }
+
+    // TODO:
+    private function migrateUsers()
+    {
+
+    }
+
+    // TODO:
+    private function migrateArchive()
+    {
+
+    }
+
+    // TODO:
+    private function migrateSiteInfo2018()
+    {
+
+    }
+
+    // TODO:
+    private function migrateSpeakers2018()
+    {
+
+    }
+
+    // TODO:
+    private function migrateProgram2018()
+    {
+
     }
 }
