@@ -338,30 +338,6 @@ class Organization
     }
 
     /**
-     * Set sponsor
-     *
-     * @param boolean $sponsor
-     *
-     * @return Organization
-     */
-    public function setSponsor($sponsor)
-    {
-        $this->sponsor = $sponsor;
-
-        return $this;
-    }
-
-    /**
-     * Get sponsor
-     *
-     * @return boolean
-     */
-    public function getSponsor()
-    {
-        return $this->sponsor;
-    }
-
-    /**
      * Get entityName
      *
      * @return string

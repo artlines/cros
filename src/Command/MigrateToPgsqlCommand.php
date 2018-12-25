@@ -43,8 +43,8 @@ class MigrateToPgsqlCommand extends Command
         $this->pgsqlManager->beginTransaction();
 
         try {
-            $this->migrateConferences();
-            $this->migrateOrganizationsAndUsers();
+            //$this->migrateConferences();
+            //$this->migrateOrganizationsAndUsers();
             //$this->migrateArchive();
             //$this->migrateSiteInfo2018();
             //$this->migrateProgram2018();
@@ -128,12 +128,12 @@ class MigrateToPgsqlCommand extends Command
             $org->setIsActive($mysql_org->getIsActive());
             $org->setInn($mysql_org->getInn());
             $org->setKpp($mysql_org->getKpp());
-            $org->setSponsor($mysql_org->getSponsor());
             $org->setHidden($mysql_org->getHidden());
 
             $confOrg = new ConferenceOrganization();
             $confOrg->setOrganization($org);
             $confOrg->setConference($prevConf);
+            $confOrg->setSponsor($mysql_org->getSponsor());
 
             try {
                 $this->pgsqlManager->persist($org);
