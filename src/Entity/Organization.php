@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="organization")
  * @ORM\Entity(repositoryClass="App\Repository\OrganizationRepository")
  */
-class Organization implements UserInterface, \Serializable
+class Organization
 {
     /**
      * @var int
@@ -67,13 +67,6 @@ class Organization implements UserInterface, \Serializable
     private $status;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="manager", type="integer", nullable=true)
-     */
-    private $manager;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="inn", type="string", length=255)
@@ -93,25 +86,6 @@ class Organization implements UserInterface, \Serializable
      * @ORM\Column(name="sponsor", type="boolean")
      */
     private $sponsor;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="regdate", type="datetime", nullable=true)
-     */
-    private $regdate;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="comment", type="text", nullable=true)
-     */
-    private $comment;
-
-    /**
-     * @ORM\Column(name="our_comment", type="text", nullable=true)
-     */
-    private $ourComment;
 
     /**
      * @ORM\Column(name="hidden", type="boolean", nullable=true)
@@ -335,64 +309,6 @@ class Organization implements UserInterface, \Serializable
         return $this->txtstatus;
     }
 
-    /**
-     * Add otc
-     *
-     * @param \App\Entity\OrgToConf $otc
-     *
-     * @return Organization
-     */
-    public function addOtc(\App\Entity\OrgToConf $otc)
-    {
-        $this->otc[] = $otc;
-
-        return $this;
-    }
-
-    /**
-     * Remove otc
-     *
-     * @param \App\Entity\OrgToConf $otc
-     */
-    public function removeOtc(\App\Entity\OrgToConf $otc)
-    {
-        $this->otc->removeElement($otc);
-    }
-
-    /**
-     * Get otc
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getOtc()
-    {
-        return $this->otc;
-    }
-
-    /**
-     * Set manager
-     *
-     * @param integer $manager
-     *
-     * @return Organization
-     */
-    public function setManager($manager)
-    {
-        $this->manager = $manager;
-
-        return $this;
-    }
-
-    /**
-     * Get manager
-     *
-     * @return integer
-     */
-    public function getManager()
-    {
-        return $this->manager;
-    }
-
 
     /**
      * Set status
@@ -491,125 +407,6 @@ class Organization implements UserInterface, \Serializable
     }
 
     /**
-     * Set email
-     *
-     * @param string $email
-     *
-     * @return Organization
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * Get password
-     *
-     * @return string
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * Set username
-     *
-     * @param integer $username
-     *
-     * @return Organization
-     */
-    public function setUsername($username)
-    {
-        $this->username = str_replace('+', '', $username);
-
-        return $this;
-    }
-
-    /**
-     * Get username
-     *
-     * @return integer
-     */
-    public function getUsername()
-    {
-        return $this->username != null ? '+'.$this->username : null;
-    }
-
-    /**
-     * Get salt
-     *
-     * @return null
-     */
-    public function getSalt()
-    {
-        return null;
-    }
-
-    /**
-     * Get roles
-     *
-     * @return array
-     */
-    public function getRoles()
-    {
-        return array('ROLE_ORG');
-    }
-
-    public function eraseCredentials()
-    {
-
-    }
-
-    /** @see \Serializable::serialize() */
-    public function serialize()
-    {
-        return serialize(array(
-            $this->id,
-            $this->username,
-            $this->password,
-            $this->isActive,
-        ));
-    }
-
-    /** @see \Serializable::unserialize() */
-    public function unserialize($serialized)
-    {
-        list(
-            $this->id,
-            $this->username,
-            $this->password,
-            $this->isActive,
-            ) = unserialize($serialized);
-    }
-
-    /**
-     * Set password
-     *
-     * @param string $password
-     *
-     * @return Organization
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    /**
      * Get entityName
      *
      * @return string
@@ -617,78 +414,6 @@ class Organization implements UserInterface, \Serializable
     public function getEntityName()
     {
         return $this->entityName;
-    }
-
-    /**
-     * Set regdate
-     *
-     * @param \DateTime $regdate
-     *
-     * @return Organization
-     */
-    public function setRegdate($regdate)
-    {
-        $this->regdate = $regdate;
-
-        return $this;
-    }
-
-    /**
-     * Get regdate
-     *
-     * @return \DateTime
-     */
-    public function getRegdate()
-    {
-        return $this->regdate;
-    }
-
-    /**
-     * Set comment
-     *
-     * @param string $comment
-     *
-     * @return Organization
-     */
-    public function setComment($comment)
-    {
-        $this->comment = $comment;
-
-        return $this;
-    }
-
-    /**
-     * Get comment
-     *
-     * @return string
-     */
-    public function getComment()
-    {
-        return $this->comment;
-    }
-
-    /**
-     * Set ourComment
-     *
-     * @param string $ourComment
-     *
-     * @return Organization
-     */
-    public function setOurComment($ourComment)
-    {
-        $this->ourComment = $ourComment;
-
-        return $this;
-    }
-
-    /**
-     * Get ourComment
-     *
-     * @return string
-     */
-    public function getOurComment()
-    {
-        return $this->ourComment;
     }
 
     /**

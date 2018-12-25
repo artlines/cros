@@ -26,7 +26,7 @@ class Conference
     /**
      * @var int
      *
-     * @ORM\Column(name="year", type="integer")
+     * @ORM\Column(name="year", type="integer", unique=true)
      */
     private $year;
 
@@ -150,13 +150,13 @@ class Conference
     /**
      * Set start
      *
-     * @param \DateTime $start
+     * @param \DateTime $eventStart
      *
      * @return Conference
      */
-    public function setStart($start)
+    public function setEventStart($eventStart)
     {
-        $this->start = $start;
+        $this->eventStart = $eventStart;
 
         return $this;
     }
@@ -166,21 +166,21 @@ class Conference
      *
      * @return \DateTime
      */
-    public function getStart()
+    public function getEventStart()
     {
-        return $this->start;
+        return $this->eventStart;
     }
 
     /**
      * Set finish
      *
-     * @param \DateTime $finish
+     * @param \DateTime $eventFinish
      *
      * @return Conference
      */
-    public function setFinish($finish)
+    public function setEventFinish($eventFinish)
     {
-        $this->finish = $finish;
+        $this->eventFinish = $eventFinish;
 
         return $this;
     }
@@ -190,9 +190,9 @@ class Conference
      *
      * @return \DateTime
      */
-    public function getFinish()
+    public function getEventFinish()
     {
-        return $this->finish;
+        return $this->eventFinish;
     }
 
     /**

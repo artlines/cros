@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Old\Entity\Conference;
+use App\Old\Entity\Organization;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -36,35 +37,86 @@ class MigrateToPgsqlCommand extends Command
     {
         $output->writeln("--== START ==--");
 
-        //dump($this->mysqlManager->getConfiguration()->getEntityNamespaces());
-        //dump($this->pgsqlManager->getConfiguration()->getEntityNamespaces());
-
-        $this->migrateConferences();
-        $this->migrateOrganizations();
-        $this->migrateUsers();
-        $this->migrateArchive();
-        $this->migrateSiteInfo2018();
-        $this->migrateProgram2018();
-        $this->migrateSpeakers2018();
+        try {
+            $this->migrateConferences();
+            $this->migrateOrganizations();
+            $this->migrateUsers();
+            $this->migrateArchive();
+            $this->migrateSiteInfo2018();
+            $this->migrateProgram2018();
+            $this->migrateSpeakers2018();
+        } catch (\Exception $e) {
+            $output->writeln($e->getMessage());
+        }
 
         $output->writeln("--== END ==--");
     }
 
-    // TODO:
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @throws \Exception
+     */
     private function migrateConferences()
     {
         /** @var Conference[] $conferences */
-        $conferences = $this->mysqlManager->getRepository('App:Conference')->findAll();
+        $conferences = $this->mysqlManager->getRepository('App\Old\Entity\Conference')->findAll();
+
+        $this->pgsqlManager->beginTransaction();
 
         foreach ($conferences as $mysql_conference) {
+            $conf = new \App\Entity\Conference();
+            $conf->setEventStart($mysql_conference->getStart());
+            $conf->setEventFinish($mysql_conference->getFinish());
+            $conf->setYear($mysql_conference->getYear());
+            $conf->setRegistrationStart($mysql_conference->getRegistrationStart());
+            $conf->setRegistrationFinish($mysql_conference->getRegistrationFinish());
 
+            try {
+                $this->pgsqlManager->persist($conf);
+                $this->pgsqlManager->flush();
+            } catch (\Exception $e) {
+                $this->pgsqlManager->rollback();
+                throw new \Exception("ROLLBACK | Getting error while execute migrateConferences | {$e->getMessage()}");
+            }
         }
+
+        $this->pgsqlManager->commit();
     }
 
-    // TODO:
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @throws \Exception
+     */
     private function migrateOrganizations()
     {
+        /** @var Organization[] $organizations */
+        $organizations = $this->mysqlManager->getRepository('App\Old\Entity\Organization')->findAll();
 
+        $this->pgsqlManager->beginTransaction();
+
+        foreach ($organizations as $mysql_org) {
+            $org = new \App\Entity\Organization();
+            $org->setStatus($mysql_org->getStatus());
+            $org->setName($mysql_org->getName());
+            $org->setCity($mysql_org->getCity());
+            $org->setRequisites($mysql_org->getRequisites());
+            $org->setAddress($mysql_org->getAddress());
+            $org->setIsActive($mysql_org->getIsActive());
+            $org->setInn($mysql_org->getInn());
+            $org->setKpp($mysql_org->getKpp());
+            $org->setSponsor($mysql_org->getSponsor());
+            $org->setHidden($mysql_org->getHidden());
+
+            try {
+                $this->pgsqlManager->persist($org);
+                $this->pgsqlManager->flush();
+            } catch (\Exception $e) {
+                $this->pgsqlManager->rollback();
+                throw new \Exception("ROLLBACK | Getting error while execute migrateOrganizations | {$e->getMessage()}");
+            }
+        }
+
+        $this->pgsqlManager->commit();
     }
 
     // TODO:
