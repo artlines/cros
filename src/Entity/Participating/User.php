@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -14,8 +13,16 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks()
  */
-class User implements UserInterface, \Serializable
+class User implements UserInterface
 {
+    const SEX__MAN      = 1;
+    const SEX__WOMAN    = 2;
+
+    protected static $sexChoices = [
+        self::SEX__MAN      => 'Мужчина',
+        self::SEX__WOMAN    => 'Женщина',
+    ];
+
     /**
      * @var int
      *
@@ -56,28 +63,28 @@ class User implements UserInterface, \Serializable
     /**
      * @var int
      *
-     * @ORM\Column(name="phone", type="bigint", unique=true)
+     * @ORM\Column(name="phone", type="decimal", precision=15, unique=true)
      */
-    private $username;
+    private $phone;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=255, unique=false)
+     * @ORM\Column(name="email", type="string", length=255, unique=true)
      */
     private $email;
 
     /**
      * @var bool
      *
-     * @ORM\Column(name="is_active", type="boolean")
+     * @ORM\Column(name="is_active", type="boolean", nullable=false, options={"default": 1})
      */
     private $isActive;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=255)
+     * @ORM\Column(name="password", type="string", length=255, nullable=false)
      */
     private $password;
 
@@ -103,53 +110,11 @@ class User implements UserInterface, \Serializable
     private $nickname;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="car_number", type="string", length=255, nullable=true, unique=false)
-     */
-    private $carNumber;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="saved", type="boolean", nullable=true)
-     */
-    private $saved;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="regdate", type="datetime", nullable=true)
-     */
-    private $regdate;
-
-    /**
      * @var integer
      *
-     * @ORM\Column(name="female", type="boolean", nullable=true)
+     * @ORM\Column(name="sex", type="integer", nullable=true)
      */
-    private $female;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="arrival", type="datetime", options={"default": "2018-05-16 14:00"})
-     */
-    private $arrival;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="departures", type="datetime", options={"default": "2018-05-19 14:00"})
-     */
-    private $departures;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="leaving", type="datetime", options={"default": "2018-05-19 12:00"})
-     */
-    private $leaving;
+    private $sex;
 
     /**
      * @ORM\ManyToOne(targetEntity="Organization", inversedBy="users")
@@ -165,31 +130,19 @@ class User implements UserInterface, \Serializable
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="tm_add", type="datetime", options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
-    private $tmAdd;
+    private $createdAt;
 
     private $entityName = 'user';
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Conference", inversedBy="users")
-     * @ORM\JoinTable(name="users_conferences",
-     *     joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="conference_id", referencedColumnName="id")}
-     * )
-     */
-    private $conferences;
 
     /**
      * User constructor.
      */
     public function __construct()
     {
-        $this->utocs = new ArrayCollection();
         $this->speakers = new ArrayCollection();
-        $this->arrival = new \DateTime("2018-05-16 14:00");
-        $this->departures = new \DateTime("2018-05-19 14:00");
-        $this->leaving = new \DateTime("2018-05-19 12:00");
+        $this->createdAt = new \DateTime();
     }
 
     /**
@@ -295,16 +248,19 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Set username
-     *
-     * @param integer $username
-     * @return User
+     * @return int
      */
-    public function setUsername($username)
+    public function getPhone()
     {
-        $this->username = str_replace('+', '', $username);
+        return $this->phone;
+    }
 
-        return $this;
+    /**
+     * @param int $phone
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
     }
 
     /**
@@ -314,7 +270,7 @@ class User implements UserInterface, \Serializable
      */
     public function getUsername()
     {
-        return $this->username != null ? '+'.$this->username : null;
+        return $this->email;
     }
 
     /**
@@ -470,32 +426,6 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * @see \Serializable::serialize()
-     */
-    public function serialize()
-    {
-        return serialize(array(
-            $this->id,
-            $this->username,
-            $this->password,
-            $this->isActive,
-        ));
-    }
-
-    /**
-     * @see \Serializable::unserialize()
-     */
-    public function unserialize($serialized)
-    {
-        list(
-            $this->id,
-            $this->username,
-            $this->password,
-            $this->isActive,
-            ) = unserialize($serialized);
-    }
-
-    /**
      * Set organization
      *
      * @param \App\Entity\Organization $organization
@@ -520,64 +450,6 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Add utoc
-     *
-     * @param \App\Entity\UserToConf $utoc
-     *
-     * @return User
-     */
-    public function addUtoc(\App\Entity\UserToConf $utoc)
-    {
-        $this->utocs[] = $utoc;
-
-        return $this;
-    }
-
-    /**
-     * Remove utoc
-     *
-     * @param \App\Entity\UserToConf $utoc
-     */
-    public function removeUtoc(\App\Entity\UserToConf $utoc)
-    {
-        $this->utocs->removeElement($utoc);
-    }
-
-    /**
-     * Get utocs
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getUtocs()
-    {
-        return $this->utocs;
-    }
-
-    /**
-     * Set carNumber
-     *
-     * @param string $carNumber
-     *
-     * @return User
-     */
-    public function setCarNumber($carNumber)
-    {
-        $this->carNumber = $carNumber;
-
-        return $this;
-    }
-
-    /**
-     * Get carNumber
-     *
-     * @return string
-     */
-    public function getCarNumber()
-    {
-        return $this->carNumber;
-    }
-
-    /**
      * Get entityName
      *
      * @return string
@@ -588,75 +460,38 @@ class User implements UserInterface, \Serializable
     }
 
     /**
-     * Set saved
+     * Set sex
      *
-     * @param bool $saved
+     * @param integer|null $sex
      *
      * @return User
+     * @throws \Exception
      */
-    public function setSaved($saved)
+    public function setSex($sex)
     {
-        $this->saved = $saved;
+        if (!in_array($sex, array_keys(self::$sexChoices)) && $sex !== null) {
+            throw new \Exception("Not valid sex type");
+        }
 
         return $this;
     }
 
     /**
-     * Get saved
+     * Get sex
      *
-     * @return boolean
+     * @return integer|null
      */
-    public function getSaved()
+    public function getSex()
     {
-        return $this->saved;
+        return $this->sex;
     }
 
     /**
-     * Set regdate
-     *
-     * @param \DateTime $regdate
-     *
-     * @return User
-     */
-    public function setRegdate($regdate)
-    {
-        $this->regdate = $regdate;
-
-        return $this;
-    }
-
-    /**
-     * Get regdate
-     *
      * @return \DateTime
      */
-    public function getRegdate()
+    public function getCreatedAt()
     {
-        return $this->regdate;
-    }
-
-    /**
-     * Set female
-     *
-     * @param integer $female
-     *
-     * @return User
-     */
-    public function setFemale($female)
-    {
-        $this->female = $female;
-
-        return $this;
-    }
-
-    /**
-     * Get female
-     *
-     * @return integer
-     */
-    public function getFemale()
-    {
-        return $this->female;
+        return $this->createdAt;
     }
 
     /**
@@ -691,85 +526,5 @@ class User implements UserInterface, \Serializable
     public function getSpeakers()
     {
         return $this->speakers;
-    }
-
-    /**
-     * Set arrival
-     *
-     * @param \DateTime $arrival
-     *
-     * @return User
-     */
-    public function setArrival($arrival)
-    {
-        $this->arrival = $arrival;
-
-        return $this;
-    }
-    /**
-     * Set departures
-     *
-     * @param \DateTime $departures
-     *
-     * @return User
-     */
-    public function setDepartures($departures)
-    {
-        $this->departures = $departures;
-
-        return $this;
-    }
-    /**
-     * Get arrival
-     *
-     * @return \DateTime
-     */
-    public function getArrival()
-    {
-        return $this->arrival;
-    }
-    /**
-     * Get departures
-     *
-     * @return \DateTime
-     */
-    public function getDepartures()
-    {
-        return $this->departures;
-    }
-    /**
-     * @return \DateTime
-     */
-    public function getLeaving()
-    {
-        return $this->leaving;
-    }
-
-    /**
-     * @param \DateTime $leaving
-     *
-     * @return User
-     */
-    public function setLeaving($leaving)
-    {
-        $this->leaving = $leaving;
-
-        return $this;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getTmAdd()
-    {
-        return $this->tmAdd;
-    }
-
-    /**
-     * @ORM\PrePersist()
-     */
-    public function setTmAdd()
-    {
-        $this->tmAdd = new \DateTime();
     }
 }

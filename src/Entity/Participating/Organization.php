@@ -12,6 +12,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="organization")
  * @ORM\Entity(repositoryClass="App\Repository\OrganizationRepository")
+ *
+ * TODO: ADD LOGO FIELD
  */
 class Organization
 {
@@ -27,9 +29,16 @@ class Organization
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
     private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255, unique=true)
+     */
+    private $email;
 
     /**
      * @var string
@@ -55,16 +64,9 @@ class Organization
     /**
      * @var bool
      *
-     * @ORM\Column(name="is_active", type="boolean")
+     * @ORM\Column(name="is_active", type="boolean", nullable=false, options={"default": 1})
      */
     private $isActive;
-
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="status", type="integer")
-     */
-    private $status;
 
     /**
      * @var string
@@ -81,13 +83,6 @@ class Organization
     private $kpp;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="sponsor", type="boolean")
-     */
-    private $sponsor;
-
-    /**
      * @ORM\Column(name="hidden", type="boolean", nullable=true)
      */
     private $hidden;
@@ -98,19 +93,11 @@ class Organization
     private $users;
 
     /**
-     * @ORM\ManyToOne(targetEntity="OrganizationStatus", inversedBy="organizations")
-     * @ORM\JoinColumn(name="status", referencedColumnName="id")
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=false)
      */
-    private $txtstatus;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Conference", inversedBy="organizations")
-     * @ORM\JoinTable(name="organizations_conferences",
-     *     joinColumns={@ORM\JoinColumn(name="organization_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="conference_id", referencedColumnName="id")}
-     * )
-     */
-    private $conferences;
+    private $createdAt;
 
     /**
      * @var string
@@ -122,7 +109,8 @@ class Organization
      */
     public function __construct()
     {
-        $this->users = new ArrayCollection();
+        $this->createdAt    = new \DateTime();
+        $this->users        = new ArrayCollection();
     }
 
     /**
@@ -156,6 +144,22 @@ class Organization
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
     }
 
     /**
@@ -283,55 +287,6 @@ class Organization
     public function getUsers()
     {
         return $this->users;
-    }
-
-    /**
-     * Set txtstatus
-     *
-     * @param \App\Entity\OrganizationStatus $txtstatus
-     *
-     * @return Organization
-     */
-    public function setTxtstatus(\App\Entity\OrganizationStatus $txtstatus = null)
-    {
-        $this->txtstatus = $txtstatus;
-
-        return $this;
-    }
-
-    /**
-     * Get txtstatus
-     *
-     * @return \App\Entity\OrganizationStatus
-     */
-    public function getTxtstatus()
-    {
-        return $this->txtstatus;
-    }
-
-
-    /**
-     * Set status
-     *
-     * @param integer $status
-     *
-     * @return Organization
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return integer
-     */
-    public function getStatus()
-    {
-        return $this->status;
     }
 
     /**

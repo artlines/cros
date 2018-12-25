@@ -379,6 +379,11 @@ class User implements UserInterface, \Serializable
         return $this->username != null ? '+'.$this->username : null;
     }
 
+    public function getPhone()
+    {
+        return $this->username;
+    }
+
     /**
      * Set email
      *
