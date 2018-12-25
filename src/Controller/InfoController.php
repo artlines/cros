@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Info;
+use App\Old\Entity\Info;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

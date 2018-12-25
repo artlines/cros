@@ -6,7 +6,7 @@
  * Time: 13:00
  */
 
-namespace App\Entity;
+namespace App\Old\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -24,7 +24,7 @@ class Hall
      * @var integer
      *
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      */
     private $id;

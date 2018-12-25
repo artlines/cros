@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Entity;
+namespace App\Old\Entity;
 
-use App\Entity\Content\Info;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,7 +18,7 @@ class Conference
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
@@ -47,23 +46,32 @@ class Conference
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="event_start", type="datetime")
+     * @ORM\Column(name="start", type="datetime")
      */
-    private $eventStart;
+    private $start;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="event_finish", type="datetime")
+     * @ORM\Column(name="finish", type="datetime")
      */
-    private $eventFinish;
+    private $finish;
 
     /**
-     * @var ArrayCollection|Info[]
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Content\Info", mappedBy="conference")
+     * @ORM\OneToMany(targetEntity="InfoToConf", mappedBy="conference")
      */
-    private $info;
+    private $infotoconfs;
+
+    /**
+     * @ORM\OneToMany(targetEntity="OrgToConf", mappedBy="conference")
+     */
+    private $otc;
+
+    public function __construct()
+    {
+        $this->infotoconfs = new ArrayCollection();
+    }
+
 
     /**
      * Get id
@@ -80,7 +88,7 @@ class Conference
      *
      * @param integer $year
      *
-     * @return Conference
+     * @return Conferences
      */
     public function setYear($year)
     {
@@ -104,7 +112,7 @@ class Conference
      *
      * @param \DateTime $registrationStart
      *
-     * @return Conference
+     * @return Conferences
      */
     public function setRegistrationStart($registrationStart)
     {
@@ -128,7 +136,7 @@ class Conference
      *
      * @param \DateTime $registrationFinish
      *
-     * @return Conference
+     * @return Conferences
      */
     public function setRegistrationFinish($registrationFinish)
     {
@@ -152,7 +160,7 @@ class Conference
      *
      * @param \DateTime $start
      *
-     * @return Conference
+     * @return Conferences
      */
     public function setStart($start)
     {
@@ -176,7 +184,7 @@ class Conference
      *
      * @param \DateTime $finish
      *
-     * @return Conference
+     * @return Conferences
      */
     public function setFinish($finish)
     {
@@ -196,10 +204,70 @@ class Conference
     }
 
     /**
-     * @return Info[]|ArrayCollection
+     * Add infotoconf
+     *
+     * @param \App\Old\Entity\InfoToConf $infotoconf
+     *
+     * @return Conference
      */
-    public function getInfo()
+    public function addInfotoconf(\App\Old\Entity\InfoToConf $infotoconf)
     {
-        return $this->info;
+        $this->infotoconfs[] = $infotoconf;
+
+        return $this;
+    }
+
+    /**
+     * Remove infotoconf
+     *
+     * @param \App\Old\Entity\InfoToConf $infotoconf
+     */
+    public function removeInfotoconf(\App\Old\Entity\InfoToConf $infotoconf)
+    {
+        $this->infotoconfs->removeElement($infotoconf);
+    }
+
+    /**
+     * Get infotoconfs
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getInfotoconfs()
+    {
+        return $this->infotoconfs;
+    }
+
+    /**
+     * Add otc
+     *
+     * @param \App\Old\Entity\OrgToConf $otc
+     *
+     * @return Conference
+     */
+    public function addOtc(\App\Old\Entity\OrgToConf $otc)
+    {
+        $this->otc[] = $otc;
+
+        return $this;
+    }
+
+    /**
+     * Remove otc
+     *
+     * @param \App\Old\Entity\OrgToConf $otc
+     */
+    public function removeOtc(\App\Old\Entity\OrgToConf $otc)
+    {
+        $this->otc->removeElement($otc);
+    }
+
+    /**
+     * Get otc
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOtc()
+    {
+        return $this->otc;
     }
 }

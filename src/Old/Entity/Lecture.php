@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Old\Entity;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,7 +20,7 @@ class Lecture
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 

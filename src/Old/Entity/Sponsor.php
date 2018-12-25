@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Old\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,7 +18,7 @@ class Sponsor
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
     /**
@@ -149,7 +149,7 @@ class Sponsor
     /**
      * Get type
      *
-     * @return \App\Entity\TypeSponsor
+     * @return \App\Old\Entity\TypeSponsor
      */
     public function getType()
     {
@@ -245,11 +245,11 @@ class Sponsor
     /**
      * Set TypeSponsor
      *
-     * @param \App\Entity\TypeSponsor $TypeSponsor
+     * @param \App\Old\Entity\TypeSponsor $TypeSponsor
      *
      * @return Sponsor
      */
-    public function setTypeSponsor(\App\Entity\TypeSponsor $TypeSponsor = null)
+    public function setTypeSponsor(\App\Old\Entity\TypeSponsor $TypeSponsor = null)
     {
         $this->type = $TypeSponsor;
 

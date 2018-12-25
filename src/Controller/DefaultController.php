@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Conference;
-use App\Entity\Interview;
+use App\Old\Entity\Conference;
+use App\Old\Entity\Interview;
 use App\Repository\ConferenceRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

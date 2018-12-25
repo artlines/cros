@@ -2,13 +2,30 @@
 
 namespace App\Command;
 
+use App\Old\Entity\Conference;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class MigrateToPgsqlCommand extends Command
 {
+    /** @var EntityManager */
+    protected $mysqlManager;
+
+    /** @var EntityManager */
+    protected $pgsqlManager;
+
     protected static $defaultName = 'cros:migrate-to-pgsql';
+
+    public function __construct(ContainerInterface $container)
+    {
+        $this->mysqlManager = $container->get('doctrine.orm.mysql_entity_manager');
+        $this->pgsqlManager = $container->get('doctrine.orm.pgsql_entity_manager');
+
+        parent::__construct();
+    }
 
     protected function configure()
     {
@@ -18,6 +35,9 @@ class MigrateToPgsqlCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln("--== START ==--");
+
+        //dump($this->mysqlManager->getConfiguration()->getEntityNamespaces());
+        //dump($this->pgsqlManager->getConfiguration()->getEntityNamespaces());
 
         $this->migrateConferences();
         $this->migrateOrganizations();
@@ -33,7 +53,12 @@ class MigrateToPgsqlCommand extends Command
     // TODO:
     private function migrateConferences()
     {
+        /** @var Conference[] $conferences */
+        $conferences = $this->mysqlManager->getRepository('App:Conference')->findAll();
 
+        foreach ($conferences as $mysql_conference) {
+
+        }
     }
 
     // TODO:

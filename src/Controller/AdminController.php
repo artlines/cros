@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Conference;
-use App\Entity\Organization;
-use App\Entity\OrganizationStatus;
+use App\Old\Entity\Conference;
+use App\Old\Entity\Organization;
+use App\Old\Entity\OrganizationStatus;
 use App\Repository\FlatRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Statement;

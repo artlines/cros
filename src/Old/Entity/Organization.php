@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Old\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -20,7 +20,7 @@ class Organization implements UserInterface, \Serializable
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
@@ -37,6 +37,27 @@ class Organization implements UserInterface, \Serializable
      * @ORM\Column(name="city", type="string", length=255)
      */
     private $city;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="phone", type="bigint")
+     */
+    private $username;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255)
+     */
+    private $email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="password", type="string", length=255)
+     */
+    private $password;
 
     /**
      * @var string
@@ -130,13 +151,15 @@ class Organization implements UserInterface, \Serializable
     private $txtstatus;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Conference", inversedBy="organizations")
-     * @ORM\JoinTable(name="organizations_conferences",
-     *     joinColumns={@ORM\JoinColumn(name="organization_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="conference_id", referencedColumnName="id")}
-     * )
+     * @ORM\OneToMany(targetEntity="OrgToConf", mappedBy="organization")
      */
-    private $conferences;
+    private $otc;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="ManagerGroup", inversedBy="managed")
+     * @ORM\JoinColumn(name="manager", referencedColumnName="id")
+     */
+    private $managers;
 
     /**
      * @var string
@@ -280,11 +303,11 @@ class Organization implements UserInterface, \Serializable
     /**
      * Add user
      *
-     * @param \App\Entity\User $user
+     * @param \App\Old\Entity\User $user
      *
      * @return Organization
      */
-    public function addUser(\App\Entity\User $user)
+    public function addUser(\App\Old\Entity\User $user)
     {
         $this->users[] = $user;
 
@@ -294,9 +317,9 @@ class Organization implements UserInterface, \Serializable
     /**
      * Remove user
      *
-     * @param \App\Entity\User $user
+     * @param \App\Old\Entity\User $user
      */
-    public function removeUser(\App\Entity\User $user)
+    public function removeUser(\App\Old\Entity\User $user)
     {
         $this->users->removeElement($user);
     }
@@ -314,11 +337,11 @@ class Organization implements UserInterface, \Serializable
     /**
      * Set txtstatus
      *
-     * @param \App\Entity\OrganizationStatus $txtstatus
+     * @param \App\Old\Entity\OrganizationStatus $txtstatus
      *
      * @return Organization
      */
-    public function setTxtstatus(\App\Entity\OrganizationStatus $txtstatus = null)
+    public function setTxtstatus(\App\Old\Entity\OrganizationStatus $txtstatus = null)
     {
         $this->txtstatus = $txtstatus;
 
@@ -328,7 +351,7 @@ class Organization implements UserInterface, \Serializable
     /**
      * Get txtstatus
      *
-     * @return \App\Entity\OrganizationStatus
+     * @return \App\Old\Entity\OrganizationStatus
      */
     public function getTxtstatus()
     {
@@ -338,11 +361,11 @@ class Organization implements UserInterface, \Serializable
     /**
      * Add otc
      *
-     * @param \App\Entity\OrgToConf $otc
+     * @param \App\Old\Entity\OrgToConf $otc
      *
      * @return Organization
      */
-    public function addOtc(\App\Entity\OrgToConf $otc)
+    public function addOtc(\App\Old\Entity\OrgToConf $otc)
     {
         $this->otc[] = $otc;
 
@@ -352,9 +375,9 @@ class Organization implements UserInterface, \Serializable
     /**
      * Remove otc
      *
-     * @param \App\Entity\OrgToConf $otc
+     * @param \App\Old\Entity\OrgToConf $otc
      */
-    public function removeOtc(\App\Entity\OrgToConf $otc)
+    public function removeOtc(\App\Old\Entity\OrgToConf $otc)
     {
         $this->otc->removeElement($otc);
     }
@@ -416,6 +439,30 @@ class Organization implements UserInterface, \Serializable
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Set managers
+     *
+     * @param \App\Old\Entity\ManagerGroup $managers
+     *
+     * @return Organization
+     */
+    public function setManagers(\App\Old\Entity\ManagerGroup $managers = null)
+    {
+        $this->managers = $managers;
+
+        return $this;
+    }
+
+    /**
+     * Get managers
+     *
+     * @return \App\Old\Entity\ManagerGroup
+     */
+    public function getManagers()
+    {
+        return $this->managers;
     }
 
     /**

@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Conference;
-use App\Entity\Lecture;
+use App\Old\Entity\Conference;
+use App\Old\Entity\Lecture;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 

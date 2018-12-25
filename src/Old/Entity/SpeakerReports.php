@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Old\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 /**
@@ -17,7 +17,7 @@ class SpeakerReports
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
     /**
@@ -82,7 +82,7 @@ class SpeakerReports
         return $this;
     }
     /*
-    public function setSpeaker(\App\Entity\Speaker $speaker_id = null)
+    public function setSpeaker(\App\Old\Entity\Speaker $speaker_id = null)
     {
         $this->speaker_id = $speaker_id;
 
@@ -93,7 +93,7 @@ class SpeakerReports
     /**
      * Get speaker
      *
-     * @return \App\Entity\Speaker
+     * @return \App\Old\Entity\Speaker
      */
     public function getSpeaker()
     {

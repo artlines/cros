@@ -2,8 +2,8 @@
 
 namespace App\Controller\Site;
 
-use App\Entity\Conference;
-use App\Entity\Speaker;
+use App\Old\Entity\Conference;
+use App\Old\Entity\Speaker;
 use App\Repository\ConferenceRepository;
 use App\Repository\SpeakerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

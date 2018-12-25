@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Old\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
@@ -19,7 +19,7 @@ class Speaker
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
@@ -299,11 +299,11 @@ class Speaker
     /**
      * Set user
      *
-     * @param \App\Entity\User $user
+     * @param \App\Old\Entity\User $user
      *
      * @return Speaker
      */
-    public function setUser(\App\Entity\User $user = null)
+    public function setUser(\App\Old\Entity\User $user = null)
     {
         $this->user = $user;
 
@@ -313,7 +313,7 @@ class Speaker
     /**
      * Get user
      *
-     * @return \App\Entity\User
+     * @return \App\Old\Entity\User
      */
     public function getUser()
     {

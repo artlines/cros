@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Old\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,7 +18,7 @@ class OrganizationStatus
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
@@ -92,11 +92,11 @@ class OrganizationStatus
     /**
      * Add organization
      *
-     * @param \App\Entity\Organization $organization
+     * @param \App\Old\Entity\Organization $organization
      *
      * @return OrganizationStatus
      */
-    public function addOrganization(\App\Entity\Organization $organization)
+    public function addOrganization(\App\Old\Entity\Organization $organization)
     {
         $this->organizations[] = $organization;
 
@@ -106,9 +106,9 @@ class OrganizationStatus
     /**
      * Remove organization
      *
-     * @param \App\Entity\Organization $organization
+     * @param \App\Old\Entity\Organization $organization
      */
-    public function removeOrganization(\App\Entity\Organization $organization)
+    public function removeOrganization(\App\Old\Entity\Organization $organization)
     {
         $this->organizations->removeElement($organization);
     }

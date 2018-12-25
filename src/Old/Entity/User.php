@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Old\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * User
  *
- * @ORM\Table(schema="", name="user")
+ * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks()
  */
@@ -19,11 +19,18 @@ class User implements UserInterface, \Serializable
     /**
      * @var int
      *
-     * @ORM\Id
      * @ORM\Column(name="id", type="integer")
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="organization_id", type="integer")
+     */
+    private $organizationId;
 
     /**
      * @var string
@@ -117,11 +124,32 @@ class User implements UserInterface, \Serializable
     private $saved;
 
     /**
-     * @var \DateTime
+     * @var integer
+     *
+     * @ORM\Column(name="manager_group_id", type="integer", nullable=true)
+     */
+    private $managerGroupId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="change_log", type="text", nullable=true)
+     */
+    private $changeLog;
+
+    /**
+     * @var date
      *
      * @ORM\Column(name="regdate", type="datetime", nullable=true)
      */
     private $regdate;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="firstclass", type="integer", nullable=true)
+     */
+    private $firstclass;
 
     /**
      * @var integer
@@ -136,7 +164,6 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(name="arrival", type="datetime", options={"default": "2018-05-16 14:00"})
      */
     private $arrival;
-
     /**
      * @var \DateTime
      *
@@ -152,16 +179,37 @@ class User implements UserInterface, \Serializable
     private $leaving;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Apartament", inversedBy="users")
+     * @ORM\JoinColumn(name="firstclass", referencedColumnName="id")
+     */
+    private $apartament;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Organization", inversedBy="users")
-     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id")
      */
     private $organization;
+
+    /**
+     * @ORM\OneToMany(targetEntity="UserToConf", mappedBy="user")
+     */
+    private $utocs;
+
+    /**
+     * @ORM\OneToMany(targetEntity="UserToApartament", mappedBy="user")
+     */
+    private $utoas;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="ManagerGroup", inversedBy="managers")
+     * @ORM\JoinColumn(name="manager_group_id", referencedColumnName="id")
+     */
+    private $managerGroup;
 
     /**
      * @ORM\OneToMany(targetEntity="Speaker", mappedBy="user")
      */
     private $speakers;
-
     /**
      * @var \DateTime
      *
@@ -170,15 +218,6 @@ class User implements UserInterface, \Serializable
     private $tmAdd;
 
     private $entityName = 'user';
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Conference", inversedBy="users")
-     * @ORM\JoinTable(name="users_conferences",
-     *     joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="conference_id", referencedColumnName="id")}
-     * )
-     */
-    private $conferences;
 
     /**
      * User constructor.
@@ -200,6 +239,29 @@ class User implements UserInterface, \Serializable
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set organizationId
+     *
+     * @param integer $organizationId
+     * @return User
+     */
+    public function setOrganizationId($organizationId)
+    {
+        $this->organizationId = $organizationId;
+
+        return $this;
+    }
+
+    /**
+     * Get organizationId
+     *
+     * @return integer
+     */
+    public function getOrganizationId()
+    {
+        return $this->organizationId;
     }
 
     /**
@@ -495,14 +557,34 @@ class User implements UserInterface, \Serializable
             ) = unserialize($serialized);
     }
 
+    public function isAccountNonExpired()
+    {
+        return true;
+    }
+
+    public function isAccountNonLocked()
+    {
+        return true;
+    }
+
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+
+    public function isEnabled()
+    {
+        return $this->isActive;
+    }
+
     /**
      * Set organization
      *
-     * @param \App\Entity\Organization $organization
+     * @param \App\Old\Entity\Organization $organization
      *
      * @return User
      */
-    public function setOrganization(\App\Entity\Organization $organization = null)
+    public function setOrganization(\App\Old\Entity\Organization $organization = null)
     {
         $this->organization = $organization;
 
@@ -512,7 +594,7 @@ class User implements UserInterface, \Serializable
     /**
      * Get organization
      *
-     * @return \App\Entity\Organization
+     * @return \App\Old\Entity\Organization
      */
     public function getOrganization()
     {
@@ -522,11 +604,11 @@ class User implements UserInterface, \Serializable
     /**
      * Add utoc
      *
-     * @param \App\Entity\UserToConf $utoc
+     * @param \App\Old\Entity\UserToConf $utoc
      *
      * @return User
      */
-    public function addUtoc(\App\Entity\UserToConf $utoc)
+    public function addUtoc(\App\Old\Entity\UserToConf $utoc)
     {
         $this->utocs[] = $utoc;
 
@@ -536,9 +618,9 @@ class User implements UserInterface, \Serializable
     /**
      * Remove utoc
      *
-     * @param \App\Entity\UserToConf $utoc
+     * @param \App\Old\Entity\UserToConf $utoc
      */
-    public function removeUtoc(\App\Entity\UserToConf $utoc)
+    public function removeUtoc(\App\Old\Entity\UserToConf $utoc)
     {
         $this->utocs->removeElement($utoc);
     }
@@ -551,6 +633,40 @@ class User implements UserInterface, \Serializable
     public function getUtocs()
     {
         return $this->utocs;
+    }
+
+    /**
+     * Add utoa
+     *
+     * @param \App\Old\Entity\UserToApartament $utoa
+     *
+     * @return User
+     */
+    public function addUtoa(\App\Old\Entity\UserToApartament $utoa)
+    {
+        $this->utoas[] = $utoa;
+
+        return $this;
+    }
+
+    /**
+     * Remove utoa
+     *
+     * @param \App\Old\Entity\UserToApartament $utoa
+     */
+    public function removeUtoa(\App\Old\Entity\UserToApartament $utoa)
+    {
+        $this->utoas->removeElement($utoa);
+    }
+
+    /**
+     * Get utoas
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUtoas()
+    {
+        return $this->utoas;
     }
 
     /**
@@ -612,6 +728,54 @@ class User implements UserInterface, \Serializable
     }
 
     /**
+     * Set managerGroupId
+     *
+     * @param integer $managerGroupId
+     *
+     * @return User
+     */
+    public function setManagerGroupId($managerGroupId)
+    {
+        $this->managerGroupId = $managerGroupId;
+
+        return $this;
+    }
+
+    /**
+     * Get managerGroupId
+     *
+     * @return integer
+     */
+    public function getManagerGroupId()
+    {
+        return $this->managerGroupId;
+    }
+
+    /**
+     * Set changeLog
+     *
+     * @param string $changeLog
+     *
+     * @return User
+     */
+    public function setChangeLog($changeLog)
+    {
+        $this->changeLog = $changeLog;
+
+        return $this;
+    }
+
+    /**
+     * Get changeLog
+     *
+     * @return string
+     */
+    public function getChangeLog()
+    {
+        return $this->changeLog;
+    }
+
+    /**
      * Set regdate
      *
      * @param \DateTime $regdate
@@ -633,6 +797,78 @@ class User implements UserInterface, \Serializable
     public function getRegdate()
     {
         return $this->regdate;
+    }
+
+    /**
+     * Set managerGroup
+     *
+     * @param \App\Old\Entity\ManagerGroup $managerGroup
+     *
+     * @return User
+     */
+    public function setManagerGroup(\App\Old\Entity\ManagerGroup $managerGroup = null)
+    {
+        $this->managerGroup = $managerGroup;
+
+        return $this;
+    }
+
+    /**
+     * Get managerGroup
+     *
+     * @return \App\Old\Entity\ManagerGroup
+     */
+    public function getManagerGroup()
+    {
+        return $this->managerGroup;
+    }
+
+    /**
+     * Set firstclass
+     *
+     * @param integer $firstclass
+     *
+     * @return User
+     */
+    public function setFirstclass($firstclass)
+    {
+        $this->firstclass = $firstclass;
+
+        return $this;
+    }
+
+    /**
+     * Get firstclass
+     *
+     * @return integer
+     */
+    public function getFirstclass()
+    {
+        return $this->firstclass;
+    }
+
+    /**
+     * Set apartament
+     *
+     * @param \App\Old\Entity\Apartament $apartament
+     *
+     * @return User
+     */
+    public function setApartament(\App\Old\Entity\Apartament $apartament = null)
+    {
+        $this->apartament = $apartament;
+
+        return $this;
+    }
+
+    /**
+     * Get apartament
+     *
+     * @return \App\Old\Entity\Apartament
+     */
+    public function getApartament()
+    {
+        return $this->apartament;
     }
 
     /**
@@ -662,11 +898,11 @@ class User implements UserInterface, \Serializable
     /**
      * Add speaker
      *
-     * @param \App\Entity\Speaker $speaker
+     * @param \App\Old\Entity\Speaker $speaker
      *
      * @return User
      */
-    public function addSpeaker(\App\Entity\Speaker $speaker)
+    public function addSpeaker(\App\Old\Entity\Speaker $speaker)
     {
         $this->speakers[] = $speaker;
 
@@ -676,9 +912,9 @@ class User implements UserInterface, \Serializable
     /**
      * Remove speaker
      *
-     * @param \App\Entity\Speaker $speaker
+     * @param \App\Old\Entity\Speaker $speaker
      */
-    public function removeSpeaker(\App\Entity\Speaker $speaker)
+    public function removeSpeaker(\App\Old\Entity\Speaker $speaker)
     {
         $this->speakers->removeElement($speaker);
     }

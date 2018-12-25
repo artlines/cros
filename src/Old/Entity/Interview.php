@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Old\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -17,7 +17,7 @@ class Interview
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
@@ -164,7 +164,7 @@ class Interview
     /**
      * Get companyName
      *
-     * @return \App\Entity\Organization
+     * @return \App\Old\Entity\Organization
      */
     public function getCompanyName()
     {

@@ -1,11 +1,10 @@
 # To get started with security, check out the documentation:
 # http://symfony.com/doc/current/security.html
 security:
-
     encoders:
-        App\Entity\Organization:
+        App\Old\Entity\Organization:
             algorithm: bcrypt
-        App\Entity\User:
+        App\Old\Entity\User:
             algorithm: bcrypt
 
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
