@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Participating;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -9,9 +9,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * User
  *
- * @ORM\Table(schema="", name="user")
+ * @ORM\Table(schema="participating", name="member")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @ORM\HasLifecycleCallbacks()
  */
 class User implements UserInterface
 {
@@ -123,7 +122,7 @@ class User implements UserInterface
     private $organization;
 
     /**
-     * @ORM\OneToMany(targetEntity="Speaker", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Speaker", mappedBy="user")
      */
     private $speakers;
 
@@ -428,11 +427,11 @@ class User implements UserInterface
     /**
      * Set organization
      *
-     * @param \App\Entity\Organization $organization
+     * @param \App\Entity\Participating\Organization $organization
      *
      * @return User
      */
-    public function setOrganization(\App\Entity\Organization $organization = null)
+    public function setOrganization(\App\Entity\Participating\Organization $organization = null)
     {
         $this->organization = $organization;
 
@@ -442,7 +441,7 @@ class User implements UserInterface
     /**
      * Get organization
      *
-     * @return \App\Entity\Organization
+     * @return \App\Entity\Participating\Organization
      */
     public function getOrganization()
     {

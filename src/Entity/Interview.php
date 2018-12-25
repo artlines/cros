@@ -22,7 +22,7 @@ class Interview
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Organization", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Participating\Organization", inversedBy="users")
      * @ORM\JoinColumn(name="company", referencedColumnName="id")
      */
     private $company;
@@ -164,7 +164,7 @@ class Interview
     /**
      * Get companyName
      *
-     * @return \App\Entity\Organization
+     * @return \App\Entity\Participating\Organization
      */
     public function getCompanyName()
     {

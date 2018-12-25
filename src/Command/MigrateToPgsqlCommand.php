@@ -2,6 +2,9 @@
 
 namespace App\Command;
 
+use App\Entity\Participating\ConferenceMember;
+use App\Entity\Participating\ConferenceOrganization;
+use App\Old\Entity\User;
 use App\Old\Entity\Conference;
 use App\Old\Entity\Organization;
 use Doctrine\ORM\EntityManager;
@@ -37,19 +40,23 @@ class MigrateToPgsqlCommand extends Command
     {
         $output->writeln("--== START ==--");
 
+        $this->pgsqlManager->beginTransaction();
+
         try {
             $this->migrateConferences();
-            $this->migrateOrganizations();
-            $this->migrateUsers();
-            $this->migrateArchive();
-            $this->migrateSiteInfo2018();
-            $this->migrateProgram2018();
-            $this->migrateSpeakers2018();
+            $this->migrateOrganizationsAndUsers();
+            //$this->migrateArchive();
+            //$this->migrateSiteInfo2018();
+            //$this->migrateProgram2018();
+            //$this->migrateSpeakers2018();
         } catch (\Exception $e) {
+            $this->pgsqlManager->rollback();
             $output->writeln($e->getMessage());
         }
 
-        $output->writeln("--== END ==--");
+        $this->pgsqlManager->commit();
+
+        $output->writeln(['', "--== END ==--"]);
     }
 
     /**
@@ -60,8 +67,6 @@ class MigrateToPgsqlCommand extends Command
     {
         /** @var Conference[] $conferences */
         $conferences = $this->mysqlManager->getRepository('App\Old\Entity\Conference')->findAll();
-
-        $this->pgsqlManager->beginTransaction();
 
         foreach ($conferences as $mysql_conference) {
             $conf = new \App\Entity\Conference();
@@ -75,29 +80,48 @@ class MigrateToPgsqlCommand extends Command
                 $this->pgsqlManager->persist($conf);
                 $this->pgsqlManager->flush();
             } catch (\Exception $e) {
-                $this->pgsqlManager->rollback();
                 throw new \Exception("ROLLBACK | Getting error while execute migrateConferences | {$e->getMessage()}");
             }
         }
-
-        $this->pgsqlManager->commit();
     }
 
     /**
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @throws \Exception
      */
-    private function migrateOrganizations()
+    private function migrateOrganizationsAndUsers()
     {
+        $prevConf = $this->getPreviousConference();
+
         /** @var Organization[] $organizations */
         $organizations = $this->mysqlManager->getRepository('App\Old\Entity\Organization')->findAll();
 
-        $this->pgsqlManager->beginTransaction();
-
         foreach ($organizations as $mysql_org) {
-            $org = new \App\Entity\Organization();
-            $org->setStatus($mysql_org->getStatus());
+            $_org_email = $mysql_org->getEmail();
+
+            /**
+             * Check that organization has users
+             */
+            if ($mysql_org->getUsers()->isEmpty()) {
+                continue;
+            }
+
+            /**
+             * Check for duplicate
+             */
+            $_existOrganization = $this->pgsqlManager
+                ->getRepository('App\Entity\Participating\Organization')
+                ->findOneBy(['email' => $_org_email]);
+            if ($_existOrganization) {
+                continue;
+            }
+
+            echo '@';
+
+            $org = new \App\Entity\Participating\Organization();
+
             $org->setName($mysql_org->getName());
+            $org->setEmail($_org_email);
             $org->setCity($mysql_org->getCity());
             $org->setRequisites($mysql_org->getRequisites());
             $org->setAddress($mysql_org->getAddress());
@@ -107,22 +131,90 @@ class MigrateToPgsqlCommand extends Command
             $org->setSponsor($mysql_org->getSponsor());
             $org->setHidden($mysql_org->getHidden());
 
+            $confOrg = new ConferenceOrganization();
+            $confOrg->setOrganization($org);
+            $confOrg->setConference($prevConf);
+
             try {
                 $this->pgsqlManager->persist($org);
+                $this->pgsqlManager->persist($confOrg);
                 $this->pgsqlManager->flush();
             } catch (\Exception $e) {
-                $this->pgsqlManager->rollback();
                 throw new \Exception("ROLLBACK | Getting error while execute migrateOrganizations | {$e->getMessage()}");
             }
+
+            /**
+             * Skip update the organization users if it is NAG
+             */
+            if ($org->getEmail() === 'web@nag.ru') {
+                continue;
+            }
+
+            /** @var User $mysql_user */
+            foreach ($mysql_org->getUsers()->toArray() as $mysql_user) {
+                /**
+                 * Validate phone
+                 */
+                $_phone = $mysql_user->getPhone();
+                if (strlen($_phone) > 15 || strlen($_phone) < 8) {
+                    continue;
+                }
+
+                /**
+                 * Skip @nag.ru emails
+                 */
+                $_email = $mysql_user->getEmail();
+                $_email_partial = explode('@', $_email);
+                if (!isset($_email_partial[1]) || $_email_partial[1] === 'nag.ru') {
+                    continue;
+                }
+
+                /**
+                 * Check for duplicate
+                 */
+                $_existUser = $this->pgsqlManager
+                    ->getRepository('App\Entity\Participating\User')
+                    ->findOneBy(['email' => $_email]);
+                if ($_existUser) {
+                    continue;
+                }
+
+                echo '.';
+
+                $user = new \App\Entity\Participating\User();
+                $user->setOrganization($org);
+                $user->setFirstName($mysql_user->getFirstName());
+                $user->setLastName($mysql_user->getLastName());
+                $user->setMiddleName($mysql_user->getMiddleName());
+                $user->setPost($mysql_user->getPost());
+                $user->setPhone($_phone);
+                $user->setEmail($_email);
+                $user->setIsActive($mysql_user->getIsActive());
+                $user->setPassword($mysql_user->getPassword());
+                $user->setTelegram($mysql_user->getTelegram());
+                $user->setRoles($mysql_user->getRoles());
+                $user->setNickname($mysql_user->getNickname());
+
+                $_female = $mysql_user->getFemale();
+                if ($_female === 1) {
+                    $user->setSex(\App\Entity\Participating\User::SEX__WOMAN);
+                } elseif ($_female === 0) {
+                    $user->setSex(\App\Entity\Participating\User::SEX__MAN);
+                }
+
+                $confMember = new ConferenceMember();
+                $confMember->setUser($user);
+                $confMember->setConference($prevConf);
+
+                try {
+                    $this->pgsqlManager->persist($user);
+                    $this->pgsqlManager->persist($confMember);
+                    $this->pgsqlManager->flush();
+                } catch (\Exception $e) {
+                    throw new \Exception("ROLLBACK | Getting error while execute migrateOrganizations | {$e->getMessage()}");
+                }
+            }
         }
-
-        $this->pgsqlManager->commit();
-    }
-
-    // TODO:
-    private function migrateUsers()
-    {
-
     }
 
     // TODO:
@@ -147,5 +239,15 @@ class MigrateToPgsqlCommand extends Command
     private function migrateProgram2018()
     {
 
+    }
+
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @return \App\Entity\Conference
+     */
+    private function getPreviousConference()
+    {
+        return $this->pgsqlManager->getRepository('App\Entity\Conference')
+            ->findOneBy(['year' => 2018]);
     }
 }

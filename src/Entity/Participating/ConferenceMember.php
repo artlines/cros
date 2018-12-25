@@ -3,7 +3,7 @@
 namespace App\Entity\Participating;
 
 use App\Entity\Conference;
-use App\Entity\User;
+use App\Entity\Participating\User;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,7 +27,7 @@ class ConferenceMember
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Participating\User")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
@@ -39,6 +39,39 @@ class ConferenceMember
      * @ORM\JoinColumn(name="conference_id", referencedColumnName="id", nullable=false)
      */
     private $conference;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="car_number", type="string", nullable=true)
+     */
+    private $carNumber;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="arrival", type="datetime", nullable=true)
+     */
+    private $arrival;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="leaving", type="datetime", nullable=true)
+     */
+    private $leaving;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     */
+    private $createdAt;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     /**
      * @return int
@@ -78,5 +111,61 @@ class ConferenceMember
     public function setConference($conference)
     {
         $this->conference = $conference;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCarNumber()
+    {
+        return $this->carNumber;
+    }
+
+    /**
+     * @param string $carNumber
+     */
+    public function setCarNumber($carNumber)
+    {
+        $this->carNumber = $carNumber;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getArrival()
+    {
+        return $this->arrival;
+    }
+
+    /**
+     * @param \DateTime $arrival
+     */
+    public function setArrival($arrival)
+    {
+        $this->arrival = $arrival;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getLeaving()
+    {
+        return $this->leaving;
+    }
+
+    /**
+     * @param \DateTime $leaving
+     */
+    public function setLeaving($leaving)
+    {
+        $this->leaving = $leaving;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
     }
 }

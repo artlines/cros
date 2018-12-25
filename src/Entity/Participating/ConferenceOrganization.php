@@ -1,15 +1,174 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: alf1kk
- * Date: 25.12.18
- * Time: 14:33
- */
 
 namespace App\Entity\Participating;
 
+use App\Entity\Conference;
+use App\Entity\Participating\Organization;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Class ConferenceOrganization
+ * @package App\Entity\Participating
+ *
+ * @ORM\Table(schema="participating", name="conference_organization")
+ * @ORM\Entity()
+ */
 class ConferenceOrganization
 {
+    /**
+     * @var integer
+     *
+     * @ORM\Id
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
 
+    /**
+     * @var Organization
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Participating\Organization")
+     * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", nullable=false)
+     */
+    private $organization;
+
+    /**
+     * @var Conference
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Conference")
+     * @ORM\JoinColumn(name="conference_id", referencedColumnName="id", nullable=false)
+     */
+    private $conference;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="org_comment", type="text", nullable=true)
+     */
+    private $orgComment;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="notes", type="text", nullable=true)
+     */
+    private $notes;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="sponsor", type="boolean", nullable=false)
+     */
+    private $sponsor;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created_at", type="datetime", nullable=false)
+     */
+    private $createdAt;
+
+    // TODO: invoices ???
+
+    public function __construct()
+    {
+        $this->createdAt    = new \DateTime();
+        $this->sponsor      = false;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return Organization
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
+     * @param Organization $organization
+     */
+    public function setOrganization($organization)
+    {
+        $this->organization = $organization;
+    }
+
+    /**
+     * @return Conference
+     */
+    public function getConference()
+    {
+        return $this->conference;
+    }
+
+    /**
+     * @param Conference $conference
+     */
+    public function setConference($conference)
+    {
+        $this->conference = $conference;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrgComment()
+    {
+        return $this->orgComment;
+    }
+
+    /**
+     * @param string $orgComment
+     */
+    public function setOrgComment($orgComment)
+    {
+        $this->orgComment = $orgComment;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNotes()
+    {
+        return $this->notes;
+    }
+
+    /**
+     * @param string $notes
+     */
+    public function setNotes($notes)
+    {
+        $this->notes = $notes;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSponsor()
+    {
+        return $this->sponsor;
+    }
+
+    /**
+     * @param bool $sponsor
+     */
+    public function setSponsor($sponsor)
+    {
+        $this->sponsor = $sponsor;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
 }

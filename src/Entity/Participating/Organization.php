@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity\Participating;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Organization
  *
- * @ORM\Table(name="organization")
+ * @ORM\Table(schema="participating", name="organization")
  * @ORM\Entity(repositoryClass="App\Repository\OrganizationRepository")
  *
  * TODO: ADD LOGO FIELD
@@ -258,11 +258,11 @@ class Organization
     /**
      * Add user
      *
-     * @param \App\Entity\User $user
+     * @param \App\Entity\Participating\User $user
      *
      * @return Organization
      */
-    public function addUser(\App\Entity\User $user)
+    public function addUser(\App\Entity\Participating\User $user)
     {
         $this->users[] = $user;
 
@@ -272,9 +272,9 @@ class Organization
     /**
      * Remove user
      *
-     * @param \App\Entity\User $user
+     * @param \App\Entity\Participating\User $user
      */
-    public function removeUser(\App\Entity\User $user)
+    public function removeUser(\App\Entity\Participating\User $user)
     {
         $this->users->removeElement($user);
     }

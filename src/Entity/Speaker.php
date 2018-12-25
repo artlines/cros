@@ -96,7 +96,7 @@ class Speaker
     private $report;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="speakers")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Participating\User", inversedBy="speakers")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
@@ -299,11 +299,11 @@ class Speaker
     /**
      * Set user
      *
-     * @param \App\Entity\User $user
+     * @param \App\Entity\Participating\User $user
      *
      * @return Speaker
      */
-    public function setUser(\App\Entity\User $user = null)
+    public function setUser(\App\Entity\Participating\User $user = null)
     {
         $this->user = $user;
 
@@ -313,7 +313,7 @@ class Speaker
     /**
      * Get user
      *
-     * @return \App\Entity\User
+     * @return \App\Entity\Participating\User
      */
     public function getUser()
     {
