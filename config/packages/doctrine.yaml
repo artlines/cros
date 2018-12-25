@@ -8,7 +8,6 @@ parameters:
 doctrine:
     dbal:
         default_connection: mysql
-
         connections:
             mysql:
                 # configure these for your database server
@@ -44,9 +43,8 @@ doctrine:
                         alias: App
             postgresql:
                 naming_strategy: doctrine.orm.naming_strategy.underscore
-                auto_mapping: true
                 mappings:
-                    App:
+                    AppNew:
                         is_bundle: false
                         type: annotation
                         dir: '%kernel.project_dir%/src/New/Entity'
