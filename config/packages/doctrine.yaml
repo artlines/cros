@@ -21,7 +21,7 @@ doctrine:
             pgsql:
                 # configure these for your database server
                 driver: 'pdo_pgsql'
-                server_version: '5.7'
+                server_version: '10.5'
                 charset: utf8
                 default_table_options:
                     charset: utf8
@@ -51,4 +51,4 @@ doctrine:
                         type: annotation
                         dir: '%kernel.project_dir%/src/Entity'
                         prefix: 'App\Entity'
-                        alias: AppNew
+                        alias: App
