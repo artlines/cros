@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Old\Entity\Conference;
-use App\Old\Entity\Lecture;
+use App\Entity\Lecture;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -18,7 +18,7 @@ class ProgramController extends AbstractController
     {
         /** @var Conference $conf */
         $lectures = $this->getDoctrine()
-            ->getRepository('App:Lecture')
+            ->getRepository('App\Entity\Lecture', 'pgsql')
             ->findBy([], ['date' => 'ASC', 'startTime' => 'ASC', 'endTime' => 'ASC']);
 
         $program = [];

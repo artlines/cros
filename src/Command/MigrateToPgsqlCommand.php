@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\Entity\Content\Info;
+use App\Entity\Lecture;
 use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\ConferenceOrganization;
 use App\Old\Entity\InfoToConf;
@@ -45,10 +46,10 @@ class MigrateToPgsqlCommand extends Command
         $this->pgsqlManager->beginTransaction();
 
         try {
-            $this->migrateConferences();
-            $this->migrateOrganizationsAndUsers();
-            $this->migrateSiteInfo2018();
-            //$this->migrateProgram2018();
+            //$this->migrateConferences();
+            //$this->migrateOrganizationsAndUsers();
+            //$this->migrateSiteInfo();
+            $this->migrateProgram();
             //$this->migrateSpeakers2018();
         } catch (\Exception $e) {
             $this->pgsqlManager->rollback();
@@ -220,7 +221,11 @@ class MigrateToPgsqlCommand extends Command
         }
     }
 
-    private function migrateSiteInfo2018()
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @throws \Exception
+     */
+    private function migrateSiteInfo()
     {
         /** @var \App\Entity\Conference[] $conferences */
         $conferences = $this->pgsqlManager->getRepository('App\Entity\Conference')->findAll();
@@ -255,14 +260,38 @@ class MigrateToPgsqlCommand extends Command
         }
     }
 
-    // TODO:
-    private function migrateSpeakers2018()
+    private function migrateProgram()
     {
+        /** @var Lecture[] $lectures */
+        $lectures = $this->mysqlManager->getRepository('App\Old\Entity\Lecture')->findAll();
 
+        foreach ($lectures as $mysql_lecture) {
+            echo 'L';
+
+            $lecture = new Lecture();
+
+            $lecture->setTitle($mysql_lecture->getTitle());
+            $lecture->setCompany($mysql_lecture->getCompany());
+            $lecture->setDate($mysql_lecture->getDate());
+            $lecture->setStartTime($mysql_lecture->getStartTime());
+            $lecture->setEndTime($mysql_lecture->getEndTime());
+            $lecture->setHall($mysql_lecture->getHall());
+            $lecture->setHallId($mysql_lecture->getHallId());
+            $lecture->setModerator($mysql_lecture->getModerator());
+            $lecture->setSpeaker($mysql_lecture->getSpeaker());
+            $lecture->setTheses($mysql_lecture->getTheses());
+
+            try {
+                $this->pgsqlManager->persist($lecture);
+                $this->pgsqlManager->flush();
+            } catch (\Exception $e) {
+                throw new \Exception("ROLLBACK | Getting error while execute migrateProgram | {$e->getMessage()}");
+            }
+        }
     }
 
     // TODO:
-    private function migrateProgram2018()
+    private function migrateSpeakers2018()
     {
 
     }

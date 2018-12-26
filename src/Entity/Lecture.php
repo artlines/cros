@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -11,7 +10,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Table(name="lecture")
  * @ORM\Entity(repositoryClass="App\Repository\LectureRepository")
- * @ORM\HasLifecycleCallbacks
  */
 class Lecture
 {
@@ -100,8 +98,6 @@ class Lecture
      * @ORM\ManyToMany(targetEntity="TgChat", mappedBy="lectures", fetch="EXTRA_LAZY")
      */
     private $chats;
-
-
 
     public function __construct()
     {
@@ -357,6 +353,4 @@ class Lecture
     {
         return $this->theses;
     }
-
 }
-
