@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Site;
 
 use App\Old\Entity\Conference;
 use App\Entity\Lecture;
