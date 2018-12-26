@@ -2,31 +2,21 @@
 
 namespace App\Controller;
 
+use App\Entity\Conference;
 use App\Entity\Sponsor;
-use App\Old\Entity\Info;
-
+use App\Entity\Content\Info;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
-
 use Symfony\Component\Form\FormError;
-
-//use Vihuvac\Bundle\RecaptchaBundle\Form\Type\VihuvacRecaptchaType as RecaptchaType;
-//use Vihuvac\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
 use Beelab\Recaptcha2Bundle\Form\Type\RecaptchaType;
 use Beelab\Recaptcha2Bundle\Validator\Constraints\Recaptcha2 as RecaptchaTrue;
 
@@ -56,13 +46,14 @@ class InfoController extends AbstractController
 
 		/* ORGANIZE */
 		if ($alias == 'organize') {
-			$_dates = $this->getDoctrine()->getRepository('App:Conference')
+		    /** @var Conference $conference */
+			$conference = $this->getDoctrine()->getRepository('App:Conference')
 					->findOneBy(array('year' => date("Y")));
 
-			$dates = array(
-					$_dates->getStart()->getTimestamp(),
-					$_dates->getFinish()->getTimestamp()
-				);
+			$dates = [
+                $conference->getEventStart()->getTimestamp(),
+                $conference->getEventFinish()->getTimestamp()
+            ];
 
 			return $this->render('frontend/info/organize.html.twig', ['dates' => $dates]);
 		};
@@ -283,25 +274,21 @@ class InfoController extends AbstractController
         };
 
         $info = null;
-
-    	if(in_array($alias, ['place', 'result', 'terms', 'transfer', 'targets'])){
-			$infoRepository = $this->getDoctrine()->getRepository('App:Info');
-			$info = $infoRepository->findInfoByAlias($alias, date("Y"));
-		}
-		else{
-	    		/** @var Info $info */
-			$info = $this->getDoctrine()
-		    		->getRepository('App:Info')
-		    		->findOneBy(array('alias' => $alias), array('id' => 'DESC'));
+    	if (in_array($alias, ['place', 'result', 'terms', 'transfer', 'targets'])) {
+    	    /** @var Conference $conference */
+			$conference = $this->getDoctrine()->getRepository('App:Conference')
+                ->findOneBy(['year' => date("Y")]);
+			/** @var Info $info */
+			$info = $this->getDoctrine()->getRepository('App:Content\Info')
+                ->findOneBy(['conference' => $conference, 'alias' => $alias]);
+		} else {
+            /** @var Info $info */
+			$info = $this->getDoctrine()->getRepository('App:Content\Info')->findOneBy(['alias' => $alias]);
 		}
         
-        if($info){
-            return $this->render('frontend/info/show.html.twig', array(
-
-                'info' => $info,
-            ));
-        }
-        else{
+        if ($info) {
+            return $this->render('frontend/info/show.html.twig', ['info' => $info]);
+        } else {
             throw $this->createNotFoundException('Страница не найдена');
         }
     }
