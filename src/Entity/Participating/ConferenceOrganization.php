@@ -68,12 +68,20 @@ class ConferenceOrganization
      */
     private $createdAt;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="approved", type="boolean", nullable=false, options={"default": 0})
+     */
+    private $approved;
+
     // TODO: invoices ???
 
     public function __construct()
     {
         $this->createdAt    = new \DateTime();
         $this->sponsor      = false;
+        $this->approved     = false;
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace App\Old\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -243,7 +242,7 @@ class Sponsor
         return $this;
     }
     /**
-     * Set TypeSponsor
+     * Set SponsorType
      *
      * @param \App\Old\Entity\TypeSponsor $TypeSponsor
      *

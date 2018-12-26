@@ -5,7 +5,7 @@ namespace App\Old\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * TypeSponsor
+ * SponsorType
  *
  * @ORM\Table(name="sponsor_type")
  * @ORM\Entity()

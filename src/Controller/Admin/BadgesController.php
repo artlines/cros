@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use AppBundle\Entity\Conference;
 use AppBundle\Entity\Organization;
@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use \ZipArchive;
 
-class AdminBadgesController extends AbstractController
+class BadgesController extends AbstractController
 {
     protected $root = '';
     protected $post_top;

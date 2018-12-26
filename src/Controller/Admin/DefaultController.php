@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Old\Entity\Conference;
 use App\Old\Entity\Organization;
@@ -24,7 +24,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdminController extends AbstractController
+class DefaultController extends AbstractController
 {
     /**
      * @Route("/admin/download/csv-hotel-2018", name="download-hotel-csv-2018")

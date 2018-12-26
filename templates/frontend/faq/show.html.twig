@@ -5,9 +5,6 @@
 {% block header_title %}Вопросы и ответы{% endblock %}
 
 {% block body %}
-    {% if append_text is not empty %}
-        {{ append_text.text|raw }}
-    {% endif %}
     {% if faq is empty %}
         <h3>Нет ответов</h3>
     {% else %}

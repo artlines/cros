@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use AppBundle\Entity\Hall;
 use AppBundle\Entity\Lecture;
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Google_Client;
 use Google_Service_Sheets;
 
-class AdminLectureController extends AbstractController
+class LectureController extends AbstractController
 {
     
     /**

@@ -81,7 +81,7 @@
                                     <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('info', {'alias': 'targets'}) }}">Что такое КРОС</a></li>
                                     <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('info', {'alias': 'organize'}) }}">Место проведения</a></li>
                                     <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('info', {'alias': 'sponsors'}) }}">Спонсоры</a></li>
-                                    <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('speakers', {'year': '2018'}) }}">Спикеры</a></li>
+                                    <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('speakers') }}">Спикеры</a></li>
                                 </ul>
                                 <!-- End Submenu -->
                             </li>
@@ -96,7 +96,7 @@
                                 <!-- Submenu -->
                                 <ul class="cs-sub-menu-home cs-sub-menu list-unstyled cs-mt-20 cs-mt-10--lcs--scrolling u-shadow-v18 cs-font-weight-700 cs-font-size-12 nav-submenu-1" id="nav-submenu-1"
                                     aria-labelledby="nav-link-2" style="margin-top: 0px;">
-                                    <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('members') }}">Участники</a></li>
+                                    {#<li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('members') }}">Участники</a></li>#}
                                     <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('price') }}">Стоимость участия</a></li>
                                     <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('registration') }}">Регистрация</a></li>
                                     <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('program') }}">Программа</a></li>
@@ -181,7 +181,7 @@
         {% endif %}
         <!-- cs-max-width-750  -->
         <div class="container u-bg-overlay__inner cs-color-white mb-0 cs-pt-40">
-            {{ render(controller('App\\Controller\\DefaultController:countdown', { mainPage: true })) }}
+            {{ render(controller('App\\Controller\\Site\\DefaultController:countdown', { mainPage: true })) }}
             <div class="row cs-mb-0 cs-mt-100">
                 <div class="col-md-6  text-left">
                     <p class="cs-font-size-20 mb-0 cs-color-white">

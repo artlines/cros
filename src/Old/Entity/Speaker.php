@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\File\File;
  * Speaker
  *
  * @ORM\Table(name="speaker")
- * @ORM\Entity(repositoryClass="App\Repository\SpeakerRepository")
+ * @ORM\Entity()
  */
 class Speaker
 {

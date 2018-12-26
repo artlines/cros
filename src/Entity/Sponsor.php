@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -13,6 +12,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Sponsor
 {
+    const TYPE__SILVER  = 1;
+    const TYPE__GOLD    = 2;
+
+    protected static $mapTypeTitle = [
+        self::TYPE__SILVER  => 'Серебрянный',
+        self::TYPE__GOLD    => 'Золотой',
+    ];
+
     /**
      * @var int
      *
@@ -21,59 +28,70 @@ class Sponsor
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
+
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
      */
     private $name;
+
     /**
      * @var int
      *
-     * @ORM\Column(name="phone", type="bigint")
+     * @ORM\Column(name="type_id", type="integer", nullable=false)
+     */
+    private $type;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="phone", type="decimal", precision=15)
      */
     private $phone;
+
     /**
      * @var string
      *
      * @ORM\Column(name="url", type="string", length=255)
      */
     private $url;
+
     /**
      * @var string
      *
      * @ORM\Column(name="logo", type="string", length=255)
      */
     private $logo;
+
     /**
      * @var string
      *
      * @ORM\Column(name="logo_resize", type="string", length=255)
      */
     private $logo_resize;
+
     /**
      * @var string
      *
      * @ORM\Column(name="description", type="text", nullable=true)
      */
     private $description;
-    /**
-     * @ORM\ManyToOne(targetEntity="TypeSponsor")
-     * @ORM\JoinColumn(name="type", referencedColumnName="id")
-     */
-    private $type;
+
     /**
      * @var bool
      *
      * @ORM\Column(name="active", type="boolean", nullable=true)
      */
     private $active;
+
     /**
      * @var int
      *
-     * @ORM\Column(name="priority", type="bigint")
+     * @ORM\Column(name="priority", type="integer")
      */
     private $priority;
+
     /**
      * Get id
      *
@@ -83,6 +101,7 @@ class Sponsor
     {
         return $this->id;
     }
+
     /**
      * Get priority
      *
@@ -92,6 +111,7 @@ class Sponsor
     {
         return $this->priority;
     }
+
     /**
      * Get name
      *
@@ -101,15 +121,7 @@ class Sponsor
     {
         return $this->name;
     }
-    /**
-     * Get phone
-     *
-     * @return int
-     */
-    public function getPhone()
-    {
-        return $this->phone;
-    }
+
     /**
      * Get url
      *
@@ -119,6 +131,7 @@ class Sponsor
     {
         return $this->url;
     }
+
     /**
      * Get logo
      *
@@ -128,6 +141,7 @@ class Sponsor
     {
         return $this->logo;
     }
+
     /**
      * Get logo_resize
      *
@@ -137,6 +151,7 @@ class Sponsor
     {
         return $this->logo_resize;
     }
+
     /**
      * Get description
      *
@@ -146,15 +161,7 @@ class Sponsor
     {
         return $this->description;
     }
-    /**
-     * Get type
-     *
-     * @return \App\Entity\TypeSponsor
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
+
     /**
      * Get active
      *
@@ -164,6 +171,7 @@ class Sponsor
     {
         return $this->active;
     }
+
     /**
      * Set name
      *
@@ -177,19 +185,7 @@ class Sponsor
 
         return $this;
     }
-    /**
-     * Set phone
-     *
-     * @param string $phone
-     *
-     * @return Sponsor
-     */
-    public function setPhone($phone)
-    {
-        $this->phone = $phone;
 
-        return $this;
-    }
     /**
      * Set url
      *
@@ -203,6 +199,7 @@ class Sponsor
 
         return $this;
     }
+
     /**
      * Set logo
      *
@@ -216,6 +213,7 @@ class Sponsor
 
         return $this;
     }
+
     /**
      * Set logo_resize
      *
@@ -229,6 +227,7 @@ class Sponsor
 
         return $this;
     }
+
     /**
      * Set description
      *
@@ -242,19 +241,7 @@ class Sponsor
 
         return $this;
     }
-    /**
-     * Set TypeSponsor
-     *
-     * @param \App\Entity\TypeSponsor $TypeSponsor
-     *
-     * @return Sponsor
-     */
-    public function setTypeSponsor(\App\Entity\TypeSponsor $TypeSponsor = null)
-    {
-        $this->type = $TypeSponsor;
 
-        return $this;
-    }
     /**
      * Set active
      *
@@ -268,6 +255,7 @@ class Sponsor
 
         return $this;
     }
+
     /**
      * Set priority
      *
@@ -280,5 +268,50 @@ class Sponsor
         $this->priority = $priority;
 
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTypeName()
+    {
+        return self::$mapTypeTitle[$this->type];
+    }
+
+    /**
+     * @param int $type
+     * @throws \Exception
+     */
+    public function setType($type)
+    {
+        if (!in_array($type, array_keys(self::$mapTypeTitle))) {
+            throw new \Exception('Invalid type ID');
+        }
+
+        $this->type = $type;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param int $phone
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
     }
 }

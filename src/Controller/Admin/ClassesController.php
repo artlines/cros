@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use AppBundle\Entity\Apartament;
 use AppBundle\Entity\ApartamentId;
@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AdminClassesController extends AbstractController
+class ClassesController extends AbstractController
 {
     /**
      * Список зарегистрированных пользователей

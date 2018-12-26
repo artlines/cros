@@ -7,48 +7,46 @@ parameters:
 
 doctrine:
     dbal:
-        default_connection: mysql
+        default_connection: pgsql
         connections:
-            mysql:
-                # configure these for your database server
-                driver: 'pdo_mysql'
-                server_version: '5.7'
-                charset: utf8
-                default_table_options:
-                    charset: utf8
-                    collate: utf8_unicode_ci
-                url: '%env(resolve:DATABASE_URL)%'
             pgsql:
-                # configure these for your database server
                 driver: 'pdo_pgsql'
                 server_version: '10.5'
                 charset: utf8
                 default_table_options:
                     charset: utf8
                     collate: utf8_unicode_ci
-                url: '%env(resolve:NEW_DATABASE_URL)%'
+                url: '%env(resolve:DATABASE_URL)%'
+            mysql:
+                driver: 'pdo_mysql'
+                server_version: '5.7'
+                charset: utf8
+                default_table_options:
+                    charset: utf8
+                    collate: utf8_unicode_ci
+                url: '%env(resolve:OLD_DATABASE_URL)%'
 
     orm:
         auto_generate_proxy_classes: true
         entity_managers:
-            mysql:
-                connection: mysql
+            pgsql:
+                connection: pgsql
                 naming_strategy: doctrine.orm.naming_strategy.underscore
                 auto_mapping: true
                 mappings:
                     App:
                         is_bundle: false
                         type: annotation
-                        dir: '%kernel.project_dir%/src/Old/Entity'
-                        prefix: 'App\Old\Entity'
-                        alias: App
-            pgsql:
-                connection: pgsql
-                naming_strategy: doctrine.orm.naming_strategy.underscore
-                mappings:
-                    AppNew:
-                        is_bundle: false
-                        type: annotation
                         dir: '%kernel.project_dir%/src/Entity'
                         prefix: 'App\Entity'
                         alias: App
+            mysql:
+                connection: mysql
+                naming_strategy: doctrine.orm.naming_strategy.underscore
+                mappings:
+                    AppOld:
+                        is_bundle: false
+                        type: annotation
+                        dir: '%kernel.project_dir%/src/Old/Entity'
+                        prefix: 'App\Old\Entity'
+                        alias: AppOld

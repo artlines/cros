@@ -4,7 +4,7 @@
 
 {% block body %}
 
-    {% if gold != null %}
+    {% if golden != null %}
         <section id="ourguests" class="cs-pt-30 cs-bg-img-layer-middle cs-mb-30">
             <div class="container">
                 <div class="text-center cs-mb-30">
@@ -12,32 +12,27 @@
                         Золотые партнеры
                     </h2>
                 </div>
-                {% set uc = gold|length %}
-                {% if uc > 3 %}
-                <div class="row">
-                    {% else %}
-                    <div class="row gold-justify-576">
-                        {% endif %}
-                        {% for sponsor in gold %}
-                            <div class=" col-xs-2 col-md-4 col-sm-6 resize-gold-partners">
-                                <div class="card mb-4 box-shadow cursor-pointer">
-                                    <img id="{{ sponsor.id }}" src="{{ asset('uploads/sponsor/'~ sponsor.logoresize) }}" class="cursor-pointer olpen-modal-botton-gold prohibit-changes-images">
-                                    <div class="card-body">
-                                        <p class="card-text text-center mb-2"></p>
-                                    </div>
-                                    <div class="text-center">
-                                        <a id="{{ sponsor.id }}"
-                                           class="olpen-modal-botton-gold btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 cs-py-10 speaker_button_container"
-                                           href="#" style="margin-bottom: 5px;">О компании</a>
-                                    </div>
-                                </div>
+                <div class="row{% if golden|length > 3 %} gold-justify-576{% endif %}">
+                {% for sponsor in golden %}
+                    <div class=" col-xs-2 col-md-4 col-sm-6 resize-gold-partners">
+                        <div class="card mb-4 box-shadow cursor-pointer">
+                            <img id="{{ sponsor.id }}" src="{{ asset('uploads/sponsor/'~ sponsor.logoresize) }}" class="cursor-pointer open-modal-button-gold prohibit-changes-images">
+                            <div class="card-body">
+                                <p class="card-text text-center mb-2"></p>
                             </div>
-                        {% endfor %}
+                            <div class="text-center">
+                                <a id="{{ sponsor.id }}"
+                                   class="open-modal-button-gold btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 cs-py-10 speaker_button_container"
+                                   href="#" style="margin-bottom: 5px;">О компании</a>
+                            </div>
+                        </div>
                     </div>
+                {% endfor %}
                 </div>
+            </div>
         </section>
     {% endif %}
-    {% if silvern != null %}
+    {% if silver != null %}
         <section id="ourguests" class="cs-pt-30 cs-mb-100 cs-bg-img-layer-middle">
             <div class="container">
                 <div class="text-center cs-mb-30">
@@ -45,42 +40,36 @@
                         Серебряные партнеры
                     </h2>
                 </div>
-                {% set uc = silvern|length %}
-                {% if uc > 3 %}
                 <div>
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="row centering-silver-partners">
-                    {% else %}
                     <div class="row">
                         <div class="col-sm-12">
-                    <div class="row justify-content-center centering-silver-partners">
-                        {% endif %}
-                        {% for sponsor in silvern %}
-                            <div class=" col-xs-2 col-md-4 col-sm-6">
-                                <div class="card mb-4 box-shadow cursor-pointer">
-                                    <img id="{{ sponsor.id }}" src="{{ asset('uploads/sponsor/'~ sponsor.logoresize) }}" class="cursor-pointer olpen-modal-botton-silvern prohibit-changes-images">
-                                    <div class="card-body">
-                                        <p class="card-text text-center mb-2"></p>
-                                    </div>
-                                    <div class="text-center">
-                                        <a id="{{ sponsor.id }}"
-                                           class="olpen-modal-botton-silvern btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 speaker_button_container"
-                                           href="#" style="margin-bottom: 5px;">О компании</a>
+                            <div class="row centering-silver-partners{% if silver|length > 3 %} justify-content-center{% endif %}">
+                            {% for sponsor in silver %}
+                                <div class=" col-xs-2 col-md-4 col-sm-6">
+                                    <div class="card mb-4 box-shadow cursor-pointer">
+                                        <img id="{{ sponsor.id }}" src="{{ asset('uploads/sponsor/'~ sponsor.logoresize) }}" class="cursor-pointer open-modal-button-silver prohibit-changes-images">
+                                        <div class="card-body">
+                                            <p class="card-text text-center mb-2"></p>
+                                        </div>
+                                        <div class="text-center">
+                                            <a id="{{ sponsor.id }}"
+                                               class="open-modal-button-silver btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 cs-py-10 speaker_button_container"
+                                               href="#" style="margin-bottom: 5px;">О компании</a>
+                                        </div>
                                     </div>
                                 </div>
+                            {% endfor %}
                             </div>
-                        {% endfor %}
-                    </div>
                         </div>
                     </div>
                 </div>
-                    </div>
+            </div>
         </section>
     {% endif %}
-    {% if silvern != null %}
-        {% for sponsor in silvern %}
-            <div id="silvern-{{ sponsor.id }}" class="modal fade" role="dialog">
+
+    {% if silver != null %}
+        {% for sponsor in silver %}
+            <div id="silver-{{ sponsor.id }}" class="modal fade" role="dialog">
                 <div class="modal-dialog" style="max-width: 1000px;">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -116,14 +105,12 @@
 
                 </div>
             </div>
-            </div>
-            </div>
         {% endfor %}
     {% endif %}
 
-    {% if gold != null %}
-        {% for sponsor in gold %}
-            <div id="gold-{{ sponsor.id }}" class="modal fade" role="dialog">
+    {% if golden != null %}
+        {% for sponsor in golden %}
+            <div id="golden-{{ sponsor.id }}" class="modal fade" role="dialog">
                 <div class="modal-dialog" style="max-width: 1000px;">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -155,11 +142,10 @@
 
                 </div>
             </div>
-            </div>
-            </div>
         {% endfor %}
     {% endif %}
 {% endblock %}
+
 {% block stylesheets %}
     <style>
         .img-show-link img {
@@ -171,15 +157,15 @@
     <script src="{{ asset('assets/js/lightbox.min.js') }}"></script>
     <script>
         $(document).ready(function () {
-            $('.olpen-modal-botton-silvern').click(function () {
+            $('.open-modal-button-silver').click(function () {
                 var idm = $(this).attr('id');
-                $('#silvern-' + idm).modal();
+                $('#silver-' + idm).modal();
             });
         });
         $(document).ready(function () {
-            $('.olpen-modal-botton-gold').click(function () {
+            $('.open-modal-button-gold').click(function () {
                 var idm = $(this).attr('id');
-                $('#gold-' + idm).modal();
+                $('#golden-' + idm).modal();
             });
         });
     </script>

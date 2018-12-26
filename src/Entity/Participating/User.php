@@ -122,11 +122,6 @@ class User implements UserInterface
     private $organization;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Speaker", mappedBy="user")
-     */
-    private $speakers;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
@@ -491,39 +486,5 @@ class User implements UserInterface
     public function getCreatedAt()
     {
         return $this->createdAt;
-    }
-
-    /**
-     * Add speaker
-     *
-     * @param \App\Entity\Speaker $speaker
-     *
-     * @return User
-     */
-    public function addSpeaker(\App\Entity\Speaker $speaker)
-    {
-        $this->speakers[] = $speaker;
-
-        return $this;
-    }
-
-    /**
-     * Remove speaker
-     *
-     * @param \App\Entity\Speaker $speaker
-     */
-    public function removeSpeaker(\App\Entity\Speaker $speaker)
-    {
-        $this->speakers->removeElement($speaker);
-    }
-
-    /**
-     * Get speakers
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getSpeakers()
-    {
-        return $this->speakers;
     }
 }

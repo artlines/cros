@@ -2,11 +2,14 @@
 
 namespace App\Command;
 
+use App\Entity\Content\Faq;
 use App\Entity\Content\Info;
 use App\Entity\Lecture;
 use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\ConferenceOrganization;
+use App\Entity\Sponsor;
 use App\Old\Entity\InfoToConf;
+use App\Old\Entity\Speaker;
 use App\Old\Entity\User;
 use App\Old\Entity\Conference;
 use App\Old\Entity\Organization;
@@ -46,11 +49,13 @@ class MigrateToPgsqlCommand extends Command
         $this->pgsqlManager->beginTransaction();
 
         try {
-            //$this->migrateConferences();
-            //$this->migrateOrganizationsAndUsers();
-            //$this->migrateSiteInfo();
+            $this->migrateConferences();
+            $this->migrateOrganizationsAndUsers();
+            $this->migrateSiteInfo();
             $this->migrateProgram();
-            //$this->migrateSpeakers2018();
+            $this->migrateSpeakers();
+            $this->migrateFaq();
+            $this->migrateSponsors();
         } catch (\Exception $e) {
             $this->pgsqlManager->rollback();
             $output->writeln($e->getMessage());
@@ -95,7 +100,8 @@ class MigrateToPgsqlCommand extends Command
      */
     private function migrateOrganizationsAndUsers()
     {
-        $prevConf = $this->getPreviousConference();
+        $prevConf = $this->pgsqlManager->getRepository('App\Entity\Conference')
+            ->findOneBy(['year' => 2018]);
 
         /** @var Organization[] $organizations */
         $organizations = $this->mysqlManager->getRepository('App\Old\Entity\Organization')->findAll();
@@ -260,6 +266,10 @@ class MigrateToPgsqlCommand extends Command
         }
     }
 
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @throws \Exception
+     */
     private function migrateProgram()
     {
         /** @var Lecture[] $lectures */
@@ -290,19 +300,97 @@ class MigrateToPgsqlCommand extends Command
         }
     }
 
-    // TODO:
-    private function migrateSpeakers2018()
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @throws \Exception
+     */
+    private function migrateSpeakers()
     {
+        /** @var Speaker[] $speakers */
+        $speakers = $this->mysqlManager->getRepository('App\Old\Entity\Speaker')->findAll();
 
+        foreach ($speakers as $mysql_speaker) {
+            echo '&';
+
+            $mysql_user = $mysql_speaker->getUser();
+
+            $speaker = new \App\Entity\Participating\Speaker();
+
+            $speaker->setAvatar($mysql_speaker->getAvatar());
+            $speaker->setAvatarBig($mysql_speaker->getAvatarBig());
+            $speaker->setAvatarSmall($mysql_speaker->getAvatarSmall());
+            $speaker->setDescription($mysql_speaker->getDescription());
+            $speaker->setPublish($mysql_speaker->getPublish());
+            $speaker->setOrganization($mysql_user->getOrganization()->getName());
+            $speaker->setLastName($mysql_user->getLastName());
+            $speaker->setMiddleName($mysql_user->getMiddleName());
+            $speaker->setFirstName($mysql_user->getFirstName());
+
+            try {
+                $this->pgsqlManager->persist($speaker);
+                $this->pgsqlManager->flush();
+            } catch (\Exception $e) {
+                throw new \Exception("ROLLBACK | Getting error while execute migrateSpeakers | {$e->getMessage()}");
+            }
+        }
     }
 
     /**
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
-     * @return \App\Entity\Conference
+     * @throws \Exception
      */
-    private function getPreviousConference()
+    private function migrateFaq()
     {
-        return $this->pgsqlManager->getRepository('App\Entity\Conference')
-            ->findOneBy(['year' => 2018]);
+        /** @var \App\Old\Entity\Faq[] $faqs */
+        $faqs = $this->mysqlManager->getRepository('App\Old\Entity\Faq')->findAll();
+
+        foreach ($faqs as $mysql_faq) {
+            echo 'Q';
+
+            $faq = new Faq();
+            $faq->setQuestion($mysql_faq->getQuestion());
+            $faq->setAnswer($mysql_faq->getAnswer());
+            $faq->setIsActive($mysql_faq->getIsActive());
+
+            try {
+                $this->pgsqlManager->persist($faq);
+                $this->pgsqlManager->flush();
+            } catch (\Exception $e) {
+                throw new \Exception("ROLLBACK | Getting error while execute migrateFaq | {$e->getMessage()}");
+            }
+        }
+    }
+
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @throws \Exception
+     */
+    private function migrateSponsors()
+    {
+        /** @var \App\Old\Entity\Sponsor[] $sponsors */
+        $sponsors = $this->mysqlManager->getRepository('App\Old\Entity\Sponsor')->findAll();
+
+        foreach ($sponsors as $mysql_sponsor) {
+            echo '%';
+
+            $sponsor = new Sponsor();
+
+            $sponsor->setName($mysql_sponsor->getName());
+            $sponsor->setPhone($mysql_sponsor->getPhone());
+            $sponsor->setUrl($mysql_sponsor->getUrl());
+            $sponsor->setLogo($mysql_sponsor->getLogo());
+            $sponsor->setLogoResize($mysql_sponsor->getLogoResize());
+            $sponsor->setDescription($mysql_sponsor->getDescription());
+            $sponsor->setActive($mysql_sponsor->getIsActive());
+            $sponsor->setPriority($mysql_sponsor->getPriority());
+
+            try {
+                $sponsor->setType($mysql_sponsor->getType()->getId());
+                $this->pgsqlManager->persist($sponsor);
+                $this->pgsqlManager->flush();
+            } catch (\Exception $e) {
+                throw new \Exception("ROLLBACK | Getting error while execute migrateSponsors | {$e->getMessage()}");
+            }
+        }
     }
 }

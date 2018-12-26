@@ -132,7 +132,7 @@
                                     <!-- Submenu -->
                                     <ul class="cs-sub-menu list-unstyled cs-mt-20 cs-mt-10--lcs--scrolling u-shadow-v18 cs-font-weight-700 cs-font-size-12" id="nav-submenu-1"
                                         aria-labelledby="nav-link-2">
-                                        <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('members') }}">Участники</a></li>
+                                        {#<li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('members') }}">Участники</a></li>#}
                                         <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('price') }}">Стоимость участия</a></li>
                                         <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('registration') }}">Регистрация</a></li>
                                         <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('program') }}">Программа</a></li>
@@ -231,7 +231,7 @@
                 </div>
                 <div class="col-md-6 text-right align-middle">
                     <div class="text-right" style="max-width: 360px;margin-left: auto;">
-                        {{ render(controller('App\\Controller\\DefaultController:countdown')) }}
+                        {{ render(controller('App\\Controller\\Site\\DefaultController:countdown')) }}
                     </div>
                     <a class="btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ url('registration') }}">Принять участие</a>
                     <a class="btn u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ path('info', {'alias': 'become-speaker'}) }}">Стать докладчиком</a>

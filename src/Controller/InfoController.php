@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Sponsor;
 use App\Old\Entity\Info;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -42,20 +43,17 @@ class InfoController extends AbstractController
 	{
         /* SPONSOR */
         if ($alias == 'sponsors') {
-            $RepositoryTypeSponsor = $this->getDoctrine()->getRepository('App:TypeSponsor');
-
-            $typeSponsorGold = $RepositoryTypeSponsor->findOneBy(['name_type' => 'Золотой']);
-            $typeSponsorSilvern = $RepositoryTypeSponsor->findOneBy(['name_type' => 'Серебряный']);
-
-            $RepositorySponsor = $this->getDoctrine()->getRepository('App:Sponsor');
-            $goldSponsor = $RepositorySponsor->findBy(['type'=>$typeSponsorGold->getId()],['priority'=>'DESC']);
-            $silvernSponsor = $RepositorySponsor->findBy(['type'=>$typeSponsorSilvern->getId()],['priority'=>'DESC']);
+            $goldenSponsors = $this->getDoctrine()->getRepository('App:Sponsor')
+                ->findBy(['active' => true, 'type' => Sponsor::TYPE__GOLD]);
+            $silverSponsors = $this->getDoctrine()->getRepository('App:Sponsor')
+                ->findBy(['active' => true, 'type' => Sponsor::TYPE__SILVER]);
 
             return $this->render('frontend/info/show-sponsor.html.twig', [
-                'gold' => $goldSponsor,
-                'silvern' => $silvernSponsor,
+                'golden' => $goldenSponsors,
+                'silver' => $silverSponsors,
             ]);
         };
+
 		/* ORGANIZE */
 		if ($alias == 'organize') {
 			$_dates = $this->getDoctrine()->getRepository('App:Conference')

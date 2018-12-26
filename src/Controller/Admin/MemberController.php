@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use AppBundle\Entity\Apartament;
 use AppBundle\Entity\ApartamentId;
@@ -43,7 +43,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Repository\OrganizationRepository;
 use ZipArchive;
-class AdminMemberController extends AbstractController
+class MemberController extends AbstractController
 {
     /**
      * Список зарегистрированных пользователей
@@ -809,7 +809,7 @@ class AdminMemberController extends AbstractController
      */
     public function addSponsor(Request $request){
         $resizeParametr = $this->container->getParameter('sponsor.resize');
-        $RepositoryTypeSponsor = $this->getDoctrine()->getRepository('App:TypeSponsor');
+        $RepositoryTypeSponsor = $this->getDoctrine()->getRepository('App:SponsorType');
         $typeSponsor = $RepositoryTypeSponsor->findAll();
         $typeSponsorList = null;
         foreach ($typeSponsor as $value){ // This is necessary for select, and then he does not know how else
@@ -880,7 +880,7 @@ class AdminMemberController extends AbstractController
      */
     public function sponsorEdit($id, Request $request){
         $resizeParametr = $this->container->getParameter('sponsor.resize');
-        $RepositoryTypeSponsor = $this->getDoctrine()->getRepository('App:TypeSponsor');
+        $RepositoryTypeSponsor = $this->getDoctrine()->getRepository('App:SponsorType');
         $RepositorySponsor = $this->getDoctrine()->getRepository('App:Sponsor');
         $typeSponsor = $RepositoryTypeSponsor->findAll();
         $typeSponsorList = null;
@@ -980,7 +980,7 @@ class AdminMemberController extends AbstractController
             ->getForm();
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            $RepositoryTypeSponsor = $this->getDoctrine()->getRepository('App:TypeSponsor');
+            $RepositoryTypeSponsor = $this->getDoctrine()->getRepository('App:SponsorType');
             $resizeService = $this->get('resizeImages');
             $patchSave = $this->get('kernel')->getRootDir().'/../web/uploads/sponsor/';
             $postefixOriginal = '_original';
