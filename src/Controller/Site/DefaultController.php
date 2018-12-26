@@ -125,4 +125,12 @@ class DefaultController extends AbstractController
             'faq' => $faq,
         ]);
     }
+
+    /**
+     * @Route("/price", name="price")
+     */
+    public function price()
+    {
+        return $this->render('frontend/price/show.html.twig');
+    }
 }
