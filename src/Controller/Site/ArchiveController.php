@@ -21,7 +21,7 @@ class ArchiveController extends AbstractController
             ->getRepository('App\Entity\Conference', 'pgsql');
 
         /** @var Conference[] $conferences */
-        $conferences = $confRepo->findBy([], ['year' => 'desc']);
+        $conferences = $confRepo->findBy([]);
 
         $pre_year = $year;
         $last_active = null;
@@ -29,6 +29,7 @@ class ArchiveController extends AbstractController
 
         /** @var Conference $conference */
         foreach ($conferences as $conference) {
+
             if ($conference->getYear() == $pre_year) {
                 $year = $conference->getYear();
                 $founded = true;

@@ -10,7 +10,7 @@
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <ul class="nav nav-pills archive-nav row">
-                    {% for conference in conferences %}
+                    {% for conference in conferences|reverse %}
                         <li class="nav-item">
                             <a class="nav-link{% if conference.year == selectedyear %} active{% endif %}" href="{{ path('archive', {'year': conference.year}) }}">{{ conference.year }}</a>
                         </li>
