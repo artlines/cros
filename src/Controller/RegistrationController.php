@@ -2,17 +2,8 @@
 
 namespace App\Controller;
 
-use AppBundle\Entity\Apartament;
-use AppBundle\Entity\ApartamentId;
-use AppBundle\Entity\Conference;
-use AppBundle\Entity\ManagerGroup;
-use AppBundle\Entity\Logs;
-use AppBundle\Entity\Organization;
-use AppBundle\Entity\Organizations;
-use AppBundle\Entity\OrgToConf;
-use AppBundle\Entity\User;
-use AppBundle\Entity\UserToApartament;
-use AppBundle\Entity\UserToConf;
+use App\Entity\Conference;
+use App\Entity\Participating\Organization;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Form;
@@ -25,45 +16,25 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class RegistrationController extends AbstractController
 {
     /**
-     * @Route("/registration/{man_hash}", name="registration")
-     * @Route("/registration")
+     * @Route("/registration", name="registration")
+     * @param Request $request
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function registration($man_hash = null, Request $request)
+    public function registration(Request $request, AuthorizationCheckerInterface $authorizationChecker)
     {
-        if($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')){
-            if($this->get('security.authorization_checker')->isGranted('ROLE_ORG')) {
-                // Если пользователь авторизован - переадресуем в личный кабинет
-                return $this->redirectToRoute('profile');
-            }
-            else{
-                return $this->render('frontend/registration/authorized.html.twig', array(
-
-                ));
-            }
-        }
-        else {
-            // Регистрация
-            $man_id = null;
-
-            $isset_manager = false;
-
-            $year = date("Y");
-
+        if ($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $authorizationChecker->isGranted('ROLE_ORG')
+                ? $this->redirectToRoute('profile')
+                : $this->render('frontend/registration/authorized.html.twig');
+        } else {
             /** @var Conference $conf */
-            $conf = $this->getDoctrine()
-                ->getRepository('App:Conference')
-                ->findOneBy(array('year' => $year));
-
-            /** @var UserToConf $users_yet */
-            $users_yet = $this->getDoctrine()
-                ->getRepository('App:UserToConf')
-                ->findBy(['conferenceId' => $conf->getId()]);
-            $uc = count($users_yet);
+            $conf = $this->getDoctrine()->getRepository('App:Conference')->findOneBy(['year' => date("Y")]);
 
             // Получаем разрешенные даты регистрации
             $reg_start = $conf->getRegistrationStart();
@@ -71,18 +42,8 @@ class RegistrationController extends AbstractController
 
             $now = date('Y-m-d H:i:s');
 
-            // Проверяем, есть ли такой менеджер
-            /** @var ManagerGroup $managers */
-            $manager = $this->getDoctrine()
-                ->getRepository('App:ManagerGroup')
-                ->findOneBy(array('hash' => $man_hash));
-            if($manager != null){
-                $isset_manager = true;
-                $man_id = $manager->getId();
-            }
-
             // Проверяем, открыта ли регистрация или пользователь регистрируется по ссылке менеджера
-            if(($reg_start->format('Y-m-d H:i:s') <= $now && $reg_finish->format('Y-m-d H:i:s') >= $now || ($man_hash != null && $isset_manager)) /*&& $uc < 559*/ ) {
+            if (($reg_start->format('Y-m-d H:i:s') <= $now && $reg_finish->format('Y-m-d H:i:s') >= $now)) {
 
                 /** @var Organization $org */
                 $org = new Organization();
@@ -262,10 +223,10 @@ class RegistrationController extends AbstractController
                     'manager' => $man_id,
                 ));
             }
-            return $this->render('frontend/registration/registration_closed.html.twig', array(
 
+            return $this->render('frontend/registration/registration_closed.html.twig', [
                 'conf' => $conf,
-            ));
+            ]);
         }
     }
 
