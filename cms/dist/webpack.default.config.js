@@ -1,4 +1,3 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: './src/index.jsx',
@@ -17,9 +16,5 @@ module.exports = {
         modules: ['node_modules', 'src'],
         extensions: ['.js', '.jsx']
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: './dist/index.template.html'
-        })
-    ]
+    plugins: []
 };
