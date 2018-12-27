@@ -7,7 +7,8 @@ module.exports = {
                 test: /\.(js|jsx)$/,
                 loader: 'babel-loader',
                 options: {
-                    presets: ['@babel/react', '@babel/env']
+                    presets: ['@babel/react', '@babel/env'],
+                    plugins: ['@babel/plugin-proposal-class-properties']
                 }
             }
         ]

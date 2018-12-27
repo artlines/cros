@@ -7,6 +7,7 @@ module.exports = {
     ...defaultConfig,
 
     mode: 'development',
+    devtool: 'eval-source-map',
     output: {
         path: path.resolve(__dirname),
         filename: 'bundle.min.js',

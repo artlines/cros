@@ -5,18 +5,21 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --config ./dist/webpack.dev.config.js",
-    "build": "webpack --config ./dist/webpack.prod.config.js"
+    "build": "webpack --config ./dist/webpack.prod.config.js",
+    "eslint": "eslint --ext .jsx --ext .js src/"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.2.3",
     "@babel/polyfill": "^7.2.5",
     "@babel/preset-env": "^7.2.3",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.4",
     "css-loader": "^2.1.0",
     "eslint": "^5.11.1",
+    "eslint-plugin-react": "^7.11.1",
     "html-webpack-plugin": "^3.2.0",
     "react-hot-loader": "^4.6.3",
     "style-loader": "^0.23.1",
@@ -26,7 +29,9 @@
   },
   "dependencies": {
     "@material-ui/core": "^3.7.1",
+    "@material-ui/icons": "^3.0.1",
     "axios": "^0.18.0",
+    "prop-types": "^15.6.2",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-router": "^4.3.1"
