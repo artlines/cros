@@ -2,6 +2,7 @@ import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Sidebar from 'components/common/Sidebar';
 import Header from 'components/common/Header';
+import Routes from "./Routes";
 
 class App extends React.Component {
     constructor(props) {
@@ -13,7 +14,6 @@ class App extends React.Component {
     }
 
     toggleSidebar = () => {
-        console.log(`handleToggleSidebar`);
         this.setState({sidebarOpen: !this.state.sidebarOpen});
     };
 
@@ -23,6 +23,8 @@ class App extends React.Component {
                 <CssBaseline/>
                 <Header handleClickMenu={this.toggleSidebar}/>
                 <Sidebar open={this.state.sidebarOpen} onClose={this.toggleSidebar}/>
+
+                <Routes/>
             </div>
         );
     }

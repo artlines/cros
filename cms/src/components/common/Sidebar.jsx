@@ -1,29 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/Inbox';
-import MailIcon from '@material-ui/icons/Mail';
+import routes from '../../config/routes';
+import map from 'lodash/map';
+import filter from 'lodash/filter';
 
 class Sidebar extends React.PureComponent {
 
     render() {
         const { open, onClose } = this.props;
 
-        console.log(this.props);
-
         return (
             <Drawer open={open} onClose={onClose}>
                 <List>
-                    {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                        <ListItem button key={text}>
-                            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
+                    {map(filter(routes, r => r.menuItem), (route, i) =>
+                        <Link
+                            key={i}
+                            to={route.path}
+                            style={{ textDecoration: 'none', color: 'inherit' }}
+                            onClick={onClose}
+                        >
+                            <ListItem button>
+                                <ListItemIcon><route.menuItem.Icon/></ListItemIcon>
+                                <ListItemText primary={route.menuItem.title} />
+                            </ListItem>
+                        </Link>
+                    )}
                 </List>
             </Drawer>
         );
