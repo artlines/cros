@@ -8,14 +8,15 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/Inbox';
 import MailIcon from '@material-ui/icons/Mail';
 
-class Sidebar extends React.Component {
-    constructor(props) {
-        super(props)
-    }
+class Sidebar extends React.PureComponent {
 
     render() {
+        const { open, onClose } = this.props;
+
+        console.log(this.props);
+
         return (
-            <Drawer open={this.state.sidebarOpen} onClose={this.toggleSidebar}>
+            <Drawer open={open} onClose={onClose}>
                 <List>
                     {['All mail', 'Trash', 'Spam'].map((text, index) => (
                         <ListItem button key={text}>
