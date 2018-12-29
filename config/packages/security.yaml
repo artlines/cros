@@ -24,18 +24,15 @@ security:
 
         default:
             anonymous: ~
-            form_login:
-                login_path: homepage
-                check_path: login
-                use_referer: true
-                require_previous_session: false
             logout:
                 path: logout
                 target: homepage
             provider: chain_provider
             guard:
                 authenticators:
+                    - App\Security\LoginFormAuthenticator
                     - App\Security\GoogleAuthenticator
+                entry_point: App\Security\LoginFormAuthenticator
 
     ###
     # Fresh roles
