@@ -1,12 +1,12 @@
 import {applyMiddleware, createStore, compose, combineReducers} from "redux";
 import reduxThunk from "redux-thunk";
-import session from './session';
+import system from './system';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
     combineReducers({
-        session,
+        system,
     }),
     composeEnhancers(
         applyMiddleware(reduxThunk),
