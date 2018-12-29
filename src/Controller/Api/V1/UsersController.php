@@ -1,15 +1,27 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: alf1kk
- * Date: 29.12.18
- * Time: 9:06
- */
 
 namespace App\Controller\Api\V1;
 
+use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
-class UsersController
+/**
+ * Class UsersController
+ * @package App\Controller\Api\V1
+ *
+ * @Route("/api/v1/users", name="api_v1__users_")
+ */
+class UsersController extends ApiController
 {
-
+    /**
+     * @Route("/me", name="me", methods={"GET"})
+     * @IsGranted('ROLE_CMS_USER')
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function me()
+    {
+        return $this->success([]);
+    }
 }

@@ -2,8 +2,6 @@
 # http://symfony.com/doc/current/security.html
 security:
     encoders:
-        App\Old\Entity\Organization:
-            algorithm: bcrypt
         App\Old\Entity\User:
             algorithm: bcrypt
 
@@ -11,11 +9,9 @@ security:
     providers:
         chain_provider:
           chain:
-            providers: [org_db, user_db]
+            providers: [user_db]
         in_memory:
             memory: ~
-        org_db:
-            entity: { class: App:Organization }
         user_db:
             entity: { class: App:User }
 
@@ -29,26 +25,49 @@ security:
         default:
             anonymous: ~
             form_login:
-                login_path: members
+                login_path: homepage
                 check_path: login
                 use_referer: true
                 require_previous_session: false
             logout:
                 path: logout
-                target: members
+                target: homepage
             provider: chain_provider
 
+    ###
+    # Fresh roles
+    #
+    # ROLE_CMS_USER         - access to CMS
+    # ROLE_SALES_MANAGER    - sales manager
+    # ROLE_SALES_HEAD       - head of sales manager
+    # ROLE_SETTLEMENT_ADMIN - settlement coordinator
+    # ROLE_CONTENT_MANAGER  - content manager
+    # ROLE_ADMINISTRATOR    - administrator
+    ###
+
     access_control:
+        # new roles
+        - { path: ^/api, roles: ROLE_CMS_USER }
+
         # require ROLE_ADMIN for /admin*
-        - { path: ^/admin/table, roles: ROLE_MANAGER }
-        - { path: ^/admin/org, roles: ROLE_MANAGER }
-        - { path: ^/admin, roles: ROLE_ADMIN }
+        #- { path: ^/admin/table, roles: ROLE_MANAGER }
+        #- { path: ^/admin/org, roles: ROLE_MANAGER }
+        #- { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/profile, roles: ROLE_ORG }
         - { path: ^/registration2, roles: ROLE_ORG}
         - { path: ^/registration3, roles: ROLE_ORG}
 
     role_hierarchy:
-        ROLE_ORG: ROLE_USER
-        #ROLE_MANAGER: ROLE_ORG
-        ROLE_ADMIN:   ROLE_MANAGER
-        ROLE_SUPER_ADMIN: ROLE_ADMIN
+        # new hierarchy
+        ROLE_SALES_MANAGER:     [ROLE_CRM_USER]
+        ROLE_SALES_HEAD:        [ROLE_CRM_USER]
+        ROLE_SETTLEMENT_ADMIN:  [ROLE_CRM_USER]
+        ROLE_CONTENT_MANAGER:   [ROLE_CRM_USER]
+        ROLE_ADMINISTRATOR:
+            - ROLE_CRM_USER
+            - ROLE_SALES_MANAGER
+            - ROLE_SALES_HEAD
+            - ROLE_SETTLEMENT_ADMIN
+            - ROLE_CONTENT_MANAGER
+
+        ROLE_ADMIN: ROLE_MANAGER
