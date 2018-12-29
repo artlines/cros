@@ -33,6 +33,9 @@ security:
                 path: logout
                 target: homepage
             provider: chain_provider
+            guard:
+                authenticators:
+                    - App\Security\GoogleAuthenticator
 
     ###
     # Fresh roles
@@ -59,12 +62,12 @@ security:
 
     role_hierarchy:
         # new hierarchy
-        ROLE_SALES_MANAGER:     [ROLE_CRM_USER]
-        ROLE_SALES_HEAD:        [ROLE_CRM_USER]
-        ROLE_SETTLEMENT_ADMIN:  [ROLE_CRM_USER]
-        ROLE_CONTENT_MANAGER:   [ROLE_CRM_USER]
+        ROLE_SALES_MANAGER:     [ROLE_CMS_USER]
+        ROLE_SALES_HEAD:        [ROLE_CMS_USER]
+        ROLE_SETTLEMENT_ADMIN:  [ROLE_CMS_USER]
+        ROLE_CONTENT_MANAGER:   [ROLE_CMS_USER]
         ROLE_ADMINISTRATOR:
-            - ROLE_CRM_USER
+            - ROLE_CMS_USER
             - ROLE_SALES_MANAGER
             - ROLE_SALES_HEAD
             - ROLE_SETTLEMENT_ADMIN

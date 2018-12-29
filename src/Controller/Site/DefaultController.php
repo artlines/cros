@@ -133,4 +133,15 @@ class DefaultController extends AbstractController
     {
         return $this->render('frontend/price/show.html.twig');
     }
+    /**
+     * @Route("/privacy", name="privacy")
+     */
+    public function privacy()
+    {
+        $content = file_get_contents('https://shop.nag.ru/policies/privacy');
+
+        return $this->render('security/privacy.html.twig', array(
+            'content' => $content,
+        ));
+    }
 }

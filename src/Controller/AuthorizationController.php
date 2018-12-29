@@ -1,24 +1,16 @@
 <?php
 namespace App\Controller;
 
+use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
+use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class SecurityController extends AbstractController
+class AuthorizationController extends AbstractController
 {
-    /**
-     * @Route("/privacy", name="privacy")
-     */
-    public function privacy()
-    {
-        $content = file_get_contents('https://shop.nag.ru/policies/privacy');
-
-        return $this->render('security/privacy.html.twig', array(
-            'content' => $content,
-        ));
-    }
 
     /**
      * @Route("/login", name="login")
@@ -45,12 +37,29 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/auth", name="auth")
+     * @Route("/auth", name="google_auth")
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     *
+     * @param ClientRegistry $clientRegistry
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function auth(ClientRegistry $clientRegistry)
+    {
+        return $clientRegistry
+            ->getClient('google_nag')
+            ->redirect([
+                'email',
+            ]);
+    }
+
+    /**
+     * @Route("/auth/callback", name="google_auth_callback")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      */
-    public function auth()
+    public function authCallback()
     {
-        return $this->render();
+
     }
 }
