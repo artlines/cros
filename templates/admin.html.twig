@@ -25,7 +25,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{% if is_granted('ROLE_ADMIN') %}{{ url('admin-history') }}{% else %}{{ url('admin-table') }}{% endif %}">КРОС</a> <a class="navbar-brand" href="{{ url('members') }}">на сайт</a>
+            <a class="navbar-brand" href="{% if is_granted('ROLE_ADMIN') %}{{ path('admin-history') }}{% else %}{{ path('admin-table') }}{% endif %}">КРОС</a> <a class="navbar-brand" href="{{ path('members') }}">на сайт</a>
         </div>
         <ul class="nav navbar-top-links navbar-right">
             {#<li class="dropdown">#}
@@ -35,7 +35,7 @@
                 {#<ul class="dropdown-menu dropdown-messages">#}
                     {#{{ render(controller('App\\Controller\\AdminLogsController:events')) }}#}
                     {#<li>#}
-                        {#<a class="text-center" href="{{ url('admin-show-logs') }}">#}
+                        {#<a class="text-center" href="{{ path('admin-show-logs') }}">#}
                             {#<strong>Показать все события</strong>#}
                             {#<i class="fa fa-angle-right"></i>#}
                         {#</a>#}
@@ -43,7 +43,7 @@
                 {#</ul>#}
             {#</li>#}
             <li>
-                <a href="{{ url('logout') }}"><i class="fa fa-sign-out fa-fw"></i> Выйти</a>
+                <a href="{{ path('logout') }}"><i class="fa fa-sign-out fa-fw"></i> Выйти</a>
             </li>
         </ul>
         <div class="navbar-default sidebar" role="navigation">
@@ -51,7 +51,7 @@
                 <ul class="nav" id="side-menu">
                     {% if is_granted('ROLE_ADMIN') %}
                     <li>
-                        <a href="{{ url('admin-history') }}"><i class="fa fa-dashboard fa-fw"></i> Архив</a>
+                        <a href="{{ path('admin-history') }}"><i class="fa fa-dashboard fa-fw"></i> Архив</a>
                     </li>
                     <li>
                         <a href="#"><i class="fa fa-file-text-o fa-fw"></i> Текстовые страницы<span class="fa arrow"></span></a>
@@ -66,10 +66,10 @@
                         <a href="#"><i class="fa fa-support fa-fw"></i> FAQ<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="{{ url('admin-faq') }}"><i class="fa fa-question fa-fw"></i> Вопросы и ответы</a>
+                                <a href="{{ path('admin-faq') }}"><i class="fa fa-question fa-fw"></i> Вопросы и ответы</a>
                             </li>
                             <li>
-                                <a href="{{ url('admin-faq-text') }}"><i class="fa fa-file-text-o fa-fw"></i> Дополнительный текст</a>
+                                <a href="{{ path('admin-faq-text') }}"><i class="fa fa-file-text-o fa-fw"></i> Дополнительный текст</a>
                             </li>
                         </ul>
                     </li>
@@ -77,15 +77,15 @@
                         <a href="#"><i class="fa fa-users fa-fw"></i> Участники<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                               <a href="{{ url('admin-managers') }}"><i class="fa fa-user-secret fa-fw"></i> Менеджеры</a>
+                               <a href="{{ path('admin-managers') }}"><i class="fa fa-user-secret fa-fw"></i> Менеджеры</a>
                             </li>
                             <li>
-                                <a href="{{ url('admin-speakers') }}"><i class="fa fa-wechat fa-fw"></i> Докладчики</a>
+                                <a href="{{ path('admin-speakers') }}"><i class="fa fa-wechat fa-fw"></i> Докладчики</a>
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <a href="{{ url('admin-badges') }}"><i class="fa fa-tag fa-fw"></i> Бейджи</a>
+                        <a href="{{ path('admin-badges') }}"><i class="fa fa-tag fa-fw"></i> Бейджи</a>
                     </li>
                     {% endif %}
                     <li>
@@ -94,15 +94,15 @@
                     </li>
                     {% if is_granted('ROLE_ADMIN') %}
                     <li>
-                        <a href="{{ url('downloads') }}"><i class="fa fa-download fa-fw"></i> Загрузки</a>
+                        <a href="{{ path('downloads') }}"><i class="fa fa-download fa-fw"></i> Загрузки</a>
                     </li>
                     <li>
-                        <a href="{{ url('admin-lectures') }}"><i class="fa fa-paragraph fa-fw"></i> Расписание докладов</a>
+                        <a href="{{ path('admin-lectures') }}"><i class="fa fa-paragraph fa-fw"></i> Расписание докладов</a>
                     </li>
                     {% endif %}
                     {% if is_granted('ROLE_SUPER_ADMIN') %}
                         <li>
-                            <a href="{{ url('admin-registered') }}"><i class="fa fa-list-alt fa-fw"></i>Пользователи</a>
+                            <a href="{{ path('admin-registered') }}"><i class="fa fa-list-alt fa-fw"></i>Пользователи</a>
                         </li>
                     {% endif %}
                 </ul>

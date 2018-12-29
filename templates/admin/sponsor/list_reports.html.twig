@@ -131,7 +131,7 @@
             if(find_str.length > 3) {
 
                 $.ajax({
-                    url: "{{ url('admin-speaker-find') }}",
+                    url: "{{ path('admin-speaker-find') }}",
                     type: "post",
                     method: "post",
                     data: {find: find_str},
@@ -165,7 +165,7 @@
             $('.add_speaker').on('click', function () {
                 var add_id = $(this).attr('data-userid');
                 $.ajax({
-                    url: "{{ url('admin-speaker-new') }}",
+                    url: "{{ path('admin-speaker-new') }}",
                     type: "post",
                     method: "post",
                     data: {add_id: add_id},

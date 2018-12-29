@@ -16,7 +16,7 @@
             </style>
             <div><span class="bg-danger text-white">{{ error.messageKey|trans(error.messageData, 'security') }}</span></div>
         {% endif %}
-            <form action="{{ url('login') }}" method="POST">
+            <form action="{{ path('login') }}" method="POST">
                 <div class="form-group ">
                     <input id="email-login" name="_username"{% if last_username %} value="{{ last_username }}"{% endif %} class="form-control cs-font-size-12 cs-theme-color-gray-dark-v3 cs-placeholder-inherit rounded-0 cs-pa-10 w-100" name="email-login" type="email" placeholder="Email">
                 </div>

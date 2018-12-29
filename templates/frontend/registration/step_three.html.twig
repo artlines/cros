@@ -8,7 +8,7 @@
 
 {% block body %}
     <h2>Шаг 3 - проверьте информацию</h2>
-    <h3>{{ org.name }} <a href="{{ url('profile') }}" class="btn btn-default"><i class="glyphicon glyphicon-pencil"></i> Редактировать данные компании</a></h3>
+    <h3>{{ org.name }} <a href="{{ path('profile') }}" class="btn btn-default"><i class="glyphicon glyphicon-pencil"></i> Редактировать данные компании</a></h3>
     Город: {{ org.city }}<br>
     Телефон: {{ org.username }}<br>
     E-mail: {{ org.email }}<br>
@@ -19,7 +19,7 @@
     Комментарий: {{ org.comment }}<br>
     {#{% if org.manager != null %}: {{ org. }}<br>{% endif %}#}
 
-    <h3>Участники {% if useryet < 500 %}<a href="{{ url('registration-2') }}" class="btn btn-success" title="Добавить участника"><i class="glyphicon glyphicon-plus"></i>Добавить</a>{% endif %}</h3>
+    <h3>Участники {% if useryet < 500 %}<a href="{{ path('registration-2') }}" class="btn btn-success" title="Добавить участника"><i class="glyphicon glyphicon-plus"></i>Добавить</a>{% endif %}</h3>
     {% if useryet < 500 %}{% else %}<span class="text-info">Все места забронированы, но при снятии брони вовремя не оплаченных номеров, места могут освободиться и у Вас появится возможность зарегистрировать участников.</span>{% endif %}
     <table class="table">
         <thead>
@@ -53,7 +53,7 @@
         {% endfor %}
         </tbody>
     </table>
-    <a href="{{ url('registration-finish') }}" class="btn btn-success"><i class="glyphicon glyphicon-check"></i> Завершить регистрацию</a>
+    <a href="{{ path('registration-finish') }}" class="btn btn-success"><i class="glyphicon glyphicon-check"></i> Завершить регистрацию</a>
 {% endblock %}
 
 {% block javascripts %}

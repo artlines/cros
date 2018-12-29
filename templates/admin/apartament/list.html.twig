@@ -5,7 +5,7 @@
                 <h1 class="page-header">Номера {% if result %}<small class="bg-{{ result.status }}">{{ result.text }}</small>{% endif %}</h1>
             </div>
         </div>
-        <a href="{{ url('admin-apartament-text') }}" class="btn btn-default">Редактировать дополнительный текст</a>
+        <a href="{{ path('admin-apartament-text') }}" class="btn btn-default">Редактировать дополнительный текст</a>
         <div class="row">
             <div class="col-lg-12">
                 {% if apartaments is empty %}

@@ -1012,7 +1012,7 @@
             $(".bg_load").fadeIn("slow");
             $(".wrapper").fadeIn("slow");
             $.ajax({
-                url: "{{ url('save-flat-to-corpuses') }}",
+                url: "{{ path('save-flat-to-corpuses') }}",
                 type: "post",
                 method: "post",
                 data: {save: JSON.stringify(save)},

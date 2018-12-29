@@ -3,15 +3,15 @@
 {% else %}{{ app.user.name }}
 {% endif %}!<br>
 
-<a href="{{ url('logout') }}"><i class="glyphicon glyphicon-log-out"></i> Выйти</a>
+<a href="{{ path('logout') }}"><i class="glyphicon glyphicon-log-out"></i> Выйти</a>
 
-{% if is_granted('ROLE_ADMIN') %}<a href="{{ url('admin-history') }}"><i class="glyphicon glyphicon-log-in"></i> CMS</a>
+{% if is_granted('ROLE_ADMIN') %}<a href="{{ path('admin-history') }}"><i class="glyphicon glyphicon-log-in"></i> CMS</a>
 {% else %}
-    {% if is_granted('ROLE_MANAGER') %}<a href="{{ url('admin-table') }}"><i class="glyphicon glyphicon-log-in"></i> CMS</a>
+    {% if is_granted('ROLE_MANAGER') %}<a href="{{ path('admin-table') }}"><i class="glyphicon glyphicon-log-in"></i> CMS</a>
     {% endif %}
 {% endif %}
 
 
 
-{% if is_granted('ROLE_ORG') %}<a href="{{ url('registration-3') }}"><i class="glyphicon glyphicon-user"></i> Личный кабинет</a>
+{% if is_granted('ROLE_ORG') %}<a href="{{ path('registration-3') }}"><i class="glyphicon glyphicon-user"></i> Личный кабинет</a>
 {% endif %}

@@ -288,7 +288,7 @@
             $(".bg_load").fadeIn("slow");
             $(".wrapper").fadeIn("slow");
             $.ajax({
-                url: "{{ url('admin-generate-badges') }}",
+                url: "{{ path('admin-generate-badges') }}",
                 type: "post",
                 method: "post",
                 data: {w: $('#image_width').val(), h: $('#image_height').val(), pt: $('#padding-top').val(), pb: $('#padding-bottom').val(), pl: $('#padding-left').val(), pr: $('#padding-right').val() },
@@ -310,7 +310,7 @@
             $(".bg_load").fadeIn("slow");
             $(".wrapper").fadeIn("slow");
             $.ajax({
-                url: "{{ url('admin-generate-badges') }}",
+                url: "{{ path('admin-generate-badges') }}",
                 type: "post",
                 method: "post",
                 data: {man: true, type: bt, last_name: ln, first_name: fn, middle_name: mn, post: po, organization: or, city: ci, nickname: nn},
@@ -360,7 +360,7 @@
             if($s.val().length > 3){
                 var search = $s.val();
                 $.ajax({
-                    url: "{{ url('admin-badges-find') }}",
+                    url: "{{ path('admin-badges-find') }}",
                     type: "post",
                     method: "post",
                     data: {search: search},

@@ -360,7 +360,7 @@
             $(".bg_load").fadeIn("slow");
             $(".wrapper").fadeIn("slow");
             $.ajax({
-                url: "{{ url('save_user_to_apart') }}",
+                url: "{{ path('save_user_to_apart') }}",
                 type: "post",
                 method: "post",
                 data: {save: save},

@@ -388,7 +388,7 @@
             $(".bg_load").fadeIn("slow");
             $(".wrapper").fadeIn("slow");
             $.ajax({
-                url: "{{ url('save-apart-to-classes') }}",
+                url: "{{ path('save-apart-to-classes') }}",
                 type: "post",
                 method: "post",
                 data: {save: JSON.stringify(save)},
@@ -410,7 +410,7 @@
             var id = $(this).attr('data-number');
             var real_id = $('#num_id_' + id).val();
             $.ajax({
-                url: "{{ url('admin-set-number') }}",
+                url: "{{ path('admin-set-number') }}",
                 type: "post",
                 method: "post",
                 data: {id: id, real_id: real_id},
@@ -426,7 +426,7 @@
             var flat_id = $keybtn.attr('data-flatid');
             var finished = $keybtn.attr('data-finished') == 1 ? 0 : 1;
             $.ajax({
-                url: "{{ url('admin-class-block') }}",
+                url: "{{ path('admin-class-block') }}",
                 type: "post",
                 method: "post",
                 data: {flat: flat_id, finished: finished},

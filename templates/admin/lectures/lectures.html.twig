@@ -57,7 +57,7 @@ asdasdasd
             $('#refreshLectures').attr("disabled", true);
             $.ajax({
                 dataType: 'json',
-                url: '{{ url('admin-lectures-refresh') }}',
+                url: '{{ path('admin-lectures-refresh') }}',
                 type: 'ajax'
             }).done(function(data) {
                 if (data.code == 'NO_PARAMETERS') {
@@ -104,7 +104,7 @@ asdasdasd
             authKey = $('#googleAuthModal input[name="authKey"]').val();
             $.ajax({
                 dataType: 'json',
-                url: '{{ url('admin-lectures-refresh') }}',
+                url: '{{ path('admin-lectures-refresh') }}',
                 type: 'post',
                 data: {
                     authKey: authKey

@@ -293,7 +293,7 @@
                 var data_comment = $(this).prev('br').prev('textarea').val();
                 var id = $(this).attr('data-orgid');
                 $.ajax({
-                    url: "{{ url('admin-save-comment') }}",
+                    url: "{{ path('admin-save-comment') }}",
                     type: "post",
                     method: "post",
                     data: {data: data_comment, id: id},
@@ -309,7 +309,7 @@
                     var mem_id = $(this).attr('data-rmmemid');
                     $(this).html('Подождите...');
                     $.ajax({
-                        url: '{{ url('admin-table-remove-user') }}/' + mem_id,
+                        url: '{{ path('admin-table-remove-user') }}/' + mem_id,
                         type: "post",
                         method: "post",
                         success: function (data) {
@@ -340,7 +340,7 @@
             $('.open_invoice_management').on('click', function () {
                 var url = $(this).attr('data-orgid');
                 $.ajax({
-                    url: '{{ url('admin-org-manage') }}/' + url,
+                    url: '{{ path('admin-org-manage') }}/' + url,
                     type: "post",
                     method: "post",
                     success: function (html) {

@@ -44,7 +44,7 @@
                 <nav class="navbar navbar-expand-lg cs-py-0 cs-font-weight-300">
                     <div class="container">
                         <!-- Logo -->
-                        <a href="{{ url('homepage') }}" class="navbar-brand u-header__logo">
+                        <a href="{{ path('homepage') }}" class="navbar-brand u-header__logo">
                             <img class="u-header__logo-img u-header__logo-img--main d-block cs-width-80x" src="{{ asset('assets/cros2/img/logo-dark.png') }}" alt="CROS-2.0-18 Logo"
                                  data-header-fix-moment-exclude="d-block"
                                  data-header-fix-moment-classes="d-none">
@@ -59,20 +59,20 @@
                         <div class="d-flex align-items-center d-lg-none">
                             {% if is_granted('ROLE_ORG') %}
                                 <div class="login-v1">
-                                    <a href="{{ url('registration-3') }}" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+                                    <a href="{{ path('registration-3') }}" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
                                         &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;ЛИЧНЫЙ КАБИНЕТ&nbsp;
                                     </a>
                                 </div>
                             {% endif %}
                             {% if is_granted('ROLE_ADMIN') %}
                                 <div class="login-v1">
-                                    <a href="{{ url('admin-history') }}" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+                                    <a href="{{ path('admin-history') }}" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
                                         &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;CMS&nbsp;
                                     </a>
                                 </div>
                             {% elseif is_granted('ROLE_MANAGER') %}
                                 <div class="login-v1">
-                                    <a href="{{ url('admin-table') }}" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+                                    <a href="{{ path('admin-table') }}" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
                                         &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;CMS&nbsp;
                                     </a>
                                 </div>
@@ -94,7 +94,7 @@
                                     }
                                 </style>
                                 <div class="logout-btn">
-                                    <a title="Выход" href="{{ url('logout') }}" class="cs-py-5 cs-font-size-14 cs-font-weight-700">
+                                    <a title="Выход" href="{{ path('logout') }}" class="cs-py-5 cs-font-size-14 cs-font-weight-700">
                                         &nbsp;<i class="fa fa-sign-out"></i>
                                     </a>
                                 </div>
@@ -105,7 +105,7 @@
                         <div class="sub-menu collapse navbar-collapse align-items-center flex-sm-row" id="navBar">
                             <ul id="js-scroll-nav" class="u-main-nav-v1 navbar-nav text-uppercase cs-font-weight-700 cs-font-size-11 cs-pt-20 cs-pt-0--lg ml-auto mr-lg-3">
                                 <li class="nav-item cs-mr-15--lg cs-mb-7 cs-mb-0--lg d-lg-none d-xl-block">
-                                    <a href="{{ url('homepage') }}" class="nav-link cs-py-5">Главная</a>
+                                    <a href="{{ path('homepage') }}" class="nav-link cs-py-5">Главная</a>
                                 </li>
                                 <li class="nav-item cs-has-sub-menu cs-mx-20--lg">
                                     <a href="#" class="nav-link cs-py-5" id="nav-link-1"
@@ -132,17 +132,17 @@
                                     <!-- Submenu -->
                                     <ul class="cs-sub-menu list-unstyled cs-mt-20 cs-mt-10--lcs--scrolling u-shadow-v18 cs-font-weight-700 cs-font-size-12" id="nav-submenu-1"
                                         aria-labelledby="nav-link-2">
-                                        {#<li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('members') }}">Участники</a></li>#}
-                                        <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('price') }}">Стоимость участия</a></li>
-                                        <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ url('registration') }}">Регистрация</a></li>
+                                        {#<li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('members') }}">Участники</a></li>#}
+                                        <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('price') }}">Стоимость участия</a></li>
+                                        <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('registration') }}">Регистрация</a></li>
                                         <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('program') }}">Программа</a></li>
                                     </ul>
                                     <!-- End Submenu -->
                                 <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
-                                    <a href="{{ url('faq') }}" class="nav-link cs-py-5">FAQ</a>
+                                    <a href="{{ path('faq') }}" class="nav-link cs-py-5">FAQ</a>
                                 </li>
                                 <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
-                                    <a href="{{ url('archive') }}" class="nav-link cs-py-5">Архив</a>
+                                    <a href="{{ path('archive') }}" class="nav-link cs-py-5">Архив</a>
                                 </li>
                                 </li>
                             </ul>
@@ -154,20 +154,20 @@
                             {% endif %}
                             {% if is_granted('ROLE_ORG') %}
                                 <div class="login-v1">
-                                    <a href="{{ url('registration-3') }}" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+                                    <a href="{{ path('registration-3') }}" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
                                         &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;ЛИЧНЫЙ КАБИНЕТ&nbsp;
                                     </a>
                                 </div>
                             {% endif %}
                             {% if is_granted('ROLE_ADMIN') %}
                                 <div class="login-v1">
-                                    <a href="{{ url('admin-history') }}" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+                                    <a href="{{ path('admin-history') }}" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
                                         &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;CMS&nbsp;
                                     </a>
                                 </div>
                             {% elseif is_granted('ROLE_MANAGER') %}
                                 <div class="login-v1">
-                                    <a href="{{ url('admin-table') }}" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+                                    <a href="{{ path('admin-table') }}" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
                                         &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;CMS&nbsp;
                                     </a>
                                 </div>
@@ -189,7 +189,7 @@
                                     }
                                 </style>
                                 <div class="logout-btn">
-                                    <a title="Выход" href="{{ url('logout') }}" class="cs-py-5 cs-font-size-14 cs-font-weight-700">
+                                    <a title="Выход" href="{{ path('logout') }}" class="cs-py-5 cs-font-size-14 cs-font-weight-700">
                                         &nbsp;<i class="fa fa-sign-out"></i>
                                     </a>
                                 </div>
@@ -227,13 +227,13 @@
                     <!--
                     <div class="d-block cs-color-white-opacity-0_8 cs-font-size-16 mb-4"><strong>Пример внутренней страницы</strong> - <br /> <span>Информация для участников</span></div>
                     -->
-                    <a class="btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ url('program') }}" id="TitleBotton">Программа КРОС</a>
+                    <a class="btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ path('program') }}" id="TitleBotton">Программа КРОС</a>
                 </div>
                 <div class="col-md-6 text-right align-middle">
                     <div class="text-right" style="max-width: 360px;margin-left: auto;">
                         {{ render(controller('App\\Controller\\Site\\DefaultController:countdown')) }}
                     </div>
-                    <a class="btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ url('registration') }}">Принять участие</a>
+                    <a class="btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ path('registration') }}">Принять участие</a>
                     <a class="btn u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ path('info', {'alias': 'become-speaker'}) }}">Стать докладчиком</a>
                     <a class="btn u-btn-yellow cs-color-white cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ path('info', {'alias': 'become-sponsor'}) }}">Стать спонсором</a>
                 </div>
