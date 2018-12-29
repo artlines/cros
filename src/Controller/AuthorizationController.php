@@ -2,9 +2,7 @@
 namespace App\Controller;
 
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
-use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -14,8 +12,10 @@ class AuthorizationController extends AbstractController
 
     /**
      * @Route("/login", name="login")
+     *
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param AuthenticationUtils $authenticationUtils
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function login(AuthorizationCheckerInterface $authorizationChecker, AuthenticationUtils $authenticationUtils)
@@ -46,11 +46,7 @@ class AuthorizationController extends AbstractController
      */
     public function auth(ClientRegistry $clientRegistry)
     {
-        return $clientRegistry
-            ->getClient('google_nag')
-            ->redirect([
-                'email',
-            ]);
+        return $clientRegistry->getClient('google_nag')->redirect(['email']);
     }
 
     /**
@@ -60,6 +56,5 @@ class AuthorizationController extends AbstractController
      */
     public function authCallback()
     {
-
     }
 }
