@@ -15,7 +15,7 @@ class UsersController extends ApiController
 {
     /**
      * @Route("/me", name="me", methods={"GET"})
-     * @IsGranted('ROLE_CMS_USER')
+     * @IsGranted("ROLE_CMS_USER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @return \Symfony\Component\HttpFoundation\JsonResponse

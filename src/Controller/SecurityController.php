@@ -43,4 +43,14 @@ class SecurityController extends AbstractController
             ));
         }
     }
+
+    /**
+     * @Route("/auth", name="auth")
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     */
+    public function auth()
+    {
+        return $this->render();
+    }
 }
