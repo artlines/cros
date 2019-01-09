@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Route, Switch} from 'react-router-dom';
 import routes from 'config/routes';
 
-class Routes extends React.PureComponent {
+class Routes extends React.Component {
 
     render() {
         const { roles } = this.props;

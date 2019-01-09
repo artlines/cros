@@ -1,5 +1,5 @@
 import Home from '../pages/Home';
-import Adobe from '../pages/Adobe';
+import Adobe from '../pages/Adobe/index';
 import NotFound from '../pages/NotFound';
 import RoomServiceIcon from '@material-ui/icons/RoomService';
 
@@ -20,6 +20,17 @@ export default [
             title: 'Расселение',
         },
         role: 'ROLE_SETTLEMENT_MANAGER',
+    },
+    {
+        path: '/cms/users',
+        component: Adobe,
+        exact: true,
+        title: 'Пользователи',
+        menuItem: {
+            Icon: RoomServiceIcon,
+            title: 'Пользователи',
+        },
+        role: 'ROLE_ADMINISTRATOR',
     },
     {
         path: '*',
