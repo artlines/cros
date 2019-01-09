@@ -8,7 +8,7 @@ export default [
         path: '/cms',
         component: Home,
         exact: true,
-        title: '',
+        title: 'Главная',
     },
     {
         path: '/cms/adobe',
@@ -18,7 +18,8 @@ export default [
         menuItem: {
             Icon: RoomServiceIcon,
             title: 'Расселение',
-        }
+        },
+        role: 'ROLE_SETTLEMENT_MANAGER',
     },
     {
         path: '*',

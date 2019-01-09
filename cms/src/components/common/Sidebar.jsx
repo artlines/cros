@@ -13,24 +13,31 @@ import filter from 'lodash/filter';
 class Sidebar extends React.PureComponent {
 
     render() {
-        const { open, onClose } = this.props;
+        const { open, onClose, roles } = this.props;
 
         return (
             <Drawer open={open} onClose={onClose}>
                 <List>
-                    {map(filter(routes, r => r.menuItem), (route, i) =>
-                        <Link
-                            key={i}
-                            to={route.path}
-                            style={{ textDecoration: 'none', color: 'inherit' }}
-                            onClick={onClose}
-                        >
-                            <ListItem button>
-                                <ListItemIcon><route.menuItem.Icon/></ListItemIcon>
-                                <ListItemText primary={route.menuItem.title} />
-                            </ListItem>
-                        </Link>
-                    )}
+                    {map(filter(routes, r => r.menuItem), (route, i) => {
+
+                        if (route.role && !roles.includes(route.role)) {
+                            return null;
+                        }
+
+                        return (
+                            <Link
+                                key={i}
+                                to={route.path}
+                                style={{ textDecoration: 'none', color: 'inherit' }}
+                                onClick={onClose}
+                            >
+                                <ListItem button>
+                                    <ListItemIcon><route.menuItem.Icon/></ListItemIcon>
+                                    <ListItemText primary={route.menuItem.title} />
+                                </ListItem>
+                            </Link>
+                        );
+                    })}
                 </List>
             </Drawer>
         );
@@ -46,6 +53,10 @@ Sidebar.propTypes = {
      * Handler to close sidebar
      */
     onClose: PropTypes.func.isRequired,
+    /**
+     * Defined user roles to prevent render not accessed route
+     */
+    roles: PropTypes.array.isRequired,
 };
 
 Sidebar.defaultProps = {

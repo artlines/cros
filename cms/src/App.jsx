@@ -24,15 +24,19 @@ class App extends React.Component {
     };
 
     render() {
-        const { user: {error, isFetching, id} } = this.props;
+        const { user: {error, isFetching, id, roles} } = this.props;
 
         if (!error && !isFetching && id) {
             return (
                 <div>
                     <CssBaseline/>
                     <Header handleClickMenu={this.toggleSidebar}/>
-                    <Sidebar open={this.state.sidebarOpen} onClose={this.toggleSidebar}/>
-                    <Routes/>
+                    <Sidebar
+                        open={this.state.sidebarOpen}
+                        onClose={this.toggleSidebar}
+                        roles={roles}
+                    />
+                    <Routes roles={roles}/>
                 </div>
             );
         }

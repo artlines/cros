@@ -1,18 +1,40 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Route, Switch} from 'react-router-dom';
 import routes from 'config/routes';
 
-const Routes = () => (
-    <Switch>
-        {routes.map((route, i) =>
-            <Route
-                key={i}
-                path={route.path}
-                component={route.component || null}
-                exact={route.exact || false}
-            />
-        )}
-    </Switch>
-);
+class Routes extends React.PureComponent {
+
+    render() {
+        const { roles } = this.props;
+
+        return (
+            <Switch>
+                {routes.map((route, i) => {
+
+                    if (route.role && !roles.includes(route.role)) {
+                        return null;
+                    }
+
+                    return (
+                        <Route
+                            key={i}
+                            path={route.path}
+                            component={route.component || null}
+                            exact={route.exact || false}
+                        />
+                    );
+                })}
+            </Switch>
+        );
+    }
+}
+
+Routes.propTypes = {
+    /**
+     * Defined user roles to prevent render not accessed route
+     */
+    roles: PropTypes.array.isRequired,
+};
 
 export default Routes;
