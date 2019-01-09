@@ -5,11 +5,13 @@ namespace App\Security;
 use App\Entity\Participating\User;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
+use KnpU\OAuth2ClientBundle\Client\Provider\GoogleClient;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
 use League\OAuth2\Client\Provider\GoogleUser;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -22,15 +24,23 @@ class GoogleAuthenticator extends SocialAuthenticator
     /** @var EntityManagerInterface */
     protected $em;
 
+    /** @var UrlGeneratorInterface */
+    protected $router;
+
     /**
      * GoogleAuthenticator constructor.
      * @param ClientRegistry $clientRegistry
      * @param EntityManagerInterface $entityManager
+     * @param UrlGeneratorInterface $router
      */
-    public function __construct(ClientRegistry $clientRegistry, EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        ClientRegistry $clientRegistry,
+        EntityManagerInterface $entityManager,
+        UrlGeneratorInterface $router
+    ) {
         $this->clientRegistry   = $clientRegistry;
         $this->em               = $entityManager;
+        $this->router           = $router;
     }
 
     /**
@@ -51,7 +61,8 @@ class GoogleAuthenticator extends SocialAuthenticator
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        return new RedirectResponse('/auth', Response::HTTP_TEMPORARY_REDIRECT);
+        $url = $this->router->generate('google_auth');
+        return new RedirectResponse($url, Response::HTTP_TEMPORARY_REDIRECT);
     }
 
     /**
@@ -77,7 +88,7 @@ class GoogleAuthenticator extends SocialAuthenticator
 
         /** @var User|null $user */
         $user = $this->em->getRepository(User::class)
-            ->findOneBy(['email' => $email = $googleUser->getEmail()]);
+            ->findOneBy(['email' => mb_strtolower($googleUser->getEmail())]);
 
         return $user;
     }
@@ -91,7 +102,13 @@ class GoogleAuthenticator extends SocialAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        return null;
+        $redirect_path = '/';
+
+        if ($request->hasSession()) {
+            $redirect_path = $request->getSession()->remove('redirect_after_auth') ?? '/';
+        }
+
+        return new RedirectResponse($redirect_path);
     }
 
     /**
@@ -109,7 +126,7 @@ class GoogleAuthenticator extends SocialAuthenticator
 
     /**
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
-     * @return \KnpU\OAuth2ClientBundle\Client\OAuth2Client
+     * @return \KnpU\OAuth2ClientBundle\Client\OAuth2Client|GoogleClient
      */
     private function getGoogleClient()
     {

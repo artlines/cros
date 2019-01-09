@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\V1;
 
+use App\Entity\Participating\User;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
@@ -22,6 +23,14 @@ class UsersController extends ApiController
      */
     public function me()
     {
-        return $this->success([]);
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $result = [
+            'id'    => $user->getId(),
+            'roles' => $user->getRoles(),
+        ];
+
+        return $this->success($result);
     }
 }

@@ -2,7 +2,7 @@
 # http://symfony.com/doc/current/security.html
 security:
     encoders:
-        App\Old\Entity\User:
+        App\Entity\Participating\User:
             algorithm: bcrypt
 
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
@@ -13,7 +13,7 @@ security:
         in_memory:
             memory: ~
         user_db:
-            entity: { class: App:User }
+            entity: { class: App\Entity\Participating\User }
 
 
     firewalls:
@@ -23,11 +23,11 @@ security:
             security: false
 
         default:
+            provider: chain_provider
             anonymous: ~
             logout:
                 path: logout
                 target: homepage
-            provider: chain_provider
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
@@ -59,15 +59,15 @@ security:
 
     role_hierarchy:
         # new hierarchy
-        ROLE_SALES_MANAGER:     [ROLE_CMS_USER]
-        ROLE_SALES_HEAD:        [ROLE_CMS_USER]
-        ROLE_SETTLEMENT_ADMIN:  [ROLE_CMS_USER]
-        ROLE_CONTENT_MANAGER:   [ROLE_CMS_USER]
+        ROLE_SALES_MANAGER:       [ROLE_CMS_USER]
+        ROLE_SALES_HEAD:          [ROLE_CMS_USER]
+        ROLE_SETTLEMENT_MANAGER:  [ROLE_CMS_USER]
+        ROLE_CONTENT_MANAGER:     [ROLE_CMS_USER]
         ROLE_ADMINISTRATOR:
             - ROLE_CMS_USER
             - ROLE_SALES_MANAGER
             - ROLE_SALES_HEAD
-            - ROLE_SETTLEMENT_ADMIN
+            - ROLE_SETTLEMENT_MANAGER
             - ROLE_CONTENT_MANAGER
 
         ROLE_ADMIN: ROLE_MANAGER

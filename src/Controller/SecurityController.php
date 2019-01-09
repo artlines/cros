@@ -3,7 +3,10 @@ namespace App\Controller;
 
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
@@ -38,12 +41,23 @@ class SecurityController extends AbstractController
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      *
+     * @param Request $request
      * @param ClientRegistry $clientRegistry
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function auth(ClientRegistry $clientRegistry)
+    public function auth(Request $request, ClientRegistry $clientRegistry)
     {
-        return $clientRegistry->getClient('google_nag')->redirect(['email']);
+        if ($request->hasSession()) {
+            $request->getSession()->set('redirect_after_auth', $request->server->get('HTTP_REFERER'));
+        }
+
+        return $clientRegistry
+            ->getClient('google_nag')
+            ->redirect(
+                ['email'],
+                ['redirect_uri' => $this->generateUrl('google_auth_callback', [], UrlGeneratorInterface::ABSOLUTE_URL)]
+            );
     }
 
     /**

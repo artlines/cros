@@ -4,8 +4,10 @@ namespace App\Security;
 
 use App\Entity\Participating\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -56,6 +58,17 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     public function supports(Request $request)
     {
         return $request->attributes->get('_route') === 'login' && $request->isMethod('POST');
+    }
+
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param Request $request
+     * @param AuthenticationException|null $authException
+     * @return JsonResponse
+     */
+    public function start(Request $request, AuthenticationException $authException = null)
+    {
+        return new JsonResponse([], Response::HTTP_UNAUTHORIZED);
     }
 
     /**
