@@ -38,6 +38,13 @@ class ApartmentType
     private $maxRooms;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="`code`", type="string", nullable=false)
+     */
+    private $code;
+
+    /**
      * @var ArrayCollection|Apartment[]
      *
      * @ORM\OneToMany(targetEntity="Apartment", mappedBy="type")
@@ -87,5 +94,21 @@ class ApartmentType
     public function setMaxRooms($maxRooms)
     {
         $this->maxRooms = $maxRooms;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param string $code
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
     }
 }
