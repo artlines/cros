@@ -5,6 +5,8 @@ namespace App\Controller\Api\V1;
 use App\Entity\Participating\User;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Core\Role\Role;
+use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
 /**
  * Class UsersController
@@ -19,16 +21,26 @@ class UsersController extends ApiController
      * @IsGranted("ROLE_CMS_USER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param RoleHierarchyInterface $roleHierarchy
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function me()
+    public function me(RoleHierarchyInterface $roleHierarchy)
     {
         /** @var User $user */
         $user = $this->getUser();
 
+        /** @var Role[] $roles */
+        $roles = array_map(function($role) {
+            return new Role($role);
+        }, $user->getRoles());
+
+
         $result = [
             'id'    => $user->getId(),
-            'roles' => $user->getRoles(),
+            'roles' => array_map(
+                function($role) { return $role->getRole(); },
+                $roleHierarchy->getReachableRoles($roles)
+            ),
         ];
 
         return $this->success($result);
