@@ -24,20 +24,20 @@ class App extends React.Component {
     };
 
     render() {
-        const { user } = this.props;
+        const { user: {error, isFetching, id} } = this.props;
 
-        if (!user) {
-            return null;
+        if (!error && !isFetching && id) {
+            return (
+                <div>
+                    <CssBaseline/>
+                    <Header handleClickMenu={this.toggleSidebar}/>
+                    <Sidebar open={this.state.sidebarOpen} onClose={this.toggleSidebar}/>
+                    <Routes/>
+                </div>
+            );
         }
 
-        return (
-            <div>
-                <CssBaseline/>
-                <Header handleClickMenu={this.toggleSidebar}/>
-                <Sidebar open={this.state.sidebarOpen} onClose={this.toggleSidebar}/>
-                <Routes/>
-            </div>
-        );
+        return null;
     }
 }
 
@@ -49,7 +49,7 @@ const mapStateToProps = state =>
 const mapDispatchToProps = dispatch =>
     ({
         loadInitialData: () => {
-            dispatch(system.fetchUser());
+            dispatch(system.fetchMe());
         },
     });
 

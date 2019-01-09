@@ -5,12 +5,12 @@ const request = new API();
 
 export default {
 
-    fetchUser: (id = null) => {
+    fetchMe: () => {
 
         return dispatch => {
             dispatch({ type: SYSTEM.REQUEST_ME });
             request.get(`users/me`)
-                .then(res => console.log(res));
+                .then(payload => dispatch({ type: SYSTEM.RECEIVE_ME, payload }));
         }
     },
 

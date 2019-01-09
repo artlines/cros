@@ -28,7 +28,7 @@ export default (state = initialState, action) => {
                 user: {
                     ...state.user,
                     isFetching: false,
-                    ...payload.data,
+                    ...payload,
                 }
             };
         default:

@@ -2,12 +2,15 @@ import request from 'superagent';
 import map from 'lodash/map'
 import isArray from 'lodash/isArray'
 
+const errorHandler = Symbol('errorHandler');
+
 export default class API {
 
     constructor() {
         this.host = window.location.origin;
-
         this.apiVersion = 1;
+
+        this.authPath = `${this.host}/auth`;
         this.apiHost = `${this.host}/api/v${this.apiVersion}`;
 
         this.defaultOffset = 0;
@@ -21,10 +24,25 @@ export default class API {
         };
     }
 
-    get = async (alias, data= {}) => {
-        const res = await request
-            .get(`${this.apiHost}/${alias}`)
+    [errorHandler](err) {
+        switch (err.status) {
+            case 401:
+                window.location.replace(this.authPath);
+            default:
+                break;
+        }
+    }
 
+    get = async (alias, data = {}) => {
+        try {
+            const response = await request
+                .get(`${this.apiHost}/${alias}`)
+                .query(data)
+                .type('json');
+            return response.body;
+        } catch (err) {
+            this[errorHandler](err);
+        }
     };
 
     get2 = async (alias, data = {}) => {
