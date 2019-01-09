@@ -54,7 +54,7 @@ Sidebar.propTypes = {
      */
     onClose: PropTypes.func.isRequired,
     /**
-     * Defined user roles to prevent render not accessed route
+     * Defined user roles to prevent render not accessed sidebar item
      */
     roles: PropTypes.array.isRequired,
 };
