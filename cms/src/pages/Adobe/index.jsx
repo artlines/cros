@@ -9,6 +9,7 @@ import { withTheme } from "@material-ui/core/styles";
 import LibraryAddIcon from "@material-ui/icons/LibraryAdd";
 import map from "lodash/map";
 import HousingCard from "../../components/Adobe/HousingCard";
+import HousingForm from "../../components/Adobe/HousingForm";
 
 const housingData = [
     {
@@ -51,36 +52,39 @@ class Adobe extends React.PureComponent {
         const { housing, theme } = this.props;
 
         return (
-            <Grid container spacing={24}>
-                <Grid item xs={12}>
-                    <Grid container spacing={0} justify={`space-between`}>
-                        <Grid item>
-                            <Typography variant={`h5`} component={`span`}>Корпуса для проживания</Typography>
-                        </Grid>
-                        <Grid item>
-                            <Fab
-                                size="medium"
-                                variant="extended"
-                                color="primary"
-                                aria-label="Add"
-                            >
-                                <LibraryAddIcon style={{ marginRight: theme.spacing.unit }}/>
-                                Добавить корпус
-                            </Fab>
-                        </Grid>
-                    </Grid>
-                </Grid>
-                {map(housing, h =>
-                    <Grid key={h.id} item xs={12} md={6} lg={4}>
-                        <HousingCard housing={h}/>
-                    </Grid>
-                )}
-                {housing.length === 0 &&
+            <div>
+                <HousingForm open={true}/>
+                <Grid container spacing={24}>
                     <Grid item xs={12}>
-                        <Typography variant={`subtitle1`}>Нет данных</Typography>
+                        <Grid container spacing={0} justify={`space-between`}>
+                            <Grid item>
+                                <Typography variant={`h5`} component={`span`}>Корпуса для проживания</Typography>
+                            </Grid>
+                            <Grid item>
+                                <Fab
+                                    size="medium"
+                                    variant="extended"
+                                    color="primary"
+                                    aria-label="Add"
+                                >
+                                    <LibraryAddIcon style={{ marginRight: theme.spacing.unit }}/>
+                                    Добавить корпус
+                                </Fab>
+                            </Grid>
+                        </Grid>
                     </Grid>
-                }
-            </Grid>
+                    {map(housing, h =>
+                        <Grid key={h.id} item xs={12} md={6} lg={4}>
+                            <HousingCard housing={h}/>
+                        </Grid>
+                    )}
+                    {housing.length === 0 &&
+                        <Grid item xs={12}>
+                            <Typography variant={`subtitle1`}>Нет данных</Typography>
+                        </Grid>
+                    }
+                </Grid>
+            </div>
         );
     }
 }
