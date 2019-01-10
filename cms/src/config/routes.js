@@ -1,4 +1,5 @@
 import Home from '../pages/Home';
+import AdobeIndex from '../pages/Adobe/index';
 import AdobeSettings from '../pages/Adobe/Settings';
 import NotFound from '../pages/NotFound';
 import RoomServiceIcon from '@material-ui/icons/RoomService';
@@ -16,12 +17,23 @@ export default [
     },
     {
         path: '/cms/adobe',
-        component: AdobeSettings,
+        component: AdobeIndex,
         exact: true,
         title: 'Расселение',
         menuItem: {
             Icon: RoomServiceIcon,
             title: 'Расселение',
+        },
+        role: 'ROLE_SETTLEMENT_MANAGER',
+    },
+    {
+        path: '/cms/adobe/settings',
+        component: AdobeSettings,
+        exact: true,
+        title: 'Настройка расселения',
+        menuItem: {
+            Icon: RoomServiceIcon,
+            title: 'Настройка расселения',
         },
         role: 'ROLE_SETTLEMENT_MANAGER',
     },

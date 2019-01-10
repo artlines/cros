@@ -25,7 +25,6 @@ class Header extends React.PureComponent {
                     <Typography variant={`h6`} noWrap color={`inherit`} style={{ marginLeft: theme.spacing.unit * 2 }}>
                         Title
                     </Typography>
-
                 </Toolbar>
             </AppBar>
         );
