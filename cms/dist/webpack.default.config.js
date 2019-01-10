@@ -10,7 +10,9 @@ module.exports = {
                     presets: ['@babel/react', '@babel/env'],
                     plugins: ['@babel/plugin-proposal-class-properties']
                 }
-            }
+            },
+            { test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000' },
+            { test: /\.css$/, loader: 'style-loader!css-loader' }
         ]
     },
     resolve: {

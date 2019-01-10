@@ -47,13 +47,30 @@ const housingData = [
     },
 ];
 
-class Adobe extends React.PureComponent {
+class Adobe extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            openHousingForm: false,
+            //initialValues
+        };
+    }
+
+    handleCloseHousingForm = () => this.setState({openHousingForm: false});
+
     render() {
         const { housing, theme } = this.props;
+        const { openHousingForm } = this.state;
+
+        console.log(`Adobe::render`);
 
         return (
             <div>
-                <HousingForm open={true}/>
+                <HousingForm
+                    open={openHousingForm}
+                    onClose={this.handleCloseHousingForm}
+                />
                 <Grid container spacing={24}>
                     <Grid item xs={12}>
                         <Grid container spacing={0} justify={`space-between`}>
@@ -66,6 +83,7 @@ class Adobe extends React.PureComponent {
                                     variant="extended"
                                     color="primary"
                                     aria-label="Add"
+                                    onClick={() => this.setState({openHousingForm: true})}
                                 >
                                     <LibraryAddIcon style={{ marginRight: theme.spacing.unit }}/>
                                     Добавить корпус
@@ -74,7 +92,7 @@ class Adobe extends React.PureComponent {
                         </Grid>
                     </Grid>
                     {map(housing, h =>
-                        <Grid key={h.id} item xs={12} md={6} lg={4}>
+                        <Grid key={h.id} item xs={12} sm={6} lg={4}>
                             <HousingCard housing={h}/>
                         </Grid>
                     )}

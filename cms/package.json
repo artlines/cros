@@ -24,6 +24,7 @@
     "react-hot-loader": "^4.6.3",
     "redux-devtools": "^3.5.0",
     "style-loader": "^0.23.1",
+    "url-loader": "^1.1.2",
     "webpack": "^4.28.3",
     "webpack-cli": "^3.2.1",
     "webpack-dev-server": "^3.1.14"
@@ -39,6 +40,7 @@
     "react-router-dom": "^4.3.1",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
-    "superagent": "^4.1.0"
+    "superagent": "^4.1.0",
+    "typeface-roboto": "0.0.54"
   }
 }
