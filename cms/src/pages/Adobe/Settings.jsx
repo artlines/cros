@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 import {
     Grid,
     Paper,
     Typography,
-} from '@material-ui/core';
+} from "@material-ui/core";
 import ParticipantClasses from "../../components/Adobe/ParticipantClasses";
 
 class Settings extends React.PureComponent {

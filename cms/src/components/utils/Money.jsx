@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import toNumber from 'lodash/toNumber'
+import React from "react";
+import PropTypes from "prop-types";
+import toNumber from "lodash/toNumber";
 
 class Money extends React.PureComponent {
 
@@ -13,7 +13,7 @@ class Money extends React.PureComponent {
         res = toNumber(value).toFixed(0);
 
         // Добавляем разделитель
-        res = res.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1' + delimiter);
+        res = res.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1" + delimiter);
 
         // Добавляем денежный знак
         res = `${prefix}${res}${suffix}`;
@@ -25,7 +25,7 @@ class Money extends React.PureComponent {
         const parsedValue = this.parseValue();
 
         return (
-            <span style={{whiteSpace: 'nowrap'}}>
+            <span style={{whiteSpace: "nowrap"}}>
                 {parsedValue}
             </span>
         );
@@ -36,10 +36,10 @@ class Money extends React.PureComponent {
  * Типовые настройки отображения валют
  */
 const types = {
-    'RUB': {
-        delimiter: ' ',
-        prefix: '',
-        suffix: '₽',
+    "RUB": {
+        delimiter: " ",
+        prefix: "",
+        suffix: "₽",
     },
 };
 
@@ -64,7 +64,7 @@ Money.defaultProps = {
     /**
      * По-умолчанию отображаем рубли
      */
-    currency: 'RUB',
+    currency: "RUB",
 };
 
 export default Money;

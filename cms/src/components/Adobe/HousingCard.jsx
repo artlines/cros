@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 import {
     Button,
     Card,
@@ -13,7 +13,7 @@ import {
     TableRow,
     TableCell,
 
-} from '@material-ui/core';
+} from "@material-ui/core";
 import map from "lodash/map";
 
 

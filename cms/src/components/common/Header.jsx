@@ -1,14 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 import {
     AppBar,
     Typography,
     IconButton,
     Toolbar,
     Tooltip,
-} from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
-import { withTheme } from '@material-ui/core/styles';
+} from "@material-ui/core";
+import MenuIcon from "@material-ui/icons/Menu";
+import { withTheme } from "@material-ui/core/styles";
 
 class Header extends React.PureComponent {
 

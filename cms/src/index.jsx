@@ -1,10 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import '@babel/polyfill';
-import store from 'reducers/store';
-import { BrowserRouter } from 'react-router-dom';
-import App from 'App';
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import "@babel/polyfill";
+import store from "reducers/store";
+import { BrowserRouter } from "react-router-dom";
+import App from "App";
 
 const Root = () => {
     return (
@@ -16,6 +16,6 @@ const Root = () => {
     );
 };
 
-ReactDOM.render(<Root/>, document.getElementById('root'));
+ReactDOM.render(<Root/>, document.getElementById("root"));
 
 module.hot.accept();

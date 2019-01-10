@@ -1,19 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 import {
     Table,
     TableBody,
     TableCell,
     TableHead,
     TableRow,
-} from '@material-ui/core';
-import map from 'lodash/map';
+} from "@material-ui/core";
+import map from "lodash/map";
 
 const data = [
-    { id: 1, title: 'Эконом' },
-    { id: 2, title: 'Комфорт' },
-    { id: 3, title: 'Бизнес' },
-    { id: 4, title: 'VIP' },
+    { id: 1, title: "Эконом" },
+    { id: 2, title: "Комфорт" },
+    { id: 3, title: "Бизнес" },
+    { id: 4, title: "VIP" },
 ];
 
 class ParticipantClasses extends React.PureComponent {

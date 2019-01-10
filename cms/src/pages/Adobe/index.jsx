@@ -1,21 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 import {
     Grid,
     Typography,
     Fab,
-} from '@material-ui/core';
-import { withTheme } from '@material-ui/core/styles';
-import LibraryAddIcon from '@material-ui/icons/LibraryAdd';
-import map from 'lodash/map';
+} from "@material-ui/core";
+import { withTheme } from "@material-ui/core/styles";
+import LibraryAddIcon from "@material-ui/icons/LibraryAdd";
+import map from "lodash/map";
 import HousingCard from "../../components/Adobe/HousingCard";
 
 const housingData = [
     {
         id: 1,
         num_of_floors: 3,
-        title: 'Корпус 1А',
-        description: 'Реализация намеченных плановых заданий способствует повышению качества новых принципов формирования материально-технической и кадровой базы.',
+        title: "Корпус 1А",
+        description: "Реализация намеченных плановых заданий способствует повышению качества новых принципов формирования материально-технической и кадровой базы.",
         adobe_info: [
             { room_type_id: 2, total: 200, busy: 5 },
             { room_type_id: 1, total: 100, busy: 52 },
@@ -25,8 +25,8 @@ const housingData = [
     {
         id: 2,
         num_of_floors: 4,
-        title: 'Корпус 1Б',
-        description: 'Прежде всего, социально-экономическое развитие обеспечивает широкому кругу (специалистов) участие в формировании модели развития.',
+        title: "Корпус 1Б",
+        description: "Прежде всего, социально-экономическое развитие обеспечивает широкому кругу (специалистов) участие в формировании модели развития.",
         adobe_info: [
             { room_type_id: 2, total: 200, busy: 5 },
             { room_type_id: 1, total: 100, busy: 52 },
@@ -36,8 +36,8 @@ const housingData = [
     {
         id: 3,
         num_of_floors: 3,
-        title: 'Корпус 2',
-        description: 'Современные технологии достигли такого уровня, что укрепление и развитие внутренней структуры предоставляет широкие возможности для приоретизации разума над эмоциями.',
+        title: "Корпус 2",
+        description: "Современные технологии достигли такого уровня, что укрепление и развитие внутренней структуры предоставляет широкие возможности для приоретизации разума над эмоциями.",
         adobe_info: [
             { room_type_id: 2, total: 200, busy: 5 },
             { room_type_id: 1, total: 100, busy: 52 },

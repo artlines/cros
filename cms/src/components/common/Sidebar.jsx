@@ -1,14 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import routes from '../../config/routes';
-import map from 'lodash/map';
-import filter from 'lodash/filter';
+import React from "react";
+import PropTypes from "prop-types";
+import {Link} from "react-router-dom";
+import Drawer from "@material-ui/core/Drawer";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import routes from "../../config/routes";
+import map from "lodash/map";
+import filter from "lodash/filter";
 
 class Sidebar extends React.PureComponent {
 
@@ -28,7 +28,7 @@ class Sidebar extends React.PureComponent {
                             <Link
                                 key={i}
                                 to={route.path}
-                                style={{ textDecoration: 'none', color: 'inherit' }}
+                                style={{ textDecoration: "none", color: "inherit" }}
                                 onClick={onClose}
                             >
                                 <ListItem button>
