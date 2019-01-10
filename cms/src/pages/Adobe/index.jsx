@@ -5,7 +5,8 @@ import {
     Typography,
     Fab,
 } from '@material-ui/core';
-import PlusOneIcon from '@material-ui/icons/PlusOne';
+import { withTheme } from '@material-ui/core/styles';
+import LibraryAddIcon from '@material-ui/icons/LibraryAdd';
 import map from 'lodash/map';
 import HousingCard from "../../components/Adobe/HousingCard";
 
@@ -47,7 +48,7 @@ const housingData = [
 
 class Adobe extends React.PureComponent {
     render() {
-        const { housing } = this.props;
+        const { housing, theme } = this.props;
 
         return (
             <Grid container spacing={24}>
@@ -63,7 +64,7 @@ class Adobe extends React.PureComponent {
                                 color="primary"
                                 aria-label="Add"
                             >
-                                <PlusOneIcon/>
+                                <LibraryAddIcon style={{ marginRight: theme.spacing.unit }}/>
                                 Добавить корпус
                             </Fab>
                         </Grid>
@@ -86,6 +87,10 @@ class Adobe extends React.PureComponent {
 
 Adobe.propTypes = {
     /**
+     * MuiTheme object
+     */
+    theme: PropTypes.object.isRequired,
+    /**
      * Array of existed housing
      */
     housing: PropTypes.array.isRequired,
@@ -95,4 +100,4 @@ Adobe.defaultProps = {
     housing: housingData,
 };
 
-export default Adobe;
+export default withTheme()(Adobe);
