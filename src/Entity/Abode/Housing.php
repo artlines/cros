@@ -31,6 +31,20 @@ class Housing
     private $numOfFloors;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="title", type="string", nullable=false)
+     */
+    private $title;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", nullable=true)
+     */
+    private $description;
+
+    /**
      * @var ArrayCollection|Apartment[]
      *
      * @ORM\OneToMany(targetEntity="Apartment", mappedBy="housing")
@@ -64,5 +78,37 @@ class Housing
     public function setNumOfFloors($numOfFloors)
     {
         $this->numOfFloors = $numOfFloors;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
     }
 }

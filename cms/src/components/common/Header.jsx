@@ -9,7 +9,6 @@ import {
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { withTheme } from '@material-ui/core/styles';
-import {Link} from 'react-router-dom';
 
 class Header extends React.PureComponent {
 
