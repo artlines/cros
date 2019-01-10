@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import {
     Grid,
     Typography,
-    Button,
+    Fab,
 } from '@material-ui/core';
+import PlusOneIcon from '@material-ui/icons/PlusOne';
 import map from 'lodash/map';
 import HousingCard from "../../components/Adobe/HousingCard";
 
@@ -56,7 +57,15 @@ class Adobe extends React.PureComponent {
                             <Typography variant={`h5`} component={`span`}>Корпуса для проживания</Typography>
                         </Grid>
                         <Grid item>
-                            <Button>Добавить корпус</Button>
+                            <Fab
+                                size="medium"
+                                variant="extended"
+                                color="primary"
+                                aria-label="Add"
+                            >
+                                <PlusOneIcon/>
+                                Добавить корпус
+                            </Fab>
                         </Grid>
                     </Grid>
                 </Grid>
