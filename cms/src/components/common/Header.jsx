@@ -5,6 +5,7 @@ import {
     Typography,
     IconButton,
     Toolbar,
+    Tooltip,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import { withTheme } from '@material-ui/core/styles';
@@ -22,8 +23,9 @@ class Header extends React.PureComponent {
                         <MenuIcon/>
                     </IconButton>
                     <Typography variant={`h6`} noWrap color={`inherit`} style={{ marginLeft: theme.spacing.unit * 2 }}>
-                        <Link to={`/cms`}>CROS</Link>
+                        Title
                     </Typography>
+
                 </Toolbar>
             </AppBar>
         );

@@ -1,18 +1,22 @@
 import Home from '../pages/Home';
-import Adobe from '../pages/Adobe/index';
+import AdobeSettings from '../pages/Adobe/Settings';
 import NotFound from '../pages/NotFound';
 import RoomServiceIcon from '@material-ui/icons/RoomService';
 
 export default [
     {
-        path: '/cms',
+        path: '/cms/',
         component: Home,
         exact: true,
         title: 'Главная',
+        menuItem: {
+            Icon: RoomServiceIcon,
+            title: 'Главная',
+        },
     },
     {
         path: '/cms/adobe',
-        component: Adobe,
+        component: AdobeSettings,
         exact: true,
         title: 'Расселение',
         menuItem: {
@@ -23,7 +27,7 @@ export default [
     },
     {
         path: '/cms/users',
-        component: Adobe,
+        component: Home,
         exact: true,
         title: 'Пользователи',
         menuItem: {

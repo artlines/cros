@@ -6,10 +6,10 @@ import {
 } from '@material-ui/core';
 import ParticipantClasses from "../../components/Adobe/ParticipantClasses";
 
-class Adobe extends React.PureComponent {
+class Settings extends React.PureComponent {
     render() {
         return (
-            <Grid container spacing={16}>
+            <Grid container spacing={24}>
                 <Grid item xs={12} sm={6}>
                     <Typography variant={`h4`} gutterBottom>Классы участия</Typography>
                     <Paper>
@@ -39,4 +39,4 @@ class Adobe extends React.PureComponent {
     }
 }
 
-export default Adobe;
+export default Settings;
