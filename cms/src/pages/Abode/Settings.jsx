@@ -4,7 +4,7 @@ import {
     Paper,
     Typography,
 } from "@material-ui/core";
-import ParticipantClasses from "../../components/Adobe/ParticipantClasses";
+import ParticipantClasses from "../../components/Abode/ParticipantClasses";
 
 class Settings extends React.PureComponent {
     render() {

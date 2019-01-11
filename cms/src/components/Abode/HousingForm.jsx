@@ -150,6 +150,7 @@ HousingForm.propTypes = {
      * Is form open?
      */
     open: PropTypes.bool.isRequired,
+
     /**
      * Initial form values
      */

@@ -20,7 +20,7 @@ import map from "lodash/map";
 class HousingCard extends React.PureComponent {
 
     render() {
-        const { housing: { id, num_of_floors, title, description, adobe_info } }  = this.props;
+        const { housing: { id, num_of_floors, title, description, abode_info } }  = this.props;
 
         return (
             <Card>
@@ -41,7 +41,7 @@ class HousingCard extends React.PureComponent {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {map(adobe_info, item =>
+                            {map(abode_info, item =>
                                 <TableRow key={item.room_type_id}>
                                     <TableCell>{item.room_type_id}</TableCell>
                                     <TableCell align={`right`}>{item.busy} / {item.total}</TableCell>
@@ -72,7 +72,7 @@ HousingCard.propTypes = {
         num_of_floors:  PropTypes.number.isRequired,
         title:          PropTypes.string.isRequired,
         description:    PropTypes.string.isRequired,
-        adobe_info:     PropTypes.arrayOf(
+        abode_info:     PropTypes.arrayOf(
             PropTypes.shape({
                 room_type_id:   PropTypes.number.isRequired,
                 total:          PropTypes.number.isRequired,

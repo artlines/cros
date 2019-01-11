@@ -1,56 +1,56 @@
-import Home from "../pages/Home";
-import AdobeIndex from "../pages/Adobe/index";
-import AdobeSettings from "../pages/Adobe/Settings";
-import NotFound from "../pages/NotFound";
-import RoomServiceIcon from "@material-ui/icons/RoomService";
+import Home from '../pages/Home';
+import AbodeIndex from '../pages/Abode/index';
+import AbodeSettings from '../pages/Abode/Settings';
+import NotFound from '../pages/NotFound';
+import RoomServiceIcon from '@material-ui/icons/RoomService';
 
 export default [
     {
-        path: "/cms/",
+        path: '/cms/',
         component: Home,
         exact: true,
-        title: "Главная",
+        title: 'Главная',
         menuItem: {
             Icon: RoomServiceIcon,
-            title: "Главная",
+            title: 'Главная',
         },
     },
     {
-        path: "/cms/adobe",
-        component: AdobeIndex,
+        path: '/cms/abode',
+        component: AbodeIndex,
         exact: true,
-        title: "Расселение",
+        title: 'Расселение',
         menuItem: {
             Icon: RoomServiceIcon,
-            title: "Расселение",
+            title: 'Расселение',
         },
-        role: "ROLE_SETTLEMENT_MANAGER",
+        role: 'ROLE_SETTLEMENT_MANAGER',
     },
     {
-        path: "/cms/adobe/settings",
-        component: AdobeSettings,
+        path: '/cms/abode/settings',
+        component: AbodeSettings,
         exact: true,
-        title: "Настройка расселения",
+        title: 'Настройка расселения',
         menuItem: {
             Icon: RoomServiceIcon,
-            title: "Настройка расселения",
+            title: 'Настройка расселения',
         },
-        role: "ROLE_SETTLEMENT_MANAGER",
+        role: 'ROLE_SETTLEMENT_MANAGER',
     },
     {
-        path: "/cms/users",
+        path: '/cms/users',
         component: Home,
         exact: true,
-        title: "Пользователи",
+        title: 'Пользователи',
         menuItem: {
             Icon: RoomServiceIcon,
-            title: "Пользователи",
+            title: 'Пользователи',
         },
-        role: "ROLE_ADMINISTRATOR",
+        role: 'ROLE_ADMINISTRATOR',
     },
     {
-        path: "*",
+        path: '*',
         component: NotFound,
-        title: "Страница не найдена",
+        title: 'Страница не найдена',
     },
 ];

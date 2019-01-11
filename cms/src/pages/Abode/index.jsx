@@ -8,8 +8,8 @@ import {
 import { withTheme } from "@material-ui/core/styles";
 import LibraryAddIcon from "@material-ui/icons/LibraryAdd";
 import map from "lodash/map";
-import HousingCard from "../../components/Adobe/HousingCard";
-import HousingForm from "../../components/Adobe/HousingForm";
+import HousingCard from "../../components/Abode/HousingCard";
+import HousingForm from "../../components/Abode/HousingForm";
 
 const housingData = [
     {
@@ -17,7 +17,7 @@ const housingData = [
         num_of_floors: 3,
         title: "Корпус 1А",
         description: "Реализация намеченных плановых заданий способствует повышению качества новых принципов формирования материально-технической и кадровой базы.",
-        adobe_info: [
+        abode_info: [
             { room_type_id: 2, total: 200, busy: 5 },
             { room_type_id: 1, total: 100, busy: 52 },
             { room_type_id: 4, total: 300, busy: 147 },
@@ -28,7 +28,7 @@ const housingData = [
         num_of_floors: 4,
         title: "Корпус 1Б",
         description: "Прежде всего, социально-экономическое развитие обеспечивает широкому кругу (специалистов) участие в формировании модели развития.",
-        adobe_info: [
+        abode_info: [
             { room_type_id: 2, total: 200, busy: 5 },
             { room_type_id: 1, total: 100, busy: 52 },
             { room_type_id: 4, total: 300, busy: 147 },
@@ -39,7 +39,7 @@ const housingData = [
         num_of_floors: 3,
         title: "Корпус 2",
         description: "Современные технологии достигли такого уровня, что укрепление и развитие внутренней структуры предоставляет широкие возможности для приоретизации разума над эмоциями.",
-        adobe_info: [
+        abode_info: [
             { room_type_id: 2, total: 200, busy: 5 },
             { room_type_id: 1, total: 100, busy: 52 },
             { room_type_id: 4, total: 300, busy: 147 },
@@ -47,7 +47,7 @@ const housingData = [
     },
 ];
 
-class Adobe extends React.Component {
+class Abode extends React.Component {
     constructor(props) {
         super(props);
 
@@ -63,7 +63,7 @@ class Adobe extends React.Component {
         const { housing, theme } = this.props;
         const { openHousingForm } = this.state;
 
-        console.log(`Adobe::render`);
+        console.log(`Abode::render`);
 
         return (
             <div>
@@ -107,7 +107,7 @@ class Adobe extends React.Component {
     }
 }
 
-Adobe.propTypes = {
+Abode.propTypes = {
     /**
      * MuiTheme object
      */
@@ -118,8 +118,8 @@ Adobe.propTypes = {
     housing: PropTypes.array.isRequired,
 };
 
-Adobe.defaultProps = {
+Abode.defaultProps = {
     housing: housingData,
 };
 
-export default withTheme()(Adobe);
+export default withTheme()(Abode);
