@@ -4,7 +4,6 @@ namespace App\Controller\Api\V1;
 
 use App\Entity\Participating\User;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
 
@@ -18,7 +17,6 @@ class UsersController extends ApiController
 {
     /**
      * @Route("/me", name="me", methods={"GET"})
-     * @IsGranted("ROLE_CMS_USER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param RoleHierarchyInterface $roleHierarchy

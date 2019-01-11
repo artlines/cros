@@ -2,7 +2,9 @@
 
 namespace App\Controller\Api\V1;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -11,6 +13,34 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ApiController extends AbstractController
 {
+    /** @var EntityManagerInterface */
+    protected $em;
+
+    /** @var Request */
+    protected $request;
+
+    /** @var array */
+    protected $requestData;
+
+    /**
+     * ApiController constructor.
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->em           = $entityManager;
+        $this->request      = Request::createFromGlobals();
+
+        $this->requestData  = $this->request->isMethod('GET') || $this->request->isMethod('DELETE')
+            ? $this->request->query->all()
+            : $this->parseJsonRequest();
+    }
+
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param array $data
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
     protected function success(array $data = [])
     {
         $code = empty($data) ? 204 : 200;
@@ -20,26 +50,68 @@ class ApiController extends AbstractController
 
     /**
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
-     * @param array $data
+     * @param int $id
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @throws \Exception
      */
-    protected function created(array $data)
+    protected function created($id)
     {
-        if (empty($data)) {
-            throw new \Exception('Data cannot be empty.');
-        }
-
-        return $this->json($data, 201);
+        return $this->json(['id' => $id], 201);
     }
 
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
     protected function notFound()
     {
         return $this->_error('Resource not found.', 404);
     }
 
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param string $message
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    protected function badRequest($message = 'Not valid request content')
+    {
+        return $this->_error($message, 400);
+    }
+
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param \Exception $e
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    protected function exception(\Exception $e)
+    {
+        return $this->_error($e->getMessage());
+    }
+
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @return array|\Symfony\Component\HttpFoundation\JsonResponse
+     */
+    protected function parseJsonRequest()
+    {
+        $rawBody = $this->request->getContent();
+        $content = json_decode($rawBody, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return $this->badRequest(json_last_error_msg());
+        }
+
+        return $content;
+    }
+
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param $msg
+     * @param int $code
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
     protected function _error($msg, $code = 500)
     {
-        return $this->json(['error' => $msg, $code]);
+        return $this->json(['error' => $msg], $code);
     }
 }
