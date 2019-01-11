@@ -9,12 +9,11 @@ import {
     Grid,
     TextField,
 } from '@material-ui/core';
+import isEqual from 'lodash/isEqual';
+import API from '../../libs/api';
+import ErrorMessage from "../utils/ErrorMessage";
 
-/**
- * title
- * description
- * num_of_floors
- */
+const api = new API();
 
 class HousingForm extends React.Component {
     constructor(props) {
@@ -27,31 +26,36 @@ class HousingForm extends React.Component {
                 num_of_floors: '',
             },
             errors: {},
+            submitting: false,
+            submitError: false,
         };
     }
 
     componentDidMount() {
         const { initialValues } = this.props;
-        !!initialValues && this.setState({values: {...values, initialValues}});
+        const { values } = this.state;
+        !!initialValues && this.setState({values: {...values, ...initialValues}});
+    }
+
+    componentDidUpdate(prevProps, prevState, prevContext) {
+        const { open, initialValues } = this.props;
+        const { values } = this.state;
+
+        if (!isEqual(prevProps.initialValues, initialValues) || (open === true && prevProps.open !== open)) {
+            this.setState({values: {...values, ...initialValues}})
+        }
     }
 
     handleChange = field => event => {
-        console.log(`HousingForm::handleChange`, {
-            field,
-            value: event.target.value,
-        });
-
         const { values, errors } = this.state;
+        delete(errors[field]);
 
         this.setState({
             values: {
                 ...values,
                 [field]: event.target.value,
             },
-            errors: {
-                ...errors,
-                [field]: '',
-            }
+            errors,
         });
     };
 
@@ -60,17 +64,39 @@ class HousingForm extends React.Component {
         this.props.onClose();
     };
 
-    handleSubmit = values => {
-        console.log(`HousingForm::handleSubmit`, values);
+    handleSubmit = event => {
+        this.setState({
+            submitting: true,
+            submitError: false,
+        });
+
+        event.preventDefault();
+        const { values } = this.state;
+
+        /**
+         * Create or update entity
+         */
+        values.id
+            ? api.put(`housing/${values.id}`, values)
+                .then(this.handleSuccessSubmit)
+                .catch(this.handleErrorSubmit)
+            : api.post(`housing/new`, values)
+                .then(this.handleSuccessSubmit)
+                .catch(this.handleErrorSubmit);
     };
 
-    componentWillUnmount() {
-        console.log(`HousingForm::componentWillUnmount`);
-    }
+    handleSuccessSubmit = () => {
+        this.setState({submitting: false});
+        this.props.onSuccess();
+    };
+
+    handleErrorSubmit = (err) => {
+        this.setState({submitting: false, submitError: err.message});
+    };
 
     render() {
         const { initialValues, open } = this.props;
-        const { values, errors } = this.state;
+        const { values, errors, submitting, submitError } = this.state;
 
         return (
             <Dialog
@@ -84,6 +110,7 @@ class HousingForm extends React.Component {
                         <Grid container spacing={16}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
+                                    required
                                     label={"Наименование"}
                                     value={values.title}
                                     margin={"dense"}
@@ -96,8 +123,10 @@ class HousingForm extends React.Component {
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField
+                                    required
                                     label={"Этажность"}
                                     type={"number"}
+                                    inputProps={{ min: 1, max: 100, step: 1 }}
                                     value={values.num_of_floors}
                                     margin={"dense"}
                                     fullWidth
@@ -109,6 +138,7 @@ class HousingForm extends React.Component {
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
+                                    required
                                     label={"Описание"}
                                     value={values.description}
                                     margin={"dense"}
@@ -124,10 +154,12 @@ class HousingForm extends React.Component {
                             </Grid>
                         </Grid>
                     </form>
+                    {submitError && <ErrorMessage description={submitError} extended={true}/>} {/*title={} description={} extended={}*/}
                 </DialogContent>
                 <DialogActions>
                     <Button
                         color={"primary"}
+                        disabled={submitting}
                         onClick={this.handleCancel}
                     >
                         Отмена
@@ -136,6 +168,8 @@ class HousingForm extends React.Component {
                         variant={"contained"}
                         color={"primary"}
                         form={"housing-form"}
+                        type={"submit"}
+                        disabled={submitting}
                     >
                         {!initialValues ? 'Добавить' : 'Сохранить'}
                     </Button>
@@ -160,6 +194,11 @@ HousingForm.propTypes = {
      * Fired when form need to be closed
      */
     onClose: PropTypes.func.isRequired,
+
+    /**
+     * Fired when form success submitted
+     */
+    onSuccess: PropTypes.func.isRequired,
 };
 
 export default HousingForm;

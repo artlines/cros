@@ -12,20 +12,24 @@ import {
     TableBody,
     TableRow,
     TableCell,
-
 } from "@material-ui/core";
 import map from "lodash/map";
-
+import ConfirmDialog from '../utils/ConfirmDialog';
 
 class HousingCard extends React.PureComponent {
 
     render() {
-        const { housing: { id, num_of_floors, title, description, abode_info } }  = this.props;
+        const {
+            housing: { id, num_of_floors, title, description, abode_info },
+            onEdit, onDelete,
+        }  = this.props;
 
         return (
             <Card>
                 <CardContent>
                     <Typography variant={`h5`} gutterBottom>{title}</Typography>
+                    <Typography variant={`subtitle1`}>Этажность</Typography>
+                    <Typography paragraph>{num_of_floors}</Typography>
                     {description &&
                         <div>
                             <Typography variant={`subtitle1`}>Описание</Typography>
@@ -53,7 +57,11 @@ class HousingCard extends React.PureComponent {
                 <CardActions>
                     <Grid container justify={`space-between`}>
                         <Grid item>
-
+                            <Button onClick={() => onEdit(id)}>Редактировать</Button>
+                            <ConfirmDialog
+                                trigger={<Button>Удалить</Button>}
+                                onConfirm={() => onDelete(id)}
+                            />
                         </Grid>
                         <Grid item>
                             <Button>Шахматка</Button>
@@ -80,6 +88,8 @@ HousingCard.propTypes = {
             })
         ),
     }),
+    onEdit:     PropTypes.func.isRequired,
+    onDelete:   PropTypes.func.isRequired,
 };
 
 export default HousingCard;
