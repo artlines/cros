@@ -16,7 +16,6 @@ export default class API {
         try {
             const response = await request
                 .get(`${this.apiHost}/${endPoint}`)
-                .type('json')
                 .query(data);
             return response.body;
         } catch (err) {

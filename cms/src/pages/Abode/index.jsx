@@ -1,13 +1,11 @@
 import React from "react";
-import PropTypes from "prop-types";
 import {
     Grid,
     Typography,
     Fab,
 } from "@material-ui/core";
-import { withTheme } from "@material-ui/core/styles";
-import LibraryAddIcon from "@material-ui/icons/LibraryAdd";
 import map from "lodash/map";
+import AddButton from '../../components/utils/AddButton';
 import HousingCard from "../../components/Abode/HousingCard";
 import HousingForm from "../../components/Abode/HousingForm";
 import find from 'lodash/find';
@@ -36,7 +34,9 @@ class Abode extends React.Component {
 
     loadData = () => {
         this.setState({isFetching: true, form: {...this.state.form, open: false}});
-        api.get(`housing`).then(housing => this.setState({housing, isFetching: false}));
+        api.get(`housing`).then(res => {
+            this.setState({housing: res.items, isFetching: false})
+        });
     };
 
     handleCloseHousingForm = () => this.setState({form: {...this.state.form, open: false}});
@@ -71,8 +71,7 @@ class Abode extends React.Component {
     };
 
     render() {
-        const { theme } = this.props;
-        const { housing, error, isFetching, form: {open, initialValues } } = this.state;
+        const { housing, error, isFetching, form: { open, initialValues } } = this.state;
 
         if (isFetching) {
             return (<span>Loading...</span>); // TODO: return loader
@@ -93,16 +92,7 @@ class Abode extends React.Component {
                                 <Typography variant={`h5`} component={`span`}>Корпуса для проживания</Typography>
                             </Grid>
                             <Grid item>
-                                <Fab
-                                    size="medium"
-                                    variant="extended"
-                                    color="primary"
-                                    aria-label="Add"
-                                    onClick={this.openAddForm}
-                                >
-                                    <LibraryAddIcon style={{ marginRight: theme.spacing.unit }}/>
-                                    Добавить корпус
-                                </Fab>
+                                <AddButton onClick={this.openAddForm} title={`Добавить корпус`}/>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -122,11 +112,4 @@ class Abode extends React.Component {
     }
 }
 
-Abode.propTypes = {
-    /**
-     * MuiTheme object
-     */
-    theme: PropTypes.object.isRequired,
-};
-
-export default withTheme()(Abode);
+export default Abode;

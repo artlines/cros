@@ -65,7 +65,7 @@ ConfirmDialog.propTypes = {
     cancel:     PropTypes.string,
     onCancel:   PropTypes.func,
     onConfirm:  PropTypes.func,
-    trigger:    PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+    trigger:    PropTypes.node,
 };
 
 ConfirmDialog.defaultProps = {

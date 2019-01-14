@@ -1,6 +1,7 @@
 import Home from '../pages/Home';
 import AbodeIndex from '../pages/Abode/index';
 import AbodeSettings from '../pages/Abode/Settings';
+import AbodeHousing from '../pages/Abode/Housing';
 import NotFound from '../pages/NotFound';
 import RoomServiceIcon from '@material-ui/icons/RoomService';
 
@@ -30,11 +31,18 @@ export default [
         path: '/cms/abode/settings',
         component: AbodeSettings,
         exact: true,
-        title: 'Настройка расселения',
+        title: 'Расселение',
         menuItem: {
             Icon: RoomServiceIcon,
             title: 'Настройка расселения',
         },
+        role: 'ROLE_SETTLEMENT_MANAGER',
+    },
+    {
+        path: '/cms/abode/housing/:id',
+        component: AbodeHousing,
+        exact: true,
+        title: 'Расселение',
         role: 'ROLE_SETTLEMENT_MANAGER',
     },
     {

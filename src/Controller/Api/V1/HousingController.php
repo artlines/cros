@@ -3,6 +3,7 @@
 namespace App\Controller\Api\V1;
 
 use App\Entity\Abode\Housing;
+use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
@@ -10,32 +11,32 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
  * Class HousingController
  * @package App\Controller\Api\V1
  *
- * @Route("/api/v1/", name="api_v1__housing_")
+ * @Route("/api/v1/", name="api_v1__housing__")
  * @IsGranted("ROLE_SETTLEMENT_MANAGER")
  */
 class HousingController extends ApiController
 {
     /**
-     * @Route("housing", methods={"GET"}, name="all")
+     * @Route("housing", methods={"GET"}, name="get_all")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function getAll()
     {
-        /** @var Housing[] $items */
-        $items = $this->em->getRepository(Housing::class)->findAll();
+        /** @var Housing[] $housings */
+        $housings = $this->em->getRepository(Housing::class)->findAll();
 
-        $list = [];
-        foreach ($items as $item) {
-            $list[] = $this->getResponseItem($item);
+        $items = [];
+        foreach ($housings as $housing) {
+            $items[] = $this->getResponseItem($housing);
         }
 
-        return $this->success($list);
+        return $this->success(['items' => $items, 'total_count' => count($items)]);
     }
 
     /**
-     * @Route("housing/{id}", requirements={"id": "\d+"}, methods={"GET"}, name="one")
+     * @Route("housing/{id}", requirements={"id": "\d+"}, methods={"GET"}, name="get_one")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param $id
@@ -43,8 +44,12 @@ class HousingController extends ApiController
      */
     public function getOne($id)
     {
-        /** @var Housing $housing */
-        $housing = $this->findEntity($id);
+        try {
+            /** @var Housing $housing */
+            $housing = $this->findEntity($id);
+        } catch (EntityNotFoundException $e) {
+            return $this->notFound();
+        }
 
         $item = $this->getResponseItem($housing);
 
@@ -85,8 +90,12 @@ class HousingController extends ApiController
      */
     public function update($id)
     {
-        /** @var Housing $housing */
-        $housing = $this->findEntity($id);
+        try {
+            /** @var Housing $housing */
+            $housing = $this->findEntity($id);
+        } catch (EntityNotFoundException $e) {
+            return $this->notFound();
+        }
 
         $housing->setTitle($this->requestData['title']);
         $housing->setDescription($this->requestData['description']);
@@ -111,7 +120,11 @@ class HousingController extends ApiController
      */
     public function delete($id)
     {
-        $item = $this->findEntity($id);
+        try {
+            $item = $this->findEntity($id);
+        } catch (EntityNotFoundException $e) {
+            return $this->notFound();
+        }
 
         $this->em->remove($item);
         $this->em->flush();
@@ -123,11 +136,12 @@ class HousingController extends ApiController
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param $id
      * @return null|object|\Symfony\Component\HttpFoundation\JsonResponse
+     * @throws EntityNotFoundException
      */
     private function findEntity($id)
     {
         if (!$item = $this->em->getRepository(Housing::class)->find($id)) {
-            return $this->notFound();
+            throw new EntityNotFoundException();
         }
 
         return $item;

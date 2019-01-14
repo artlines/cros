@@ -3,6 +3,7 @@
 namespace App\Controller\Api\V1;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -19,19 +20,24 @@ class ApiController extends AbstractController
     /** @var Request */
     protected $request;
 
+    /** @var LoggerInterface */
+    protected $logger;
+
     /** @var array */
     protected $requestData;
 
     /**
      * ApiController constructor.
      * @param EntityManagerInterface $entityManager
+     * @param LoggerInterface $logger
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, LoggerInterface $logger)
     {
-        $this->em           = $entityManager;
-        $this->request      = Request::createFromGlobals();
+        $this->em       = $entityManager;
+        $this->logger   = $logger;
+        $this->request  = Request::createFromGlobals();
 
-        $this->requestData  = $this->request->isMethod('GET') || $this->request->isMethod('DELETE')
+        $this->requestData = $this->request->isMethod('GET') || $this->request->isMethod('DELETE')
             ? $this->request->query->all()
             : $this->parseJsonRequest();
     }
@@ -43,9 +49,7 @@ class ApiController extends AbstractController
      */
     protected function success(array $data = [])
     {
-        $code = empty($data) ? 204 : 200;
-
-        return $this->json($data, $code);
+        return $this->json($data, 200);
     }
 
     /**
@@ -85,7 +89,8 @@ class ApiController extends AbstractController
      */
     protected function exception(\Exception $e)
     {
-        return $this->_error($e->getMessage());
+        $this->logger->error('[API] File: '.$e->getFile().' | Line: '.$e->getLine().' | Message: '.$e->getMessage());
+        return $this->_error('Непредвиденная ошибка. Пожалуйста, обратитесь к администратору и уточните время и действие, после которого возникла ошибка.');
     }
 
     /**

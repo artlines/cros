@@ -65,12 +65,13 @@ class HousingForm extends React.Component {
     };
 
     handleSubmit = event => {
+        event.preventDefault();
+
         this.setState({
             submitting: true,
             submitError: false,
         });
 
-        event.preventDefault();
         const { values } = this.state;
 
         /**
