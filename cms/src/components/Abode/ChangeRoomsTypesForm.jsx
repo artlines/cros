@@ -156,7 +156,7 @@ class ChangeRoomsTypesForm extends React.Component {
                                                     onChange={this.handleChange('rooms', r.id)}
                                                     icon={<CheckBoxOutlineBlankIcon fontSize="small"/>}
                                                     checkedIcon={<CheckBoxIcon fontSize="small"/>}
-                                                    checked={values.rooms.indexOf(r.id) !== -1}
+                                                    checked={values.rooms && values.rooms.indexOf(r.id) !== -1}
                                                     value={`checked`}
                                                 />
                                             }
