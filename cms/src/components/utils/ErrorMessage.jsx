@@ -48,7 +48,7 @@ ErrorMessage.propTypes = {
 };
 
 ErrorMessage.defaultProps = {
-    title:          'Произошла ошибка. Обратитесь к администратору',
+    title:          'Произошла ошибка',
     description:    '',
     extended:       false,
 };

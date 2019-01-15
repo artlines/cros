@@ -5,15 +5,21 @@ import {
     Grid,
     Typography,
 } from '@material-ui/core';
+import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
+import FabButton from '../../components/utils/FabButton';
 import ApartmentsAddForm from '../../components/Abode/ApartmentsAddForm';
-import AddButton from '../../components/utils/AddButton';
+import ChangeRoomsTypesForm from "../../components/Abode/ChangeRoomsTypesForm";
 
 class Housing extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            form: {
+            ApartmentsAdd: {
+                initialValues: {},
+                open: false,
+            },
+            ChangeRoomsTypes: {
                 initialValues: {},
                 open: false,
             },
@@ -22,32 +28,41 @@ class Housing extends React.Component {
 
     componentDidMount() {
         this.props.fetchHousing();
+        this.props.fetchRooms();
         this.props.loadData();
     }
 
     openApartmentsAddForm = () => {
         const { housing: { id: housing_id } } = this.props;
         this.setState({
-            form: {
-                ...this.state.form,
+            ApartmentsAdd: {
+                ...this.state.ApartmentsAdd,
                 open: true,
                 initialValues: {housing_id},
             },
         });
     };
+    handleCloseApartmentsAddForm = () => this.setState({ApartmentsAdd: {...this.state.ApartmentsAdd, open: false}});
 
-    handleCloseApartmentsAddForm = () => this.setState({form: {...this.state.form, open: false}});
+    openChangeRoomsTypesForm = () => this.setState({ChangeRoomsTypes: { ...this.state.ChangeRoomsTypes, open: true }});
+    handleCloseChangeRoomsTypesForm = () => this.setState({ChangeRoomsTypes: {...this.state.ChangeRoomsTypes, open: false}});
 
     render() {
         const { housing: { isFetching, error, id, title } } = this.props;
-        const { form: { initialValues, open } } = this.state;
+        const { ApartmentsAdd, ChangeRoomsTypes } = this.state;
 
         return (
             <div>
                 <ApartmentsAddForm
-                    open={open}
-                    initialValues={initialValues}
+                    open={ApartmentsAdd.open}
+                    initialValues={ApartmentsAdd.initialValues}
                     onClose={this.handleCloseApartmentsAddForm}
+                    onSuccess={() => {}}
+                />
+                <ChangeRoomsTypesForm
+                    open={ChangeRoomsTypes.open}
+                    initialValues={ChangeRoomsTypes.initialValues}
+                    onClose={this.handleCloseChangeRoomsTypesForm}
                     onSuccess={() => {}}
                 />
                 <Grid container spacing={24}>
@@ -57,7 +72,21 @@ class Housing extends React.Component {
                                 <Typography variant={`h5`} component={`span`}>{title}</Typography>
                             </Grid>
                             <Grid item>
-                                <AddButton title={`Добавить апартаменты`} onClick={this.openApartmentsAddForm}/>
+                                <Grid container spacing={8}>
+                                    <Grid item>
+                                        <FabButton
+                                            title={`Добавить номера`}
+                                            onClick={this.openApartmentsAddForm}
+                                        />
+                                    </Grid>
+                                    <Grid item>
+                                        <FabButton
+                                            title={`Смена типа комнат`}
+                                            onClick={this.openChangeRoomsTypesForm}
+                                            IconComponent={CompareArrowsIcon}
+                                        />
+                                    </Grid>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -77,6 +106,10 @@ const mapDispatchToProps = (dispatch, ownProps) =>
         fetchHousing: () => {
             const id = Number(ownProps.match.params.id);
             dispatch(abode.fetchHousing(id));
+        },
+        fetchRooms: () => {
+            const id = Number(ownProps.match.params.id);
+            dispatch(abode.fetchRooms({housing: id}));
         },
         loadData: () => {
             dispatch(abode.fetchApartmentTypes());

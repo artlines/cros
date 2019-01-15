@@ -50,12 +50,10 @@ export default class API {
             case 401:
                 window.location.replace(this.authPath);
                 break;
-            case 500:
+            default:
                 if (err.response.body && err.response.body.error) {
                     errorMessage = err.response.body.error;
                 }
-                break;
-            default:
                 break;
         }
 

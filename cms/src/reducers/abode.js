@@ -7,28 +7,34 @@ export const ABODE = {
 
     REQUEST_ROOM_TYPE: "ABODE_REQUEST_ROOM_TYPE",
     RECEIVE_ROOM_TYPE: "ABODE_RECEIVE_ROOM_TYPE",
+
+    REQUEST_ROOMS: "ABODE_REQUEST_ROOMS",
+    RECEIVE_ROOMS: "ABODE_RECEIVE_ROOMS",
+};
+
+const _initialObjectState = {
+    items: [],
+    item: {
+        isFetching: false,
+        error: false,
+    },
+    total_count: 0,
+    isFetching: false,
+    error: false,
 };
 
 const initialState = {
     housing: {
-        items: [],
-        item: {
-            isFetching: false,
-            error: false,
-        },
-        total_count: 0,
-        isFetching: false,
-        error: false,
+        ..._initialObjectState
     },
     room_type: {
-        items: [],
-        isFetching: false,
-        error: false,
+        ..._initialObjectState
     },
     apartment_type: {
-        items: [],
-        isFetching: false,
-        error: false,
+        ..._initialObjectState
+    },
+    room: {
+        ..._initialObjectState
     },
 };
 
@@ -58,6 +64,24 @@ export default (state = initialState, action) => {
                         isFetching: false,
                         ...payload,
                     },
+                },
+            };
+        case ABODE.REQUEST_ROOMS:
+            return {
+                ...state,
+                room: {
+                    ...state.room,
+                    isFetching: true,
+                    error: false,
+                },
+            };
+        case ABODE.RECEIVE_ROOMS:
+            return {
+                ...state,
+                room: {
+                    ...state.room,
+                    isFetching: false,
+                    ...payload,
                 },
             };
         case ABODE.REQUEST_APARTMENT_TYPE:

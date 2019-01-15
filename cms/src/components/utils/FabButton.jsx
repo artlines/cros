@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Fab} from '@material-ui/core';
 import {withTheme} from '@material-ui/core/styles';
-import LibraryAddIcon from "@material-ui/icons/LibraryAdd";
+import AddIcon from "@material-ui/icons/Add";
 
-class AddButton extends React.PureComponent {
+class FabButton extends React.PureComponent {
     render() {
-        const { theme, title, onClick } = this.props;
+        const { theme, title, onClick, IconComponent } = this.props;
 
         return (
             <Fab
@@ -16,14 +16,16 @@ class AddButton extends React.PureComponent {
                 aria-label="Add"
                 onClick={onClick}
             >
-                <LibraryAddIcon style={{ marginRight: theme.spacing.unit }}/>
+                {IconComponent &&
+                    <IconComponent style={{ marginRight: theme.spacing.unit }}/>
+                }
                 {title}
             </Fab>
         );
     }
 }
 
-AddButton.propTypes = {
+FabButton.propTypes = {
     /**
      * MuiTheme object
      */
@@ -36,10 +38,15 @@ AddButton.propTypes = {
      * Fired when button is clicked
      */
     onClick: PropTypes.func.isRequired,
+    /**
+     * Button icon
+     */
+    IconComponent: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]),
 };
 
-AddButton.defaultProps = {
+FabButton.defaultProps = {
     title: 'Добавить',
+    IconComponent: AddIcon,
 };
 
-export default withTheme()(AddButton);
+export default withTheme()(FabButton);

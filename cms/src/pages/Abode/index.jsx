@@ -5,7 +5,7 @@ import {
     Fab,
 } from "@material-ui/core";
 import map from "lodash/map";
-import AddButton from '../../components/utils/AddButton';
+import AddButton from '../../components/utils/FabButton';
 import HousingCard from "../../components/Abode/HousingCard";
 import HousingForm from "../../components/Abode/HousingForm";
 import find from 'lodash/find';

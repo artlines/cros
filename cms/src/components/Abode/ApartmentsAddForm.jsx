@@ -16,6 +16,7 @@ import find from 'lodash/find';
 import map from 'lodash/map';
 import times from 'lodash/times';
 import isEqual from 'lodash/isEqual';
+import isEmpty from 'lodash/isEmpty';
 import API from '../../libs/api';
 import ErrorMessage from "../utils/ErrorMessage";
 
@@ -48,7 +49,7 @@ class ApartmentsAddForm extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, prevContext) {
-        const { open, initialValues, apartment_types } = this.props;
+        const { open, initialValues } = this.props;
         const { values } = this.state;
 
         /**
@@ -57,60 +58,47 @@ class ApartmentsAddForm extends React.Component {
         if (!isEqual(prevProps.initialValues, initialValues) || (open === true && prevProps.open !== open)) {
             this.setState({values: {...values, ...initialValues}})
         }
-
-        /**
-         * Check for updates apartment_type field and manage room_type fields
-         */
-        if (prevState.values.type !== values.type) {
-            console.log(`handleChangeApartmentType and generate roomTypes initial values`);
-            const currentApartmentType = find(apartment_types, {id: values.type});
-            let roomTypeValues = {};
-            times(currentApartmentType.max_rooms, i => {
-                const fieldName = `room_type[${i}]`;
-                roomTypeValues[fieldName] = '';
-            });
-            this.setState({values: {...values, ...roomTypeValues}});
-        }
     }
 
-    handleChange = field => event => {
+    handleChange = (field, index = null) => event => {
         const { values, errors } = this.state;
-        delete(errors[field]);
+
+        const update = index !== null ? { [field]: {...values[field], [index]: event.target.value }} : { [field]: event.target.value };
+
+        index !== null ? (errors[field] && delete(errors[field][index])) : delete(errors[field]);
+        isEmpty(errors[field]) && delete(errors[field]);
 
         this.setState({
             values: {
                 ...values,
-                [field]: event.target.value,
+                ...update
             },
             errors,
         });
     };
 
     handleCancel = () => {
-        this.setState({values: {}, errors: {}});
         this.props.onClose();
+        this.setState({values: {}, errors: {}});
     };
 
     handleSubmit = event => {
         event.preventDefault();
+        const { values } = this.state;
+
+        if (!this.validate()) {
+            return;
+        }
 
         this.setState({
             submitting: true,
             submitError: false,
         });
 
-        const { values } = this.state;
-
-        /**
-         * Create or update entity
-         */
-        // values.id
-        //     ? api.put(`housing/${values.id}`, values)
-        //         .then(this.handleSuccessSubmit)
-        //         .catch(this.handleErrorSubmit)
-        //     : api.post(`housing/new`, values)
-        //         .then(this.handleSuccessSubmit)
-        //         .catch(this.handleErrorSubmit);
+        /** Create or update entity */
+        api.post(`apartment/generate`, values)
+            .then(this.handleSuccessSubmit)
+            .catch(this.handleErrorSubmit);
     };
 
     handleSuccessSubmit = () => {
@@ -120,6 +108,40 @@ class ApartmentsAddForm extends React.Component {
 
     handleErrorSubmit = (err) => {
         this.setState({submitting: false, submitError: err.message});
+    };
+
+    validate = () => {
+        const { apartment_types } = this.props;
+        const { values, errors } = this.state;
+        const currentApartmentType = find(apartment_types, {id: values.type});
+        let errorsUpdate = {};
+
+        /**
+         * Check room_types
+         */
+        if (Object.values(values.room_types).length !== currentApartmentType.max_rooms) {
+            times(currentApartmentType.max_rooms, i => {
+                if (!values.room_types[i]) {
+                    if (!errorsUpdate.room_types) {
+                        errorsUpdate.room_types = {};
+                    }
+                    errorsUpdate.room_types[i] = 'Укажите тип комнаты';
+                }
+            });
+        }
+
+        this.setState({
+            errors: {
+                ...errors,
+                ...errorsUpdate
+            }
+        });
+
+        if (!isEmpty(errorsUpdate)) {
+            return false;
+        }
+
+        return true;
     };
 
     render() {
@@ -132,9 +154,9 @@ class ApartmentsAddForm extends React.Component {
                 fullWidth={true}
                 maxWidth={"sm"}
             >
-                <DialogTitle>Массовое добавление апартаментов</DialogTitle>
+                <DialogTitle>Массовое добавление номеров</DialogTitle>
                 <DialogContent>
-                    <form onSubmit={this.handleSubmit} id={"housing-form"}>
+                    <form onSubmit={this.handleSubmit} id={"apartments-add-form"}>
                         <Grid container spacing={16}>
                             <Grid item xs={12} sm={4}>
                                 <TextField
@@ -208,30 +230,26 @@ class ApartmentsAddForm extends React.Component {
                             <Grid item xs={12}>
                                 <Typography>Укажите типы комнат в номере</Typography>
                             </Grid>
-                            {times(find(apartment_types, {id: values.type}).max_rooms, i => {
-                                const fieldName = `room_type[${i}]`;
-
-                                return (
-                                    <Grid key={i} item xs={12}>
-                                        <TextField
-                                            required
-                                            label={`Тип комнаты ${i+1}`}
-                                            value={values[fieldName]}
-                                            margin={"dense"}
-                                            fullWidth
-                                            variant={"outlined"}
-                                            onChange={this.handleChange(fieldName)}
-                                            error={!!errors[fieldName]}
-                                            helperText={errors[fieldName]}
-                                            select={true}
-                                        >
-                                            {map(room_types, rt =>
-                                                <MenuItem key={rt.id} value={rt.id}>{rt.title}</MenuItem>
-                                            )}
-                                        </TextField>
-                                    </Grid>
-                                );
-                            })}
+                            {times(find(apartment_types, {id: values.type}).max_rooms, i =>
+                                <Grid key={i} item xs={12}>
+                                    <TextField
+                                        required
+                                        label={`Тип комнаты #${i+1}`}
+                                        value={values.room_types[i]}
+                                        margin={"dense"}
+                                        fullWidth
+                                        variant={"outlined"}
+                                        onChange={this.handleChange('room_types', i)}
+                                        error={errors.room_types && !!errors.room_types[i] || false}
+                                        helperText={errors.room_types && errors.room_types[i] || ''}
+                                        select={true}
+                                    >
+                                        {map(room_types, rt =>
+                                            <MenuItem key={rt.id} value={rt.id}>{rt.title}</MenuItem>
+                                        )}
+                                    </TextField>
+                                </Grid>
+                            )}
                         </Grid>
                         }
 
@@ -249,7 +267,7 @@ class ApartmentsAddForm extends React.Component {
                     <Button
                         variant={"contained"}
                         color={"primary"}
-                        form={"housing-form"}
+                        form={"apartments-add-form"}
                         type={"submit"}
                         disabled={submitting}
                     >
