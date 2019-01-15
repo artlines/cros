@@ -5,6 +5,7 @@ namespace App\Manager;
 use App\Entity\Abode\Apartment;
 use App\Entity\Abode\ApartmentType;
 use App\Entity\Abode\Housing;
+use App\Entity\Abode\Room;
 use App\Entity\Abode\RoomType;
 use App\Repository\Abode\ApartmentRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -47,7 +48,7 @@ class ApartmentGenerator
     public function generate($num_from, $num_to, $floor, ApartmentType $type, Housing $housing, $roomTypes)
     {
         // check that $num_to greater than $num_from
-        if ($num_from < $num_to) {
+        if ($num_from > $num_to) {
             throw new \LogicException('Значение начального номера не может быть меньше конечного');
         }
 
@@ -84,6 +85,16 @@ class ApartmentGenerator
 
                 $this->em->persist($apartment);
                 $this->em->flush();
+
+                foreach ($roomTypes as $roomType) {
+                    $room = new Room();
+                    $room->setType($roomType);
+                    $room->setApartment($apartment);
+
+                    $this->em->persist($room);
+                    $this->em->flush();
+                }
+
             }
 
             $this->em->commit();

@@ -34,7 +34,7 @@ class Place
     /**
      * @var Room
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Abode\Room")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Abode\Room", inversedBy="places")
      * @ORM\JoinColumn(name="room_id", referencedColumnName="id", nullable=false)
      */
     private $room;

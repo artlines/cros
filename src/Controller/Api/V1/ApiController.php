@@ -65,11 +65,12 @@ class ApiController extends AbstractController
 
     /**
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param string $msg
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    protected function notFound()
+    protected function notFound($msg = 'Resource not found.')
     {
-        return $this->_error('Resource not found.', 404);
+        return $this->_error($msg, 404);
     }
 
     /**

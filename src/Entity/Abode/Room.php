@@ -2,6 +2,7 @@
 
 namespace App\Entity\Abode;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -9,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @package App\Entity\Abode
  *
  * @ORM\Table(schema="abode", name="room")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\Abode\RoomRepository")
  */
 class Room
 {
@@ -37,6 +38,21 @@ class Room
      * @ORM\JoinColumn(name="apartment_id", referencedColumnName="id", nullable=false)
      */
     private $apartment;
+
+    /**
+     * @var ArrayCollection|Place[]
+     *
+     * @ORM\OneToMany(targetEntity="Place", mappedBy="room")
+     */
+    private $places;
+
+    /**
+     * Room constructor.
+     */
+    public function __construct()
+    {
+        $this->places = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -76,5 +92,21 @@ class Room
     public function setApartment($apartment)
     {
         $this->apartment = $apartment;
+    }
+
+    /**
+     * @return Place[]|ArrayCollection
+     */
+    public function getPlaces()
+    {
+        return $this->places;
+    }
+
+    /**
+     * @param Place[]|ArrayCollection $places
+     */
+    public function setPlaces($places)
+    {
+        $this->places = $places;
     }
 }
