@@ -93,6 +93,13 @@ class Organization
     private $users;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="comment", type="text", nullable=true)
+     */
+    private $comment;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
@@ -370,4 +377,29 @@ class Organization
     {
         return $this->hidden;
     }
+
+    /**
+     * Set comment
+     *
+     * @param string $comment
+     *
+     * @return Organization
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Get comment
+     *
+     * @return string
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
 }

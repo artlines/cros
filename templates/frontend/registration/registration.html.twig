@@ -20,13 +20,13 @@
                 {{ form_row(form.name) }}
                 {{ form_row(form.city) }}
             </div>
-            <div class="row">
-                {{ form_row(form.email) }}
-                {{ form_row(form.email_confirm) }}
-            </div>
-            <div class="row">
-                {{ form_row(form.username) }}
-            </div>
+            {#<div class="row">#}
+                {#{{ form_row(form.email) }}#}
+                {#{{ form_row(form.email_confirm) }}#}
+            {#</div>#}
+            {#<div class="row">#}
+                {#{{ form_row(form.username) }}#}
+            {#</div>#}
             <div class="row">
                 {{ form_row(form.inn) }}
                 {{ form_row(form.kpp) }}
@@ -53,13 +53,13 @@
             {{ form_row(form.name) }}
             {{ form_row(form.city) }}
         </div>
-        <div class="row">
-            {{ form_row(form.email) }}
-            {{ form_row(form.email_confirm) }}
-        </div>
-        <div class="row">
-            {{ form_row(form.username) }}
-        </div>
+        {#<div class="row">#}
+            {#{{ form_row(form.email) }}#}
+            {#{{ form_row(form.email_confirm) }}#}
+        {#</div>#}
+        {#<div class="row">#}
+            {#{{ form_row(form.username) }}#}
+        {#</div>#}
         <div class="row">
             {{ form_row(form.inn) }}
             {{ form_row(form.kpp) }}
@@ -72,7 +72,7 @@
             {{ form_row(form.comment) }}
         </div>
 
-        {{ form_row(form.manager) }}
+        {#{{ form_row(form.manager) }}#}
         {{ form_row(form.save) }}
 
         {{ form_end(form) }}

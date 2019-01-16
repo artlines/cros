@@ -49,17 +49,17 @@ class RegistrationController extends AbstractController
                 $org = new Organization();
                 /** @var Form $form */
                 $form = $this->createFormBuilder($org)
-                    ->add('name', TextType::class, array('label' => 'Название организации', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'placeholder' => 'Ёлки-телеком', 'data-helper' => 'Ваш основной Торговый знак, будет использоваться на бейджах и визитках')))
+                    ->add('name', TextType::class, array('label' => 'Название организации', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'placeholder' => 'Ёлки-телеком', 'data-helper' => 'Ваш основной Торговый знак, будет использоваться на бейджах и визитках'), 'required' => true))
                     ->add('city', TextType::class, array('label' => 'City', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3')))
-                    ->add('email', EmailType::class, array('label' => 'E-mail', 'required' => true, 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'data-helper' => 'Для общих уведомлений, будет использоваться в качестве логина для доступа в личный кабинет')))
-                    ->add('email_confirm', EmailType::class, array('label' => 'Подтверждение E-mail', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => true, 'mapped' => false))
-                    ->add('username', TextType::class, array('label' => 'Телефон', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'data-helper' => 'Общий телефон для связи с Компанией', 'pattern' => '[\+][0-9]{11,}', 'title' => "Номер телефона в федеральном формате (+79990009999), без пробелов", 'placeholder' => '+79990009999')))
+//                    ->add('email', EmailType::class, array('label' => 'E-mail', 'required' => true, 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'data-helper' => 'Для общих уведомлений, будет использоваться в качестве логина для доступа в личный кабинет')))
+//                    ->add('email_confirm', EmailType::class, array('label' => 'Подтверждение E-mail', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => true, 'mapped' => false))
+//                    ->add('username', TextType::class, array('label' => 'Телефон', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'data-helper' => 'Общий телефон для связи с Компанией', 'pattern' => '[\+][0-9]{11,}', 'title' => "Номер телефона в федеральном формате (+79990009999), без пробелов", 'placeholder' => '+79990009999')))
                     ->add('inn', TextType::class, array('label' => 'ИНН', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => true))
                     ->add('kpp', TextType::class, array('label' => 'КПП', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => true))
-                    ->add('requisites', TextareaType::class, array('label' => 'Реквизиты', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'data-helper' => 'Для выставления счета')))
-                    ->add('address', TextareaType::class, array('label' => 'Address', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => false))
+                    ->add('requisites', TextareaType::class, array('label' => 'Реквизиты', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'data-helper' => 'Для выставления счета'), 'required' => true))
+                    ->add('address', TextareaType::class, array('label' => 'Address', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => true))
                     ->add('comment', TextareaType::class, array('label' => 'Комментарий', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => false))
-                    ->add('manager', HiddenType::class, array('label' => 'Manager', 'mapped' => false, 'required' => false, 'data' => $man_id))
+//                    ->add('manager', HiddenType::class, array('label' => 'Manager', 'mapped' => false, 'required' => false, 'data' => $man_id))
                     ->add('save', SubmitType::class, array('label' => 'Продолжить', 'attr' => array('class' => 'btn-success')))
                     ->getForm();
 
@@ -71,22 +71,22 @@ class RegistrationController extends AbstractController
                     /** @var Organization $org */
                     $org = $form->getData();
 
-                    if($org->getEmail() != $form->get('email_confirm')->getData()){
-                        $result = array(
-                            'element' => 'email_confirm',
-                            'status' => 'danger',
-                            'text' => 'E-mail адреса не совпадают!',
-                        );
-                        return $this->render('frontend/registration/registration.html.twig', array(
-
-                            'form' => $form->createView(),
-                            'result' => $result,
-                        ));
-                    }
+//                    if($org->getEmail() != $form->get('email_confirm')->getData()){
+//                        $result = array(
+//                            'element' => 'email_confirm',
+//                            'status' => 'danger',
+//                            'text' => 'E-mail адреса не совпадают!',
+//                        );
+//                        return $this->render('frontend/registration/registration.html.twig', array(
+//
+//                            'form' => $form->createView(),
+//                            'result' => $result,
+//                        ));
+//                    }
 
                     /** @var Organization $check_org */
                     $check_org = $this->getDoctrine()
-                        ->getRepository('App:Organization')
+                        ->getRepository('App:Participating\Organization')
                         ->findOneBy(array('email' => $org->getEmail()));
 
                     if($check_org != null){
@@ -105,7 +105,7 @@ class RegistrationController extends AbstractController
                     else{
                         /** @var Organization $check_org */
                         $check_org = $this->getDoctrine()
-                            ->getRepository('App:Organization')
+                            ->getRepository('App:Participating\Organization')
                             ->findOneBy(array('username' => $org->getUsername()));
 
                         if($check_org != null){
@@ -127,7 +127,7 @@ class RegistrationController extends AbstractController
                     $org->setSponsor(false);
 
                     $status = $this->getDoctrine()
-                        ->getRepository('App:OrganizationStatus')
+                        ->getRepository(OrganizationStatus::class)
                         ->find(1);
 
                     $manager_id = $form->get('manager')->getData();
@@ -220,7 +220,7 @@ class RegistrationController extends AbstractController
                 return $this->render('frontend/registration/registration.html.twig', array(
 
                     'form' => $form->createView(),
-                    'manager' => $man_id,
+                    //'manager' => $man_id,
                 ));
             }
 
@@ -266,7 +266,7 @@ class RegistrationController extends AbstractController
 
             /** @var Organization $gorg */
             $gorg = $this->getDoctrine()
-                ->getRepository('App:Organization')
+                ->getRepository('App:Participating\Organization')
                 ->find($this->getUser()->getId());
 
             $ou = count($gorg->getUsers()) + 1;

@@ -181,3 +181,9 @@ input.cs-p-text-white--checked[type="radio"]:checked + * p {
     margin-right: 15px;
     margin-left: 15px;
 }
+
+label.required:after
+{
+    color: #a94442;
+    content: " *";
+}
