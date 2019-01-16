@@ -48,8 +48,12 @@ class Housing extends React.Component {
     handleCloseChangeRoomsTypesForm = () => this.setState({ChangeRoomsTypes: {...this.state.ChangeRoomsTypes, open: false}});
 
     render() {
-        const { housing: { isFetching, error, id, title } } = this.props;
+        const { housing: { isFetching, error, id, title }, fetchRooms, fetchHousing } = this.props;
         const { ApartmentsAdd, ChangeRoomsTypes } = this.state;
+
+        if (isFetching && !id) {
+            return (<div>Loading...</div>);
+        }
 
         return (
             <div>
@@ -57,13 +61,13 @@ class Housing extends React.Component {
                     open={ApartmentsAdd.open}
                     initialValues={ApartmentsAdd.initialValues}
                     onClose={this.handleCloseApartmentsAddForm}
-                    onSuccess={() => {}}
+                    onSuccess={fetchHousing}
                 />
                 <ChangeRoomsTypesForm
                     open={ChangeRoomsTypes.open}
                     initialValues={ChangeRoomsTypes.initialValues}
                     onClose={this.handleCloseChangeRoomsTypesForm}
-                    onSuccess={() => {}}
+                    onSuccess={fetchRooms}
                 />
                 <Grid container spacing={24}>
                     <Grid item xs={12}>

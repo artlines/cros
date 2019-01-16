@@ -35,13 +35,15 @@ class ChangeRoomsTypesForm extends React.Component {
         super(props);
 
         this.state = {
-            values: {
-                room_type: 0,
-                rooms: [],
-            },
+            values: {},
             errors: {},
             submitting: false,
             submitError: false,
+        };
+
+        this.initialValues = {
+            room_type: 0,
+            rooms: [],
         };
     }
 
@@ -59,7 +61,7 @@ class ChangeRoomsTypesForm extends React.Component {
          * Check for updates initialValues
          */
         if (!isEqual(prevProps.initialValues, initialValues) || (open === true && prevProps.open !== open)) {
-            this.setState({values: {...values, ...initialValues}})
+            this.setState({values: {...this.initialValues, ...initialValues}})
         }
     }
 
@@ -94,7 +96,7 @@ class ChangeRoomsTypesForm extends React.Component {
 
     handleCancel = () => {
         this.props.onClose();
-        this.setState({values: {}, errors: {}});
+        this.setState({values: {...this.initialValues}, errors: {}});
     };
 
     handleSubmit = event => {
@@ -115,8 +117,12 @@ class ChangeRoomsTypesForm extends React.Component {
     };
 
     handleSuccessSubmit = () => {
-        this.setState({submitting: false});
         this.props.onSuccess();
+        this.props.onClose();
+        this.setState({
+            values: {...this.initialValues},
+            submitting: false
+        });
     };
 
     handleErrorSubmit = (err) => {
@@ -160,7 +166,7 @@ class ChangeRoomsTypesForm extends React.Component {
                                                     value={`checked`}
                                                 />
                                             }
-                                            label={`(Номер #${r.apartment_num}) ${find(room_types, {id: r.type}).title}`}
+                                            label={`#${r.apartment_num} ${find(room_types, {id: r.type}).title}`}
                                         />
                                     )}
                                 </FormGroup>
@@ -230,6 +236,12 @@ ChangeRoomsTypesForm.propTypes = {
      * Fired when form success submitted
      */
     onSuccess: PropTypes.func.isRequired,
+};
+
+ChangeRoomsTypesForm.defaultProps = {
+    initialValues: {
+
+    },
 };
 
 const mapStateToProps = state =>
