@@ -15,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
  * @package App\Controller\Api\V1
  *
  * @Route("/api/v1/", name="api_v1__apartment__")
+ * @IsGranted("ROLE_SETTLEMENT_MANAGER")
  */
 class ApartmentController extends ApiController
 {

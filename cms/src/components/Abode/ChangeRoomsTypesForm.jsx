@@ -14,6 +14,8 @@ import {
     FormControlLabel,
     FormGroup,
     Checkbox,
+    Typography,
+    Divider,
 } from '@material-ui/core';
 import {
     CheckBox as CheckBoxIcon,
@@ -189,6 +191,18 @@ class ChangeRoomsTypesForm extends React.Component {
                                     )}
                                 </TextField>
                             </Grid>
+                            {values.rooms && values.room_type !== 0 && values.rooms.length > 0 &&
+                            <Grid item xs={12}>
+                                <br/>
+                                <Divider light/>
+                                <br/>
+                                <Typography variant={`subtitle1`}>Сводка</Typography>
+                                <Typography variant={`body2`}>
+                                    Будет конвертировано <b>{values.rooms.length}</b> комнат
+                                    в тип <b>{find(room_types, {id: values.room_type}).title}</b>
+                                </Typography>
+                            </Grid>
+                            }
                         </Grid>
                     </form>
                     {submitError && <ErrorMessage description={submitError} extended={true}/>} {/*title={} description={} extended={}*/}

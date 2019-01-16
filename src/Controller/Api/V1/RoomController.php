@@ -7,8 +7,7 @@ use App\Entity\Abode\Room;
 use App\Entity\Abode\RoomType;
 use App\Manager\RoomConverter;
 use App\Repository\Abode\RoomRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -16,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
  * @package App\Controller\Api\V1
  *
  * @Route("/api/v1/", name="api_v1__room__")
+ * @IsGranted("ROLE_SETTLEMENT_MANAGER")
  */
 class RoomController extends ApiController
 {

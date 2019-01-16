@@ -11,6 +11,7 @@ import {
     TextField,
     MenuItem,
     Typography,
+    Divider,
 } from '@material-ui/core';
 import find from 'lodash/find';
 import map from 'lodash/map';
@@ -148,6 +149,24 @@ class ApartmentsAddForm extends React.Component {
         const { open, apartment_types, room_types } = this.props;
         const { values, errors, submitting, submitError } = this.state;
 
+        let summary = null;
+
+        console.log(`1`);
+        if (values.num_to && values.num_from && values.type !== 0) {
+            const apartType = find(apartment_types, {id: values.type});
+            console.log(`2`);
+
+            if (apartType && Object.values(values.room_types).length === apartType.max_rooms) {
+                console.log(`3`);
+                map(values.room_types, (id, i) => {
+                    const roomType = find(room_types, {id});
+                    return (
+                        <div>#{i+1}: {roomType.title}</div>
+                    );
+                })
+            }
+        }
+
         return (
             <Dialog
                 open={open}
@@ -252,6 +271,25 @@ class ApartmentsAddForm extends React.Component {
                             )}
                         </Grid>
                         }
+
+                        {/*{() => {*/}
+                            {/*console.log(`1`);*/}
+                            {/*if (values.num_to && values.num_from && values.type !== 0) {*/}
+                                {/*const apartType = find(apartment_types, {id: values.type});*/}
+                                {/*console.log(`2`);*/}
+
+                                {/*if (Object.values(values.room_types).length === apartType.max_rooms) {*/}
+                                    {/*console.log(`3`);*/}
+                                    {/*map(values.room_types, id => {*/}
+                                        {/*const roomType = find(room_types, {id});*/}
+                                        {/*return (*/}
+                                            {/*<div>#{i+1}: {roomType.title}</div>*/}
+                                        {/*);*/}
+                                    {/*})*/}
+                                {/*}*/}
+                            {/*}*/}
+                        {/*}}*/}
+
 
                     </form>
                     {submitError && <ErrorMessage description={submitError} extended={true}/>} {/*title={} description={} extended={}*/}
