@@ -4,6 +4,8 @@ namespace App\Controller\Api\V1;
 
 use App\Entity\Abode\Housing;
 use App\Entity\Abode\Room;
+use App\Entity\Abode\RoomType;
+use App\Manager\RoomConverter;
 use App\Repository\Abode\RoomRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -52,10 +54,42 @@ class RoomController extends ApiController
      * @Route("room/convert", name="convert", methods={"POST"})
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param RoomConverter $rc
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function convert()
+    public function convert(RoomConverter $rc)
     {
-        sleep(3);
+        $roomsIds = $this->requestData['rooms'] ?? null;
+        if (!$roomsIds || !is_array($roomsIds)) {
+            return $this->badRequest('Rooms not set as array.');
+        }
+
+        /** @var Room[] $rooms */
+        $rooms = array_map(function ($roomId) {
+            /** @var Room $room */
+            if (!$room = $this->em->find(Room::class, $roomId)) {
+                return $this->notFound('Room with id '.$roomId.' not found.');
+            };
+            return $room;
+        }, $roomsIds);
+
+        $roomTypeId = $this->requestData['room_type'] ?? null;
+        if (!$roomTypeId) {
+            return $this->badRequest('Room type not set.');
+        }
+
+        /** @var RoomType $roomType */
+        if (!$roomType = $this->em->find(RoomType::class, (int) $roomTypeId)) {
+            return $this->notFound('Room type not found');
+        }
+
+        try {
+            $rc->convert($rooms, $roomType);
+        } catch (\LogicException $e) {
+            return $this->badRequest($e->getMessage());
+        } catch (\Exception $e) {
+            return $this->exception($e);
+        }
 
         return $this->success();
     }
