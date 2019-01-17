@@ -1,10 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {Route, Switch} from "react-router-dom";
+import {Route, Switch, withRouter} from "react-router-dom";
 import routes from "config/routes";
 
 class Routes extends React.Component {
-
     render() {
         const { roles } = this.props;
 
@@ -32,9 +31,9 @@ class Routes extends React.Component {
 
 Routes.propTypes = {
     /**
-     * Defined user roles to prevent render not accessed route
+     * Defined user roles to check and prevent render not accessed route
      */
     roles: PropTypes.array.isRequired,
 };
 
-export default Routes;
+export default withRouter(Routes);

@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import { withTheme } from '@material-ui/core/styles';
+import {withTheme} from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Sidebar from 'components/common/Sidebar';
 import Header from 'components/common/Header';
