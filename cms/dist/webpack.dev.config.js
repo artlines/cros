@@ -11,7 +11,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname),
         filename: 'bundle.min.js',
-        publicPath: '/cms'
+        publicPath: '/cms/'
     },
     devServer: {
         hot: true,
@@ -24,7 +24,6 @@ module.exports = {
             errors: true
         },
         compress: true,
-        publicPath: '/cms',
         contentBase: './',
         allowedHosts: ['.nag.how'],
         disableHostCheck: true,
