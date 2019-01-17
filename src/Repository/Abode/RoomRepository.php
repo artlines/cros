@@ -33,6 +33,7 @@ class RoomRepository extends EntityRepository
             ->leftJoin(Apartment::class, 'a', Expr\Join::WITH, 'r.apartment = a')
             ->leftJoin(Housing::class, 'h', Expr\Join::WITH, 'a.housing = h')
             ->where('h = :housing')
+            ->orderBy('a.number', 'ASC')
             ->setParameter('housing', $housing)
             ->getQuery()
             ->setFetchMode(Room::class, 'places', ClassMetadata::FETCH_EAGER)
