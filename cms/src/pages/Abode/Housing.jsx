@@ -11,6 +11,9 @@ import FabButton from '../../components/utils/FabButton';
 import ApartmentsAddForm from '../../components/Abode/ApartmentsAddForm';
 import ChangeRoomsTypesForm from "../../components/Abode/ChangeRoomsTypesForm";
 import ApartmentsTable from "../../components/Abode/ApartmentsTable";
+import API from '../../libs/api';
+
+const api = new API();
 
 class Housing extends React.Component {
     constructor(props) {
@@ -35,10 +38,6 @@ class Housing extends React.Component {
         this.props.fetchRooms();
     }
 
-    componentDidUpdate() {
-        console.log(`Housing::componentDidUpdate`);
-    }
-
     openApartmentsAddForm = () => {
         const { housing: { id: housing_id } } = this.props;
         this.setState({
@@ -53,6 +52,14 @@ class Housing extends React.Component {
 
     openChangeRoomsTypesForm = () => this.setState({ChangeRoomsTypes: { ...this.state.ChangeRoomsTypes, open: true }});
     handleCloseChangeRoomsTypesForm = () => this.setState({ChangeRoomsTypes: {...this.state.ChangeRoomsTypes, open: false}});
+
+    deleteApartment = id => {
+        api.delete(`apartment/${id}`)
+            .then(() => {
+                this.props.fetchApartments();
+                this.props.fetchRooms();
+            });
+    };
 
     render() {
         const {
@@ -114,7 +121,11 @@ class Housing extends React.Component {
                     <Grid item xs={12}>
                         {(apartment.isFetching || room.isFetching)
                             ? <LinearProgress/>
-                            : <ApartmentsTable apartments={apartment.items} rooms={room.items}/>
+                            : <ApartmentsTable
+                                apartments={apartment.items}
+                                rooms={room.items}
+                                deleteApartment={this.deleteApartment}
+                            />
                         }
                     </Grid>
                 </Grid>

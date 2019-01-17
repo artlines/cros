@@ -1,21 +1,24 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
     Table,
     TableHead,
     TableBody,
     TableRow,
     TableCell,
+    Button,
 } from '@material-ui/core';
 import map from "lodash/map";
 import filter from "lodash/filter";
 import ApartmentType from '../../containers/ApartmentType';
 import RoomType from '../../containers/RoomType';
+import ConfirmDialog from "../utils/ConfirmDialog";
 
 class ApartmentsTable extends React.PureComponent {
     getRoomsByApart = apart_id => filter(this.props.rooms, room => room.apartment === apart_id);
 
     render() {
-        const { apartments } = this.props;
+        const { apartments, deleteApartment } = this.props;
 
         return (
             <Table>
@@ -44,7 +47,14 @@ class ApartmentsTable extends React.PureComponent {
                                         </div>
                                     )}
                                 </TableCell>
-                                <TableCell align={`right`}>Действия</TableCell>
+                                <TableCell align={`right`}>
+                                    <ConfirmDialog
+                                        trigger={
+                                            <Button>Удалить</Button>
+                                        }
+                                        onConfirm={() => deleteApartment(item.id)}
+                                    />
+                                </TableCell>
                             </TableRow>
                         )
                     })}
@@ -53,5 +63,12 @@ class ApartmentsTable extends React.PureComponent {
         );
     }
 }
+
+ApartmentsTable.propTypes = {
+    apartments: PropTypes.arrayOf(PropTypes.object),
+    rooms:      PropTypes.arrayOf(PropTypes.object),
+
+    deleteApartment: PropTypes.func.isRequired,
+};
 
 export default ApartmentsTable;
