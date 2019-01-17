@@ -5,6 +5,7 @@ namespace App\Controller\Api\V1;
 use App\Entity\Abode\Apartment;
 use App\Entity\Abode\ApartmentType;
 use App\Entity\Abode\Housing;
+use App\Entity\Abode\Room;
 use App\Entity\Abode\RoomType;
 use App\Manager\ApartmentGenerator;
 use Doctrine\ORM\EntityNotFoundException;
@@ -91,6 +92,38 @@ class ApartmentController extends ApiController
         } catch (\Exception $e) {
             return $this->exception($e);
         }
+
+        return $this->success();
+    }
+
+    /**
+     * @Route("apartment/{id}", requirements={"id":"\d+"}, methods={"DELETE"}, name="delete")
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param $id
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function delete($id)
+    {
+        /** @var Apartment $apartment */
+        $apartment = $this->em->find(Apartment::class, $id);
+        if (!$apartment) {
+            return $this->notFound('Apartment not found.');
+        }
+
+        /**
+         * Check that apartment is empty
+         * @var Room $room
+         */
+        foreach ($apartment->getRooms() as $room) {
+            if (!$room->isEmpty()) {
+                return $this->badRequest('Невозможно удалить номер с хотя бы одним занятым местом в нем.');
+            }
+        }
+
+        $this->em->remove($apartment);
+        $this->em->flush();
 
         return $this->success();
     }

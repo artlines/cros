@@ -109,4 +109,13 @@ class Room
     {
         $this->places = $places;
     }
+
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return $this->places->isEmpty();
+    }
 }
