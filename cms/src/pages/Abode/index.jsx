@@ -1,14 +1,15 @@
 import React from "react";
+import {connect} from 'react-redux';
 import {
     Grid,
     Typography,
-    Fab,
 } from "@material-ui/core";
 import map from "lodash/map";
 import AddButton from '../../components/utils/FabButton';
 import HousingCard from "../../components/Abode/HousingCard";
 import HousingForm from "../../components/Abode/HousingForm";
 import find from 'lodash/find';
+import abode from '../../actions/abode';
 import API from '../../libs/api';
 
 const api = new API();
@@ -37,6 +38,7 @@ class Abode extends React.Component {
         api.get(`housing`).then(res => {
             this.setState({housing: res.items, isFetching: false})
         });
+        this.props.fetchRoomTypes();
     };
 
     handleCloseHousingForm = () => this.setState({form: {...this.state.form, open: false}});
@@ -112,4 +114,11 @@ class Abode extends React.Component {
     }
 }
 
-export default Abode;
+const mapDispatchToProps = dispatch =>
+    ({
+        fetchRoomTypes: () => {
+            dispatch(abode.fetchRoomTypes());
+        },
+    });
+
+export default connect(null, mapDispatchToProps)(Abode);

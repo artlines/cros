@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import {connect} from 'react-redux';
 import {Link} from "react-router-dom";
 import {
     Button,
@@ -14,6 +15,7 @@ import {
     TableRow,
     TableCell,
 } from "@material-ui/core";
+import find from "lodash/find";
 import map from "lodash/map";
 import ConfirmDialog from '../utils/ConfirmDialog';
 
@@ -22,8 +24,10 @@ class HousingCard extends React.PureComponent {
     render() {
         const {
             housing: { id, num_of_floors, title, description, abode_info },
-            onEdit, onDelete,
+            room_types, onEdit, onDelete,
         }  = this.props;
+
+        if (room_types.isFetching) return null;
 
         return (
             <Card>
@@ -48,7 +52,7 @@ class HousingCard extends React.PureComponent {
                         <TableBody>
                             {map(abode_info, item =>
                                 <TableRow key={item.room_type_id}>
-                                    <TableCell>{item.room_type_id}</TableCell>
+                                    <TableCell>{find(room_types.items, {id: item.room_type_id}).title}</TableCell>
                                     <TableCell align={`right`}>{item.busy} / {item.total}</TableCell>
                                 </TableRow>
                             )}
@@ -65,7 +69,9 @@ class HousingCard extends React.PureComponent {
                             />
                         </Grid>
                         <Grid item>
-                            <Link to={`/cms/abode/housing/${id}`}>Шахматка</Link>
+                            <Link to={`/cms/abode/housing/${id}`}>
+                                <Button>Номерной фонд</Button>
+                            </Link>
                         </Grid>
                     </Grid>
                 </CardActions>
@@ -91,6 +97,12 @@ HousingCard.propTypes = {
     }),
     onEdit:     PropTypes.func.isRequired,
     onDelete:   PropTypes.func.isRequired,
+    room_types: PropTypes.object.isRequired,
 };
 
-export default HousingCard;
+const mapStateToProps = state =>
+    ({
+        room_types: state.abode.room_type,
+    });
+
+export default connect(mapStateToProps)(HousingCard);

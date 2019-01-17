@@ -61,6 +61,10 @@ class ApartmentsAddForm extends React.Component {
         }
     }
 
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        return nextProps.open || this.props.open;
+    }
+
     handleChange = (field, index = null) => event => {
         const { values, errors } = this.state;
 
@@ -107,9 +111,7 @@ class ApartmentsAddForm extends React.Component {
         this.props.onSuccess();
     };
 
-    handleErrorSubmit = (err) => {
-        this.setState({submitting: false, submitError: err.message});
-    };
+    handleErrorSubmit = (err) => this.setState({submitting: false, submitError: err.message});
 
     validate = () => {
         const { apartment_types } = this.props;
@@ -145,27 +147,46 @@ class ApartmentsAddForm extends React.Component {
         return true;
     };
 
+    getSummaryInfo = () => {
+        const { apartment_types, room_types } = this.props;
+        const { values } = this.state;
+
+        if (values.num_to && values.num_from && (values.num_from <= values.num_to) && values.type !== 0) {
+            const apartType = find(apartment_types, {id: values.type});
+
+            if (apartType && Object.values(values.room_types).length === apartType.max_rooms) {
+                return (
+                    <Grid item xs={12}>
+                        <br/>
+                        <Divider light/>
+                        <br/>
+                        <Typography variant={`subtitle1`}>Сводка</Typography>
+                        <Typography variant={`body2`}>
+                            <div>Количество номеров для добавления: <b>{values.num_to - values.num_from + 1}</b></div>
+                            <div>Количество комнат в указанном типе номера: <b>{apartType.max_rooms}</b></div>
+                            <div>Типы комнат в номере:</div>
+                            <ul>
+                            {map(values.room_types, (id, i) => {
+                                const roomType = find(room_types, {id});
+                                return (
+                                    <li key={i}>#{1+Number(i)}: {roomType.title}</li>
+                                );
+                            })}
+                            </ul>
+                        </Typography>
+                    </Grid>
+                );
+            }
+        }
+
+        return null;
+    };
+
     render() {
         const { open, apartment_types, room_types } = this.props;
         const { values, errors, submitting, submitError } = this.state;
 
-        let summary = null;
-
-        console.log(`1`);
-        if (values.num_to && values.num_from && values.type !== 0) {
-            const apartType = find(apartment_types, {id: values.type});
-            console.log(`2`);
-
-            if (apartType && Object.values(values.room_types).length === apartType.max_rooms) {
-                console.log(`3`);
-                map(values.room_types, (id, i) => {
-                    const roomType = find(room_types, {id});
-                    return (
-                        <div>#{i+1}: {roomType.title}</div>
-                    );
-                })
-            }
-        }
+        const _summary = this.getSummaryInfo();
 
         return (
             <Dialog
@@ -175,7 +196,7 @@ class ApartmentsAddForm extends React.Component {
             >
                 <DialogTitle>Массовое добавление номеров</DialogTitle>
                 <DialogContent>
-                    <form onSubmit={this.handleSubmit} id={"apartments-add-form"}>
+                    <form onSubmit={this.handleSubmit} id={"apartments_add-form"}>
                         <Grid container spacing={16}>
                             <Grid item xs={12} sm={4}>
                                 <TextField
@@ -272,24 +293,7 @@ class ApartmentsAddForm extends React.Component {
                         </Grid>
                         }
 
-                        {/*{() => {*/}
-                            {/*console.log(`1`);*/}
-                            {/*if (values.num_to && values.num_from && values.type !== 0) {*/}
-                                {/*const apartType = find(apartment_types, {id: values.type});*/}
-                                {/*console.log(`2`);*/}
-
-                                {/*if (Object.values(values.room_types).length === apartType.max_rooms) {*/}
-                                    {/*console.log(`3`);*/}
-                                    {/*map(values.room_types, id => {*/}
-                                        {/*const roomType = find(room_types, {id});*/}
-                                        {/*return (*/}
-                                            {/*<div>#{i+1}: {roomType.title}</div>*/}
-                                        {/*);*/}
-                                    {/*})*/}
-                                {/*}*/}
-                            {/*}*/}
-                        {/*}}*/}
-
+                        {_summary}
 
                     </form>
                     {submitError && <ErrorMessage description={submitError} extended={true}/>} {/*title={} description={} extended={}*/}
@@ -305,7 +309,7 @@ class ApartmentsAddForm extends React.Component {
                     <Button
                         variant={"contained"}
                         color={"primary"}
-                        form={"apartments-add-form"}
+                        form={"apartments_add-form"}
                         type={"submit"}
                         disabled={submitting}
                     >

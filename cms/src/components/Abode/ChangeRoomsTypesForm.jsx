@@ -131,6 +131,10 @@ class ChangeRoomsTypesForm extends React.Component {
         this.setState({submitting: false, submitError: err.message});
     };
 
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        return nextProps.open || this.props.open;
+    }
+
     render() {
         const { initialValues, open, empty_rooms, room_types, isFetching } = this.props;
         const { values, errors, submitting, submitError } = this.state;
