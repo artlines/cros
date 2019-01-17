@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import toNumber from "lodash/toNumber";
 
-class Money extends React.PureComponent {
+class Money extends React.Component {
 
     parseValue() {
         const { value, currency } = this.props;

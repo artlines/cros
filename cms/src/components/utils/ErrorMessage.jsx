@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {Grid, Typography} from '@material-ui/core';
 import ErrorIcon from '@material-ui/icons/Error';
 
-class ErrorMessage extends React.PureComponent {
+class ErrorMessage extends React.Component {
     render() {
         const { title, description, extended } = this.props;
 

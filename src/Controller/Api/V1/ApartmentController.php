@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\V1;
 
+use App\Entity\Abode\Apartment;
 use App\Entity\Abode\ApartmentType;
 use App\Entity\Abode\Housing;
 use App\Entity\Abode\RoomType;
@@ -19,6 +20,31 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
  */
 class ApartmentController extends ApiController
 {
+    /**
+     * @Route("apartment", name="get_all", methods={"GET"})
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     */
+    public function getAll()
+    {
+        $housing_id = $this->requestData['housing'] ?? null;
+        /** @var Housing $housing */
+        if (!$housing_id || (!$housing = $this->em->find(Housing::class, $housing_id))) {
+            return $this->notFound('Housing not found.');
+        }
+
+        /** @var Apartment[] $apartments */
+        $apartments = $this->em->getRepository(Apartment::class)
+            ->findBy(['housing' => $housing], ['floorNumber' => 'ASC', 'number' => 'ASC']);
+
+        $items = [];
+        foreach ($apartments as $apartment) {
+            $items[] = $this->getResponseItem($apartment);
+        }
+
+        return $this->success(['items' => $items]);
+    }
+
     /**
      * @Route("apartment/generate", methods={"POST"})
      *
@@ -67,5 +93,25 @@ class ApartmentController extends ApiController
         }
 
         return $this->success();
+    }
+
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param Apartment $apartment
+     * @param bool $withRoomsInfo
+     * @return array
+     */
+    private function getResponseItem(Apartment $apartment, $withRoomsInfo = false)
+    {
+        $rooms_info = [];
+
+        $item = [
+            'id'        => $apartment->getId(),
+            'number'    => $apartment->getNumber(),
+            'floor'     => $apartment->getFloorNumber(),
+            'type'      => $apartment->getType()->getId(),
+        ];
+
+        return $item;
     }
 }

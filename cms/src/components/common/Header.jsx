@@ -10,7 +10,7 @@ import {
 import MenuIcon from "@material-ui/icons/Menu";
 import { withTheme } from "@material-ui/core/styles";
 
-class Header extends React.PureComponent {
+class Header extends React.Component {
 
     render() {
         const { theme, handleClickMenu } = this.props;

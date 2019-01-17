@@ -12,6 +12,7 @@ import {
     MenuItem,
     Typography,
     Divider,
+    LinearProgress,
 } from '@material-ui/core';
 import find from 'lodash/find';
 import map from 'lodash/map';
@@ -57,7 +58,10 @@ class ApartmentsAddForm extends React.Component {
          * Check for updates initialValues
          */
         if (!isEqual(prevProps.initialValues, initialValues) || (open === true && prevProps.open !== open)) {
-            this.setState({values: {...values, ...initialValues}})
+            this.setState({
+                values: {...values, ...initialValues},
+                submitError: false,
+            })
         }
     }
 
@@ -67,8 +71,9 @@ class ApartmentsAddForm extends React.Component {
 
     handleChange = (field, index = null) => event => {
         const { values, errors } = this.state;
+        const { name, value } = event.target;
 
-        const update = index !== null ? { [field]: {...values[field], [index]: event.target.value }} : { [field]: event.target.value };
+        const update = index !== null ? { [field]: {...values[field], [index]: value }} : { [field]: value };
 
         index !== null ? (errors[field] && delete(errors[field][index])) : delete(errors[field]);
         isEmpty(errors[field]) && delete(errors[field]);
@@ -79,7 +84,8 @@ class ApartmentsAddForm extends React.Component {
                 ...update
             },
             errors,
-        });
+            submitError: false,
+        }, () => this.handleChangeExtend(name, value));
     };
 
     handleCancel = () => {
@@ -107,11 +113,35 @@ class ApartmentsAddForm extends React.Component {
     };
 
     handleSuccessSubmit = () => {
-        this.setState({submitting: false});
         this.props.onSuccess();
+        this.props.onClose();
+        this.setState({
+            values: {...this.initialValues},
+            submitting: false
+        });
     };
 
     handleErrorSubmit = (err) => this.setState({submitting: false, submitError: err.message});
+
+    handleChangeExtend = (name, value) => {
+        const { values } = this.state;
+        //const { apartments_types } = this.props;
+
+        switch (name) {
+            case 'type':
+                //const currentApartmentType = find(apartments_types, {id: value});
+                this.setState({
+                    values: {
+                        ...values,
+                        room_types: {},
+                    },
+                });
+                break;
+            default:
+                // nothing
+                break;
+        }
+    };
 
     validate = () => {
         const { apartment_types } = this.props;
@@ -154,7 +184,7 @@ class ApartmentsAddForm extends React.Component {
         if (values.num_to && values.num_from && (values.num_from <= values.num_to) && values.type !== 0) {
             const apartType = find(apartment_types, {id: values.type});
 
-            if (apartType && Object.values(values.room_types).length === apartType.max_rooms) {
+            if (apartType && values.room_types && Object.values(values.room_types).length === apartType.max_rooms) {
                 return (
                     <Grid item xs={12}>
                         <br/>
@@ -194,6 +224,7 @@ class ApartmentsAddForm extends React.Component {
                 fullWidth={true}
                 maxWidth={"sm"}
             >
+                {submitting && <LinearProgress/>}
                 <DialogTitle>Массовое добавление номеров</DialogTitle>
                 <DialogContent>
                     <form onSubmit={this.handleSubmit} id={"apartments_add-form"}>
@@ -208,6 +239,7 @@ class ApartmentsAddForm extends React.Component {
                                     margin={"dense"}
                                     fullWidth
                                     variant={"outlined"}
+                                    name={'num_from'}
                                     onChange={this.handleChange('num_from')}
                                     error={!!errors.num_from}
                                     helperText={errors.num_from}
@@ -223,6 +255,7 @@ class ApartmentsAddForm extends React.Component {
                                     margin={"dense"}
                                     fullWidth
                                     variant={"outlined"}
+                                    name={'num_to'}
                                     onChange={this.handleChange('num_to')}
                                     error={!!errors.num_to}
                                     helperText={errors.num_to}
@@ -238,6 +271,7 @@ class ApartmentsAddForm extends React.Component {
                                     margin={"dense"}
                                     fullWidth
                                     variant={"outlined"}
+                                    name={'floor'}
                                     onChange={this.handleChange('floor')}
                                     error={!!errors.floor}
                                     helperText={errors.floor}
@@ -252,6 +286,7 @@ class ApartmentsAddForm extends React.Component {
                                     margin={"dense"}
                                     fullWidth
                                     variant={"outlined"}
+                                    name={'type'}
                                     onChange={this.handleChange('type')}
                                     error={!!errors.type}
                                     helperText={errors.type}
@@ -279,10 +314,14 @@ class ApartmentsAddForm extends React.Component {
                                         margin={"dense"}
                                         fullWidth
                                         variant={"outlined"}
+                                        name={`room_types[${i}]`}
                                         onChange={this.handleChange('room_types', i)}
                                         error={errors.room_types && !!errors.room_types[i] || false}
                                         helperText={errors.room_types && errors.room_types[i] || ''}
                                         select={true}
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
                                     >
                                         {map(room_types, rt =>
                                             <MenuItem key={rt.id} value={rt.id}>{rt.title}</MenuItem>
