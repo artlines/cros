@@ -2,6 +2,7 @@
 
 namespace App\Entity\Abode;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -51,6 +52,13 @@ class Apartment
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id", nullable=false)
      */
     private $type;
+
+    /**
+     * @var Room[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="Room", mappedBy="apartment", cascade={"remove"})
+     */
+    private $rooms;
 
     /**
      * @return int
@@ -122,5 +130,21 @@ class Apartment
     public function setType($type)
     {
         $this->type = $type;
+    }
+
+    /**
+     * @return Room[]|ArrayCollection
+     */
+    public function getRooms()
+    {
+        return $this->rooms;
+    }
+
+    /**
+     * @param Room[]|ArrayCollection $rooms
+     */
+    public function setRooms($rooms)
+    {
+        $this->rooms = $rooms;
     }
 }

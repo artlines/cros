@@ -10,7 +10,7 @@ import routes from "../../config/routes";
 import map from "lodash/map";
 import filter from "lodash/filter";
 
-class Sidebar extends React.PureComponent {
+class Sidebar extends React.Component {
 
     render() {
         const { open, onClose, roles } = this.props;
@@ -38,6 +38,7 @@ class Sidebar extends React.PureComponent {
                             </Link>
                         );
                     })}
+
                 </List>
             </Drawer>
         );

@@ -23,6 +23,15 @@ export default {
         };
     },
 
+    fetchApartments: query => {
+        return dispatch => {
+            dispatch({ type: ABODE.REQUEST_APARTMENTS });
+            request.get(`apartment`, query)
+                .then(payload => dispatch({ type: ABODE.RECEIVE_APARTMENTS, payload }))
+                .catch(err => console.log(`abode::fetchRooms`, err)); // TODO: doing something with error
+        };
+    },
+
     fetchApartmentTypes: () => {
         return dispatch => {
             dispatch({ type: ABODE.REQUEST_APARTMENT_TYPE });

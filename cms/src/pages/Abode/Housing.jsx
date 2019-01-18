@@ -4,11 +4,16 @@ import abode from '../../actions/abode';
 import {
     Grid,
     Typography,
+    LinearProgress,
 } from '@material-ui/core';
 import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
 import FabButton from '../../components/utils/FabButton';
 import ApartmentsAddForm from '../../components/Abode/ApartmentsAddForm';
 import ChangeRoomsTypesForm from "../../components/Abode/ChangeRoomsTypesForm";
+import ApartmentsTable from "../../components/Abode/ApartmentsTable";
+import API from '../../libs/api';
+
+const api = new API();
 
 class Housing extends React.Component {
     constructor(props) {
@@ -27,9 +32,10 @@ class Housing extends React.Component {
     }
 
     componentDidMount() {
-        this.props.fetchHousing();
-        this.props.fetchRooms();
         this.props.loadData();
+        this.props.fetchHousing();
+        this.props.fetchApartments();
+        this.props.fetchRooms();
     }
 
     openApartmentsAddForm = () => {
@@ -47,12 +53,24 @@ class Housing extends React.Component {
     openChangeRoomsTypesForm = () => this.setState({ChangeRoomsTypes: { ...this.state.ChangeRoomsTypes, open: true }});
     handleCloseChangeRoomsTypesForm = () => this.setState({ChangeRoomsTypes: {...this.state.ChangeRoomsTypes, open: false}});
 
+    deleteApartment = id => {
+        api.delete(`apartment/${id}`)
+            .then(() => {
+                this.props.fetchApartments();
+                this.props.fetchRooms();
+            });
+    };
+
     render() {
-        const { housing: { isFetching, error, id, title }, fetchRooms, fetchHousing } = this.props;
+        const {
+            housing: { isFetching, error, id, title },
+            apartment, room,
+            fetchRooms, fetchApartments
+        } = this.props;
         const { ApartmentsAdd, ChangeRoomsTypes } = this.state;
 
         if (isFetching && !id) {
-            return (<div>Loading...</div>);
+            return (<LinearProgress/>);
         }
 
         return (
@@ -61,13 +79,19 @@ class Housing extends React.Component {
                     open={ApartmentsAdd.open}
                     initialValues={ApartmentsAdd.initialValues}
                     onClose={this.handleCloseApartmentsAddForm}
-                    onSuccess={fetchHousing}
+                    onSuccess={() => {
+                        fetchRooms();
+                        fetchApartments();
+                    }}
                 />
                 <ChangeRoomsTypesForm
                     open={ChangeRoomsTypes.open}
                     initialValues={ChangeRoomsTypes.initialValues}
                     onClose={this.handleCloseChangeRoomsTypesForm}
-                    onSuccess={fetchRooms}
+                    onSuccess={() => {
+                        fetchRooms();
+                        fetchApartments();
+                    }}
                 />
                 <Grid container spacing={24}>
                     <Grid item xs={12}>
@@ -94,6 +118,16 @@ class Housing extends React.Component {
                             </Grid>
                         </Grid>
                     </Grid>
+                    <Grid item xs={12}>
+                        {(apartment.isFetching || room.isFetching)
+                            ? <LinearProgress/>
+                            : <ApartmentsTable
+                                apartments={apartment.items}
+                                rooms={room.items}
+                                deleteApartment={this.deleteApartment}
+                            />
+                        }
+                    </Grid>
                 </Grid>
             </div>
         );
@@ -102,7 +136,9 @@ class Housing extends React.Component {
 
 const mapStateToProps = state =>
     ({
-        housing: state.abode.housing.item,
+        housing:    state.abode.housing.item,
+        apartment:  state.abode.apartment,
+        room:       state.abode.room,
     });
 
 const mapDispatchToProps = (dispatch, ownProps) =>
@@ -114,6 +150,10 @@ const mapDispatchToProps = (dispatch, ownProps) =>
         fetchRooms: () => {
             const id = Number(ownProps.match.params.id);
             dispatch(abode.fetchRooms({housing: id}));
+        },
+        fetchApartments: () => {
+            const id = Number(ownProps.match.params.id);
+            dispatch(abode.fetchApartments({housing: id}));
         },
         loadData: () => {
             dispatch(abode.fetchApartmentTypes());

@@ -2,13 +2,17 @@ import Home from '../pages/Home';
 import AbodeIndex from '../pages/Abode/index';
 import AbodeSettings from '../pages/Abode/Settings';
 import AbodeHousing from '../pages/Abode/Housing';
+import Organizations from '../pages/Organizations';
 import NotFound from '../pages/NotFound';
-import RoomServiceIcon from '@material-ui/icons/RoomService';
+import {
+    RoomService as RoomServiceIcon,
+    BusinessCenterTwoTone,
+} from '@material-ui/icons';
 
 export default [
     {
         path: '/cms/',
-        component: Home,
+        Component: Home,
         exact: true,
         title: 'Главная',
         menuItem: {
@@ -18,7 +22,7 @@ export default [
     },
     {
         path: '/cms/abode',
-        component: AbodeIndex,
+        Component: AbodeIndex,
         exact: true,
         title: 'Расселение',
         menuItem: {
@@ -29,7 +33,7 @@ export default [
     },
     {
         path: '/cms/abode/settings',
-        component: AbodeSettings,
+        Component: AbodeSettings,
         exact: true,
         title: 'Расселение',
         menuItem: {
@@ -40,14 +44,25 @@ export default [
     },
     {
         path: '/cms/abode/housing/:id',
-        component: AbodeHousing,
+        Component: AbodeHousing,
         exact: true,
         title: 'Расселение',
         role: 'ROLE_SETTLEMENT_MANAGER',
     },
     {
+        path: '/cms/organizations',
+        Component: Organizations,
+        exact: true,
+        title: 'Организации',
+        menuItem: {
+            Icon: BusinessCenterTwoTone,
+            title: 'Организации',
+        },
+        role: 'ROLE_ADMINISTRATOR',
+    },
+    {
         path: '/cms/users',
-        component: Home,
+        Component: Home,
         exact: true,
         title: 'Пользователи',
         menuItem: {
@@ -58,7 +73,7 @@ export default [
     },
     {
         path: '*',
-        component: NotFound,
+        Component: NotFound,
         title: 'Страница не найдена',
     },
 ];

@@ -10,6 +10,9 @@ export const ABODE = {
 
     REQUEST_ROOMS: "ABODE_REQUEST_ROOMS",
     RECEIVE_ROOMS: "ABODE_RECEIVE_ROOMS",
+
+    REQUEST_APARTMENTS: "ABODE_REQUEST_APARTMENTS",
+    RECEIVE_APARTMENTS: "ABODE_RECEIVE_APARTMENTS",
 };
 
 const _initialObjectState = {
@@ -34,6 +37,9 @@ const initialState = {
         ..._initialObjectState
     },
     room: {
+        ..._initialObjectState
+    },
+    apartment: {
         ..._initialObjectState
     },
 };
@@ -80,6 +86,24 @@ export default (state = initialState, action) => {
                 ...state,
                 room: {
                     ...state.room,
+                    isFetching: false,
+                    ...payload,
+                },
+            };
+        case ABODE.REQUEST_APARTMENTS:
+            return {
+                ...state,
+                apartment: {
+                    ...state.apartment,
+                    isFetching: true,
+                    error: false,
+                },
+            };
+        case ABODE.RECEIVE_APARTMENTS:
+            return {
+                ...state,
+                apartment: {
+                    ...state.apartment,
                     isFetching: false,
                     ...payload,
                 },

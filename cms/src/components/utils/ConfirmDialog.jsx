@@ -59,12 +59,13 @@ class ConfirmDialog extends React.Component {
 }
 
 ConfirmDialog.propTypes = {
+    onConfirm:  PropTypes.func.isRequired,
+
     title:      PropTypes.string,
     text:       PropTypes.string,
     confirm:    PropTypes.string,
     cancel:     PropTypes.string,
     onCancel:   PropTypes.func,
-    onConfirm:  PropTypes.func,
     trigger:    PropTypes.node,
 };
 

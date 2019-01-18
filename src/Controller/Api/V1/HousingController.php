@@ -3,6 +3,7 @@
 namespace App\Controller\Api\V1;
 
 use App\Entity\Abode\Housing;
+use App\Manager\AbodeManager;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -16,20 +17,26 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
  */
 class HousingController extends ApiController
 {
+    /** @var AbodeManager|null */
+    protected $am;
+
     /**
      * @Route("housing", methods={"GET"}, name="get_all")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param AbodeManager $abodeManager
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function getAll()
+    public function getAll(AbodeManager $abodeManager)
     {
+        $this->am = $abodeManager;
+
         /** @var Housing[] $housings */
         $housings = $this->em->getRepository(Housing::class)->findAll();
 
         $items = [];
         foreach ($housings as $housing) {
-            $items[] = $this->getResponseItem($housing);
+            $items[] = $this->getResponseItem($housing, true);
         }
 
         return $this->success(['items' => $items, 'total_count' => count($items)]);
@@ -150,9 +157,10 @@ class HousingController extends ApiController
     /**
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param Housing $housing
+     * @param bool $withInfo
      * @return array
      */
-    private function getResponseItem(Housing $housing)
+    private function getResponseItem(Housing $housing, $withInfo = false)
     {
         $_abode_info = [];
 
@@ -163,6 +171,10 @@ class HousingController extends ApiController
             'description'   => $housing->getDescription(),
             'abode_info'    => $_abode_info,
         ];
+
+        if ($withInfo) {
+            $item['abode_info'] = $this->am->calculateAbodeInfoByHousing($housing);
+        }
 
         return $item;
     }

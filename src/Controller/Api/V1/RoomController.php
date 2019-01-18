@@ -61,7 +61,7 @@ class RoomController extends ApiController
     {
         $roomsIds = $this->requestData['rooms'] ?? null;
         if (!$roomsIds || !is_array($roomsIds)) {
-            return $this->badRequest('Rooms not set as array.');
+            return $this->badRequest('Не указаны комнаты.');
         }
 
         /** @var Room[] $rooms */

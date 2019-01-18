@@ -41,6 +41,8 @@ class ChangeRoomsTypesForm extends React.Component {
             errors: {},
             submitting: false,
             submitError: false,
+
+            filterType: 0,
         };
 
         this.initialValues = {
@@ -56,6 +58,8 @@ class ChangeRoomsTypesForm extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, prevContext) {
+        console.log(`ChangeRoomsTypesForm::componentDidUpdate`);
+
         const { open, initialValues } = this.props;
         const { values } = this.state;
 
@@ -63,7 +67,11 @@ class ChangeRoomsTypesForm extends React.Component {
          * Check for updates initialValues
          */
         if (!isEqual(prevProps.initialValues, initialValues) || (open === true && prevProps.open !== open)) {
-            this.setState({values: {...this.initialValues, ...initialValues}})
+            this.setState({
+                values: {...this.initialValues, ...initialValues},
+                submitError: false,
+                filterType: false,
+            })
         }
     }
 
@@ -93,6 +101,7 @@ class ChangeRoomsTypesForm extends React.Component {
                 ...update
             },
             errors,
+            submitError: false,
         });
     };
 
@@ -131,9 +140,29 @@ class ChangeRoomsTypesForm extends React.Component {
         this.setState({submitting: false, submitError: err.message});
     };
 
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        return nextProps.open || this.props.open;
+    }
+
+    handleChangeRoomTypeFilter = event => {
+        const { values } = this.state;
+        const filterType = event.target.value;
+
+        this.setState({
+            values: {
+                ...values,
+                rooms: [],
+            },
+            filterType,
+        });
+    };
+
     render() {
         const { initialValues, open, empty_rooms, room_types, isFetching } = this.props;
-        const { values, errors, submitting, submitError } = this.state;
+        const {
+            values, errors, submitting, submitError,
+            filterType,
+        } = this.state;
 
         return (
             <Dialog
@@ -146,32 +175,48 @@ class ChangeRoomsTypesForm extends React.Component {
                 {!isFetching && <DialogContent>
                     <form onSubmit={this.handleSubmit} id={"change_rooms_types-form"}>
                         <Grid container spacing={16}>
-                            <Grid
-                                item
-                                xs={12}
-                                sm={6}
-                                style={{
-                                    overflowY: 'auto',
-                                    maxHeight: 400,
-                                }}
-                            >
-                                <FormGroup>
-                                    {map(empty_rooms, r =>
-                                        <FormControlLabel
-                                            key={r.id}
-                                            control={
-                                                <Checkbox
-                                                    onChange={this.handleChange('rooms', r.id)}
-                                                    icon={<CheckBoxOutlineBlankIcon fontSize="small"/>}
-                                                    checkedIcon={<CheckBoxIcon fontSize="small"/>}
-                                                    checked={values.rooms && values.rooms.indexOf(r.id) !== -1}
-                                                    value={`checked`}
-                                                />
-                                            }
-                                            label={`#${r.apartment_num} ${find(room_types, {id: r.type}).title}`}
-                                        />
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    required
+                                    label={`Конвертировать из типа`}
+                                    margin={"dense"}
+                                    fullWidth
+                                    variant={"outlined"}
+                                    onChange={this.handleChangeRoomTypeFilter}
+                                    value={filterType}
+                                    select={true}
+                                >
+                                    {map(room_types, rt =>
+                                        <MenuItem key={rt.id} value={rt.id}>{rt.title}</MenuItem>
                                     )}
-                                </FormGroup>
+                                </TextField>
+
+                                <Grid container spacing={16}>
+                                    <Grid item xs={12}
+                                        style={{
+                                            overflowY: 'auto',
+                                            maxHeight: 350,
+                                        }}
+                                    >
+                                        <FormGroup>
+                                            {map(filterType ? filter(empty_rooms, er => er.type === filterType) : {}, r =>
+                                                <FormControlLabel
+                                                    key={r.id}
+                                                    control={
+                                                        <Checkbox
+                                                            onChange={this.handleChange('rooms', r.id)}
+                                                            icon={<CheckBoxOutlineBlankIcon fontSize="small"/>}
+                                                            checkedIcon={<CheckBoxIcon fontSize="small"/>}
+                                                            checked={values.rooms && values.rooms.includes(r.id)}
+                                                            value={`checked`}
+                                                        />
+                                                    }
+                                                    label={`#${r.apartment_num} ${find(room_types, {id: r.type}).title}`}
+                                                />
+                                            )}
+                                        </FormGroup>
+                                    </Grid>
+                                </Grid>
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField

@@ -6,7 +6,7 @@ import {
 } from "@material-ui/core";
 import ParticipantClasses from "../../components/Abode/ParticipantClasses";
 
-class Settings extends React.PureComponent {
+class Settings extends React.Component {
     render() {
         return (
             <Grid container spacing={24}>
