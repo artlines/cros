@@ -1,79 +1,79 @@
-import Home from '../pages/Home';
-import AbodeIndex from '../pages/Abode/index';
-import AbodeSettings from '../pages/Abode/Settings';
-import AbodeHousing from '../pages/Abode/Housing';
-import Organizations from '../pages/Organizations';
-import NotFound from '../pages/NotFound';
+import Home from "../pages/Home";
+import AbodeIndex from "../pages/Abode/index";
+import AbodeSettings from "../pages/Abode/Settings";
+import AbodeHousing from "../pages/Abode/Housing";
+import Organizations from "../pages/Organizations";
+import NotFound from "../pages/NotFound";
 import {
     RoomService as RoomServiceIcon,
     BusinessCenterTwoTone,
-} from '@material-ui/icons';
+} from "@material-ui/icons";
 
 export default [
     {
-        path: '/cms/',
+        path: "/cms/",
         Component: Home,
         exact: true,
-        title: 'Главная',
+        title: "Главная",
         menuItem: {
             Icon: RoomServiceIcon,
-            title: 'Главная',
+            title: "Главная",
         },
     },
     {
-        path: '/cms/abode',
+        path: "/cms/abode",
         Component: AbodeIndex,
         exact: true,
-        title: 'Расселение',
+        title: "Расселение",
         menuItem: {
             Icon: RoomServiceIcon,
-            title: 'Расселение',
+            title: "Расселение",
         },
-        role: 'ROLE_SETTLEMENT_MANAGER',
+        role: "ROLE_SETTLEMENT_MANAGER",
     },
     {
-        path: '/cms/abode/settings',
+        path: "/cms/abode/settings",
         Component: AbodeSettings,
         exact: true,
-        title: 'Расселение',
+        title: "Расселение",
         menuItem: {
             Icon: RoomServiceIcon,
-            title: 'Настройка расселения',
+            title: "Настройка расселения",
         },
-        role: 'ROLE_SETTLEMENT_MANAGER',
+        role: "ROLE_SETTLEMENT_MANAGER",
     },
     {
-        path: '/cms/abode/housing/:id',
+        path: "/cms/abode/housing/:id",
         Component: AbodeHousing,
         exact: true,
-        title: 'Расселение',
-        role: 'ROLE_SETTLEMENT_MANAGER',
+        title: "Расселение",
+        role: "ROLE_SETTLEMENT_MANAGER",
     },
     {
-        path: '/cms/organizations',
+        path: "/cms/organizations",
         Component: Organizations,
         exact: true,
-        title: 'Организации',
+        title: "Организации",
         menuItem: {
             Icon: BusinessCenterTwoTone,
-            title: 'Организации',
+            title: "Организации",
         },
-        role: 'ROLE_ADMINISTRATOR',
+        role: "ROLE_ADMINISTRATOR",
     },
     {
-        path: '/cms/users',
+        path: "/cms/users",
         Component: Home,
         exact: true,
-        title: 'Пользователи',
+        title: "Пользователи",
         menuItem: {
             Icon: RoomServiceIcon,
-            title: 'Пользователи',
+            title: "Пользователи",
         },
-        role: 'ROLE_ADMINISTRATOR',
+        role: "ROLE_ADMINISTRATOR",
     },
     {
-        path: '*',
+        path: "*",
         Component: NotFound,
-        title: 'Страница не найдена',
+        title: "Страница не найдена",
     },
 ];

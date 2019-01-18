@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import find from 'lodash/find';
+import React from "react";
+import PropTypes from "prop-types";
+import {connect} from "react-redux";
+import find from "lodash/find";
 
 class ApartmentType extends React.PureComponent {
     render() {
@@ -13,7 +13,7 @@ class ApartmentType extends React.PureComponent {
         return (
             <span>{type.title}</span>
         );
-    };
+    }
 }
 
 ApartmentType.propTypes = {

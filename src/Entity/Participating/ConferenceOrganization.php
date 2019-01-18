@@ -4,6 +4,7 @@ namespace App\Entity\Participating;
 
 use App\Entity\Conference;
 use App\Entity\Participating\Organization;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -43,13 +44,6 @@ class ConferenceOrganization
     /**
      * @var string
      *
-     * @ORM\Column(name="org_comment", type="text", nullable=true)
-     */
-    private $orgComment;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="notes", type="text", nullable=true)
      */
     private $notes;
@@ -82,14 +76,23 @@ class ConferenceOrganization
      */
     private $approved;
 
-    // TODO: invoices ???
+    /**
+     * @var ArrayCollection|Comment[]
+     *
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="conferenceOrganization")
+     */
+    private $comments;
 
+    /**
+     * ConferenceOrganization constructor.
+     */
     public function __construct()
     {
         $this->createdAt    = new \DateTime();
         $this->sponsor      = false;
         $this->approved     = false;
         $this->finish       = false;
+        $this->comments     = new ArrayCollection();
     }
 
     /**
@@ -130,22 +133,6 @@ class ConferenceOrganization
     public function setConference($conference)
     {
         $this->conference = $conference;
-    }
-
-    /**
-     * @return string
-     */
-    public function getOrgComment()
-    {
-        return $this->orgComment;
-    }
-
-    /**
-     * @param string $orgComment
-     */
-    public function setOrgComment($orgComment)
-    {
-        $this->orgComment = $orgComment;
     }
 
     /**
@@ -202,5 +189,33 @@ class ConferenceOrganization
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    /**
+     * @return Comment[]|ArrayCollection
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param Comment $comment
+     */
+    public function addComment(Comment $comment)
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+        }
+    }
+
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param Comment $comment
+     */
+    public function removeComment(Comment $comment)
+    {
+        $this->comments->removeElement($comment);
     }
 }
