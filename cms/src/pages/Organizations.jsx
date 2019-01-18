@@ -1,4 +1,6 @@
 import React from "react";
+import Table from '../components/Organization/Table';
+//import Filter from '../components/Organization/Filter';
 
 class Organizations extends React.Component {
     constructor(props) {
@@ -8,7 +10,11 @@ class Organizations extends React.Component {
     render() {
 
         return (
-            <div>Organizations</div>
+            <div>
+                <Table
+
+                />
+            </div>
         );
     }
 }
