@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Grid, Typography} from '@material-ui/core';
-import ErrorIcon from '@material-ui/icons/Error';
+import React from "react";
+import PropTypes from "prop-types";
+import {Grid, Typography} from "@material-ui/core";
+import ErrorIcon from "@material-ui/icons/Error";
 
 class ErrorMessage extends React.Component {
     render() {
@@ -14,16 +14,16 @@ class ErrorMessage extends React.Component {
                 spacing={8}
             >
                 <Grid item>
-                    <ErrorIcon style={{ color: '#e51c23', fontSize: '1.125rem' }}/>
+                    <ErrorIcon style={{ color: "#e51c23", fontSize: "1.125rem" }}/>
                 </Grid>
                 <Grid item>
-                    <Typography style={{ color: '#d50000', fontSize: '0.875rem' }} variant={"body2"}>
+                    <Typography style={{ color: "#d50000", fontSize: "0.875rem" }} variant={"body2"}>
                         {title}
                     </Typography>
                 </Grid>
                 {extended &&
                 <Grid item>
-                    <Typography style={{ color: '#d50000', fontSize: '0.875rem' }} variant={"body2"}>
+                    <Typography style={{ color: "#d50000", fontSize: "0.875rem" }} variant={"body2"}>
                         {description}
                     </Typography>
                 </Grid>}
@@ -48,8 +48,8 @@ ErrorMessage.propTypes = {
 };
 
 ErrorMessage.defaultProps = {
-    title:          'Произошла ошибка',
-    description:    '',
+    title:          "Произошла ошибка",
+    description:    "",
     extended:       false,
 };
 

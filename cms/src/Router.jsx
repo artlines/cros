@@ -1,14 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {connect} from 'react-redux';
-import {compose} from 'redux';
+import {connect} from "react-redux";
+import {compose} from "redux";
 import {Route, Switch, withRouter} from "react-router-dom";
 import routes from "config/routes";
-import Layout from './components/common/Layout';
+import Layout from "./components/common/Layout";
 
 class Router extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
     }
 
     render() {

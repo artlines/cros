@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {connect} from 'react-redux';
+import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import {
     Button,
@@ -17,7 +17,7 @@ import {
 } from "@material-ui/core";
 import find from "lodash/find";
 import map from "lodash/map";
-import ConfirmDialog from '../utils/ConfirmDialog';
+import ConfirmDialog from "../utils/ConfirmDialog";
 
 class HousingCard extends React.Component {
 

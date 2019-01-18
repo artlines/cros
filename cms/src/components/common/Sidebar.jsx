@@ -11,6 +11,9 @@ import map from "lodash/map";
 import filter from "lodash/filter";
 
 class Sidebar extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
     render() {
         const { open, onClose, roles } = this.props;

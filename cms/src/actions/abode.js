@@ -1,5 +1,5 @@
-import { ABODE } from '../reducers/abode';
-import API from '../libs/api';
+import { ABODE } from "../reducers/abode";
+import API from "../libs/api";
 
 const request = new API();
 
@@ -37,7 +37,7 @@ export default {
             dispatch({ type: ABODE.REQUEST_APARTMENT_TYPE });
             request.get(`apartment_type`)
                 .then(payload => dispatch({ type: ABODE.RECEIVE_APARTMENT_TYPE, payload }));
-                // TODO: doing something with error
+            // TODO: doing something with error
         };
     },
 
@@ -46,7 +46,7 @@ export default {
             dispatch({ type: ABODE.REQUEST_ROOM_TYPE });
             request.get(`room_type`)
                 .then(payload => dispatch({ type: ABODE.RECEIVE_ROOM_TYPE, payload }));
-                // TODO: doing something with error
+            // TODO: doing something with error
         };
     },
 

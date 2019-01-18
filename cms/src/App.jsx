@@ -1,7 +1,7 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import Router from './Router';
-import system from './actions/system';
+import React from "react";
+import {connect} from "react-redux";
+import Router from "./Router";
+import system from "./actions/system";
 import {BrowserRouter} from "react-router-dom";
 
 class App extends React.Component {

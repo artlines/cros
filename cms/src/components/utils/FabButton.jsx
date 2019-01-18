@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {Fab} from '@material-ui/core';
-import {withTheme} from '@material-ui/core/styles';
+import React from "react";
+import PropTypes from "prop-types";
+import {Fab} from "@material-ui/core";
+import {withTheme} from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 
 class FabButton extends React.Component {
@@ -45,7 +45,7 @@ FabButton.propTypes = {
 };
 
 FabButton.defaultProps = {
-    title: 'Добавить',
+    title: "Добавить",
     IconComponent: AddIcon,
 };
 
