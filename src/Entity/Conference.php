@@ -66,6 +66,20 @@ class Conference
     private $info;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="limit_users_global", type="integer", nullable=true)
+     */
+    private $limitUsersGlobal;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="limit_users_by_org", type="integer", nullable=true)
+     */
+    private $limitUsersByOrg;
+
+    /**
      * Get id
      *
      * @return int
@@ -202,4 +216,54 @@ class Conference
     {
         return $this->info;
     }
+
+    /**
+     * Set limitUsersGlobal
+     *
+     * @param integer $limitUsersGlobal
+     *
+     * @return Conference
+     */
+    public function setLimitUsersGlobal($limitUsersGlobal)
+    {
+        $this->limitUsersGlobal = $limitUsersGlobal;
+
+        return $this;
+    }
+
+    /**
+     * Get limitUsersGlobal
+     *
+     * @return int
+     */
+    public function getLimitUsersGlobal()
+    {
+        return $this->limitUsersGlobal;
+    }
+
+    /**
+     * Set limitUsersByOrg
+     *
+     * @param integer $limitUsersByOrg
+     *
+     * @return Conference
+     */
+    public function setLimitUsersByOrg($limitUsersByOrg)
+    {
+        $this->limitUsersByOrg = $limitUsersByOrg;
+
+        return $this;
+    }
+
+    /**
+     * Get limitUsersGlobal
+     *
+     * @return int
+     */
+    public function getLimitUsersByOrg()
+    {
+        return $this->limitUsersByOrg;
+    }
+
+
 }

@@ -10,8 +10,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Organization
  *
- * @ORM\Table(schema="participating", name="organization")
  * @ORM\Entity(repositoryClass="App\Repository\OrganizationRepository")
+ * @ORM\Table(schema="participating", name="organization")
  *
  * TODO: ADD LOGO FIELD
  */
@@ -33,12 +33,6 @@ class Organization
      */
     private $name;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="email", type="string", length=255, unique=true)
-     */
-    private $email;
 
     /**
      * @var string
@@ -151,22 +145,6 @@ class Organization
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param string $email
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
     }
 
     /**

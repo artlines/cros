@@ -62,6 +62,13 @@ class ConferenceOrganization
     private $sponsor;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="finish", type="boolean", nullable=false, options={"default": 0})
+     */
+    private $finish;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
@@ -82,6 +89,7 @@ class ConferenceOrganization
         $this->createdAt    = new \DateTime();
         $this->sponsor      = false;
         $this->approved     = false;
+        $this->finish       = false;
     }
 
     /**
@@ -170,6 +178,22 @@ class ConferenceOrganization
     public function setSponsor($sponsor)
     {
         $this->sponsor = $sponsor;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFinish()
+    {
+        return $this->finish;
+    }
+
+    /**
+     * @param bool $finish
+     */
+    public function setFinish($finish)
+    {
+        $this->finish = $finish;
     }
 
     /**

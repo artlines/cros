@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Conference;
 use App\Entity\Participating\Organization;
+use App\Validation\DataValidation;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Form;
@@ -47,6 +48,7 @@ class RegistrationController extends AbstractController
 
                 /** @var Organization $org */
                 $org = new Organization();
+                $org->setRequisites("Полное наименование организации: \nОГРН: \nЮридический адрес: \nПочтовый адрес: \nБанк: \nБИК: \nК/С: \nР/С:");
                 /** @var Form $form */
                 $form = $this->createFormBuilder($org)
                     ->add('name', TextType::class, array('label' => 'Название организации', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'placeholder' => 'Ёлки-телеком', 'data-helper' => 'Ваш основной Торговый знак, будет использоваться на бейджах и визитках'), 'required' => true))
@@ -56,7 +58,7 @@ class RegistrationController extends AbstractController
 //                    ->add('username', TextType::class, array('label' => 'Телефон', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'data-helper' => 'Общий телефон для связи с Компанией', 'pattern' => '[\+][0-9]{11,}', 'title' => "Номер телефона в федеральном формате (+79990009999), без пробелов", 'placeholder' => '+79990009999')))
                     ->add('inn', TextType::class, array('label' => 'ИНН', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => true))
                     ->add('kpp', TextType::class, array('label' => 'КПП', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => true))
-                    ->add('requisites', TextareaType::class, array('label' => 'Реквизиты', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'data-helper' => 'Для выставления счета'), 'required' => true))
+                    ->add('requisites', TextareaType::class, array('label' => 'Реквизиты', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'data-helper' => 'Для выставления счета', 'rows' => '8'), 'required' => true))
                     ->add('address', TextareaType::class, array('label' => 'Address', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => true))
                     ->add('comment', TextareaType::class, array('label' => 'Комментарий', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => false))
 //                    ->add('manager', HiddenType::class, array('label' => 'Manager', 'mapped' => false, 'required' => false, 'data' => $man_id))
@@ -67,130 +69,120 @@ class RegistrationController extends AbstractController
 
                 if ($form->isSubmitted() && $form->isValid()) {
 
-
                     /** @var Organization $org */
                     $org = $form->getData();
 
-//                    if($org->getEmail() != $form->get('email_confirm')->getData()){
-//                        $result = array(
-//                            'element' => 'email_confirm',
-//                            'status' => 'danger',
-//                            'text' => 'E-mail адреса не совпадают!',
-//                        );
-//                        return $this->render('frontend/registration/registration.html.twig', array(
-//
-//                            'form' => $form->createView(),
-//                            'result' => $result,
-//                        ));
-//                    }
-
-                    /** @var Organization $check_org */
-                    $check_org = $this->getDoctrine()
-                        ->getRepository('App:Participating\Organization')
-                        ->findOneBy(array('email' => $org->getEmail()));
-
-                    if($check_org != null){
-                        $what_exist = 'На этот e-mail уже зарегистрирована организация';
+                    $error_message='';
+                    if (!DataValidation::validateInn($org->getInn(), $error_message)){
                         $result = array(
-                            'element' => 'email',
+                            'element' => 'inn',
                             'status' => 'danger',
-                            'text' => $what_exist,
+                            'text' => $error_message,
                         );
                         return $this->render('frontend/registration/registration.html.twig', array(
-
                             'form' => $form->createView(),
                             'result' => $result,
                         ));
                     }
-                    else{
-                        /** @var Organization $check_org */
-                        $check_org = $this->getDoctrine()
-                            ->getRepository('App:Participating\Organization')
-                            ->findOneBy(array('username' => $org->getUsername()));
 
-                        if($check_org != null){
-                            $what_exist = 'На этот телефон уже зарегистрирована организация';
-                            $result = array(
-                                'element' => 'username',
-                                'status' => 'danger',
-                                'text' => $what_exist,
-                            );
-                            return $this->render('frontend/registration/registration.html.twig', array(
+                    if (!DataValidation::validateKpp($org->getKpp(), $error_message)){
+                        $result = array(
+                            'element' => 'kpp',
+                            'status' => 'danger',
+                            'text' => $error_message,
+                        );
+                        return $this->render('frontend/registration/registration.html.twig', array(
+                            'form' => $form->createView(),
+                            'result' => $result,
+                        ));
+                    }
 
-                                'form' => $form->createView(),
-                                'result' => $result,
-                            ));
-                        }
+                    /** @var Organization $check_org */
+                    $check_org = $this->getDoctrine()
+                        ->getRepository('App:Participating\Organization')
+                        ->findByInnKppIsFinish($org->getInn(),$org->getKpp());
+
+                    if(count($check_org) > 0){
+                        $error_message = 'С этим ИНН/КПП уже зарегистрирована организация '.$check_org[0]['name'];
+                        $result = array(
+                            'element' => 'inn',
+                            'status' => 'danger',
+                            'text' => $error_message,
+                        );
+                        return $this->render('frontend/registration/registration.html.twig', array(
+                            'form' => $form->createView(),
+                            'result' => $result,
+                        ));
                     }
 
                     $org->setIsActive(1);
-                    $org->setSponsor(false);
+//                    $org->setSponsor(false);
+//
+//                    $status = $this->getDoctrine()
+//                        ->getRepository(OrganizationStatus::class)
+//                        ->find(1);
+//
+//                    $manager_id = $form->get('manager')->getData();
+//                    if(!$manager_id){
+//                        $managers = null;
+//                    }
+//                    else {
+//                        $managers = $this->getDoctrine()
+//                            ->getRepository('App:ManagerGroup')
+//                            ->find($manager_id);
+//                    }
+//
+//                    $org->setStatus(1);
+//                    $org->setTxtstatus($status);
+//                    $org->setManagers($managers);
+//
+//                    $manager = $form->get('manager')->getData();
+//                    $org->setManager($manager);
 
-                    $status = $this->getDoctrine()
-                        ->getRepository(OrganizationStatus::class)
-                        ->find(1);
-
-                    $manager_id = $form->get('manager')->getData();
-                    if(!$manager_id){
-                        $managers = null;
-                    }
-                    else {
-                        $managers = $this->getDoctrine()
-                            ->getRepository('App:ManagerGroup')
-                            ->find($manager_id);
-                    }
-
-                    $org->setStatus(1);
-                    $org->setTxtstatus($status);
-                    $org->setManagers($managers);
-
-                    $manager = $form->get('manager')->getData();
-                    $org->setManager($manager);
-
-                    $password = substr(md5($org->getName()), 0, 6);
-                    $encoder = $this->container->get('security.password_encoder');
-                    $encoded = $encoder->encodePassword($org, $password);
-
-                    $org->setPassword($encoded);
+//                    $password = substr(md5($org->getName()), 0, 6);
+//                    $encoder = $this->container->get('security.password_encoder');
+//                    $encoded = $encoder->encodePassword($org, $password);
+//
+//                    $org->setPassword($encoded);
 
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($org);
                     $em->flush();
 
-                    $otc = new OrgToConf();
-                    $otc->setOrganizationId($org->getId());
-                    $otc->setConferenceId($conf->getId());
-                    $otc->setPaid(0);
-                    $otc->setOrganization($org);
-                    $otc->setConference($conf);
+//                    $otc = new OrgToConf();
+//                    $otc->setOrganizationId($org->getId());
+//                    $otc->setConferenceId($conf->getId());
+//                    $otc->setPaid(0);
+//                    $otc->setOrganization($org);
+//                    $otc->setConference($conf);
+//
+//                    $em->persist($otc);
+//                    $em->flush();
 
-                    $em->persist($otc);
-                    $em->flush();
 
-
-                    $event = new Logs();
-                    $event->setEntity('organization');
-                    $event->setEvent('Зарегистрирована новая компания');
-                    $event->setElementId($org->getId());
-                    $event->setReaded(0);
-
-                    $message = \Swift_Message::newInstance()
-                        ->setSubject('Регистрация КРОС-2.0-18: '.$org->getName().' Доступ в личный кабинет')
-                        ->setFrom('cros@nag.ru')
-                        ->setTo($org->getEmail())
-                        ->setBcc($this->container->getParameter('cros_emails'))
-                        ->setBody(
-                            $this->renderView(
-                                'Emails/org_registration.html.twig',
-                                array(
-                                    'email' => $org->getEmail(),
-                                    'password' => $password,
-                                    'org' => $org->getName(),
-                                )
-                            ),
-                            'text/html'
-                        );
-                    $this->get('mailer')->send($message);
+//                    $event = new Logs();
+//                    $event->setEntity('organization');
+//                    $event->setEvent('Зарегистрирована новая компания');
+//                    $event->setElementId($org->getId());
+//                    $event->setReaded(0);
+//
+//                    $message = \Swift_Message::newInstance()
+//                        ->setSubject('Регистрация КРОС-2.0-18: '.$org->getName().' Доступ в личный кабинет')
+//                        ->setFrom('cros@nag.ru')
+//                        ->setTo($org->getEmail())
+//                        ->setBcc($this->container->getParameter('cros_emails'))
+//                        ->setBody(
+//                            $this->renderView(
+//                                'Emails/org_registration.html.twig',
+//                                array(
+//                                    'email' => $org->getEmail(),
+//                                    'password' => $password,
+//                                    'org' => $org->getName(),
+//                                )
+//                            ),
+//                            'text/html'
+//                        );
+//                    $this->get('mailer')->send($message);
 
                     /*$event = new Logs();
                     $event->setEntity('organization');

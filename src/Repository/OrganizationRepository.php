@@ -210,4 +210,32 @@ class OrganizationRepository extends EntityRepository implements UserLoaderInter
 
         return $res;
     }
+
+    /**
+     * возвращает названия организаций с заданным ИНН/КПП, окончательно зарегистрированных в конференции текущего года
+     * @param string $inn - ИНН организации
+     * @param string $kpp - КПП организации
+     * @return array
+     */
+    public function findByInnKppIsFinish($inn, $kpp)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $params=['inn'=>$inn,'kpp'=>$kpp,'y'=>date('Y')];
+
+        $sql = "SELECT
+	              o.name as name
+                FROM
+	              participating.conference_organization co
+                inner JOIN participating.organization o ON co.organization_id = o.id
+                inner JOIN public.conference c ON co.conference_id = c.id
+                where
+                  o.inn = :inn AND 
+                  o.kpp = :kpp AND 
+                  co.finish = true AND 
+                  c.year = :y";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll();
+    }
 }
