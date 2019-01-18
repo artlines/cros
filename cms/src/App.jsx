@@ -4,11 +4,7 @@ import Router from "./Router";
 import system from "./actions/system";
 import {BrowserRouter} from "react-router-dom";
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
+class App extends React.PureComponent {
     componentDidMount() {
         this.props.loadInitialData();
     }

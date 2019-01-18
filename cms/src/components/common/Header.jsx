@@ -5,13 +5,11 @@ import {
     Typography,
     IconButton,
     Toolbar,
-    Tooltip,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import { withTheme } from "@material-ui/core/styles";
 
-class Header extends React.Component {
-
+class Header extends React.PureComponent {
     render() {
         const { theme, handleClickMenu } = this.props;
 

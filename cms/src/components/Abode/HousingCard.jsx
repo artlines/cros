@@ -19,7 +19,7 @@ import find from "lodash/find";
 import map from "lodash/map";
 import ConfirmDialog from "../utils/ConfirmDialog";
 
-class HousingCard extends React.Component {
+class HousingCard extends React.PureComponent {
 
     render() {
         const {

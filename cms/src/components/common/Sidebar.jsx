@@ -10,11 +10,7 @@ import routes from "../../config/routes";
 import map from "lodash/map";
 import filter from "lodash/filter";
 
-class Sidebar extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
+class Sidebar extends React.PureComponent {
     render() {
         const { open, onClose, roles } = this.props;
 

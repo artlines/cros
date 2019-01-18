@@ -6,11 +6,7 @@ import {Route, Switch, withRouter} from "react-router-dom";
 import routes from "config/routes";
 import Layout from "./components/common/Layout";
 
-class Router extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
+class Router extends React.PureComponent {
     render() {
         const { roles } = this.props;
 

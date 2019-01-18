@@ -4,7 +4,7 @@ import {Fab} from "@material-ui/core";
 import {withTheme} from "@material-ui/core/styles";
 import AddIcon from "@material-ui/icons/Add";
 
-class FabButton extends React.Component {
+class FabButton extends React.PureComponent {
     render() {
         const { theme, title, onClick, IconComponent } = this.props;
 

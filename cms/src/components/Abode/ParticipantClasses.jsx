@@ -16,7 +16,7 @@ const data = [
     { id: 4, title: "VIP" },
 ];
 
-class ParticipantClasses extends React.Component {
+class ParticipantClasses extends React.PureComponent {
     render() {
         const { data } = this.props;
 
