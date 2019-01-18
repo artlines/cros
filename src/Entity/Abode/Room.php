@@ -26,7 +26,7 @@ class Room
     /**
      * @var RoomType
      *
-     * @ORM\ManyToOne(targetEntity="RoomType", inversedBy="rooms")
+     * @ORM\ManyToOne(targetEntity="RoomType")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id", nullable=false)
      */
     private $type;
