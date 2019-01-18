@@ -51,6 +51,6 @@ const mapStateToProps = state =>
     });
 
 export default compose(
-    connect(mapStateToProps, null),
     withRouter,
+    connect(mapStateToProps, null),
 )(Router);
