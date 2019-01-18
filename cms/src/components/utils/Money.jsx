@@ -5,15 +5,15 @@ import toNumber from "lodash/toNumber";
 class Money extends React.PureComponent {
 
     parseValue() {
-        const { value, currency } = this.props;
+        const { value, currency, withPenny } = this.props;
         const { delimiter, prefix, suffix } = types[currency];
-        let res;
+        let res = toNumber(value);
 
-        // Убираем копейки
-        res = toNumber(value).toFixed(0);
+        // Разбираемся с копейками
+         res = res.toFixed(withPenny ? 2 : 0);
 
         // Добавляем разделитель
-        res = res.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1" + delimiter);
+        res = String(res).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1" + delimiter);
 
         // Добавляем денежный знак
         res = `${prefix}${res}${suffix}`;
@@ -58,6 +58,11 @@ Money.propTypes = {
             return new Error(`Money type '${props[propName]}' not supported in component ${componentName}`);
         }
     },
+
+    /**
+     * Флаг для показа копеек
+     */
+    withPenny: PropTypes.bool,
 };
 
 Money.defaultProps = {

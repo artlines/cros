@@ -9,6 +9,7 @@ import {
     Button,
 } from '@material-ui/core';
 import map from 'lodash/map';
+import InvoiceModal from './InvoiceModal';
 
 import createDevData from '../../libs/utils';
 const devData = createDevData({
@@ -23,7 +24,7 @@ const devData = createDevData({
         { id: 3, number: 5123, amount: 21000.00, date: 1542801279, status: 2 },
         { id: 5, number: 5733, amount: 88000.00, date: 1542806879, status: 3 },
     ],
-}, 20);
+}, 100);
 
 /**
  * TODO: OrganizationModal
@@ -64,7 +65,7 @@ class OrganizationTable extends React.PureComponent {
                                 {item.total_members} / {item.in_room_members}
                             </TableCell>
                             <TableCell>
-                                <Button>{item.invoices.length}</Button>
+                                <InvoiceModal organizationName={item.name}/>
                             </TableCell>
                             <TableCell>
                                 <Button>{item.comments_count}</Button>
