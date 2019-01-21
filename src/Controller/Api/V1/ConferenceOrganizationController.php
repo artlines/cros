@@ -8,6 +8,7 @@
 
 namespace App\Controller\Api\V1;
 
+use App\Entity\Abode\Place;
 use App\Entity\Conference;
 use App\Entity\Participating\ConferenceOrganization;
 use App\Repository\ConferenceOrganizationRepository;
@@ -33,6 +34,7 @@ class ConferenceOrganizationController extends ApiController
     {
         /** @var ConferenceOrganizationRepository $confOrgRepo */
         $confOrgRepo = $this->em->getRepository(ConferenceOrganization::class);
+        $placeRepository = $this->em->getRepository(Place::class);
 
         $year = date('Y');
 
@@ -44,20 +46,34 @@ class ConferenceOrganizationController extends ApiController
 
         /** @var ConferenceOrganization[] $conferenceOrganizations */
         $conferenceOrganizations = $confOrgRepo->searchBy($conference, $this->requestData);
+        $totalCount = $confOrgRepo->count(['conference' => $conference]);
 
         $items = [];
         foreach ($conferenceOrganizations as $co) {
             $org = $co->getOrganization();
-            $invoices = $co->getInvoices()->count();
-            $comments = $co->getComments()->count();
+            $members = $co->getConferenceMembers();
+            dump($members); die();
+
+            $inRoom = 0;
+//            foreach ($members as $member) {
+//                /** @var Place $place */
+//                if ($placeRepository->findOneBy(['conferenceMember' => $member])) {
+//                    $inRoom++;
+//                }
+//            }
 
             $items[] = [
-                'id'    => $co->getId(),
-                'name'  => $org->getName(),
-                'inn'   => $org->getInn(),
-                'kpp'   => $org->getKpp(),
-                'total_members' => $co->get
+                'id'                => $co->getId(),
+                'name'              => $org->getName(),
+                'inn'               => $org->getInn(),
+                'kpp'               => $org->getKpp(),
+//                'total_members'     => $members->count(),
+                'in_room_members'   => $inRoom,
+                'comments_count'    => $co->getComments()->count(),
+                'invoices_count'    => $co->getInvoices()->count(),
             ];
         }
+
+        return $this->success(['items' => $items, 'total_count' => $totalCount]);
     }
 }
