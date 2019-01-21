@@ -58,10 +58,7 @@ class ChangeRoomsTypesForm extends React.Component {
     }
 
     componentDidUpdate(prevProps, prevState, prevContext) {
-        console.log(`ChangeRoomsTypesForm::componentDidUpdate`);
-
         const { open, initialValues } = this.props;
-        const { values } = this.state;
 
         /**
          * Check for updates initialValues

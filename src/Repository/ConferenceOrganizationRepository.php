@@ -9,33 +9,41 @@ use Doctrine\ORM\Query\Expr;
 
 class ConferenceOrganizationRepository extends EntityRepository
 {
-    public function searchBy(Conference $conference, array $data = [], $limit = null, $offset = null)
+    public function searchBy(Conference $conference, array $data = [])
     {
+        $limit = 10;
+        $offset = null;
+        $parameters = [];
         $qb = $this->createQueryBuilder('co');
 
         $dql = $qb
             ->select('co')
             ->leftJoin(Organization::class, 'o', Expr\Join::WITH, 'co.organization = o');
 
-        $parameters = [];
-        foreach ($data as $key => $value) {
-            switch ($key) {
-                case 'name_or_inn':
-                    $dql->andWhere(
-                        $qb->expr()->orX(
-                            "o.name LIKE '%$value%'",
-                            "o.inn LIKE '%$value%'"
-                        )
-                    );
-                    break;
-                default:
-                    $dql->andWhere("co.$key = :$key");
-                    $parameters[$key] = $value;
-                    break;
-            }
+        $dql->andWhere('co.conference = :conference');
+        $parameters['conference'] = $conference;
+
+        /** Check for search string */
+        if (isset($data['search'])) {
+            $val = $data['search'];
+            $dql->andWhere(
+                $qb->expr()->orX(
+                    "o.name LIKE '%$val%'",
+                    "o.inn LIKE '%$val%'"
+                )
+            );
+        }
+
+        /** Check for limit and offset */
+        if (isset($data['@limit'])) {
+            $limit = (int) $data['@limit'];
+        }
+        if (isset($data['@offset'])) {
+            $offset = (int) $data['@offset'];
         }
 
         $query = $dql
+            ->addOrderBy('co.id', 'asc')
             ->setParameters($parameters)
             ->setMaxResults($limit)
             ->setFirstResult($offset)

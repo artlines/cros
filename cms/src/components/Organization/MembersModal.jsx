@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {
     Button,
@@ -13,14 +14,6 @@ import {
     TableCell,
 } from '@material-ui/core';
 import map from 'lodash/map';
-import Money from "../utils/Money";
-import DateTime from "../utils/DateTime";
-import InvoiceStatus from './InvoiceStatus';
-
-import createDevData from '../../libs/utils';
-const devData = [
-    ...createDevData({ number: 5813, amount: 54000.20, date: 1542806279, status: 1 }, 3),
-];
 
 class MembersModal extends React.Component {
     constructor(props) {
@@ -31,48 +24,71 @@ class MembersModal extends React.Component {
         };
     }
 
+    componentDidUpdate(prevProps, prevState, prevContext) {
+        if (this.state.open && !prevState.open) {
+            this.update();
+        }
+    }
+
+    update = () => {
+        const { organizationId, update } = this.props;
+        update({conference_organization_id: organizationId});
+    };
+
     handleOpen = () => this.setState({open: true});
     handleClose = () => this.setState({open: false});
 
     render() {
-        const { organizationName, data } = this.props;
+        const { organizationName, items, trigger } = this.props;
         const { open } = this.state;
 
         return (
             <React.Fragment>
-                <Button onClick={this.handleOpen}>{data.length}</Button>
+                <span onClick={this.handleOpen}>{trigger}</span>
                 <Dialog
                     open={open}
                     onClose={this.handleClose}
                     fullWidth={true}
                     maxWidth={'md'}
                 >
-                    <DialogTitle>Счета {organizationName}</DialogTitle>
+                    <DialogTitle>Участники {organizationName}</DialogTitle>
                     <DialogContent>
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>№ счета</TableCell>
-                                    <TableCell>Сумма</TableCell>
-                                    <TableCell>Дата</TableCell>
-                                    <TableCell>Статус</TableCell>
+                                    <TableCell>ФИО</TableCell>
+                                    <TableCell>Должность</TableCell>
+                                    <TableCell>Контакты</TableCell>
+                                    <TableCell>Проживание</TableCell>
                                     <TableCell align={'right'}>Действия</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {map(data, item =>
+                                {map(items, item =>
                                     <TableRow key={item.id}>
                                         <TableCell>
-                                            {item.number}
+                                            {item.last_name} {item.first_name} {item.middle_name}
                                         </TableCell>
                                         <TableCell>
-                                            <Money withPenny value={item.amount}/>
+                                            {item.post}
                                         </TableCell>
                                         <TableCell>
-                                            <DateTime value={item.date}/>
+                                            <div><b>Телефон:</b> {item.phone}</div>
+                                            <div><b>Email:</b> {item.email}</div>
                                         </TableCell>
                                         <TableCell>
-                                            <InvoiceStatus id={item.status}/>
+                                            {item.place.room_num
+                                                ? <React.Fragment>
+                                                    <div><b>Заселен в номер:</b> {item.place.room_num}</div>
+                                                    <div><b>Подтвержден:</b>
+                                                        {item.place.approved
+                                                            ? <span style={{color: 'green'}}>Да</span>
+                                                            : <span style={{color: 'red'}}>Нет</span>
+                                                        }
+                                                    </div>
+                                                </React.Fragment>
+                                                : 'Не заселен'
+                                            }
                                         </TableCell>
                                         <TableCell align={'right'}>
                                             <Button>Удалить</Button>
@@ -93,25 +109,38 @@ class MembersModal extends React.Component {
 
 MembersModal.propTypes = {
     /**
+     * Trigger
+     */
+    trigger: PropTypes.node.isRequired,
+
+    /**
      * Organization name
      */
+    organizationId: PropTypes.number,
     organizationName: PropTypes.string,
+
     /**
      * Invoices array
      */
-    data: PropTypes.arrayOf(
+    items: PropTypes.arrayOf(
         PropTypes.shape({
-            id:     PropTypes.number.isRequired,
-            number: PropTypes.number.isRequired,
-            amount: PropTypes.number.isRequired,
-            date:   PropTypes.number.isRequired,
-            status: PropTypes.number.isRequired,
+            id:             PropTypes.number.isRequired,
+            first_name:     PropTypes.string.isRequired,
+            last_name:      PropTypes.string.isRequired,
+            middle_name:    PropTypes.string.isRequired,
+            phone:          PropTypes.string.isRequired,
+            post:           PropTypes.string.isRequired,
+            email:          PropTypes.string.isRequired,
+            place:          PropTypes.shape({
+                room_num: PropTypes.oneOfType([PropTypes.number, null]),
+                approved: PropTypes.oneOfType([PropTypes.bool, null]),
+            }),
         }),
     ),
 };
 
-MembersModal.defaultProps = {
-    data: devData,
-};
+const mapStateToProps = state => ({
+    ...state.participating.member,
+});
 
-export default MembersModal;
+export default connect(mapStateToProps)(MembersModal);

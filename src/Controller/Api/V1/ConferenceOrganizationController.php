@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
- * Class HousingController
+ * Class ConferenceOrganizationController
  * @package App\Controller\Api\V1
  *
  * @Route("/api/v1/", name="api_v1__conference_organization__")
@@ -52,22 +52,21 @@ class ConferenceOrganizationController extends ApiController
         foreach ($conferenceOrganizations as $co) {
             $org = $co->getOrganization();
             $members = $co->getConferenceMembers();
-            dump($members); die();
 
             $inRoom = 0;
-//            foreach ($members as $member) {
-//                /** @var Place $place */
-//                if ($placeRepository->findOneBy(['conferenceMember' => $member])) {
-//                    $inRoom++;
-//                }
-//            }
+            foreach ($members as $member) {
+                /** @var Place $place */
+                if ($placeRepository->findOneBy(['conferenceMember' => $member])) {
+                    $inRoom++;
+                }
+            }
 
             $items[] = [
                 'id'                => $co->getId(),
                 'name'              => $org->getName(),
                 'inn'               => $org->getInn(),
                 'kpp'               => $org->getKpp(),
-//                'total_members'     => $members->count(),
+                'total_members'     => $members->count(),
                 'in_room_members'   => $inRoom,
                 'comments_count'    => $co->getComments()->count(),
                 'invoices_count'    => $co->getInvoices()->count(),

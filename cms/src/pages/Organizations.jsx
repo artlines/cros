@@ -1,22 +1,101 @@
 import React from "react";
-import Table from '../components/Organization/Table';
-//import Filter from '../components/Organization/Filter';
+import {connect} from 'react-redux';
+import participating from '../actions/participating';
+import OrganizationTable from '../components/Organization/Table';
+import {
+    TextField,
+    Grid,
+} from '@material-ui/core';
+import isEqual from 'lodash/isEqual';
 
 class Organizations extends React.Component {
     constructor(props) {
         super(props);
+
+        this.searchTimeout = null;
+
+        this.state = {
+            query: {
+
+            },
+        };
     }
 
+    componentDidUpdate(prevProps, prevState, prevContext) {
+        const { query } = this.state;
+        const { fetchOrganizations } = this.props;
+
+        if (!isEqual(prevState.query, query)) {
+            fetchOrganizations(query);
+        }
+    }
+
+    update = (page = null, rowsPerPage = null) => {
+        let newQuery = {...this.state.query};
+
+        page && newQuery['@']
+
+        this.setState({
+            ,
+            '@offset': page*rowsPerPage,
+            '@limit': rowsPerPage,
+        });
+    };
+
+    handleFilterChange = (event) => {
+        let newQuery = {...this.state.query};
+
+        if (!event.target.value) {
+            delete(newQuery.search);
+        } else {
+            newQuery.search = event.target.value;
+        }
+
+        clearTimeout(this.searchTimeout);
+        this.searchTimeout = setTimeout(() => {
+            this.setState({query: newQuery});
+        }, 350);
+    };
+
     render() {
+        const { fetchMembers, fetchComments, fetchInvoices } = this.props;
 
         return (
-            <div>
-                <Table
-
-                />
-            </div>
+            <Grid container spacing={16}>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        helperText={`Поиск по наименованию организации и ИНН`}
+                        onChange={this.handleFilterChange}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <OrganizationTable
+                        loadComments={fetchComments}
+                        loadInvoices={fetchInvoices}
+                        loadMembers={fetchMembers}
+                        handlePaginationChange={this.update}
+                    />
+                </Grid>
+            </Grid>
         );
     }
 }
 
-export default Organizations;
+const mapDispatchToProps = dispatch =>
+    ({
+        fetchOrganizations: (data = {}) => {
+            dispatch(participating.fetchConferenceOrganizations(data))
+        },
+        fetchComments: (data = {}) => {
+            dispatch(participating.fetchComments(data))
+        },
+        fetchInvoices: (data = {}) => {
+            dispatch(participating.fetchInvoices(data))
+        },
+        fetchMembers: (data = {}) => {
+            dispatch(participating.fetchMembers(data))
+        },
+    });
+
+export default connect(null, mapDispatchToProps)(Organizations);

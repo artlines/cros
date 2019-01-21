@@ -20,19 +20,6 @@ import API from '../../libs/api';
 
 const api = new API();
 
-import createDevData from '../../libs/utils';
-const devCommentsData = [
-    ...createDevData(
-        {
-            content: 'asdasdasdasdasdasdasdasdasd',
-            is_private: true,
-            created_at: 1542806279,
-            user: { id: 3, name: 'Начуйченко Евгений', email: 'e.nach@nag.ru' }
-        },
-        7,
-    ),
-];
-
 class CommentsModal extends React.Component {
     constructor(props) {
         super(props);
@@ -44,19 +31,24 @@ class CommentsModal extends React.Component {
         };
     }
 
+    componentDidUpdate(prevProps, prevState, prevContext) {
+        if (this.state.open && !prevState.open) {
+            this.update();
+        }
+    }
+
+    update = () => {
+        const { organizationId, update } = this.props;
+        update({conference_organization_id: organizationId});
+    };
+
     handleOpen = () => this.setState({open: true});
     handleClose = () => this.setState({open: false});
 
     handleChangeComment = (event) => this.setState({comment: event.target.value});
 
-    handleSend = () => {
-        this.props.onSended();
-
-        api.post(``)
-    };
-
     submit = () => {
-        const { organizationId } = this.props;
+        const { organizationId, update } = this.props;
         const { comment } = this.state;
 
         this.setState({submitting: true});
@@ -71,13 +63,15 @@ class CommentsModal extends React.Component {
                     submitting: false,
                     comment: '',
                 });
-                console.log(res)
+                update();
             });
     };
 
     render() {
-        const { trigger, data, organizationName } = this.props;
+        const { trigger, items, organizationName } = this.props;
         const { open, submitting, comment } = this.state;
+
+        console.log(this.props.update);
 
         return (
             <React.Fragment>
@@ -98,7 +92,7 @@ class CommentsModal extends React.Component {
                                   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
                               }}
                         >
-                            {map(data, item =>
+                            {map(items, item =>
                                 <React.Fragment key={item.id}>
                                     <Grid item xs={12} style={{margin: '0 0 8'}}>
                                         <Grid
@@ -179,10 +173,6 @@ CommentsModal.propTypes = {
      */
     organizationId:     PropTypes.number.isRequired,
     organizationName:   PropTypes.string.isRequired,
-};
-
-CommentsModal.defaultProps = {
-    data: devCommentsData,
 };
 
 const mapStateToProps = state => ({

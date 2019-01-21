@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {
     Table,
@@ -7,12 +8,15 @@ import {
     TableRow,
     TableCell,
     Button,
+    LinearProgress,
+    TablePagination,
 } from '@material-ui/core';
 import map from 'lodash/map';
 import InvoicesModal from './InvoicesModal';
 
 import createDevData from '../../libs/utils';
 import CommentsModal from "./CommentsModal";
+import MembersModal from "./MembersModal";
 const devData = createDevData({
     name: 'NAG LLC.',
     inn: 6659099112,
@@ -20,71 +24,135 @@ const devData = createDevData({
     total_members: 20,
     in_room_members: 14,
     comments_count: 4,
-    invoices: [
-        { id: 4, number: 5813, amount: 54000.00, date: 1542806279, status: 1 },
-        { id: 3, number: 5123, amount: 21000.00, date: 1542801279, status: 2 },
-        { id: 5, number: 5733, amount: 88000.00, date: 1542806879, status: 3 },
-    ],
+    invoices_count: 3,
 }, 100);
 
-/**
- * TODO: OrganizationModal
- * TODO: CommentsModal
- * TODO: InvoicesModal
- * TODO: OrganizationMembersModal
- */
+class OrganizationTable extends React.Component {
 
-class OrganizationTable extends React.PureComponent {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            page: 0,
+            rowsPerPage: 10,
+        };
+    }
+
+    componentDidMount() {
+        const { page, rowsPerPage } = this.state;
+        const { handlePaginationChange } = this.props;
+        handlePaginationChange(page, rowsPerPage);
+    }
+
+    componentDidUpdate(prevProps, prevState, prevContext) {
+        const { page, rowsPerPage } = this.state;
+        const { handlePaginationChange } = this.props;
+
+        if (prevState.page !== page || prevState.rowsPerPage !== rowsPerPage) {
+            handlePaginationChange(page, rowsPerPage);
+        }
+    }
+
+    updateComments = () => {
+        const { update, loadComments } = this.props;
+        update();
+        loadComments();
+    };
+
+    updateInvoices = () => {
+        const { update, loadInvoices } = this.props;
+        update();
+        loadInvoices();
+    };
+
+    updateMembers = () => {
+        const { update, loadMembers } = this.props;
+        update();
+        loadMembers();
+    };
+
+    handleChangePage = (event, page) => {
+        this.setState({page});
+    };
+
+    handleChangeRowsPerPage = (event) => {
+        this.setState({rowsPerPage: event.target.value});
+    };
+
     render() {
-        const { data } = this.props;
+        const { page, rowsPerPage } = this.state;
+        const { items, isFetching, total_count } = this.props;
 
         return (
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>ID</TableCell>
-                        <TableCell>Наименование</TableCell>
-                        <TableCell>ИНН / КПП</TableCell>
-                        <TableCell>Участников<br/>всего / заселено</TableCell>
-                        <TableCell>Счета</TableCell>
-                        <TableCell>Комментарии</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {map(data, item =>
-                        <TableRow key={item.id}>
-                            <TableCell>
-                                {item.id}
-                            </TableCell>
-                            <TableCell>
-                                {item.name}
-                            </TableCell>
-                            <TableCell>
-                                {item.inn} / {item.kpp}
-                            </TableCell>
-                            <TableCell>
-                                {item.total_members} / {item.in_room_members}
-                            </TableCell>
-                            <TableCell>
-                                <InvoicesModal organizationName={item.name}/>
-                            </TableCell>
-                            <TableCell>
-                                <CommentsModal
-                                    organizationId={item.id}
-                                    organizationName={item.name}
-                                    trigger={<Button>{item.comments_count}</Button>}
-                                />
-                            </TableCell>
+            <React.Fragment>
+                {isFetching && <LinearProgress/>}
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>ID</TableCell>
+                            <TableCell>Наименование</TableCell>
+                            <TableCell>Реквизиты</TableCell>
+                            <TableCell>Участников<br/>всего / заселено</TableCell>
+                            <TableCell>Счета</TableCell>
+                            <TableCell>Комментарии</TableCell>
                         </TableRow>
-                    )}
-                </TableBody>
-            </Table>
+                    </TableHead>
+                    <TableBody>
+                        {map(items, item =>
+                            <TableRow key={item.id}>
+                                <TableCell>
+                                    {item.id}
+                                </TableCell>
+                                <TableCell>
+                                    {item.name}
+                                </TableCell>
+                                <TableCell>
+                                    <div style={{whiteSpace: 'nowrap'}}><b>ИНН:</b> {item.inn}</div>
+                                    <div style={{whiteSpace: 'nowrap'}}><b>КПП:</b> {item.kpp}</div>
+                                </TableCell>
+                                <TableCell>
+                                    <MembersModal
+                                        organizationId={item.id}
+                                        organizationName={item.name}
+                                        trigger={<Button>{item.total_members} / {item.in_room_members}</Button>}
+                                        update={this.updateMembers}
+                                    />
+                                </TableCell>
+                                <TableCell>
+                                    <InvoicesModal
+                                        organizationId={item.id}
+                                        organizationName={item.name}
+                                        trigger={<Button>{item.invoices_count}</Button>}
+                                        update={this.updateInvoices}
+                                    />
+                                </TableCell>
+                                <TableCell>
+                                    <CommentsModal
+                                        organizationId={item.id}
+                                        organizationName={item.name}
+                                        trigger={<Button>{item.comments_count}</Button>}
+                                        update={this.updateComments}
+                                    />
+                                </TableCell>
+                            </TableRow>
+                        )}
+                    </TableBody>
+                </Table>
+                <TablePagination
+                    component={`div`}
+                    count={total_count}
+                    onChangePage={this.handleChangePage}
+                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                    page={page}
+                    rowsPerPage={rowsPerPage}
+                />
+            </React.Fragment>
         );
     }
 }
 
 OrganizationTable.propTypes = {
-    data: PropTypes.arrayOf(
+    items: PropTypes.arrayOf(
         PropTypes.shape({
             id:                 PropTypes.number.isRequired,
             name:               PropTypes.string.isRequired,
@@ -94,21 +162,19 @@ OrganizationTable.propTypes = {
             in_room_members:    PropTypes.number.isRequired,
             comments_count:     PropTypes.number.isRequired,
             invoices_count:     PropTypes.number.isRequired,
-            // invoices:           PropTypes.arrayOf(
-            //     PropTypes.shape({
-            //         id:     PropTypes.number.isRequired,
-            //         number: PropTypes.number.isRequired,
-            //         amount: PropTypes.number.isRequired,
-            //         date:   PropTypes.number.isRequired,
-            //         status: PropTypes.number.isRequired,
-            //     }),
-            // ),
         }),
     ),
+
+    loadComments: PropTypes.func.isRequired,
+    loadInvoices: PropTypes.func.isRequired,
+    loadMembers: PropTypes.func.isRequired,
+
+    handleChangePage: PropTypes.func.isRequired,
 };
 
-OrganizationTable.defaultProps = {
-    data: devData,
-};
+const mapStateToProps = state =>
+    ({
+        ...state.participating.conference_organization,
+    });
 
-export default OrganizationTable;
+export default connect(mapStateToProps)(OrganizationTable);

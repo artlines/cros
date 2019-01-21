@@ -23,7 +23,7 @@ class CommentController extends ApiController
      */
     public function getAll()
     {
-        $orgId = isset($this->requestData['organization_id']) ? (int) $this->requestData['organization_id'] : null;
+        $orgId = $this->requestData['conference_organization_id'] ?? null;
         if (!$orgId) {
             return $this->badRequest('Missing organization_id.');
         }
