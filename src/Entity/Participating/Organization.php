@@ -33,6 +33,12 @@ class Organization
      */
     private $name;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="email", type="string", nullable=true)
+     */
+    private $email;
 
     /**
      * @var string
@@ -94,6 +100,20 @@ class Organization
     private $comment;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="country", type="text", length=2, nullable=true)
+     */
+    private $country;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type_person", type="text", length=1, nullable=true)
+     */
+    private $typePerson;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
@@ -145,6 +165,22 @@ class Organization
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string|null $email
+     */
+    public function setEmail(?string $email)
+    {
+        $this->email = $email;
     }
 
     /**
@@ -380,4 +416,51 @@ class Organization
         return $this->comment;
     }
 
+    /**
+     * Set country
+     *
+     * @param string $country
+     *
+     * @return Organization
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return string
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * Set typePerson
+     *
+     * @param string $typePerson
+     *
+     * @return Organization
+     */
+    public function setTypePerson($typePerson)
+    {
+        $this->typePerson = $typePerson;
+
+        return $this;
+    }
+
+    /**
+     * Get typePerson
+     *
+     * @return string
+     */
+    public function getTypePerson()
+    {
+        return $this->typePerson;
+    }
 }

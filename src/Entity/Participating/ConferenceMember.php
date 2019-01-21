@@ -68,6 +68,14 @@ class ConferenceMember
      */
     private $createdAt;
 
+    /**
+     * @var ConferenceOrganization
+     *
+     * @ORM\ManyToOne(targetEntity="ConferenceOrganization", inversedBy="conferenceMembers")
+     * @ORM\JoinColumn(name="conference_organization_id", referencedColumnName="id", nullable=false)
+     */
+    private $conferenceOrganization;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -167,5 +175,21 @@ class ConferenceMember
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    /**
+     * @return ConferenceOrganization
+     */
+    public function getConferenceOrganization()
+    {
+        return $this->conferenceOrganization;
+    }
+
+    /**
+     * @param ConferenceOrganization $conferenceOrganization
+     */
+    public function setConferenceOrganization(ConferenceOrganization $conferenceOrganization)
+    {
+        $this->conferenceOrganization = $conferenceOrganization;
     }
 }

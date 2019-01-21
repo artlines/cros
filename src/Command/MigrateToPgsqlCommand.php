@@ -215,6 +215,7 @@ class MigrateToPgsqlCommand extends Command
                 $confMember = new ConferenceMember();
                 $confMember->setUser($user);
                 $confMember->setConference($prevConf);
+                $confMember->setConferenceOrganization($confOrg);
 
                 try {
                     $this->pgsqlManager->persist($user);

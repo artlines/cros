@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Conference;
 use App\Entity\Participating\Organization;
 use App\Validation\DataValidation;
+use App\Validation\Country;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Form;
@@ -14,10 +15,12 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CountryType;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+
 
 class RegistrationController extends AbstractController
 {
@@ -29,6 +32,11 @@ class RegistrationController extends AbstractController
      */
     public function registration(Request $request, AuthorizationCheckerInterface $authorizationChecker)
     {
+
+        //setlocale(LC_ALL, 'ru_RU');
+        //\Locale::setDefault('ru');
+        //dd(\Locale::getDefault(),$request->getLocale());
+
         if ($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $authorizationChecker->isGranted('ROLE_ORG')
                 ? $this->redirectToRoute('profile')
@@ -46,9 +54,11 @@ class RegistrationController extends AbstractController
             // Проверяем, открыта ли регистрация или пользователь регистрируется по ссылке менеджера
             if (($reg_start->format('Y-m-d H:i:s') <= $now && $reg_finish->format('Y-m-d H:i:s') >= $now)) {
 
+                //Country::getAll();
                 /** @var Organization $org */
                 $org = new Organization();
                 $org->setRequisites("Полное наименование организации: \nОГРН: \nЮридический адрес: \nПочтовый адрес: \nБанк: \nБИК: \nК/С: \nР/С:");
+                $org->setCountry('Российская Федерация');
                 /** @var Form $form */
                 $form = $this->createFormBuilder($org)
                     ->add('name', TextType::class, array('label' => 'Название организации', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'placeholder' => 'Ёлки-телеком', 'data-helper' => 'Ваш основной Торговый знак, будет использоваться на бейджах и визитках'), 'required' => true))
@@ -56,13 +66,15 @@ class RegistrationController extends AbstractController
 //                    ->add('email', EmailType::class, array('label' => 'E-mail', 'required' => true, 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'data-helper' => 'Для общих уведомлений, будет использоваться в качестве логина для доступа в личный кабинет')))
 //                    ->add('email_confirm', EmailType::class, array('label' => 'Подтверждение E-mail', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => true, 'mapped' => false))
 //                    ->add('username', TextType::class, array('label' => 'Телефон', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'data-helper' => 'Общий телефон для связи с Компанией', 'pattern' => '[\+][0-9]{11,}', 'title' => "Номер телефона в федеральном формате (+79990009999), без пробелов", 'placeholder' => '+79990009999')))
+                    ->add('country', ChoiceType::class, array( 'choices' => Country::getAll(2),'label' => 'Страна', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => true))
+                    ->add('type_person', ChoiceType::class, array( 'choices' => ['Юридическое лицо'=>'Ю','Индивидуальный предприниматель'=>'И','Физическое лицо'=>'Ф'],'label' => 'Юридическое/Физическте лицо', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => true))
                     ->add('inn', TextType::class, array('label' => 'ИНН', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => true))
                     ->add('kpp', TextType::class, array('label' => 'КПП', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => true))
                     ->add('requisites', TextareaType::class, array('label' => 'Реквизиты', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'data-helper' => 'Для выставления счета', 'rows' => '8'), 'required' => true))
                     ->add('address', TextareaType::class, array('label' => 'Address', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => true))
                     ->add('comment', TextareaType::class, array('label' => 'Комментарий', 'attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'required' => false))
 //                    ->add('manager', HiddenType::class, array('label' => 'Manager', 'mapped' => false, 'required' => false, 'data' => $man_id))
-                    ->add('save', SubmitType::class, array('label' => 'Продолжить', 'attr' => array('class' => 'btn-success')))
+                    ->add('save', SubmitType::class, array('label' => 'Зарегистрировать участника', 'attr' => array('class' => 'btn-success')))
                     ->getForm();
 
                 $form->handleRequest($request);
