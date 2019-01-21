@@ -33,6 +33,12 @@ class Organization
      */
     private $name;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="email", type="string", nullable=true)
+     */
+    private $email;
 
     /**
      * @var string
@@ -159,6 +165,22 @@ class Organization
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string|null $email
+     */
+    public function setEmail(?string $email)
+    {
+        $this->email = $email;
     }
 
     /**

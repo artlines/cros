@@ -91,6 +91,13 @@ class ConferenceOrganization
     private $invoices;
 
     /**
+     * @var ArrayCollection|ConferenceMember[]
+     *
+     * @ORM\OneToMany(targetEntity="ConferenceOrganization", mappedBy="conferenceOrganization")
+     */
+    private $conferenceMembers;
+
+    /**
      * ConferenceOrganization constructor.
      */
     public function __construct()
@@ -101,6 +108,8 @@ class ConferenceOrganization
         $this->finish       = false;
         $this->comments     = new ArrayCollection();
         $this->invoices     = new ArrayCollection();
+
+        $this->conferenceMembers = new ArrayCollection();
     }
 
     /**
@@ -253,5 +262,33 @@ class ConferenceOrganization
     public function removeInvoice(Invoice $invoice)
     {
         $this->invoices->removeElement($invoice);
+    }
+
+    /**
+     * @return ConferenceMember[]|ArrayCollection
+     */
+    public function getConferenceMembers()
+    {
+        return $this->conferenceMembers;
+    }
+
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param ConferenceMember $conferenceMember
+     */
+    public function addConferenceMember(ConferenceMember $conferenceMember)
+    {
+        if (!$this->conferenceMembers->contains($conferenceMember)) {
+            $this->conferenceMembers->add($conferenceMember);
+        }
+    }
+
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param ConferenceMember $conferenceMember
+     */
+    public function removeConferenceMember(ConferenceMember $conferenceMember)
+    {
+        $this->conferenceMembers->removeElement($conferenceMember);
     }
 }
