@@ -28,6 +28,11 @@
                 {#{{ form_row(form.username) }}#}
             {#</div>#}
             <div class="row">
+                {{ form_row(form.country) }}
+                {{ form_row(form.type_person) }}
+            </div>
+
+            <div class="row">
                 {{ form_row(form.inn) }}
                 {{ form_row(form.kpp) }}
             </div>
@@ -61,6 +66,11 @@
         {#<div class="row">#}
             {#{{ form_row(form.username) }}#}
         {#</div>#}
+        <div class="row">
+            {{ form_row(form.country) }}
+            {{ form_row(form.type_person) }}
+        </div>
+
         <div class="row">
             {{ form_row(form.inn) }}
             {{ form_row(form.kpp) }}
