@@ -93,7 +93,7 @@ class ConferenceOrganization
     /**
      * @var ArrayCollection|ConferenceMember[]
      *
-     * @ORM\OneToMany(targetEntity="ConferenceOrganization", mappedBy="conferenceOrganization")
+     * @ORM\OneToMany(targetEntity="ConferenceMember", mappedBy="conferenceOrganization")
      */
     private $conferenceMembers;
 
