@@ -9,9 +9,10 @@ import {
     Button,
 } from '@material-ui/core';
 import map from 'lodash/map';
-import InvoiceModal from './InvoiceModal';
+import InvoicesModal from './InvoicesModal';
 
 import createDevData from '../../libs/utils';
+import CommentsModal from "./CommentsModal";
 const devData = createDevData({
     name: 'NAG LLC.',
     inn: 6659099112,
@@ -65,10 +66,14 @@ class OrganizationTable extends React.PureComponent {
                                 {item.total_members} / {item.in_room_members}
                             </TableCell>
                             <TableCell>
-                                <InvoiceModal organizationName={item.name}/>
+                                <InvoicesModal organizationName={item.name}/>
                             </TableCell>
                             <TableCell>
-                                <Button>{item.comments_count}</Button>
+                                <CommentsModal
+                                    organizationId={item.id}
+                                    organizationName={item.name}
+                                    trigger={<Button>{item.comments_count}</Button>}
+                                />
                             </TableCell>
                         </TableRow>
                     )}
@@ -88,15 +93,16 @@ OrganizationTable.propTypes = {
             total_members:      PropTypes.number.isRequired,
             in_room_members:    PropTypes.number.isRequired,
             comments_count:     PropTypes.number.isRequired,
-            invoices:           PropTypes.arrayOf(
-                PropTypes.shape({
-                    id:     PropTypes.number.isRequired,
-                    number: PropTypes.number.isRequired,
-                    amount: PropTypes.number.isRequired,
-                    date:   PropTypes.number.isRequired,
-                    status: PropTypes.number.isRequired,
-                }),
-            ),
+            invoices_count:     PropTypes.number.isRequired,
+            // invoices:           PropTypes.arrayOf(
+            //     PropTypes.shape({
+            //         id:     PropTypes.number.isRequired,
+            //         number: PropTypes.number.isRequired,
+            //         amount: PropTypes.number.isRequired,
+            //         date:   PropTypes.number.isRequired,
+            //         status: PropTypes.number.isRequired,
+            //     }),
+            // ),
         }),
     ),
 };

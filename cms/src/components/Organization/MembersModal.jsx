@@ -22,7 +22,7 @@ const devData = [
     ...createDevData({ number: 5813, amount: 54000.20, date: 1542806279, status: 1 }, 3),
 ];
 
-class CommentModal extends React.Component {
+class MembersModal extends React.Component {
     constructor(props) {
         super(props);
 
@@ -91,7 +91,7 @@ class CommentModal extends React.Component {
     }
 }
 
-CommentModal.propTypes = {
+MembersModal.propTypes = {
     /**
      * Organization name
      */
@@ -110,8 +110,8 @@ CommentModal.propTypes = {
     ),
 };
 
-CommentModal.defaultProps = {
+MembersModal.defaultProps = {
     data: devData,
 };
 
-export default CommentModal;
+export default MembersModal;

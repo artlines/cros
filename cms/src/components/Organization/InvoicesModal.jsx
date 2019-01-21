@@ -22,7 +22,7 @@ const devData = [
     ...createDevData({ number: 5813, amount: 54000.20, date: 1542806279, status: 1 }, 3),
 ];
 
-class InvoiceModal extends React.Component {
+class InvoicesModal extends React.Component {
     constructor(props) {
         super(props);
 
@@ -91,7 +91,7 @@ class InvoiceModal extends React.Component {
     }
 }
 
-InvoiceModal.propTypes = {
+InvoicesModal.propTypes = {
     /**
      * Organization name
      */
@@ -110,8 +110,8 @@ InvoiceModal.propTypes = {
     ),
 };
 
-InvoiceModal.defaultProps = {
+InvoicesModal.defaultProps = {
     data: devData,
 };
 
-export default InvoiceModal;
+export default InvoicesModal;

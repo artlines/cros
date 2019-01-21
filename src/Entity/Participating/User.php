@@ -487,4 +487,9 @@ class User implements UserInterface
     {
         return $this->createdAt;
     }
+
+    public function getFullName()
+    {
+        return $this->lastName . ' ' . $this->firstName;
+    }
 }
