@@ -63,15 +63,13 @@ class CommentsModal extends React.Component {
                     submitting: false,
                     comment: '',
                 });
-                update();
+                update({conference_organization_id: organizationId});
             });
     };
 
     render() {
-        const { trigger, items, organizationName } = this.props;
+        const { trigger, items, organizationName, isFetching } = this.props;
         const { open, submitting, comment } = this.state;
-
-        console.log(this.props.update);
 
         return (
             <React.Fragment>
@@ -85,42 +83,45 @@ class CommentsModal extends React.Component {
                     {submitting && <LinearProgress/>}
                     <DialogTitle>Комментарии по {organizationName}</DialogTitle>
                     <DialogContent>
-                        <Grid
-                            container
-                              spacing={16}
-                              style={{
-                                  fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-                              }}
-                        >
-                            {map(items, item =>
-                                <React.Fragment key={item.id}>
-                                    <Grid item xs={12} style={{margin: '0 0 8'}}>
-                                        <Grid
-                                            container
-                                            spacing={16}
-                                            justify={'space-between'}
-                                        >
-                                            <Grid item>
-                                                <Chip variant={'outlined'} label={item.user.name}/>
-                                            </Grid>
-                                            <Grid item>
-                                                <Typography variant={`body2`}>
-                                                    <DateTime withTime value={item.created_at}/>
-                                                </Typography>
-                                            </Grid>
-                                            <Grid item xs={12}>
-                                                <Typography variant={`body2`}>
-                                                    {item.content}
-                                                </Typography>
+                        {isFetching
+                            ? <LinearProgress/>
+                            : <Grid
+                                container
+                                spacing={16}
+                                style={{
+                                    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+                                }}
+                            >
+                                {map(items, item =>
+                                    <React.Fragment key={item.id}>
+                                        <Grid item xs={12} style={{margin: '0 0 8'}}>
+                                            <Grid
+                                                container
+                                                spacing={16}
+                                                justify={'space-between'}
+                                            >
+                                                <Grid item>
+                                                    <Chip variant={'outlined'} label={item.user.name}/>
+                                                </Grid>
+                                                <Grid item>
+                                                    <Typography variant={`body2`}>
+                                                        <DateTime withTime value={item.created_at}/>
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item xs={12}>
+                                                    <Typography variant={`body2`} style={{whiteSpace: 'pre-wrap'}}>
+                                                        {item.content}
+                                                    </Typography>
+                                                </Grid>
                                             </Grid>
                                         </Grid>
-                                    </Grid>
-                                    <Divider/>
-                                </React.Fragment>
-                            )}
-                        </Grid>
+                                        <Divider/>
+                                    </React.Fragment>
+                                )}
+                            </Grid>
+                        }
                     </DialogContent>
-                    <DialogContent style={{marginTop: 16}}>
+                    <DialogContent style={{paddingTop: 24}}>
                         <TextField
                             fullWidth
                             multiline

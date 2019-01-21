@@ -43,6 +43,7 @@ class CommentController extends ApiController
                 'id'            => $comment->getId(),
                 'content'       => $comment->getContent(),
                 'created_at'    => $comment->getCreatedAt()->getTimestamp(),
+                'is_private'    => $comment->isPrivate(),
                 'user'  => [
                     'id'    => $user->getId(),
                     'name'  => $user->getFullName(),

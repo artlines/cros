@@ -49,4 +49,74 @@ class InvoiceController extends ApiController
 
         return $this->success(['items' => $items]);
     }
+
+    /**
+     * @Route("invoice/new", methods={"POST"}, name="new")
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @throws \Exception
+     */
+    public function new()
+    {
+        $amount = $this->requestData['amount'] ?? null;
+        $number = $this->requestData['number'] ?? null;
+        $date = $this->requestData['date'] ?? null;
+        $status = $this->requestData['status'] ?? null;
+        $conference_organization_id = $this->requestData['conference_organization_id'] ?? null;
+
+        if (!$amount || !$number || !$date || !$status || !$conference_organization_id) {
+            return $this->badRequest('Missing required param.');
+        }
+
+        /** @var ConferenceOrganization $conferenceOrganization */
+        if (!$conferenceOrganization = $this->em->find(ConferenceOrganization::class, $conference_organization_id)) {
+            return $this->notFound('Conference organization not found.');
+        }
+
+        $invoice = new Invoice();
+        $invoice->setAmount($amount);
+        $invoice->setConferenceOrganization($conferenceOrganization);
+        $invoice->setNumber($number);
+        $invoice->setStatus($status);
+        $invoice->setDate(new \DateTime($date));
+
+        $this->em->persist($invoice);
+        $this->em->flush();
+
+        return $this->success();
+    }
+
+    /**
+     * @Route("invoice/{id}", requirements={"id":"\d+"}, methods={"PUT"}, name="update")
+     *
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @throws \Exception
+     */
+    public function update($id)
+    {
+        $amount = $this->requestData['amount'] ?? null;
+        $number = $this->requestData['number'] ?? null;
+        $date = $this->requestData['date'] ?? null;
+        $status = $this->requestData['status'] ?? null;
+
+        if (!$amount || !$number || !$date || !$status) {
+            return $this->badRequest('Missing required param.');
+        }
+
+        /** @var Invoice $invoice */
+        if (!$invoice = $this->em->find(Invoice::class, $id)) {
+            return $this->notFound('Invoice not found.');
+        }
+
+        $invoice->setAmount($amount);
+        $invoice->setNumber($number);
+        $invoice->setStatus($status);
+        $invoice->setDate(new \DateTime($date));
+
+        $this->em->persist($invoice);
+        $this->em->flush();
+
+        return $this->success();
+    }
 }

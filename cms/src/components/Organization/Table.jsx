@@ -13,19 +13,9 @@ import {
 } from '@material-ui/core';
 import map from 'lodash/map';
 import InvoicesModal from './InvoicesModal';
-
-import createDevData from '../../libs/utils';
 import CommentsModal from "./CommentsModal";
 import MembersModal from "./MembersModal";
-const devData = createDevData({
-    name: 'NAG LLC.',
-    inn: 6659099112,
-    kpp: 667101001,
-    total_members: 20,
-    in_room_members: 14,
-    comments_count: 4,
-    invoices_count: 3,
-}, 100);
+import {Close as CloseIcon, Edit as EditIcon} from "@material-ui/icons";
 
 class OrganizationTable extends React.Component {
 
@@ -40,35 +30,38 @@ class OrganizationTable extends React.Component {
 
     componentDidMount() {
         const { page, rowsPerPage } = this.state;
-        const { handlePaginationChange } = this.props;
-        handlePaginationChange(page, rowsPerPage);
+        const { update } = this.props;
+        update(page, rowsPerPage);
     }
 
     componentDidUpdate(prevProps, prevState, prevContext) {
         const { page, rowsPerPage } = this.state;
-        const { handlePaginationChange } = this.props;
+        const { update } = this.props;
 
         if (prevState.page !== page || prevState.rowsPerPage !== rowsPerPage) {
-            handlePaginationChange(page, rowsPerPage);
+            update(page, rowsPerPage);
         }
     }
 
-    updateComments = () => {
+    updateComments = (data) => {
         const { update, loadComments } = this.props;
-        update();
-        loadComments();
+        const { page, rowsPerPage } = this.state;
+        update(page, rowsPerPage);
+        loadComments(data);
     };
 
-    updateInvoices = () => {
+    updateInvoices = (data) => {
         const { update, loadInvoices } = this.props;
-        update();
-        loadInvoices();
+        const { page, rowsPerPage } = this.state;
+        update(page, rowsPerPage);
+        loadInvoices(data);
     };
 
-    updateMembers = () => {
+    updateMembers = (data) => {
         const { update, loadMembers } = this.props;
-        update();
-        loadMembers();
+        const { page, rowsPerPage } = this.state;
+        update(page, rowsPerPage);
+        loadMembers(data);
     };
 
     handleChangePage = (event, page) => {
@@ -95,6 +88,7 @@ class OrganizationTable extends React.Component {
                             <TableCell>Участников<br/>всего / заселено</TableCell>
                             <TableCell>Счета</TableCell>
                             <TableCell>Комментарии</TableCell>
+                            <TableCell> </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -134,12 +128,16 @@ class OrganizationTable extends React.Component {
                                         update={this.updateComments}
                                     />
                                 </TableCell>
+                                <TableCell>
+                                    <Button><EditIcon/></Button>
+                                </TableCell>
                             </TableRow>
                         )}
                     </TableBody>
                 </Table>
                 <TablePagination
                     component={`div`}
+                    rowsPerPageOptions={[5, 10, 25]}
                     count={total_count}
                     onChangePage={this.handleChangePage}
                     onChangeRowsPerPage={this.handleChangeRowsPerPage}
@@ -156,8 +154,11 @@ OrganizationTable.propTypes = {
         PropTypes.shape({
             id:                 PropTypes.number.isRequired,
             name:               PropTypes.string.isRequired,
-            inn:                PropTypes.number.isRequired,
-            kpp:                PropTypes.number.isRequired,
+            inn:                PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+            kpp:                PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+            city:               PropTypes.string,
+            address:            PropTypes.string,
+            requisites:         PropTypes.string,
             total_members:      PropTypes.number.isRequired,
             in_room_members:    PropTypes.number.isRequired,
             comments_count:     PropTypes.number.isRequired,
@@ -169,7 +170,7 @@ OrganizationTable.propTypes = {
     loadInvoices: PropTypes.func.isRequired,
     loadMembers: PropTypes.func.isRequired,
 
-    handleChangePage: PropTypes.func.isRequired,
+    update: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state =>

@@ -30,16 +30,14 @@ class Organizations extends React.Component {
         }
     }
 
-    update = (page = null, rowsPerPage = null) => {
-        let newQuery = {...this.state.query};
+    update = (page, rowsPerPage) => {
+        const { query } = this.state;
+        let newQuery = {...query};
 
-        page && newQuery['@']
+        rowsPerPage && (newQuery['@limit'] = rowsPerPage);
+        page && (newQuery['@offset'] = newQuery['@limit'] * page);
 
-        this.setState({
-            ,
-            '@offset': page*rowsPerPage,
-            '@limit': rowsPerPage,
-        });
+        this.setState({query: newQuery});
     };
 
     handleFilterChange = (event) => {
@@ -50,6 +48,8 @@ class Organizations extends React.Component {
         } else {
             newQuery.search = event.target.value;
         }
+
+        newQuery['@offset'] = 0;
 
         clearTimeout(this.searchTimeout);
         this.searchTimeout = setTimeout(() => {
@@ -74,7 +74,7 @@ class Organizations extends React.Component {
                         loadComments={fetchComments}
                         loadInvoices={fetchInvoices}
                         loadMembers={fetchMembers}
-                        handlePaginationChange={this.update}
+                        update={this.update}
                     />
                 </Grid>
             </Grid>
@@ -94,6 +94,7 @@ const mapDispatchToProps = dispatch =>
             dispatch(participating.fetchInvoices(data))
         },
         fetchMembers: (data = {}) => {
+            console.log(`fetchMembers::data`, data);
             dispatch(participating.fetchMembers(data))
         },
     });

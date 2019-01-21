@@ -45,8 +45,7 @@ class ConferenceOrganizationController extends ApiController
         }
 
         /** @var ConferenceOrganization[] $conferenceOrganizations */
-        $conferenceOrganizations = $confOrgRepo->searchBy($conference, $this->requestData);
-        $totalCount = $confOrgRepo->count(['conference' => $conference]);
+        list($conferenceOrganizations, $totalCount) = $confOrgRepo->searchBy($conference, $this->requestData);
 
         $items = [];
         foreach ($conferenceOrganizations as $co) {
