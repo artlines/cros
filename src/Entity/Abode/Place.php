@@ -26,7 +26,7 @@ class Place
     /**
      * @var ConferenceMember
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Participating\ConferenceMember")
+     * @ORM\OneToOne(targetEntity="App\Entity\Participating\ConferenceMember", inversedBy="place")
      * @ORM\JoinColumn(name="conference_member_id", referencedColumnName="id", nullable=true)
      */
     private $conferenceMember;

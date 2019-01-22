@@ -65,7 +65,7 @@ class InvoiceController extends ApiController
         $conference_organization_id = $this->requestData['conference_organization_id'] ?? null;
 
         if (!$amount || !$number || !$date || !$status || !$conference_organization_id) {
-            return $this->badRequest('Missing required param.');
+            return $this->badRequest('Не переданы обязательные параметры.');
         }
 
         /** @var ConferenceOrganization $conferenceOrganization */
@@ -101,7 +101,7 @@ class InvoiceController extends ApiController
         $status = $this->requestData['status'] ?? null;
 
         if (!$amount || !$number || !$date || !$status) {
-            return $this->badRequest('Missing required param.');
+            return $this->badRequest('Не переданы обязательные параметры.');
         }
 
         /** @var Invoice $invoice */
@@ -115,6 +115,26 @@ class InvoiceController extends ApiController
         $invoice->setDate(new \DateTime($date));
 
         $this->em->persist($invoice);
+        $this->em->flush();
+
+        return $this->success();
+    }
+
+    /**
+     * @Route("invoice/{id}", requirements={"id":"\d+"}, methods={"DELETE"}, name="delete")
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function delete($id)
+    {
+        /** @var Invoice $invoice */
+        if (!$invoice = $this->em->find(Invoice::class, $id)) {
+            return $this->notFound('Invoice not found.');
+        }
+
+        $this->em->remove($invoice);
         $this->em->flush();
 
         return $this->success();

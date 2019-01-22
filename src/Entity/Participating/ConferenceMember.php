@@ -2,6 +2,7 @@
 
 namespace App\Entity\Participating;
 
+use App\Entity\Abode\Place;
 use App\Entity\Conference;
 use App\Entity\Participating\User;
 use Doctrine\ORM\Mapping as ORM;
@@ -76,6 +77,16 @@ class ConferenceMember
      */
     private $conferenceOrganization;
 
+    /**
+     * @var Place|null
+     *
+     * @ORM\OneToOne(targetEntity="App\Entity\Abode\Place", mappedBy="conferenceMember", cascade={"remove"})
+     */
+    private $place;
+
+    /**
+     * ConferenceMember constructor.
+     */
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -191,5 +202,21 @@ class ConferenceMember
     public function setConferenceOrganization(ConferenceOrganization $conferenceOrganization)
     {
         $this->conferenceOrganization = $conferenceOrganization;
+    }
+
+    /**
+     * @return Place|null
+     */
+    public function getPlace()
+    {
+        return $this->place;
+    }
+
+    /**
+     * @param Place|null $place
+     */
+    public function setPlace($place)
+    {
+        $this->place = $place;
     }
 }

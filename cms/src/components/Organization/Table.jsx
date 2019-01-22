@@ -1,6 +1,6 @@
 import React from 'react';
-import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import {
     Table,
     TableHead,
@@ -10,12 +10,16 @@ import {
     Button,
     LinearProgress,
     TablePagination,
+    Grid,
 } from '@material-ui/core';
 import map from 'lodash/map';
 import InvoicesModal from './InvoicesModal';
 import CommentsModal from "./CommentsModal";
 import MembersModal from "./MembersModal";
-import {Close as CloseIcon, Edit as EditIcon} from "@material-ui/icons";
+import FabButton from '../utils/FabButton';
+import {Edit as EditIcon} from "@material-ui/icons";
+import OrganizationForm from './Form';
+import find from 'lodash/find';
 
 class OrganizationTable extends React.Component {
 
@@ -25,6 +29,10 @@ class OrganizationTable extends React.Component {
         this.state = {
             page: 0,
             rowsPerPage: 10,
+            form: {
+                open: false,
+                initialValues: {},
+            },
         };
     }
 
@@ -44,106 +52,132 @@ class OrganizationTable extends React.Component {
     }
 
     updateComments = (data) => {
-        const { update, loadComments } = this.props;
-        const { page, rowsPerPage } = this.state;
-        update(page, rowsPerPage);
-        loadComments(data);
+        this.props.loadComments(data);
+        this.update();
     };
 
     updateInvoices = (data) => {
-        const { update, loadInvoices } = this.props;
-        const { page, rowsPerPage } = this.state;
-        update(page, rowsPerPage);
-        loadInvoices(data);
+        this.props.loadInvoices(data);
+        this.update();
     };
 
     updateMembers = (data) => {
-        const { update, loadMembers } = this.props;
+        this.props.loadMembers(data);
+        this.update();
+    };
+
+    update = () => {
+        const { update } = this.props;
         const { page, rowsPerPage } = this.state;
-        update(page, rowsPerPage);
-        loadMembers(data);
+        update(page, rowsPerPage, true);
     };
 
-    handleChangePage = (event, page) => {
-        this.setState({page});
-    };
+    handleChangePage = (event, page) => this.setState({page});
+    handleChangeRowsPerPage = (event) => this.setState({rowsPerPage: event.target.value});
 
-    handleChangeRowsPerPage = (event) => {
-        this.setState({rowsPerPage: event.target.value});
+    openForm = (id) => {
+        const { items } = this.props;
+        this.setState({
+            form: {
+                ...this.state.form,
+                open: true,
+                initialValues: id ? find(items, {id}) : {},
+            }
+        });
     };
+    closeForm = () => this.setState({form: {...this.state.form, open: false}});
 
     render() {
-        const { page, rowsPerPage } = this.state;
+        const { page, rowsPerPage, form } = this.state;
         const { items, isFetching, total_count } = this.props;
 
         return (
             <React.Fragment>
-                {isFetching && <LinearProgress/>}
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>ID</TableCell>
-                            <TableCell>Наименование</TableCell>
-                            <TableCell>Реквизиты</TableCell>
-                            <TableCell>Участников<br/>всего / заселено</TableCell>
-                            <TableCell>Счета</TableCell>
-                            <TableCell>Комментарии</TableCell>
-                            <TableCell> </TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {map(items, item =>
-                            <TableRow key={item.id}>
-                                <TableCell>
-                                    {item.id}
-                                </TableCell>
-                                <TableCell>
-                                    {item.name}
-                                </TableCell>
-                                <TableCell>
-                                    <div style={{whiteSpace: 'nowrap'}}><b>ИНН:</b> {item.inn}</div>
-                                    <div style={{whiteSpace: 'nowrap'}}><b>КПП:</b> {item.kpp}</div>
-                                </TableCell>
-                                <TableCell>
-                                    <MembersModal
-                                        organizationId={item.id}
-                                        organizationName={item.name}
-                                        trigger={<Button>{item.total_members} / {item.in_room_members}</Button>}
-                                        update={this.updateMembers}
-                                    />
-                                </TableCell>
-                                <TableCell>
-                                    <InvoicesModal
-                                        organizationId={item.id}
-                                        organizationName={item.name}
-                                        trigger={<Button>{item.invoices_count}</Button>}
-                                        update={this.updateInvoices}
-                                    />
-                                </TableCell>
-                                <TableCell>
-                                    <CommentsModal
-                                        organizationId={item.id}
-                                        organizationName={item.name}
-                                        trigger={<Button>{item.comments_count}</Button>}
-                                        update={this.updateComments}
-                                    />
-                                </TableCell>
-                                <TableCell>
-                                    <Button><EditIcon/></Button>
-                                </TableCell>
-                            </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
-                <TablePagination
-                    component={`div`}
-                    rowsPerPageOptions={[5, 10, 25]}
-                    count={total_count}
-                    onChangePage={this.handleChangePage}
-                    onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                    page={page}
-                    rowsPerPage={rowsPerPage}
+                <OrganizationForm
+                    open={form.open}
+                    initialValues={form.initialValues}
+                    onClose={this.closeForm}
+                    onSuccess={this.update}
                 />
+                <Grid container spacing={16}>
+                    <Grid item xs={12}>
+                        {isFetching && <LinearProgress/>}
+                    </Grid>
+                    <Grid item xs={12}>
+                        <FabButton title={`Добавить организацию`} onClick={this.openForm}/>
+                    </Grid>
+                </Grid>
+                <Grid container>
+                    <Grid item xs={12}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>ID</TableCell>
+                                <TableCell>Наименование</TableCell>
+                                <TableCell>Реквизиты</TableCell>
+                                <TableCell>Участников<br/>всего / заселено</TableCell>
+                                <TableCell>Счета</TableCell>
+                                <TableCell>Комментарии</TableCell>
+                                <TableCell> </TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {map(items, item =>
+                                <TableRow key={item.id}>
+                                    <TableCell>
+                                        {item.id}
+                                    </TableCell>
+                                    <TableCell>
+                                        {item.name}
+                                    </TableCell>
+                                    <TableCell>
+                                        <div style={{whiteSpace: 'nowrap'}}><b>ИНН:</b> {item.inn}</div>
+                                        <div style={{whiteSpace: 'nowrap'}}><b>КПП:</b> {item.kpp}</div>
+                                    </TableCell>
+                                    <TableCell>
+                                        <MembersModal
+                                            organizationId={item.id}
+                                            organizationName={item.name}
+                                            trigger={<Button>{item.total_members} / {item.in_room_members}</Button>}
+                                            update={this.updateMembers}
+                                        />
+                                    </TableCell>
+                                    <TableCell>
+                                        <InvoicesModal
+                                            organizationId={item.id}
+                                            organizationName={item.name}
+                                            trigger={<Button>{item.invoices_count}</Button>}
+                                            update={this.updateInvoices}
+                                        />
+                                    </TableCell>
+                                    <TableCell>
+                                        <CommentsModal
+                                            organizationId={item.id}
+                                            organizationName={item.name}
+                                            trigger={<Button>{item.comments_count}</Button>}
+                                            update={this.updateComments}
+                                        />
+                                    </TableCell>
+                                    <TableCell>
+                                        <Button onClick={() => this.openForm(item.id)}><EditIcon/></Button>
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                    <TablePagination
+                        component={`div`}
+                        rowsPerPageOptions={[5, 10, 25]}
+                        count={total_count}
+                        onChangePage={this.handleChangePage}
+                        onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                        page={page}
+                        rowsPerPage={rowsPerPage}
+                        labelRowsPerPage={``}
+                        labelDisplayedRows={({ from, to, count }) => `${from}-${to} из ${count}`}
+                    />
+                    </Grid>
+                </Grid>
             </React.Fragment>
         );
     }

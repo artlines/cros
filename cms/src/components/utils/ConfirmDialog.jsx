@@ -37,7 +37,7 @@ class ConfirmDialog extends React.Component {
         const { title, text, confirm, cancel, trigger } = this.props;
 
         return (
-            <div>
+            <React.Fragment>
                 <span onClick={this.handleClickOpen}>{trigger}</span>
                 <Dialog open={this.state.open} onClose={this.handleClose} >
                     <DialogTitle>{title}</DialogTitle>
@@ -53,7 +53,7 @@ class ConfirmDialog extends React.Component {
                         </Button>
                     </DialogActions>
                 </Dialog>
-            </div>
+            </React.Fragment>
         );
     }
 }

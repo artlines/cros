@@ -131,6 +131,7 @@ class Organization
     public function __construct()
     {
         $this->createdAt    = new \DateTime();
+        $this->isActive     = true;
         $this->users        = new ArrayCollection();
     }
 

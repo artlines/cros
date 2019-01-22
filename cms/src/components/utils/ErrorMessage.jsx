@@ -22,7 +22,7 @@ class ErrorMessage extends React.PureComponent {
                     </Typography>
                 </Grid>
                 {extended &&
-                <Grid item>
+                <Grid item xs={12}>
                     <Typography style={{ color: "#d50000", fontSize: "0.875rem" }} variant={"body2"}>
                         {description}
                     </Typography>

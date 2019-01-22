@@ -22,6 +22,10 @@ import {Close as CloseIcon, Edit as EditIcon} from "@material-ui/icons";
 import FabButton from "../utils/FabButton";
 import find from "lodash/find";
 import InvoiceForm from "./InvoiceForm";
+import ConfirmDialog from "../utils/ConfirmDialog";
+import API from '../../libs/api';
+
+const api = new API();
 
 class InvoicesModal extends React.Component {
     constructor(props) {
@@ -45,6 +49,11 @@ class InvoicesModal extends React.Component {
     update = () => {
         const { organizationId, update } = this.props;
         update({conference_organization_id: organizationId});
+    };
+
+    delete = (id) => {
+        api.delete(`invoice/${id}`)
+            .then(this.update);
     };
 
     handleOpen = () => this.setState({open: true});
@@ -116,7 +125,10 @@ class InvoicesModal extends React.Component {
                                             </TableCell>
                                             <TableCell align={'right'}>
                                                 <Button onClick={() => this.openForm(item.id)}><EditIcon/></Button>
-                                                <Button><CloseIcon/></Button>
+                                                <ConfirmDialog
+                                                    trigger={<Button><CloseIcon/></Button>}
+                                                    onConfirm={() => this.delete(item.id)}
+                                                />
                                             </TableCell>
                                         </TableRow>
                                     )}

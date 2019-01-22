@@ -15,9 +15,7 @@ class Organizations extends React.Component {
         this.searchTimeout = null;
 
         this.state = {
-            query: {
-
-            },
+            query: {},
         };
     }
 
@@ -30,14 +28,19 @@ class Organizations extends React.Component {
         }
     }
 
-    update = (page, rowsPerPage) => {
+    update = (page, rowsPerPage, force = false) => {
         const { query } = this.state;
+        const { fetchOrganizations } = this.props;
         let newQuery = {...query};
 
-        rowsPerPage && (newQuery['@limit'] = rowsPerPage);
-        page && (newQuery['@offset'] = newQuery['@limit'] * page);
+        newQuery['@limit'] = rowsPerPage;
+        newQuery['@offset'] = rowsPerPage * page;
 
-        this.setState({query: newQuery});
+        if (!force) {
+            this.setState({query: newQuery});
+        } else {
+            fetchOrganizations(newQuery);
+        }
     };
 
     handleFilterChange = (event) => {

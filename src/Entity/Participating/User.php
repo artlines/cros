@@ -136,6 +136,7 @@ class User implements UserInterface
     public function __construct()
     {
         $this->speakers = new ArrayCollection();
+        $this->isActive = true;
         $this->createdAt = new \DateTime();
     }
 

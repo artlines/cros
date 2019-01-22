@@ -100,11 +100,11 @@ class MemberForm extends React.Component {
         /** Create or update entity */
         const id = initialValues && initialValues.id;
         if (!id) {
-            api.post(`member/new`, values)
+            api.post(`conference_member/new`, values)
                 .then(this.handleSuccessSubmit)
                 .catch(this.handleErrorSubmit);
         } else {
-            api.put(`member/${id}`, values)
+            api.put(`conference_member/${id}`, values)
                 .then(this.handleSuccessSubmit)
                 .catch(this.handleErrorSubmit);
         }

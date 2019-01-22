@@ -21,6 +21,11 @@ import {
 import map from 'lodash/map';
 import find from 'lodash/find';
 import MemberForm from "./MemberForm";
+import ConfirmDialog from "../utils/ConfirmDialog";
+import FabButton from '../utils/FabButton';
+import API from '../../libs/api';
+
+const api = new API();
 
 class MembersModal extends React.Component {
     constructor(props) {
@@ -44,6 +49,11 @@ class MembersModal extends React.Component {
     update = () => {
         const { organizationId, update } = this.props;
         update({conference_organization_id: organizationId});
+    };
+
+    delete = (id) => {
+        api.delete(`conference_member/${id}`)
+            .then(this.update);
     };
 
     handleOpen = () => this.setState({open: true});
@@ -85,6 +95,7 @@ class MembersModal extends React.Component {
                 >
                     <DialogTitle>Участники {organizationName}</DialogTitle>
                     <DialogContent>
+                        <FabButton title={`Добавить участника`} onClick={this.openForm}/>
                         {isFetching
                             ? <LinearProgress/>
                             : <Table>
@@ -126,7 +137,10 @@ class MembersModal extends React.Component {
                                             </TableCell>
                                             <TableCell align={'right'}>
                                                 <Button onClick={() => this.openForm(item.id)}><EditIcon/></Button>
-                                                <Button><CloseIcon/></Button>
+                                                <ConfirmDialog
+                                                    trigger={<Button><CloseIcon/></Button>}
+                                                    onConfirm={() => this.delete(item.id)}
+                                                />
                                             </TableCell>
                                         </TableRow>
                                     )}

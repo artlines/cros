@@ -98,11 +98,11 @@ class OrganizationForm extends React.Component {
         /** Create or update entity */
         const id = initialValues && initialValues.id;
         if (!id) {
-            api.post(`organization/new`, values)
+            api.post(`conference_organization/new`, values)
                 .then(this.handleSuccessSubmit)
                 .catch(this.handleErrorSubmit);
         } else {
-            api.put(`organization/${id}`, values)
+            api.put(`conference_organization/${id}`, values)
                 .then(this.handleSuccessSubmit)
                 .catch(this.handleErrorSubmit);
         }
@@ -140,18 +140,17 @@ class OrganizationForm extends React.Component {
                                 <TextField
                                     required
                                     label={"Наименование"}
-                                    type={"number"}
                                     value={values.name}
                                     margin={"dense"}
                                     fullWidth
                                     variant={"outlined"}
-                                    name={'name'}
+                                    name={'name'}//asd
                                     onChange={this.handleChange('name')}
                                     error={!!errors.name}
                                     helperText={errors.name}
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={4}>
+                            <Grid item xs={12} sm={6}>
                                 <TextField
                                     required
                                     label={"ИНН"}
@@ -166,7 +165,7 @@ class OrganizationForm extends React.Component {
                                     helperText={errors.inn}
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={4}>
+                            <Grid item xs={12} sm={6}>
                                 <TextField
                                     required
                                     label={"КПП"}
@@ -181,11 +180,10 @@ class OrganizationForm extends React.Component {
                                     helperText={errors.kpp}
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={4}>
+                            <Grid item xs={12}>
                                 <TextField
                                     required
                                     label={"Город"}
-                                    type={"number"}
                                     value={values.city}
                                     margin={"dense"}
                                     fullWidth
@@ -196,7 +194,6 @@ class OrganizationForm extends React.Component {
                                     helperText={errors.city}
                                 />
                             </Grid>
-
                             <Grid item xs={12}>
                                 <TextField
                                     label={"Адрес"}
@@ -219,7 +216,7 @@ class OrganizationForm extends React.Component {
                                     margin={"dense"}
                                     fullWidth
                                     multiline
-                                    rows={4}
+                                    rows={6}
                                     variant={"outlined"}
                                     name={'requisites'}
                                     onChange={this.handleChange('requisites')}
@@ -227,8 +224,6 @@ class OrganizationForm extends React.Component {
                                     helperText={errors.requisites}
                                 />
                             </Grid>
-
-
                         </Grid>
                     </form>
                     {submitError && <ErrorMessage description={submitError} extended={true}/>} {/*title={} description={} extended={}*/}
@@ -244,7 +239,7 @@ class OrganizationForm extends React.Component {
                     <Button
                         variant={"contained"}
                         color={"primary"}
-                        form={"OrganizationForm-form"}
+                        form={"organization-form"}
                         type={"submit"}
                         disabled={submitting}
                     >

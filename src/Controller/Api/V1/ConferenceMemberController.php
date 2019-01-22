@@ -3,9 +3,13 @@
 namespace App\Controller\Api\V1;
 
 use App\Entity\Abode\Place;
+use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\ConferenceOrganization;
+use App\Entity\Participating\User;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * Class ConferenceMemberController
@@ -16,7 +20,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
  */
 class ConferenceMemberController extends ApiController
 {
-
     /**
      * @Route("conference_member", methods={"GET"}, name="get_all")
      *
@@ -51,7 +54,7 @@ class ConferenceMemberController extends ApiController
 
 
             $items[] = [
-                'id'            => $member->getId(),
+                'id'            => $conferenceMember->getId(),
                 'first_name'    => $member->getFirstName(),
                 'last_name'     => $member->getLastName(),
                 'middle_name'   => $member->getMiddleName(),
@@ -63,5 +66,111 @@ class ConferenceMemberController extends ApiController
         }
 
         return $this->success(['items' => $items]);
+    }
+
+    /**
+     * @Route("conference_member/new", methods={"POST"}, name="new")
+     *
+     * @param UserPasswordEncoderInterface $encoder
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function new(UserPasswordEncoderInterface $encoder)
+    {
+        $first_name = $this->requestData['first_name'] ?? null;
+        $last_name = $this->requestData['last_name'] ?? null;
+        $middle_name = $this->requestData['middle_name'] ?? null;
+        $post = $this->requestData['post'] ?? null;
+        $phone = $this->requestData['phone'] ?? null;
+        $email = $this->requestData['email'] ?? null;
+        $conference_organization_id = $this->requestData['conference_organization_id'] ?? null;
+
+        if (!$conference_organization_id || !$first_name || !$last_name || !$phone || !$email) {
+            return $this->badRequest('Не переданы обязательные параметры.');
+        }
+
+        /** @var ConferenceOrganization $conferenceOrganization */
+        if (!$conferenceOrganization = $this->em->find(ConferenceOrganization::class, $conference_organization_id)) {
+            return $this->notFound('Conference organization not found.');
+        }
+
+        $member = new User();
+
+        $member->setFirstName($first_name);
+        $member->setLastName($last_name);
+        $member->setMiddleName($middle_name);
+        $member->setEmail($email);
+        $member->setPhone($phone);
+        $member->setPost($post);
+        $member->setOrganization($conferenceOrganization->getOrganization());
+
+        $this->em->persist($member);
+
+        $conferenceMember = new ConferenceMember();
+        $conferenceMember->setUser($member);
+        $conferenceMember->setConferenceOrganization($conferenceOrganization);
+        $conferenceMember->setConference($conferenceOrganization->getConference());
+
+        $this->em->persist($conferenceMember);
+        $this->em->flush();
+
+        return $this->success();
+    }
+
+    /**
+     * @Route("conference_member/{id}", requirements={"id":"\d+"}, methods={"PUT"}, name="update")
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function update($id)
+    {
+        $first_name = $this->requestData['first_name'] ?? null;
+        $last_name = $this->requestData['last_name'] ?? null;
+        $middle_name = $this->requestData['middle_name'] ?? null;
+        $post = $this->requestData['post'] ?? null;
+        $phone = $this->requestData['phone'] ?? null;
+        $email = $this->requestData['email'] ?? null;
+
+        if (!$first_name || !$last_name || !$phone || !$email) {
+            return $this->badRequest('Missing required param.');
+        }
+
+        /** @var ConferenceMember $conferenceMember */
+        if (!$conferenceMember = $this->em->find(ConferenceMember::class, $id)) {
+            return $this->notFound('Conference member not found.');
+        }
+
+        $member = $conferenceMember->getUser();
+
+        $member->setFirstName($first_name);
+        $member->setLastName($last_name);
+        $member->setMiddleName($middle_name);
+        $member->setEmail($email);
+        $member->setPhone($phone);
+        $member->setPost($post);
+
+        $this->em->persist($member);
+        $this->em->flush();
+
+        return $this->success();
+    }
+
+    /**
+     * @Route("conference_member/{id}", requirements={"id":"\d+"}, methods={"DELETE"}, name="delete")
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function delete($id)
+    {
+        /** @var ConferenceMember $conferenceMember */
+        if (!$conferenceMember = $this->em->find(ConferenceMember::class, $id)) {
+            return $this->notFound('Conference member not found.');
+        }
+
+        $this->em->remove($conferenceMember);
+        $this->em->flush();
+
+        return $this->success();
     }
 }
