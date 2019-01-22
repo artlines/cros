@@ -111,7 +111,7 @@ class User implements UserInterface
     /**
      * @var integer
      *
-     * @ORM\Column(name="sex", type="integer", nullable=true)
+     * @ORM\Column(name="sex", type="integer", nullable=false)
      */
     private $sex;
 

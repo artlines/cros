@@ -206,9 +206,9 @@ class MigrateToPgsqlCommand extends Command
                 $user->setNickname($mysql_user->getNickname());
 
                 $_female = $mysql_user->getFemale();
-                if ($_female === 1) {
+                if ($_female) {
                     $user->setSex(\App\Entity\Participating\User::SEX__WOMAN);
-                } elseif ($_female === 0) {
+                } else {
                     $user->setSex(\App\Entity\Participating\User::SEX__MAN);
                 }
 
