@@ -95,13 +95,8 @@ class ConferenceOrganizationController extends ApiController
         $address = $this->requestData['address'] ?? null;
         $requisites = $this->requestData['requisites'] ?? null;
 
-        if (!$name || !$inn) {
+        if (!$name || !$inn || !$kpp) {
             return $this->badRequest('Не переданы обязательные параметры.');
-        }
-
-        /** @var Organization $existOrg */
-        if ($existOrg = $this->em->getRepository(Organization::class)->findOneBy(['inn' => $inn, 'kpp' => $kpp])) {
-            return $this->badRequest("С такими ИНН и КПП есть организация \"{$existOrg->getName()}\"");
         }
 
         /** @var Conference $conference */
@@ -111,7 +106,11 @@ class ConferenceOrganizationController extends ApiController
             return $this->notFound('Не найдена конференция текущего года.');
         }
 
-        $organization = new Organization();
+        /** @var Organization $organization */
+        if (!$organization = $this->em->getRepository(Organization::class)->findOneBy(['inn' => $inn, 'kpp' => $kpp])) {
+            $organization = new Organization();
+        }
+
         $organization->setName($name);
         $organization->setInn($inn);
         $organization->setKpp($kpp);
@@ -146,7 +145,7 @@ class ConferenceOrganizationController extends ApiController
         $address = $this->requestData['address'] ?? null;
         $requisites = $this->requestData['requisites'] ?? null;
 
-        if (!$name || !$inn) {
+        if (!$name || !$inn || !$kpp) {
             return $this->badRequest('Не переданы обязательные параметры.');
         }
 
@@ -156,6 +155,12 @@ class ConferenceOrganizationController extends ApiController
         }
 
         $organization = $conferenceOrganization->getOrganization();
+
+        /** @var Organization $existOrg */
+        $existOrg = $this->em->getRepository(Organization::class)->findOneBy(['inn' => $inn, 'kpp' => $kpp]);
+        if ($existOrg && $organization !== $existOrg) {
+            return $this->badRequest("С такими ИНН и КПП есть организация \"{$existOrg->getName()}\"");
+        }
 
         $organization->setName($name);
         $organization->setInn($inn);
