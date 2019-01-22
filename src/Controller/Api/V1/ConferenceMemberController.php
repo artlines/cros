@@ -52,6 +52,8 @@ class ConferenceMemberController extends ApiController
                 $placeInfo['approved'] = $place->isApproved() ? 'true' : 'false';
             }
 
+            $_arrival = $conferenceMember->getArrival();
+            $_leaving = $conferenceMember->getLeaving();
 
             $items[] = [
                 'id'            => $conferenceMember->getId(),
@@ -64,8 +66,8 @@ class ConferenceMemberController extends ApiController
                 'sex'           => $member->getSex(),
                 'car_number'    => $conferenceMember->getCarNumber(),
                 'representative'=> $member->isRepresentative()? 1 : 0,
-                'arrival'       => $conferenceMember->getArrival()->format('Y.m.d HH:ii'),
-                'leaving'       => $conferenceMember->getLeaving()->format('Y.m.d HH:ii'),
+                'arrival'       => $_arrival ? $_arrival->format('Y.m.d HH:ii') : null,
+                'leaving'       => $_leaving ? $_leaving->format('Y.m.d HH:ii') : null,
                 'place'         => $placeInfo,
             ];
         }

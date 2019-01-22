@@ -309,6 +309,7 @@ class MemberForm extends React.Component {
                             <Grid item xs={12}>
                                 <FormControl>
                                     <FormControlLabel
+                                        label={"Представитель организации"}
                                         control={
                                             <Switch
                                                 checked={values.representative}
