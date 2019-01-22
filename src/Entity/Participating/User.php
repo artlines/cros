@@ -468,16 +468,18 @@ class User implements UserInterface
     /**
      * Set sex
      *
-     * @param integer|null $sex
+     * @param integer $sex
      *
      * @return User
      * @throws \Exception
      */
     public function setSex($sex)
     {
-        if (!in_array($sex, array_keys(self::$sexChoices)) && $sex !== null) {
+        if (!in_array($sex, array_keys(self::$sexChoices))) {
             throw new \Exception("Not valid sex type");
         }
+
+        $this->sex = $sex;
 
         return $this;
     }
