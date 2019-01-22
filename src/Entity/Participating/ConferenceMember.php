@@ -3,6 +3,7 @@
 namespace App\Entity\Participating;
 
 use App\Entity\Abode\Place;
+use App\Entity\Abode\RoomType;
 use App\Entity\Conference;
 use App\Entity\Participating\User;
 use Doctrine\ORM\Mapping as ORM;
@@ -83,6 +84,14 @@ class ConferenceMember
      * @ORM\OneToOne(targetEntity="App\Entity\Abode\Place", mappedBy="conferenceMember", cascade={"remove"})
      */
     private $place;
+
+    /**
+     * @var RoomType|null
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Abode\RoomType")
+     * @ORM\JoinColumn(name="room_type_id", referencedColumnName="id", nullable=true)
+     */
+    private $roomType;
 
     /**
      * ConferenceMember constructor.
@@ -218,5 +227,21 @@ class ConferenceMember
     public function setPlace($place)
     {
         $this->place = $place;
+    }
+
+    /**
+     * @return RoomType|null
+     */
+    public function getRoomType()
+    {
+        return $this->roomType;
+    }
+
+    /**
+     * @param RoomType|null $roomType
+     */
+    public function setRoomType($roomType)
+    {
+        $this->roomType = $roomType;
     }
 }

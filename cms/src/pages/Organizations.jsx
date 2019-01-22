@@ -1,6 +1,7 @@
 import React from "react";
 import {connect} from 'react-redux';
 import participating from '../actions/participating';
+import abode from '../actions/abode';
 import OrganizationTable from '../components/Organization/Table';
 import {
     TextField,
@@ -17,6 +18,10 @@ class Organizations extends React.Component {
         this.state = {
             query: {},
         };
+    }
+
+    componentDidMount() {
+        this.props.fetchRoomTypes();
     }
 
     componentDidUpdate(prevProps, prevState, prevContext) {
@@ -98,6 +103,9 @@ const mapDispatchToProps = dispatch =>
         },
         fetchMembers: (data = {}) => {
             dispatch(participating.fetchMembers(data))
+        },
+        fetchRoomTypes: () => {
+            dispatch(abode.fetchRoomTypes())
         },
     });
 

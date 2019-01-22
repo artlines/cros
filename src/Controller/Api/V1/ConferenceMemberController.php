@@ -3,6 +3,7 @@
 namespace App\Controller\Api\V1;
 
 use App\Entity\Abode\Place;
+use App\Entity\Abode\RoomType;
 use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\ConferenceOrganization;
 use App\Entity\Participating\User;
@@ -55,6 +56,8 @@ class ConferenceMemberController extends ApiController
             $_arrival = $conferenceMember->getArrival();
             $_leaving = $conferenceMember->getLeaving();
 
+            $roomType = $conferenceMember->getRoomType();
+
             $items[] = [
                 'id'            => $conferenceMember->getId(),
                 'first_name'    => $member->getFirstName(),
@@ -66,8 +69,9 @@ class ConferenceMemberController extends ApiController
                 'sex'           => $member->getSex(),
                 'car_number'    => $conferenceMember->getCarNumber(),
                 'representative'=> $member->isRepresentative()? 1 : 0,
-                'arrival'       => $_arrival ? $_arrival->format('Y.m.d HH:ii') : null,
-                'leaving'       => $_leaving ? $_leaving->format('Y.m.d HH:ii') : null,
+                'arrival'       => $_arrival ? $_arrival->format('Y-m-d\TH:i') : null,
+                'leaving'       => $_leaving ? $_leaving->format('Y-m-d\TH:i') : null,
+                'room_type_id'  => $roomType ? $roomType->getId() : null,
                 'place'         => $placeInfo,
             ];
         }
@@ -96,8 +100,9 @@ class ConferenceMemberController extends ApiController
         $arrival = $this->requestData['arrival'] ?? null;
         $leaving = $this->requestData['leaving'] ?? null;
         $representative = isset($this->requestData['representative']) ? (bool) $this->requestData['representative'] : null;
+        $room_type_id = $this->requestData['room_type_id'] ?? null;
 
-        if (!$conference_organization_id || !$first_name || !$last_name || !$phone || !$email) {
+        if (!$conference_organization_id || !$first_name || !$last_name || !$phone || !$email || !$room_type_id) {
             return $this->badRequest('Не переданы обязательные параметры.');
         }
 
@@ -106,15 +111,16 @@ class ConferenceMemberController extends ApiController
             return $this->notFound('Conference organization not found.');
         }
 
-        if ($this->em->getRepository(User::class)->findOneBy(['phone' => $phone])) {
-            return $this->badRequest('Пользователь с таким телефоном уже существует.');
-        }
-
         /** @var User $member */
         if (!$member = $this->em->getRepository(User::class)->findOneBy(['email' => $email])) {
             $member = new User();
             $password = $encoder->encodePassword($member, substr(md5(random_bytes(10)), 0, 12));
             $member->setPassword($password);
+        }
+
+        /** @var RoomType $roomType */
+        if (!$roomType = $this->em->find(RoomType::class, $room_type_id)) {
+            return $this->notFound('Room type not found.');
         }
 
         /**
@@ -142,9 +148,10 @@ class ConferenceMemberController extends ApiController
         $conferenceMember->setUser($member);
         $conferenceMember->setConferenceOrganization($conferenceOrganization);
         $conferenceMember->setConference($conferenceOrganization->getConference());
-        $conferenceMember->setArrival(new \DateTime($arrival));
-        $conferenceMember->setLeaving(new \DateTime($leaving));
+        $conferenceMember->setArrival($arrival ? new \DateTime($arrival) : null);
+        $conferenceMember->setLeaving($leaving ? new \DateTime($leaving) : null);
         $conferenceMember->setCarNumber($car_number);
+        $conferenceMember->setRoomType($roomType);
 
         $this->em->persist($conferenceMember);
         $this->em->flush();
@@ -156,6 +163,7 @@ class ConferenceMemberController extends ApiController
      * @Route("conference_member/{id}", requirements={"id":"\d+"}, methods={"PUT"}, name="update")
      * @param $id
      * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @throws \Exception
      */
     public function update($id)
     {
@@ -165,8 +173,14 @@ class ConferenceMemberController extends ApiController
         $post = $this->requestData['post'] ?? null;
         $phone = $this->requestData['phone'] ?? null;
         $email = $this->requestData['email'] ?? null;
+        $sex = $this->requestData['sex'] ?? null;
+        $car_number = $this->requestData['car_number'] ?? null;
+        $arrival = $this->requestData['arrival'] ?? null;
+        $leaving = $this->requestData['leaving'] ?? null;
+        $representative = isset($this->requestData['representative']) ? (bool) $this->requestData['representative'] : null;
+        $room_type_id = $this->requestData['room_type_id'] ?? null;
 
-        if (!$first_name || !$last_name || !$phone || !$email) {
+        if (!$first_name || !$last_name || !$phone || !$email || !$room_type_id) {
             return $this->badRequest('Missing required param.');
         }
 
@@ -175,7 +189,31 @@ class ConferenceMemberController extends ApiController
             return $this->notFound('Conference member not found.');
         }
 
+        /** @var RoomType $roomType */
+        if (!$roomType = $this->em->find(RoomType::class, $room_type_id)) {
+            return $this->notFound('Room type not found.');
+        }
+
         $member = $conferenceMember->getUser();
+
+        /**
+         * Check for unique phone
+         * @var User $memberByPhone
+         */
+        $memberByPhone = $this->em->getRepository(User::class)->findOneBy(['phone' => $phone]);
+        if ($memberByPhone && ($memberByPhone !== $member)) {
+            return $this->badRequest('Пользователь (ID: '.$memberByPhone->getId().') "'
+                .$memberByPhone->getFirstName().'" имеет указанный телефон.');
+        }
+
+        /**
+         * Check for unique email
+         */
+        $memberByEmail = $this->em->getRepository(User::class)->findOneBy(['email' => $email]);
+        if ($memberByEmail && ($memberByEmail !== $member)) {
+            return $this->badRequest('Пользователь (ID: '.$memberByEmail->getId().') "'
+                .$memberByEmail->getFirstName().'" имеет указанный email.');
+        }
 
         $member->setFirstName($first_name);
         $member->setLastName($last_name);
@@ -183,8 +221,17 @@ class ConferenceMemberController extends ApiController
         $member->setEmail($email);
         $member->setPhone($phone);
         $member->setPost($post);
+        $member->setSex($sex);
+        $member->setRepresentative($representative);
 
         $this->em->persist($member);
+
+        $conferenceMember->setArrival($arrival ? new \DateTime($arrival) : null);
+        $conferenceMember->setLeaving($leaving ? new \DateTime($leaving) : null);
+        $conferenceMember->setCarNumber($car_number);
+        $conferenceMember->setRoomType($roomType);
+
+        $this->em->persist($conferenceMember);
         $this->em->flush();
 
         return $this->success();

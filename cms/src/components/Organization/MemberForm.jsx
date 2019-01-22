@@ -1,4 +1,5 @@
 import React from "react";
+import {connect} from 'react-redux';
 import PropTypes from "prop-types";
 import {
     Button,
@@ -17,8 +18,10 @@ import {
 } from '@material-ui/core';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
+import map from 'lodash/map';
 import API from '../../libs/api';
 import ErrorMessage from "../utils/ErrorMessage";
+import PhoneNumberField from "../utils/PhoneNumberField";
 
 const api = new API();
 
@@ -35,6 +38,7 @@ class MemberForm extends React.Component {
                 phone: '',
                 post: '',
                 sex: 1,
+                room_type_id: 0,
                 car_number: '',
                 arrival: '',
                 leaving: '',
@@ -73,7 +77,17 @@ class MemberForm extends React.Component {
 
     handleChange = (field, index = null) => event => {
         const { values, errors } = this.state;
-        const { name, value } = event.target;
+        const { name } = event.target;
+
+        let value;
+        switch (event.target.type) {
+            case 'checkbox':
+                value = event.target.checked;
+                break;
+            default:
+                value = event.target.value;
+                break;
+        }
 
         const update = index !== null ? { [field]: {...values[field], [index]: value }} : { [field]: value };
 
@@ -130,7 +144,7 @@ class MemberForm extends React.Component {
     handleErrorSubmit = (err) => this.setState({submitting: false, submitError: err.message});
 
     render() {
-        const { initialValues, open } = this.props;
+        const { initialValues, open, room_types } = this.props;
         const { values, errors, submitting, submitError } = this.state;
 
         const isUpdate = initialValues && initialValues.id;
@@ -235,6 +249,9 @@ class MemberForm extends React.Component {
                                     error={!!errors.phone}
                                     helperText={errors.phone}
                                     InputLabelProps={{shrink: true}}
+                                    inputProps={{
+                                        inputComponent: PhoneNumberField,
+                                    }}
                                 />
                             </Grid>
 
@@ -275,7 +292,7 @@ class MemberForm extends React.Component {
 
                             <Grid item xs={12} sm={6}>
                                 <TextField
-                                    required
+                                    // required
                                     label={"Ранний заезд"}
                                     type={"datetime-local"}
                                     value={values.arrival}
@@ -291,7 +308,7 @@ class MemberForm extends React.Component {
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField
-                                    required
+                                    // required
                                     label={"Поздний выезд"}
                                     type={"datetime-local"}
                                     value={values.leaving}
@@ -304,6 +321,27 @@ class MemberForm extends React.Component {
                                     helperText={errors.leaving}
                                     InputLabelProps={{shrink: true}}
                                 />
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    label={"Класс участия (тип проживания)"}
+                                    value={values.room_type_id}
+                                    margin={"dense"}
+                                    fullWidth
+                                    variant={"outlined"}
+                                    name={'room_type_id'}
+                                    onChange={this.handleChange('room_type_id')}
+                                    error={!!errors.room_type_id}
+                                    helperText={errors.room_type_id}
+                                    select={true}
+                                    InputLabelProps={{shrink: true}}
+                                >
+                                    {map(room_types, rt =>
+                                        <MenuItem key={rt.id} value={rt.id}>{rt.title}</MenuItem>
+                                    )}
+                                </TextField>
                             </Grid>
 
                             <Grid item xs={12}>
@@ -369,4 +407,9 @@ MemberForm.propTypes = {
     onSuccess: PropTypes.func.isRequired,
 };
 
-export default MemberForm;
+const mapStateToProps = state =>
+    ({
+        room_types: state.abode.room_type.items,
+    });
+
+export default connect(mapStateToProps)(MemberForm);
