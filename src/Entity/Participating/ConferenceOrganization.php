@@ -79,7 +79,7 @@ class ConferenceOrganization
     /**
      * @var ArrayCollection|Comment[]
      *
-     * @ORM\OneToMany(targetEntity="Comment", mappedBy="conferenceOrganization")
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="conferenceOrganization", cascade={"remove"})
      */
     private $comments;
 

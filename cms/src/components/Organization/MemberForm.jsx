@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {connect} from 'react-redux';
 import {
     Button,
     Dialog,
@@ -11,6 +10,10 @@ import {
     TextField,
     MenuItem,
     LinearProgress,
+    FormControl,
+    FormControlLabel,
+    FormHelperText,
+    Switch,
 } from '@material-ui/core';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
@@ -31,6 +34,11 @@ class MemberForm extends React.Component {
                 email: '',
                 phone: '',
                 post: '',
+                sex: 1,
+                car_number: '',
+                arrival: '',
+                leaving: '',
+                representative: false,
             },
             errors: {},
             submitting: false,
@@ -150,6 +158,7 @@ class MemberForm extends React.Component {
                                     onChange={this.handleChange('first_name')}
                                     error={!!errors.first_name}
                                     helperText={errors.first_name}
+                                    InputLabelProps={{shrink: true}}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -164,6 +173,7 @@ class MemberForm extends React.Component {
                                     onChange={this.handleChange('last_name')}
                                     error={!!errors.last_name}
                                     helperText={errors.last_name}
+                                    InputLabelProps={{shrink: true}}
                                 />
                             </Grid>
 
@@ -178,6 +188,7 @@ class MemberForm extends React.Component {
                                     onChange={this.handleChange('middle_name')}
                                     error={!!errors.middle_name}
                                     helperText={errors.middle_name}
+                                    InputLabelProps={{shrink: true}}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -191,6 +202,7 @@ class MemberForm extends React.Component {
                                     onChange={this.handleChange('post')}
                                     error={!!errors.post}
                                     helperText={errors.post}
+                                    InputLabelProps={{shrink: true}}
                                 />
                             </Grid>
 
@@ -207,6 +219,7 @@ class MemberForm extends React.Component {
                                     onChange={this.handleChange('email')}
                                     error={!!errors.email}
                                     helperText={errors.email}
+                                    InputLabelProps={{shrink: true}}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -221,7 +234,90 @@ class MemberForm extends React.Component {
                                     onChange={this.handleChange('phone')}
                                     error={!!errors.phone}
                                     helperText={errors.phone}
+                                    InputLabelProps={{shrink: true}}
                                 />
+                            </Grid>
+
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    required
+                                    label={"Пол"}
+                                    value={values.sex}
+                                    margin={"dense"}
+                                    fullWidth
+                                    variant={"outlined"}
+                                    name={'sex'}
+                                    onChange={this.handleChange('sex')}
+                                    error={!!errors.sex}
+                                    helperText={errors.sex}
+                                    select={true}
+                                    InputLabelProps={{shrink: true}}
+                                >
+                                    <MenuItem value={1}>Мужской</MenuItem>
+                                    <MenuItem value={2}>Женский</MenuItem>
+                                </TextField>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    label={"Номер авто"}
+                                    value={values.car_number}
+                                    margin={"dense"}
+                                    placeholder={`а434ну196`}
+                                    fullWidth
+                                    variant={"outlined"}
+                                    name={'car_number'}
+                                    onChange={this.handleChange('car_number')}
+                                    error={!!errors.car_number}
+                                    helperText={errors.car_number}
+                                    InputLabelProps={{shrink: true}}
+                                />
+                            </Grid>
+
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    required
+                                    label={"Ранний заезд"}
+                                    type={"datetime-local"}
+                                    value={values.arrival}
+                                    margin={"dense"}
+                                    fullWidth
+                                    variant={"outlined"}
+                                    name={'arrival'}
+                                    onChange={this.handleChange('arrival')}
+                                    error={!!errors.arrival}
+                                    helperText={errors.arrival}
+                                    InputLabelProps={{shrink: true}}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    required
+                                    label={"Поздний выезд"}
+                                    type={"datetime-local"}
+                                    value={values.leaving}
+                                    margin={"dense"}
+                                    fullWidth
+                                    variant={"outlined"}
+                                    name={'leaving'}
+                                    onChange={this.handleChange('leaving')}
+                                    error={!!errors.leaving}
+                                    helperText={errors.leaving}
+                                    InputLabelProps={{shrink: true}}
+                                />
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <FormControl>
+                                    <FormControlLabel
+                                        control={
+                                            <Switch
+                                                checked={values.representative}
+                                                onChange={this.handleChange('representative')}
+                                            />
+                                        }
+                                    />
+                                    <FormHelperText>Для возможности управления данными организации</FormHelperText>
+                                </FormControl>
                             </Grid>
                         </Grid>
                     </form>

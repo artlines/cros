@@ -97,7 +97,6 @@ const mapDispatchToProps = dispatch =>
             dispatch(participating.fetchInvoices(data))
         },
         fetchMembers: (data = {}) => {
-            console.log(`fetchMembers::data`, data);
             dispatch(participating.fetchMembers(data))
         },
     });

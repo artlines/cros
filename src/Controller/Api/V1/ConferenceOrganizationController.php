@@ -169,4 +169,33 @@ class ConferenceOrganizationController extends ApiController
 
         return $this->success();
     }
+
+    /**
+     * @Route("conference_organization/{id}", requirements={"id":"\d+"}, methods={"DELETE"}, name="delete")
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function delete($id)
+    {
+        /** @var ConferenceOrganization $conferenceOrganization */
+        $conferenceOrganization = $this->em->find(ConferenceOrganization::class, $id);
+        if (!$conferenceOrganization) {
+            return $this->notFound('Conference organization not found.');
+        }
+
+        /** Check for invoices and members */
+        if ($conferenceOrganization->getInvoices()->count()) {
+            return $this->badRequest('У организации есть прикрепленные счета. Удалите их прежде чем удалить организацию.');
+        }
+        if ($conferenceOrganization->getConferenceMembers()->count()) {
+            return $this->badRequest('У организации есть прикрепленные участники. Удалите их прежде чем удалять организацию.');
+        }
+
+        $this->em->remove($conferenceOrganization);
+        $this->em->flush();
+
+        return $this->success();
+    }
 }

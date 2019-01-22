@@ -100,7 +100,7 @@ class OrganizationTable extends React.Component {
                     onSuccess={this.update}
                 />
                 <Grid container spacing={16}>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} style={{minHeight: 20}}>
                         {isFetching && <LinearProgress/>}
                     </Grid>
                     <Grid item xs={12}>

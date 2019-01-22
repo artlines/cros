@@ -14,6 +14,7 @@ import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
 import API from '../../libs/api';
 import ErrorMessage from "../utils/ErrorMessage";
+import ConfirmDialog from "../utils/ConfirmDialog";
 
 const api = new API();
 
@@ -108,6 +109,12 @@ class OrganizationForm extends React.Component {
         }
     };
 
+    handleDelete = (id) => {
+        api.delete(`conference_organization/${id}`)
+            .then(this.handleSuccessSubmit)
+            .catch(this.handleErrorSubmit);
+    };
+
     handleSuccessSubmit = () => {
         this.props.onSuccess();
         this.props.onClose();
@@ -144,10 +151,11 @@ class OrganizationForm extends React.Component {
                                     margin={"dense"}
                                     fullWidth
                                     variant={"outlined"}
-                                    name={'name'}//asd
+                                    name={'name'}
                                     onChange={this.handleChange('name')}
                                     error={!!errors.name}
                                     helperText={errors.name}
+                                    InputLabelProps={{shrink: true}}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -163,6 +171,7 @@ class OrganizationForm extends React.Component {
                                     onChange={this.handleChange('inn')}
                                     error={!!errors.inn}
                                     helperText={errors.inn}
+                                    InputLabelProps={{shrink: true}}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -178,6 +187,7 @@ class OrganizationForm extends React.Component {
                                     onChange={this.handleChange('kpp')}
                                     error={!!errors.kpp}
                                     helperText={errors.kpp}
+                                    InputLabelProps={{shrink: true}}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -192,6 +202,7 @@ class OrganizationForm extends React.Component {
                                     onChange={this.handleChange('city')}
                                     error={!!errors.city}
                                     helperText={errors.city}
+                                    InputLabelProps={{shrink: true}}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -207,6 +218,7 @@ class OrganizationForm extends React.Component {
                                     onChange={this.handleChange('address')}
                                     error={!!errors.address}
                                     helperText={errors.address}
+                                    InputLabelProps={{shrink: true}}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -222,6 +234,7 @@ class OrganizationForm extends React.Component {
                                     onChange={this.handleChange('requisites')}
                                     error={!!errors.requisites}
                                     helperText={errors.requisites}
+                                    InputLabelProps={{shrink: true}}
                                 />
                             </Grid>
                         </Grid>
@@ -229,22 +242,45 @@ class OrganizationForm extends React.Component {
                     {submitError && <ErrorMessage description={submitError} extended={true}/>} {/*title={} description={} extended={}*/}
                 </DialogContent>
                 <DialogActions>
-                    <Button
-                        color={"primary"}
-                        disabled={submitting}
-                        onClick={this.handleCancel}
-                    >
-                        Отмена
-                    </Button>
-                    <Button
-                        variant={"contained"}
-                        color={"primary"}
-                        form={"organization-form"}
-                        type={"submit"}
-                        disabled={submitting}
-                    >
-                        {isUpdate ? 'Редактировать' : 'Добавить'}
-                    </Button>
+                    <Grid container spacing={0} justify={`space-between`}>
+                        <Grid item>
+                            {isUpdate &&
+                            <ConfirmDialog
+                                onConfirm={() => this.handleDelete(isUpdate)}
+                                trigger={<Button
+                                    color={"secondary"}
+                                    disabled={submitting}
+                                >
+                                    Удалить
+                                </Button>}
+                            />
+                            }
+                        </Grid>
+                        <Grid item>
+                            <Grid container spacing={8}>
+                                <Grid item>
+                                    <Button
+                                        color={"primary"}
+                                        disabled={submitting}
+                                        onClick={this.handleCancel}
+                                    >
+                                        Отмена
+                                    </Button>
+                                </Grid>
+                                <Grid item>
+                                    <Button
+                                        variant={"contained"}
+                                        color={"primary"}
+                                        form={"organization-form"}
+                                        type={"submit"}
+                                        disabled={submitting}
+                                    >
+                                        {isUpdate ? 'Редактировать' : 'Добавить'}
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
                 </DialogActions>
             </Dialog>
         );

@@ -148,12 +148,13 @@ class InvoiceForm extends React.Component {
                                     onChange={this.handleChange('number')}
                                     error={!!errors.number}
                                     helperText={errors.number}
+                                    InputLabelProps={{shrink: true}}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={4}>
                                 <TextField
                                     required
-                                    label={"Дата оплаты"}
+                                    label={"Дата счета"}
                                     type={"date"}
                                     value={values.date}
                                     margin={"dense"}
@@ -163,6 +164,7 @@ class InvoiceForm extends React.Component {
                                     onChange={this.handleChange('date')}
                                     error={!!errors.date}
                                     helperText={errors.date}
+                                    InputLabelProps={{shrink: true}}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={4}>
@@ -178,6 +180,7 @@ class InvoiceForm extends React.Component {
                                     onChange={this.handleChange('amount')}
                                     error={!!errors.amount}
                                     helperText={errors.amount}
+                                    InputLabelProps={{shrink: true}}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={4}>
@@ -193,6 +196,7 @@ class InvoiceForm extends React.Component {
                                     error={!!errors.status}
                                     helperText={errors.status}
                                     select={true}
+                                    InputLabelProps={{shrink: true}}
                                 >
                                     <MenuItem value={1}>Не оплачен</MenuItem>
                                     <MenuItem value={2}>Частично оплачен</MenuItem>

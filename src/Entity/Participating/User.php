@@ -122,6 +122,15 @@ class User implements UserInterface
     private $organization;
 
     /**
+     * Флаг представителя организации
+     *
+     * @var bool
+     *
+     * @ORM\Column(name="representative", type="boolean", options={"default": 0})
+     */
+    private $representative;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
@@ -135,9 +144,11 @@ class User implements UserInterface
      */
     public function __construct()
     {
-        $this->speakers = new ArrayCollection();
-        $this->isActive = true;
-        $this->createdAt = new \DateTime();
+        $this->speakers         = new ArrayCollection();
+        $this->representative   = false;
+        $this->isActive         = true;
+        $this->createdAt        = new \DateTime();
+        $this->roles            = json_encode(["ROLE_USER"]);
     }
 
     /**
@@ -492,5 +503,21 @@ class User implements UserInterface
     public function getFullName()
     {
         return $this->lastName . ' ' . $this->firstName;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRepresentative(): bool
+    {
+        return $this->representative;
+    }
+
+    /**
+     * @param bool $representative
+     */
+    public function setRepresentative(bool $representative)
+    {
+        $this->representative = $representative;
     }
 }

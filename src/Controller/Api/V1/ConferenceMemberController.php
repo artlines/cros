@@ -61,6 +61,11 @@ class ConferenceMemberController extends ApiController
                 'post'          => $member->getPost(),
                 'phone'         => $member->getPhone(),
                 'email'         => $member->getEmail(),
+                'sex'           => $member->getSex(),
+                'car_number'    => $conferenceMember->getCarNumber(),
+                'representative'=> $member->isRepresentative()? 1 : 0,
+                'arrival'       => $conferenceMember->getArrival()->format('Y.m.d HH:ii'),
+                'leaving'       => $conferenceMember->getLeaving()->format('Y.m.d HH:ii'),
                 'place'         => $placeInfo,
             ];
         }
@@ -73,16 +78,22 @@ class ConferenceMemberController extends ApiController
      *
      * @param UserPasswordEncoderInterface $encoder
      * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @throws \Exception
      */
     public function new(UserPasswordEncoderInterface $encoder)
     {
+        $conference_organization_id = $this->requestData['conference_organization_id'] ?? null;
         $first_name = $this->requestData['first_name'] ?? null;
         $last_name = $this->requestData['last_name'] ?? null;
         $middle_name = $this->requestData['middle_name'] ?? null;
         $post = $this->requestData['post'] ?? null;
         $phone = $this->requestData['phone'] ?? null;
         $email = $this->requestData['email'] ?? null;
-        $conference_organization_id = $this->requestData['conference_organization_id'] ?? null;
+        $sex = $this->requestData['sex'] ?? null;
+        $car_number = $this->requestData['car_number'] ?? null;
+        $arrival = $this->requestData['arrival'] ?? null;
+        $leaving = $this->requestData['leaving'] ?? null;
+        $representative = isset($this->requestData['representative']) ? (bool) $this->requestData['representative'] : null;
 
         if (!$conference_organization_id || !$first_name || !$last_name || !$phone || !$email) {
             return $this->badRequest('Не переданы обязательные параметры.');
@@ -93,14 +104,34 @@ class ConferenceMemberController extends ApiController
             return $this->notFound('Conference organization not found.');
         }
 
-        $member = new User();
+        if ($this->em->getRepository(User::class)->findOneBy(['phone' => $phone])) {
+            return $this->badRequest('Пользователь с таким телефоном уже существует.');
+        }
+
+        /** @var User $member */
+        if (!$member = $this->em->getRepository(User::class)->findOneBy(['email' => $email])) {
+            $member = new User();
+            $password = $encoder->encodePassword($member, substr(md5(random_bytes(10)), 0, 12));
+            $member->setPassword($password);
+        }
+
+        /**
+         * Check for unique phone
+         * @var User $memberByPhone
+         */
+        $memberByPhone = $this->em->getRepository(User::class)->findOneBy(['phone' => $phone]);
+        if ($memberByPhone && ($memberByPhone !== $member)) {
+            return $this->badRequest('Пользователь (ID: '.$memberByPhone->getId().') "'
+                .$memberByPhone->getFirstName().'" имеет указанный телефон.');
+        }
 
         $member->setFirstName($first_name);
         $member->setLastName($last_name);
         $member->setMiddleName($middle_name);
-        $member->setEmail($email);
         $member->setPhone($phone);
         $member->setPost($post);
+        $member->setSex($sex);
+        $member->setRepresentative($representative);
         $member->setOrganization($conferenceOrganization->getOrganization());
 
         $this->em->persist($member);
@@ -109,6 +140,9 @@ class ConferenceMemberController extends ApiController
         $conferenceMember->setUser($member);
         $conferenceMember->setConferenceOrganization($conferenceOrganization);
         $conferenceMember->setConference($conferenceOrganization->getConference());
+        $conferenceMember->setArrival(new \DateTime($arrival));
+        $conferenceMember->setLeaving(new \DateTime($leaving));
+        $conferenceMember->setCarNumber($car_number);
 
         $this->em->persist($conferenceMember);
         $this->em->flush();
