@@ -34,6 +34,11 @@ class ConferenceOrganizationRepository extends EntityRepository
             );
         }
 
+        if (isset($data['invite_by'])) {
+            $dql->andWhere('co.invited_by = :invited_by');
+
+        }
+
         /** Check for limit and offset */
         if (isset($data['@limit'])) {
             $limit = (int) $data['@limit'];

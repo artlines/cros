@@ -108,9 +108,9 @@ class ConferenceOrganization
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="invite_by", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="invited_by", referencedColumnName="id", nullable=true)
      */
-    private $inviteBy;
+    private $invitedBy;
 
     /**
      * ConferenceOrganization constructor.
@@ -342,16 +342,16 @@ class ConferenceOrganization
     /**
      * @return User|null
      */
-    public function getInviteBy()
+    public function getInvitedBy()
     {
-        return $this->inviteBy;
+        return $this->invitedBy;
     }
 
     /**
-     * @param User|null $inviteBy
+     * @param User|null $invitedBy
      */
-    public function setInviteBy($inviteBy)
+    public function setInvitedBy($invitedBy)
     {
-        $this->inviteBy = $inviteBy;
+        $this->invitedBy = $invitedBy;
     }
 }

@@ -83,6 +83,7 @@ class Organizations extends React.Component {
                         loadInvoices={fetchInvoices}
                         loadMembers={fetchMembers}
                         update={this.update}
+                        canManage={true}
                     />
                 </Grid>
             </Grid>

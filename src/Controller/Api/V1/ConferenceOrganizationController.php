@@ -203,4 +203,32 @@ class ConferenceOrganizationController extends ApiController
 
         return $this->success();
     }
+
+    /**
+     * @Route("conference_organization/invite", methods={"POST"}, name="invite")
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     */
+    public function invite()
+    {
+        $fio = $this->requestData['fio'] ?? null;
+        $email = $this->requestData['email'] ?? null;
+        $name = $this->requestData['name'] ?? null;
+        $inn = $this->requestData['inn'] ?? null;
+        $kpp = $this->requestData['kpp'] ?? null;
+
+        if (!$fio || !$email || !$name || !$inn || !$kpp) {
+            return $this->badRequest('Не переданы обязательные параметры.');
+        }
+
+        /** @var Organization $organization */
+        $organization = $this->em->getRepository(Organization::class)
+            ->findOneBy(['inn' => $inn, 'kpp' => $kpp]);
+
+        if (!$organization) {
+            $organization = new Organization();
+        }
+
+
+    }
 }
