@@ -98,6 +98,21 @@ class ConferenceOrganization
     private $conferenceMembers;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="invite_hash", type="string", nullable=true)
+     */
+    private $inviteHash;
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="invite_by", referencedColumnName="id", nullable=true)
+     */
+    private $inviteBy;
+
+    /**
      * ConferenceOrganization constructor.
      */
     public function __construct()
@@ -290,5 +305,53 @@ class ConferenceOrganization
     public function removeConferenceMember(ConferenceMember $conferenceMember)
     {
         $this->conferenceMembers->removeElement($conferenceMember);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isApproved(): bool
+    {
+        return $this->approved;
+    }
+
+    /**
+     * @param bool $approved
+     */
+    public function setApproved(bool $approved)
+    {
+        $this->approved = $approved;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getInviteHash()
+    {
+        return $this->inviteHash;
+    }
+
+    /**
+     * @param string|null $inviteHash
+     */
+    public function setInviteHash($inviteHash)
+    {
+        $this->inviteHash = $inviteHash;
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getInviteBy()
+    {
+        return $this->inviteBy;
+    }
+
+    /**
+     * @param User|null $inviteBy
+     */
+    public function setInviteBy($inviteBy)
+    {
+        $this->inviteBy = $inviteBy;
     }
 }
