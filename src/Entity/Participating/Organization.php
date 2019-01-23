@@ -41,7 +41,7 @@ class Organization
     private $email;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="city", type="string", length=255, nullable=true)
      */
@@ -187,7 +187,7 @@ class Organization
     /**
      * Set city
      *
-     * @param string $city
+     * @param string|null $city
      * @return Organization
      */
     public function setCity($city)
@@ -200,7 +200,7 @@ class Organization
     /**
      * Get city
      *
-     * @return string 
+     * @return string|null
      */
     public function getCity()
     {
