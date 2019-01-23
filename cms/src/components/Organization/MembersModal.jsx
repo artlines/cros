@@ -194,8 +194,8 @@ MembersModal.propTypes = {
             post:           PropTypes.string,
             email:          PropTypes.string.isRequired,
             place:          PropTypes.shape({
-                room_num: PropTypes.oneOfType([PropTypes.number, null]),
-                approved: PropTypes.oneOfType([PropTypes.bool, null]),
+                room_num: PropTypes.number,
+                approved: PropTypes.bool,
             }),
         }),
     ),

@@ -15,6 +15,7 @@ import {
     TableRow,
     TableCell,
 } from "@material-ui/core";
+import EditIcon from '@material-ui/icons/Edit';
 import find from "lodash/find";
 import map from "lodash/map";
 import ConfirmDialog from "../utils/ConfirmDialog";
@@ -62,15 +63,18 @@ class HousingCard extends React.PureComponent {
                 <CardActions>
                     <Grid container justify={`space-between`}>
                         <Grid item>
-                            <Button onClick={() => onEdit(id)}>Редактировать</Button>
+                            <Button onClick={() => onEdit(id)}><EditIcon/></Button>
                             <ConfirmDialog
                                 trigger={<Button>Удалить</Button>}
                                 onConfirm={() => onDelete(id)}
                             />
                         </Grid>
                         <Grid item>
-                            <Link to={`/cms/abode/housing/${id}`}>
+                            <Link to={`/cms/abode/housing/${id}/apartments`}>
                                 <Button>Номерной фонд</Button>
+                            </Link>
+                            <Link to={`/cms/abode/housing/${id}/resettlement`}>
+                                <Button>Расселение</Button>
                             </Link>
                         </Grid>
                     </Grid>

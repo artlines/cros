@@ -1,6 +1,7 @@
 import Home from "../pages/Home";
 import AbodeIndex from "../pages/Abode/index";
 import AbodeSettings from "../pages/Abode/Settings";
+import AbodeResettlement from "../pages/Abode/Resettlement";
 import AbodeHousing from "../pages/Abode/Housing";
 import Organizations from "../pages/Organizations";
 import Invite from "../pages/Invite";
@@ -47,10 +48,17 @@ export default [
     //     role: "ROLE_SETTLEMENT_MANAGER",
     // },
     {
-        path: "/cms/abode/housing/:id",
+        path: "/cms/abode/housing/:id/apartments",
         Component: AbodeHousing,
         exact: true,
-        title: "Расселение",
+        title: "Расселение участников",
+        role: "ROLE_SETTLEMENT_MANAGER",
+    },
+    {
+        path: "/cms/abode/housing/:id/resettlement",
+        Component: AbodeResettlement,
+        exact: true,
+        title: "Расселение участников",
         role: "ROLE_SETTLEMENT_MANAGER",
     },
     {
