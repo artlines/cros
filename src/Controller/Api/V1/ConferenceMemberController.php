@@ -116,6 +116,7 @@ class ConferenceMemberController extends ApiController
             $member = new User();
             $password = $encoder->encodePassword($member, substr(md5(random_bytes(10)), 0, 12));
             $member->setPassword($password);
+            $member->setEmail($email);
         }
 
         /** @var RoomType $roomType */

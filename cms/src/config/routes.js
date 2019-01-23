@@ -3,10 +3,12 @@ import AbodeIndex from "../pages/Abode/index";
 import AbodeSettings from "../pages/Abode/Settings";
 import AbodeHousing from "../pages/Abode/Housing";
 import Organizations from "../pages/Organizations";
+import Invite from "../pages/Invite";
 import NotFound from "../pages/NotFound";
 import {
     RoomService as RoomServiceIcon,
     BusinessCenterTwoTone,
+    GroupAdd,
 } from "@material-ui/icons";
 
 export default [
@@ -31,17 +33,17 @@ export default [
         },
         role: "ROLE_SETTLEMENT_MANAGER",
     },
-    {
-        path: "/cms/abode/settings",
-        Component: AbodeSettings,
-        exact: true,
-        title: "Расселение",
-        menuItem: {
-            Icon: RoomServiceIcon,
-            title: "Настройка расселения",
-        },
-        role: "ROLE_SETTLEMENT_MANAGER",
-    },
+    // {
+    //     path: "/cms/abode/settings",
+    //     Component: AbodeSettings,
+    //     exact: true,
+    //     title: "Расселение",
+    //     menuItem: {
+    //         Icon: RoomServiceIcon,
+    //         title: "Настройка расселения",
+    //     },
+    //     role: "ROLE_SETTLEMENT_MANAGER",
+    // },
     {
         path: "/cms/abode/housing/:id",
         Component: AbodeHousing,
@@ -58,7 +60,18 @@ export default [
             Icon: BusinessCenterTwoTone,
             title: "Организации",
         },
-        role: "ROLE_ADMINISTRATOR",
+        role: "ROLE_SETTLEMENT_MANAGER",
+    },
+    {
+        path: "/cms/invite",
+        Component: Invite,
+        exact: true,
+        title: "Приглашение",
+        menuItem: {
+            Icon: GroupAdd,
+            title: "Приглашение",
+        },
+        role: "ROLE_SALES_MANAGER",
     },
     {
         path: "/cms/users",

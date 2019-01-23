@@ -7,12 +7,12 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
+    Grid,
     Table,
     TableHead,
     TableBody,
     TableRow,
     TableCell,
-    LinearProgress,
 } from '@material-ui/core';
 import map from 'lodash/map';
 import Money from "../utils/Money";
@@ -23,6 +23,7 @@ import FabButton from "../utils/FabButton";
 import find from "lodash/find";
 import InvoiceForm from "./InvoiceForm";
 import ConfirmDialog from "../utils/ConfirmDialog";
+import LinearProgress from '../utils/LinearProgress';
 import API from '../../libs/api';
 
 const api = new API();
@@ -93,48 +94,59 @@ class InvoicesModal extends React.Component {
                     fullWidth={true}
                     maxWidth={'md'}
                 >
-                    <DialogTitle>Счета {organizationName}</DialogTitle>
+                    <DialogTitle>
+                        <Grid
+                            container
+                            spacing={0}
+                            justify={`space-between`}
+                            alignItems={`center`}
+                        >
+                            <Grid item>
+                                Счета {organizationName}
+                            </Grid>
+                            <Grid item>
+                                <FabButton title={`Добавить счет`} onClick={this.openForm}/>
+                            </Grid>
+                        </Grid>
+                    </DialogTitle>
                     <DialogContent>
-                        <FabButton title={`Добавить счет`} onClick={this.openForm}/>
-                        {isFetching
-                            ? <LinearProgress/>
-                            : <Table>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>№ счета</TableCell>
-                                        <TableCell>Сумма</TableCell>
-                                        <TableCell>Дата</TableCell>
-                                        <TableCell>Статус</TableCell>
-                                        <TableCell align={'right'}>Действия</TableCell>
+                        <LinearProgress show={isFetching}/>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>№ счета</TableCell>
+                                    <TableCell>Сумма</TableCell>
+                                    <TableCell>Дата</TableCell>
+                                    <TableCell>Статус</TableCell>
+                                    <TableCell align={'right'}>Действия</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {map(items, item =>
+                                    <TableRow key={item.id}>
+                                        <TableCell>
+                                            {item.number}
+                                        </TableCell>
+                                        <TableCell>
+                                            <Money withPenny value={item.amount}/>
+                                        </TableCell>
+                                        <TableCell>
+                                            <DateTime value={item.date}/>
+                                        </TableCell>
+                                        <TableCell>
+                                            <InvoiceStatus id={item.status}/>
+                                        </TableCell>
+                                        <TableCell align={'right'}>
+                                            <Button onClick={() => this.openForm(item.id)}><EditIcon/></Button>
+                                            <ConfirmDialog
+                                                trigger={<Button><CloseIcon/></Button>}
+                                                onConfirm={() => this.delete(item.id)}
+                                            />
+                                        </TableCell>
                                     </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {map(items, item =>
-                                        <TableRow key={item.id}>
-                                            <TableCell>
-                                                {item.number}
-                                            </TableCell>
-                                            <TableCell>
-                                                <Money withPenny value={item.amount}/>
-                                            </TableCell>
-                                            <TableCell>
-                                                <DateTime value={item.date}/>
-                                            </TableCell>
-                                            <TableCell>
-                                                <InvoiceStatus id={item.status}/>
-                                            </TableCell>
-                                            <TableCell align={'right'}>
-                                                <Button onClick={() => this.openForm(item.id)}><EditIcon/></Button>
-                                                <ConfirmDialog
-                                                    trigger={<Button><CloseIcon/></Button>}
-                                                    onConfirm={() => this.delete(item.id)}
-                                                />
-                                            </TableCell>
-                                        </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
-                        }
+                                )}
+                            </TableBody>
+                        </Table>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose}>Закрыть</Button>

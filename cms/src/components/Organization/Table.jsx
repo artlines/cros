@@ -8,7 +8,6 @@ import {
     TableRow,
     TableCell,
     Button,
-    LinearProgress,
     TablePagination,
     Grid,
 } from '@material-ui/core';
@@ -17,9 +16,11 @@ import InvoicesModal from './InvoicesModal';
 import CommentsModal from "./CommentsModal";
 import MembersModal from "./MembersModal";
 import FabButton from '../utils/FabButton';
+import LinearProgress from '../utils/LinearProgress';
 import {Edit as EditIcon} from "@material-ui/icons";
 import OrganizationForm from './Form';
 import find from 'lodash/find';
+import CustomLinearProgress from "../utils/LinearProgress";
 
 class OrganizationTable extends React.Component {
 
@@ -100,82 +101,84 @@ class OrganizationTable extends React.Component {
                     onSuccess={this.update}
                 />
                 <Grid container spacing={16}>
-                    <Grid item xs={12} style={{minHeight: 20}}>
-                        {isFetching && <LinearProgress/>}
+                    <Grid item xs={12}>
+                        <LinearProgress show={isFetching}/>
                     </Grid>
                     <Grid item xs={12}>
-                        <FabButton title={`Добавить организацию`} onClick={this.openForm}/>
+                        <Grid container justify={`flex-end`}>
+                            <Grid item>
+                                <FabButton title={`Добавить организацию`} onClick={this.openForm}/>
+                            </Grid>
+                        </Grid>
                     </Grid>
-                </Grid>
-                <Grid container>
                     <Grid item xs={12}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>ID</TableCell>
-                                <TableCell>Наименование</TableCell>
-                                <TableCell>Реквизиты</TableCell>
-                                <TableCell>Участников<br/>всего / заселено</TableCell>
-                                <TableCell>Счета</TableCell>
-                                <TableCell>Комментарии</TableCell>
-                                <TableCell> </TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {map(items, item =>
-                                <TableRow key={item.id}>
-                                    <TableCell>
-                                        {item.id}
-                                    </TableCell>
-                                    <TableCell>
-                                        {item.name}
-                                    </TableCell>
-                                    <TableCell>
-                                        <div style={{whiteSpace: 'nowrap'}}><b>ИНН:</b> {item.inn}</div>
-                                        <div style={{whiteSpace: 'nowrap'}}><b>КПП:</b> {item.kpp}</div>
-                                    </TableCell>
-                                    <TableCell>
-                                        <MembersModal
-                                            organizationId={item.id}
-                                            organizationName={item.name}
-                                            trigger={<Button>{item.total_members} / {item.in_room_members}</Button>}
-                                            update={this.updateMembers}
-                                        />
-                                    </TableCell>
-                                    <TableCell>
-                                        <InvoicesModal
-                                            organizationId={item.id}
-                                            organizationName={item.name}
-                                            trigger={<Button>{item.invoices_count}</Button>}
-                                            update={this.updateInvoices}
-                                        />
-                                    </TableCell>
-                                    <TableCell>
-                                        <CommentsModal
-                                            organizationId={item.id}
-                                            organizationName={item.name}
-                                            trigger={<Button>{item.comments_count}</Button>}
-                                            update={this.updateComments}
-                                        />
-                                    </TableCell>
-                                    <TableCell>
-                                        <Button onClick={() => this.openForm(item.id)}><EditIcon/></Button>
-                                    </TableCell>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>ID</TableCell>
+                                    <TableCell>Наименование</TableCell>
+                                    <TableCell>Реквизиты</TableCell>
+                                    <TableCell>Участников<br/>всего / заселено</TableCell>
+                                    <TableCell>Счета</TableCell>
+                                    <TableCell>Комментарии</TableCell>
+                                    <TableCell> </TableCell>
                                 </TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
-                    <TablePagination
-                        component={`div`}
-                        rowsPerPageOptions={[5, 10, 25]}
-                        count={total_count}
-                        onChangePage={this.handleChangePage}
-                        onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                        page={page}
-                        rowsPerPage={rowsPerPage}
-                        labelRowsPerPage={``}
-                        labelDisplayedRows={({ from, to, count }) => `${from}-${to} из ${count}`}
-                    />
+                            </TableHead>
+                            <TableBody>
+                                {map(items, item =>
+                                    <TableRow key={item.id}>
+                                        <TableCell>
+                                            {item.id}
+                                        </TableCell>
+                                        <TableCell>
+                                            {item.name}
+                                        </TableCell>
+                                        <TableCell>
+                                            <div style={{whiteSpace: 'nowrap'}}><b>ИНН:</b> {item.inn}</div>
+                                            <div style={{whiteSpace: 'nowrap'}}><b>КПП:</b> {item.kpp}</div>
+                                        </TableCell>
+                                        <TableCell>
+                                            <MembersModal
+                                                organizationId={item.id}
+                                                organizationName={item.name}
+                                                trigger={<Button>{item.total_members} / {item.in_room_members}</Button>}
+                                                update={this.updateMembers}
+                                            />
+                                        </TableCell>
+                                        <TableCell>
+                                            <InvoicesModal
+                                                organizationId={item.id}
+                                                organizationName={item.name}
+                                                trigger={<Button>{item.invoices_count}</Button>}
+                                                update={this.updateInvoices}
+                                            />
+                                        </TableCell>
+                                        <TableCell>
+                                            <CommentsModal
+                                                organizationId={item.id}
+                                                organizationName={item.name}
+                                                trigger={<Button>{item.comments_count}</Button>}
+                                                update={this.updateComments}
+                                            />
+                                        </TableCell>
+                                        <TableCell>
+                                            <Button onClick={() => this.openForm(item.id)}><EditIcon/></Button>
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                        <TablePagination
+                            component={`div`}
+                            rowsPerPageOptions={[5, 10, 25]}
+                            count={total_count}
+                            onChangePage={this.handleChangePage}
+                            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                            page={page}
+                            rowsPerPage={rowsPerPage}
+                            labelRowsPerPage={``}
+                            labelDisplayedRows={({ from, to, count }) => `${from}-${to} из ${count}`}
+                        />
                     </Grid>
                 </Grid>
             </React.Fragment>

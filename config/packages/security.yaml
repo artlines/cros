@@ -60,7 +60,7 @@ security:
     role_hierarchy:
         # new hierarchy
         ROLE_SALES_MANAGER:       [ROLE_CMS_USER]
-        ROLE_SALES_HEAD:          [ROLE_CMS_USER]
+        ROLE_SALES_HEAD:          [ROLE_CMS_USER, ROLE_SALES_MANAGER]
         ROLE_SETTLEMENT_MANAGER:  [ROLE_CMS_USER]
         ROLE_CONTENT_MANAGER:     [ROLE_CMS_USER]
         ROLE_ADMINISTRATOR:

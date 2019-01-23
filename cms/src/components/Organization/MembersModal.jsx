@@ -7,12 +7,12 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
+    Grid,
     Table,
     TableHead,
     TableBody,
     TableRow,
     TableCell,
-    LinearProgress,
 } from '@material-ui/core';
 import {
     Close as CloseIcon,
@@ -23,6 +23,7 @@ import find from 'lodash/find';
 import MemberForm from "./MemberForm";
 import ConfirmDialog from "../utils/ConfirmDialog";
 import FabButton from '../utils/FabButton';
+import LinearProgress from '../utils/LinearProgress';
 import API from '../../libs/api';
 
 const api = new API();
@@ -93,60 +94,71 @@ class MembersModal extends React.Component {
                     fullWidth={true}
                     maxWidth={'md'}
                 >
-                    <DialogTitle>Участники {organizationName}</DialogTitle>
+                    <DialogTitle>
+                        <Grid
+                            container
+                            spacing={0}
+                            justify={`space-between`}
+                            alignItems={`center`}
+                        >
+                            <Grid item>
+                                Участники {organizationName}
+                            </Grid>
+                            <Grid item>
+                                <FabButton title={`Добавить участника`} onClick={this.openForm}/>
+                            </Grid>
+                        </Grid>
+                    </DialogTitle>
                     <DialogContent>
-                        <FabButton title={`Добавить участника`} onClick={this.openForm}/>
-                        {isFetching
-                            ? <LinearProgress/>
-                            : <Table>
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>ФИО</TableCell>
-                                        <TableCell>Должность</TableCell>
-                                        <TableCell>Контакты</TableCell>
-                                        <TableCell>Проживание</TableCell>
-                                        <TableCell align={'right'}>Действия</TableCell>
+                        <LinearProgress show={isFetching}/>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>ФИО</TableCell>
+                                    <TableCell>Должность</TableCell>
+                                    <TableCell>Контакты</TableCell>
+                                    <TableCell>Проживание</TableCell>
+                                    <TableCell align={'right'}>Действия</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {map(items, item =>
+                                    <TableRow key={item.id}>
+                                        <TableCell>
+                                            {item.last_name} {item.first_name} {item.middle_name}
+                                        </TableCell>
+                                        <TableCell>
+                                            {item.post}
+                                        </TableCell>
+                                        <TableCell>
+                                            <div><b>Телефон:</b> {item.phone}</div>
+                                            <div><b>Email:</b> {item.email}</div>
+                                        </TableCell>
+                                        <TableCell>
+                                            {item.place.room_num
+                                                ? <React.Fragment>
+                                                    <div><b>Номер:</b> {item.place.room_num}</div>
+                                                    <div><b>Подтвержден: </b>
+                                                        {item.place.approved
+                                                            ? <span style={{color: 'green'}}>Да</span>
+                                                            : <span style={{color: 'red'}}>Нет</span>
+                                                        }
+                                                    </div>
+                                                </React.Fragment>
+                                                : 'Не заселен'
+                                            }
+                                        </TableCell>
+                                        <TableCell align={'right'}>
+                                            <Button onClick={() => this.openForm(item.id)}><EditIcon/></Button>
+                                            <ConfirmDialog
+                                                trigger={<Button><CloseIcon/></Button>}
+                                                onConfirm={() => this.delete(item.id)}
+                                            />
+                                        </TableCell>
                                     </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {map(items, item =>
-                                        <TableRow key={item.id}>
-                                            <TableCell>
-                                                {item.last_name} {item.first_name} {item.middle_name}
-                                            </TableCell>
-                                            <TableCell>
-                                                {item.post}
-                                            </TableCell>
-                                            <TableCell>
-                                                <div><b>Телефон:</b> {item.phone}</div>
-                                                <div><b>Email:</b> {item.email}</div>
-                                            </TableCell>
-                                            <TableCell>
-                                                {item.place.room_num
-                                                    ? <React.Fragment>
-                                                        <div><b>Номер:</b> {item.place.room_num}</div>
-                                                        <div><b>Подтвержден: </b>
-                                                            {item.place.approved
-                                                                ? <span style={{color: 'green'}}>Да</span>
-                                                                : <span style={{color: 'red'}}>Нет</span>
-                                                            }
-                                                        </div>
-                                                    </React.Fragment>
-                                                    : 'Не заселен'
-                                                }
-                                            </TableCell>
-                                            <TableCell align={'right'}>
-                                                <Button onClick={() => this.openForm(item.id)}><EditIcon/></Button>
-                                                <ConfirmDialog
-                                                    trigger={<Button><CloseIcon/></Button>}
-                                                    onConfirm={() => this.delete(item.id)}
-                                                />
-                                            </TableCell>
-                                        </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
-                        }
+                                )}
+                            </TableBody>
+                        </Table>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose}>Закрыть</Button>

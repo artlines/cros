@@ -42,7 +42,7 @@ class InvoiceController extends ApiController
                 'id'        => $invoice->getId(),
                 'number'    => $invoice->getNumber(),
                 'amount'    => $invoice->getAmount(),
-                'date'      => $invoice->getDate()->getTimestamp(),
+                'date'      => $invoice->getDate()->format("Y-m-d"),
                 'status'    => $invoice->getStatus(),
             ];
         }
