@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {withTheme} from '@material-ui/core/styles';
@@ -20,12 +21,12 @@ class Layout extends React.Component {
     };
 
     render() {
-        const { theme, user: {roles}, children } = this.props;
+        const { theme, user: {roles}, children, title } = this.props;
 
         return (
             <div>
                 <CssBaseline/>
-                <Header handleClickMenu={this.toggleSidebar}/>
+                <Header title={title} handleClickMenu={this.toggleSidebar}/>
                 <Sidebar
                     open={this.state.sidebarOpen}
                     onClose={this.toggleSidebar}
@@ -40,6 +41,17 @@ class Layout extends React.Component {
         );
     }
 }
+
+Layout.propTypes = {
+    /** Page title */
+    title: PropTypes.string.isRequired,
+
+    /** User object */
+    user: PropTypes.object.isRequired,
+
+    /** MUI theme */
+    theme: PropTypes.object.isRequired,
+};
 
 const mapStateToProps = state =>
     ({

@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {
+    Button,
     Grid,
     Table,
     TableHead,
@@ -9,10 +10,15 @@ import {
     TableCell,
     Typography,
 } from '@material-ui/core';
+import AutorenewIcon from '@material-ui/icons/Autorenew';
 import FabButton from '../components/utils/FabButton';
 import InviteForm from "../components/Organization/InviteForm";
 import participating from '../actions/participating';
 import map from "lodash/map";
+import ConfirmDialog from "../components/utils/ConfirmDialog";
+import API from '../libs/api';
+
+const request = new API();
 
 class Invite extends React.Component {
     constructor(props) {
@@ -34,6 +40,10 @@ class Invite extends React.Component {
         const { fetchOrganizations, user } = this.props;
         const data = { invited_by: user.id };
         fetchOrganizations(data);
+    };
+
+    reInvite = (id) => {
+        request.get(`conference_organization/re_invite/${id}`);
     };
 
     openForm = () => this.setState({form: {...this.state.form, open: true}});
@@ -72,6 +82,7 @@ class Invite extends React.Component {
                                     <TableCell>ID</TableCell>
                                     <TableCell>Наименование</TableCell>
                                     <TableCell>Реквизиты</TableCell>
+                                    <TableCell>Повторная отправка</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -86,6 +97,14 @@ class Invite extends React.Component {
                                         <TableCell>
                                             <div style={{whiteSpace: 'nowrap'}}><b>ИНН:</b> {item.inn}</div>
                                             <div style={{whiteSpace: 'nowrap'}}><b>КПП:</b> {item.kpp}</div>
+                                        </TableCell>
+                                        <TableCell>
+                                            <ConfirmDialog
+                                                title={`Повторная отправка приглашения`}
+                                                text={`Вы уверены что хотите заного отправить письмо-приглашение?`}
+                                                onConfirm={() => this.reInvite(item.id)}
+                                                trigger={<Button><AutorenewIcon/></Button>}
+                                            />
                                         </TableCell>
                                     </TableRow>
                                 )}

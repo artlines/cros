@@ -87,24 +87,15 @@ class InviteForm extends React.Component {
     handleSubmit = event => {
         event.preventDefault();
         const { values } = this.state;
-        const { initialValues } = this.props;
 
         this.setState({
             submitting: true,
             submitError: false,
         });
 
-        /** Create or update entity */
-        const id = initialValues && initialValues.id;
-        if (!id) {
-            api.post(`invite/new`, values)
-                .then(this.handleSuccessSubmit)
-                .catch(this.handleErrorSubmit);
-        } else {
-            api.put(`invite/${id}`, values)
-                .then(this.handleSuccessSubmit)
-                .catch(this.handleErrorSubmit);
-        }
+        api.post(`conference_organization/invite`, values)
+            .then(this.handleSuccessSubmit)
+            .catch(this.handleErrorSubmit);
     };
 
     handleSuccessSubmit = () => {
@@ -199,7 +190,7 @@ class InviteForm extends React.Component {
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField
-                                    required
+                                    // required
                                     label={"КПП"}
                                     type={"number"}
                                     value={values.kpp}

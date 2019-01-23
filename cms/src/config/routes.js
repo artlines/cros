@@ -6,9 +6,11 @@ import Organizations from "../pages/Organizations";
 import Invite from "../pages/Invite";
 import NotFound from "../pages/NotFound";
 import {
-    RoomService as RoomServiceIcon,
-    BusinessCenterTwoTone,
-    GroupAdd,
+    PeopleOutlined as People,
+    BusinessCenterOutlined as BusinessCenter,
+    GroupAddOutlined as GroupAdd,
+    LocationCityOutlined as LocationCity,
+    DashboardOutlined as Dashboard,
 } from "@material-ui/icons";
 
 export default [
@@ -18,7 +20,7 @@ export default [
         exact: true,
         title: "Главная",
         menuItem: {
-            Icon: RoomServiceIcon,
+            Icon: Dashboard,
             title: "Главная",
         },
     },
@@ -26,10 +28,10 @@ export default [
         path: "/cms/abode",
         Component: AbodeIndex,
         exact: true,
-        title: "Расселение",
+        title: "Расселение участников",
         menuItem: {
-            Icon: RoomServiceIcon,
-            title: "Расселение",
+            Icon: LocationCity,
+            title: "Расселение участников",
         },
         role: "ROLE_SETTLEMENT_MANAGER",
     },
@@ -57,7 +59,7 @@ export default [
         exact: true,
         title: "Организации",
         menuItem: {
-            Icon: BusinessCenterTwoTone,
+            Icon: BusinessCenter,
             title: "Организации",
         },
         role: "ROLE_SETTLEMENT_MANAGER",
@@ -66,10 +68,10 @@ export default [
         path: "/cms/invite",
         Component: Invite,
         exact: true,
-        title: "Приглашение",
+        title: "Рассылка приглашений",
         menuItem: {
             Icon: GroupAdd,
-            title: "Приглашение",
+            title: "Рассылка приглашений",
         },
         role: "ROLE_SALES_MANAGER",
     },
@@ -79,7 +81,7 @@ export default [
         exact: true,
         title: "Пользователи",
         menuItem: {
-            Icon: RoomServiceIcon,
+            Icon: People,
             title: "Пользователи",
         },
         role: "ROLE_ADMINISTRATOR",

@@ -7,24 +7,40 @@ import routes from "config/routes";
 import Layout from "./components/common/Layout";
 
 class Router extends React.PureComponent {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            title: ' ',
+        };
+    }
+
+    setTitle = title => this.setState({title});
+
     render() {
         const { roles } = this.props;
+        const { title } = this.state;
 
         return (
-            <Layout>
+            <Layout title={title}>
                 <Switch>
                     {routes.map((route, i) => {
+                        const { role, exact, path, title, Component } = route;
 
-                        if (route.role && !roles.includes(route.role)) {
+                        if (role && !roles.includes(role)) {
                             return null;
                         }
 
                         return (
                             <Route
                                 key={i}
-                                path={route.path}
-                                component={route.Component || null}
-                                exact={route.exact || false}
+                                path={path}
+                                exact={exact || false}
+                                render={props => {
+                                    this.setTitle(title);
+
+                                    return (<Component {...props}/>);
+                                }}
                             />
                         );
                     })}

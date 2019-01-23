@@ -13,6 +13,7 @@ use App\Entity\Conference;
 use App\Entity\Participating\ConferenceOrganization;
 use App\Entity\Participating\Organization;
 use App\Repository\ConferenceOrganizationRepository;
+use App\Service\Mailer;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
@@ -211,24 +212,96 @@ class ConferenceOrganizationController extends ApiController
      */
     public function invite()
     {
+        $year = date('Y');
+
         $fio = $this->requestData['fio'] ?? null;
         $email = $this->requestData['email'] ?? null;
         $name = $this->requestData['name'] ?? null;
         $inn = $this->requestData['inn'] ?? null;
         $kpp = $this->requestData['kpp'] ?? null;
 
-        if (!$fio || !$email || !$name || !$inn || !$kpp) {
+        if (!$fio || !$email || !$name || !$inn) {
             return $this->badRequest('Не переданы обязательные параметры.');
         }
 
-        /** @var Organization $organization */
-        $organization = $this->em->getRepository(Organization::class)
-            ->findOneBy(['inn' => $inn, 'kpp' => $kpp]);
-
-        if (!$organization) {
-            $organization = new Organization();
+        /** @var Conference $conference */
+        $conference = $this->em->getRepository(Conference::class)
+            ->findOneBy(['year' => $year]);
+        if (!$conference) {
+            return $this->notFound("Conference with year $year not found.");
         }
 
+        /** @var Organization $organization */
+        if ($organization = $this->em->getRepository(Organization::class)->findOneBy(['inn' => $inn, 'kpp' => $kpp])) {
+            /**
+             * Check that organization already invited or registered
+             * @var ConferenceOrganization $conferenceOrganization
+             */
+            $conferenceOrganization = $this->em->getRepository(ConferenceOrganization::class)
+                ->findOneBy(['conference' => $conference, 'organization' => $organization]);
 
+            if ($conferenceOrganization) {
+                if ($conferenceOrganization->isFinish()) {
+                    return $this->badRequest('Организация уже зарегистрирована.');
+                } elseif ($employee = $conferenceOrganization->getInvitedBy()) {
+                    return $this->badRequest('Организация уже приглашена. Приглашение отослал(а) '.$employee->getFullName());
+                } else {
+                    return $this->badRequest('Организация уже участвует.');
+                }
+            }
+        } else {
+            $organization = new Organization();
+            $organization->setInn($inn);
+            $organization->setKpp($kpp);
+            $organization->setName($name);
+        }
+
+        $organization->setEmail($email);
+        $this->em->persist($organization);
+
+        $conferenceOrganization = new ConferenceOrganization();
+        $conferenceOrganization->setConference($conference);
+        $conferenceOrganization->setOrganization($organization);
+        $conferenceOrganization->setInvitedBy($this->getUser());
+        $conferenceOrganization->setInviteHash(sha1(random_bytes(10)));
+
+        $this->em->persist($conferenceOrganization);
+        $this->em->flush();
+
+        return $this->success();
+    }
+
+    /**
+     * @Route("conference_organization/re_invite/{id}", requirements={"id":"\d+"}, methods={"GET"}, name="re_invite")
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param $id
+     * @param Mailer $mailer
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function reInvite($id, Mailer $mailer)
+    {
+        /** @var ConferenceOrganization $conferenceOrganization */
+        if (!$conferenceOrganization = $this->em->find(ConferenceOrganization::class, $id)) {
+            return $this->notFound('Conference organization not found.');
+        }
+
+        if (!$conferenceOrganization->getInvitedBy() || !$conferenceOrganization->getInviteHash()) {
+            return $this->badRequest('Conference organization not contains invited_by or invite_hash param.');
+        }
+
+        $organization = $conferenceOrganization->getOrganization();
+
+        if (!$email = $organization->getEmail()) {
+            return $this->badRequest('У организации не указан email.');
+        }
+
+        $data = [
+            'title' => 'CROS2019',
+            'body'  => 'bodybody'
+        ];
+        $res = $mailer->send('TEST', $data, 'e.nachuychenko@nag.ru');
+
+        return $this->success();
     }
 }
