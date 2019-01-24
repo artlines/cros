@@ -1,13 +1,16 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {compose} from 'redux';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 import {
     Grid,
     Typography,
-    Divider,
 } from '@material-ui/core';
 import map from 'lodash/map';
-import MemberInfoChip from "../../components/Abode/Settlement/MemberInfoChip";
-import ApartmentBlock from "../../components/Abode/Settlement/ApartmentBlock";
+import ApartmentBlock from '../../components/Abode/Settlement/ApartmentBlock';
+import MemberInfoChipSource from "../../containers/DragDrop/MemberInfoChipSource";
+import RoomBlockTarget from "../../containers/DragDrop/RoomBlockTarget";
 import abode from "../../actions/abode";
 
 class Resettlement extends React.Component {
@@ -30,8 +33,14 @@ class Resettlement extends React.Component {
                     {apartment.items.length > 0 &&
                         <Grid container spacing={16}>
                             {map(apartment.items, apart =>
-                                <Grid item xs={12} sm={6} md={4} xl={3}>
-                                    <ApartmentBlock key={apart.id} apartment={apart}/>
+                                <Grid key={apart.id} item xs={12} sm={6} md={4} xl={3}>
+                                    <ApartmentBlock
+                                        apartment={apart}
+                                        RoomComponent={RoomBlockTarget}
+                                        roomComponentProps={{
+                                            MemberComponent: MemberInfoChipSource,
+                                        }}
+                                    />
                                 </Grid>
                             )}
                         </Grid>
@@ -41,11 +50,10 @@ class Resettlement extends React.Component {
                     <div>
                         <Typography gutterBottom variant={`h5`}>Участники</Typography>
                         {map(member.items, mb =>
-                            <MemberInfoChip
+                            <MemberInfoChipSource
                                 key={mb.id}
-                                first_name={mb.first_name}
-                                last_name={mb.last_name}
-                                org_name={mb.org_name}
+                                member={mb}
+                                extendInfo
                             />
                         )}
                     </div>
@@ -84,18 +92,7 @@ Resettlement.defaultProps = {
                     {
                         id: 2,
                         type_id: 2,
-                        places: [
-                            {
-                                id: 12,
-                                member: { id: 3, first_name: 'Петр', last_name: 'Петин', org_name: 'ООО ААА', room_type_id: 2 },
-                                approved: 0,
-                            },
-                            {
-                                id: 23,
-                                member: { id: 4, first_name: 'Пуп', last_name: 'Васин', org_name: 'ООО DDD', room_type_id: 2 },
-                                approved: 0,
-                            },
-                        ]
+                        places: []
                     },
                 ],
             },
@@ -125,11 +122,6 @@ Resettlement.defaultProps = {
                         type_id: 2,
                         places: [
                             {
-                                id: 12,
-                                member: { id: 11, first_name: 'Петр', last_name: 'Петин', org_name: 'ООО ААА', room_type_id: 2 },
-                                approved: 0,
-                            },
-                            {
                                 id: 23,
                                 member: { id: 22, first_name: 'Пуп', last_name: 'Васин', org_name: 'ООО DDD', room_type_id: 2 },
                                 approved: 0,
@@ -152,11 +144,6 @@ Resettlement.defaultProps = {
                                 member: { id: 33, first_name: 'Вася', last_name: 'Пупкин', org_name: 'ООО ААА', room_type_id: 1 },
                                 approved: 0,
                             },
-                            {
-                                id: 23,
-                                member: { id: 44, first_name: 'Петя', last_name: 'Петров', org_name: 'ООО BBB', room_type_id: 1 },
-                                approved: 0,
-                            },
                         ]
                     },
                     {
@@ -166,11 +153,6 @@ Resettlement.defaultProps = {
                             {
                                 id: 12,
                                 member: { id: 55, first_name: 'Петр', last_name: 'Петин', org_name: 'ООО ААА', room_type_id: 2 },
-                                approved: 0,
-                            },
-                            {
-                                id: 23,
-                                member: { id: 66, first_name: 'Пуп', last_name: 'Васин', org_name: 'ООО DDD', room_type_id: 2 },
                                 approved: 0,
                             },
                         ]
@@ -185,18 +167,7 @@ Resettlement.defaultProps = {
                     {
                         id: 1,
                         type_id: 1,
-                        places: [
-                            {
-                                id: 12,
-                                member: { id: 123, first_name: 'Вася', last_name: 'Пупкин', org_name: 'ООО ААА', room_type_id: 1 },
-                                approved: 0,
-                            },
-                            {
-                                id: 23,
-                                member: { id: 234, first_name: 'Петя', last_name: 'Петров', org_name: 'ООО BBB', room_type_id: 1 },
-                                approved: 0,
-                            },
-                        ]
+                        places: []
                     },
                     {
                         id: 2,
@@ -205,11 +176,6 @@ Resettlement.defaultProps = {
                             {
                                 id: 12,
                                 member: { id: 354, first_name: 'Петр', last_name: 'Петин', org_name: 'ООО ААА', room_type_id: 2 },
-                                approved: 0,
-                            },
-                            {
-                                id: 23,
-                                member: { id: 456, first_name: 'Пуп', last_name: 'Васин', org_name: 'ООО DDD', room_type_id: 2 },
                                 approved: 0,
                             },
                         ]
@@ -224,34 +190,12 @@ Resettlement.defaultProps = {
                     {
                         id: 1,
                         type_id: 1,
-                        places: [
-                            {
-                                id: 12,
-                                member: { id: 321, first_name: 'Вася', last_name: 'Пупкин', org_name: 'ООО ААА', room_type_id: 1 },
-                                approved: 0,
-                            },
-                            {
-                                id: 23,
-                                member: { id: 432, first_name: 'Петя', last_name: 'Петров', org_name: 'ООО BBB', room_type_id: 1 },
-                                approved: 0,
-                            },
-                        ]
+                        places: []
                     },
                     {
                         id: 2,
                         type_id: 2,
-                        places: [
-                            {
-                                id: 12,
-                                member: { id: 543, first_name: 'Петр', last_name: 'Петин', org_name: 'ООО ААА', room_type_id: 2 },
-                                approved: 0,
-                            },
-                            {
-                                id: 23,
-                                member: { id: 654, first_name: 'Пуп', last_name: 'Васин', org_name: 'ООО DDD', room_type_id: 2 },
-                                approved: 0,
-                            },
-                        ]
+                        places: []
                     },
                 ],
             },
@@ -262,7 +206,7 @@ Resettlement.defaultProps = {
         count: 0,
         items: [
             { id: 43, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
-            { id: 16, first_name: 'Антон', last_name: 'Черкашин', org_name: 'ООО Рога', room_type_id: 2 },
+            { id: 16, first_name: 'Антон', last_name: 'Черкашин', org_name: 'ООО Рога', room_type_id: 1 },
             { id: 26, first_name: 'Игорь', last_name: 'Бошмак', org_name: 'ООО Рога и Рога и Рога и Копыта и Рога', room_type_id: 2 },
         ],
     },
@@ -274,4 +218,7 @@ const mapDispatchToProps = dispatch =>
         fetchApartmentTypes: () => dispatch(abode.fetchApartmentTypes()),
     });
 
-export default connect(null, mapDispatchToProps)(Resettlement);
+export default compose(
+    connect(null, mapDispatchToProps),
+    DragDropContext(HTML5Backend),
+)(Resettlement);

@@ -13,10 +13,14 @@ const styles = theme => ({
 
 class MemberInfoChip extends React.PureComponent {
     render() {
-        const { first_name, last_name, org_name, classes, } = this.props;
+        const {
+            member: { first_name, last_name, org_name },
+            classes, extendInfo,
+        } = this.props;
 
         let label = `${first_name} ${last_name}`;
-        org_name && (label += ` (${org_name})`);
+
+        extendInfo && (label += ` (${org_name})`);
 
         return (
             <Chip className={classes.chip} label={label}/>
@@ -25,12 +29,16 @@ class MemberInfoChip extends React.PureComponent {
 }
 
 MemberInfoChip.propTypes = {
-    first_name: PropTypes.string.isRequired,
-    last_name: PropTypes.string.isRequired,
-
-    org_name: PropTypes.string,
+    member: PropTypes.shape({
+        first_name: PropTypes.string.isRequired,
+        last_name: PropTypes.string.isRequired,
+        org_name: PropTypes.string,
+    }),
+    extendInfo: PropTypes.bool,
 };
 
-MemberInfoChip.defaultProps = {};
+MemberInfoChip.defaultProps = {
+    extendInfo: false,
+};
 
 export default withStyles(styles)(MemberInfoChip);

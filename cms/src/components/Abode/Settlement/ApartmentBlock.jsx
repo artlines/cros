@@ -11,7 +11,7 @@ import {
 import { withStyles } from '@material-ui/core/styles';
 import map from 'lodash/map';
 import find from 'lodash/find';
-import MemberInfoChip from "./MemberInfoChip";
+import RoomBlock from './RoomBlock';
 
 const styles = theme => ({
     apartBlock: {
@@ -24,7 +24,11 @@ const styles = theme => ({
 
 class ApartmentBlock extends React.PureComponent {
     render() {
-        const { apartment: { id, type_id, number, rooms }, classes, room_types, apartment_types } = this.props;
+        const {
+            apartment: { id, type_id, number, rooms },
+            classes, room_types, apartment_types,
+            RoomComponent, roomComponentProps
+        } = this.props;
 
         if (apartment_types.length === 0 || room_types.length === 0) return null;
 
@@ -41,23 +45,16 @@ class ApartmentBlock extends React.PureComponent {
                     </Grid>
                 </Grid>
                 {map(rooms, room => {
-                    const room_type = find(room_types, {id: room.type_id});
+                    const rt = find(room_types, {id: room.type_id});
 
                     return (
                         <React.Fragment key={room.id}>
                             <Divider className={classes.divider}/>
-                            <Typography gutterBottom variant={`caption`}>{room_type.title}</Typography>
-                            {map(room.places, place => {
-                                const mb = place.member;
-
-                                return (
-                                    <MemberInfoChip
-                                        key={mb.id}
-                                        first_name={mb.first_name}
-                                        last_name={mb.last_name}
-                                    />
-                                );
-                            })}
+                            <RoomComponent
+                                room={room}
+                                room_type={rt}
+                                {...roomComponentProps}
+                            />
                         </React.Fragment>
                     );
                 })}
@@ -76,14 +73,6 @@ ApartmentBlock.propTypes = {
 
     classes: PropTypes.object.isRequired,
 
-    room_types: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.number.isRequired,
-            title: PropTypes.string.isRequired,
-            max_places: PropTypes.number.isRequired,
-        }),
-    ),
-
     apartment_types: PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.number.isRequired,
@@ -91,6 +80,14 @@ ApartmentBlock.propTypes = {
             max_rooms: PropTypes.number.isRequired,
         }),
     ),
+
+    RoomComponent: PropTypes.func,
+    roomComponentProps: PropTypes.object,
+};
+
+ApartmentBlock.defaultProps = {
+    RoomComponent: RoomBlock,
+    roomComponentProps: {},
 };
 
 const mapStateToProps = state =>
