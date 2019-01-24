@@ -3,17 +3,23 @@ import PropTypes from 'prop-types';
 import {
     Chip,
 } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 
-const style = {
-    margin: 4,
-};
+const styles = theme => ({
+    chip: {
+        margin: theme.spacing.unit / 4,
+    },
+});
 
 class MemberInfoChip extends React.PureComponent {
     render() {
-        const { first_name, last_name, org_name } = this.props;
+        const { first_name, last_name, org_name, classes, } = this.props;
+
+        let label = `${first_name} ${last_name}`;
+        org_name && (label += ` (${org_name})`);
 
         return (
-            <Chip style={style} label={`${first_name} ${last_name} (${org_name})`}/>
+            <Chip className={classes.chip} label={label}/>
         );
     }
 }
@@ -21,9 +27,10 @@ class MemberInfoChip extends React.PureComponent {
 MemberInfoChip.propTypes = {
     first_name: PropTypes.string.isRequired,
     last_name: PropTypes.string.isRequired,
-    org_name: PropTypes.string.isRequired,
+
+    org_name: PropTypes.string,
 };
 
 MemberInfoChip.defaultProps = {};
 
-export default MemberInfoChip;
+export default withStyles(styles)(MemberInfoChip);

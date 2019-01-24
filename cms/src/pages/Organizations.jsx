@@ -105,9 +105,7 @@ const mapDispatchToProps = dispatch =>
         fetchMembers: (data = {}) => {
             dispatch(participating.fetchMembers(data))
         },
-        fetchRoomTypes: () => {
-            dispatch(abode.fetchRoomTypes())
-        },
+        fetchRoomTypes: () => dispatch(abode.fetchRoomTypes()),
     });
 
 export default connect(null, mapDispatchToProps)(Organizations);
