@@ -42,8 +42,9 @@ class RoomTypeController extends ApiController
     private function getResponseItem(RoomType $roomType)
     {
         $item = [
-            'id'    => $roomType->getId(),
-            'title' => $roomType->getTitle(),
+            'id'            => $roomType->getId(),
+            'title'         => $roomType->getTitle(),
+            'max_places'    => $roomType->getMaxPlaces(),
         ];
 
         return $item;
