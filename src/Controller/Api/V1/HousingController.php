@@ -21,6 +21,24 @@ class HousingController extends ApiController
     protected $am;
 
     /**
+     * @Route("housing/{id}/resettlement", requirements={"id":"\d+"}, methods={"GET"}, name="resettlement")
+     * @param $id
+     * @param AbodeManager $am
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function getResettlement($id, AbodeManager $am)
+    {
+        /** @var Housing $housing */
+        if (!$housing = $this->em->find(Housing::class, $id)) {
+            return $this->notFound('Housing not found.');
+        }
+
+        $result = $am->calculateResettlementByHousing($housing);
+
+        return $this->success(['items' => $result]);
+    }
+
+    /**
      * @Route("housing", methods={"GET"}, name="get_all")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru

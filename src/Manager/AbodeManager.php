@@ -81,4 +81,56 @@ class AbodeManager
 
         return $result;
     }
+
+    /**
+     * Calculate resettlement info to build resettlement interface in CMS
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param Housing $housing
+     * @return array
+     */
+    public function calculateResettlementByHousing(Housing $housing)
+    {
+        $result = [];
+
+        foreach ($housing->getApartments() as $apartment) {
+            $item = [
+                'id'        => $apartment->getId(),
+                'number'    => $apartment->getNumber(),
+                'type_id'   => $apartment->getType()->getId(),
+                'rooms'     => [],
+            ];
+
+            foreach ($apartment->getRooms() as $room) {
+                $places = [];
+
+                foreach ($room->getPlaces() as $place) {
+                    $conferenceMember = $place->getConferenceMember();
+                    $user = $conferenceMember->getUser();
+
+                    $places[] = [
+                        'id'        => $place->getId(),
+                        'approved'  => $place->isApproved() ? 1 : 0,
+                        'member'    => [
+                            'id'            => $conferenceMember->getId(),
+                            'first_name'    => $user->getFirstName(),
+                            'last_name'     => $user->getLastName(),
+                            'org_name'      => $user->getOrganization()->getName(),
+                        ],
+                    ];
+                }
+
+                $item['rooms'][] = [
+                    'id'        => $room->getId(),
+                    'type_id'   => $room->getType()->getId(),
+                    'places'    => $places,
+                ];
+            }
+
+            $result[] = $item;
+        }
+
+        return $result;
+
+    }
 }

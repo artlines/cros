@@ -51,6 +51,9 @@ class Housing
      */
     private $apartments;
 
+    /**
+     * Housing constructor.
+     */
     public function __construct()
     {
         $this->apartments = new ArrayCollection();
@@ -110,5 +113,21 @@ class Housing
     public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    /**
+     * @return Apartment[]|ArrayCollection
+     */
+    public function getApartments()
+    {
+        return $this->apartments;
+    }
+
+    /**
+     * @param Apartment[]|ArrayCollection $apartments
+     */
+    public function setApartments($apartments)
+    {
+        $this->apartments = $apartments;
     }
 }
