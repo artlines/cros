@@ -4,9 +4,11 @@ namespace App\Controller\Api\V1;
 
 use App\Entity\Abode\Place;
 use App\Entity\Abode\RoomType;
+use App\Entity\Conference;
 use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\ConferenceOrganization;
 use App\Entity\Participating\User;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
@@ -256,5 +258,43 @@ class ConferenceMemberController extends ApiController
         $this->em->flush();
 
         return $this->success();
+    }
+
+    /**
+     * @Route("conference_member/not_settled")
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     *
+     *
+     */
+    public function getNotSettled()
+    {
+        $year = date('Y');
+
+        /** @var Conference $conference */
+        if (!$conference = $this->em->getRepository(Conference::class)->findOneBy(['year' => $year])) {
+            return $this->notFound("Conference with year $year not found.");
+        }
+
+        /** @var ConferenceMember[] $conferenceMembers */
+        $conferenceMembers = $this->em->getRepository(ConferenceMember::class)
+            ->findBy(['conference' => $conference]);
+
+        $items = [];
+        foreach ($conferenceMembers as $conferenceMember) {
+            if (!$conferenceMember->getPlace()) {
+                $user = $conferenceMember->getUser();
+
+                $items[] = [
+                    'id'            => $conferenceMember->getId(),
+                    'first_name'    => $user->getFirstName(),
+                    'last_name'     => $user->getLastName(),
+                    'org_name'      => $user->getOrganization()->getName(),
+                    'room_type_id'  => $conferenceMember->getRoomType()->getId(),
+                ];
+            }
+        }
+
+        return $this->success(['items' => $items]);
     }
 }

@@ -24,7 +24,7 @@ class Layout extends React.Component {
         const { theme, user: {roles}, children, title } = this.props;
 
         return (
-            <div>
+            <React.Fragment>
                 <CssBaseline/>
                 <Header title={title} handleClickMenu={this.toggleSidebar}/>
                 <Sidebar
@@ -37,7 +37,7 @@ class Layout extends React.Component {
                 }}>
                     {children}
                 </div>
-            </div>
+            </React.Fragment>
         );
     }
 }

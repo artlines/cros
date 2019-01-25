@@ -116,6 +116,7 @@ class AbodeManager
                             'first_name'    => $user->getFirstName(),
                             'last_name'     => $user->getLastName(),
                             'org_name'      => $user->getOrganization()->getName(),
+                            'room_type_id'  => $conferenceMember->getRoomType()->getId(),
                         ],
                     ];
                 }
