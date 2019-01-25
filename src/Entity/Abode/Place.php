@@ -47,6 +47,14 @@ class Place
     private $approved;
 
     /**
+     * Place constructor.
+     */
+    public function __construct()
+    {
+        $this->approved = false;
+    }
+
+    /**
      * @return int
      */
     public function getId()

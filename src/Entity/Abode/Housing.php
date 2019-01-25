@@ -48,6 +48,7 @@ class Housing
      * @var ArrayCollection|Apartment[]
      *
      * @ORM\OneToMany(targetEntity="Apartment", mappedBy="housing")
+     * @ORM\OrderBy({"number":"ASC"})
      */
     private $apartments;
 

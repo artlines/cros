@@ -6,18 +6,42 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import {
     Grid,
     Typography,
+    TextField,
+    MenuItem,
+    FormControl,
+    FormControlLabel,
+    Switch,
 } from '@material-ui/core';
 import map from 'lodash/map';
+import f from 'lodash/filter';
+import each from 'lodash/each';
+import find from 'lodash/find';
+import some from 'lodash/some';
 import ApartmentBlock from '../../components/Abode/Settlement/ApartmentBlock';
 import MemberInfoChipSource from "../../containers/DragDrop/MemberInfoChipSource";
 import RoomBlockTarget from "../../containers/DragDrop/RoomBlockTarget";
 import abode from "../../actions/abode";
 import resettlement from "../../actions/resettlement";
 import LinearProgress from "../../components/utils/LinearProgress";
+import API from '../../libs/api';
+
+const api = new API();
 
 class Resettlement extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            filter: {
+                apartment: {
+                    room_type: 0,
+                    only_not_full: false,
+                },
+                member: {
+                    search: '',
+                },
+            },
+        };
     }
 
     componentDidMount() {
@@ -31,17 +55,116 @@ class Resettlement extends React.Component {
         this.props.fetchNotSettledMembers();
     };
 
+    handleFilterChange = (object, field) => event => {
+        const { type, value, checked } = event.target;
+        let filter = {...this.state.filter};
+
+        switch (type) {
+            case 'checkbox':
+                filter[object][field] = checked;
+                break;
+            default:
+                filter[object][field] = value;
+                break;
+        }
+        console.log(filter);
+
+        this.setState({filter});
+    };
+
+    getApartments = () => {
+        const { apartments, room_types } = this.props;
+        const { filter } = this.state;
+        let result = apartments.items;
+
+        if (filter.apartment.room_type) {
+            result = f(result, i => some(i.rooms, {type_id: filter.apartment.room_type}))
+        }
+
+        if (filter.apartment.only_not_full) {
+            result = f(result, i =>
+                some(i.rooms, room => {
+                    const room_type = find(room_types, {id: room.type_id});
+                    const isNotFull = room.places.length < room_type.max_places;
+                    const isNeededType = filter.apartment.only_not_full
+                        ? filter.apartment.room_type_id === room_type.id
+                        : true;
+                    console.log(isNeededType);
+
+                    return isNotFull && isNeededType;
+                })
+            );
+        }
+
+        return result;
+    };
+
+    getMembers = () => {
+        const { members } = this.props;
+        const { filter } = this.state;
+        let result = members.items;
+
+        if (filter.member.search) {
+            result = f(result, i =>
+                `${i.first_name} ${i.last_name} ${i.org_name}`.toLowerCase().indexOf(filter.member.search.toLowerCase()) >= 0
+            )
+        }
+
+        return result;
+    };
+
+    holdPlace = (room_id, conference_member_id) => {
+        api.post(`place/new`, {room_id, conference_member_id})
+            .then(this.update)
+            .catch(err => console.log(`Error while hold place`, err.message));
+    };
+
     render() {
-        const { apartments, members } = this.props;
+        const { room_types, isFetching } = this.props;
+        const { filter } = this.state;
 
         return (
-            <div style={{maxHeight: '100%'}}>
-                <LinearProgress/>
+            <React.Fragment>
+                <LinearProgress show={isFetching}/>
+                <br/>
                 <Grid container spacing={16}>
                     <Grid item xs={8} sm={8} lg={9}>
                         <Typography gutterBottom variant={`h5`}>Номера</Typography>
                         <Grid container spacing={16}>
-                            {map(apartments.items, apart =>
+                            <Grid item xs={12} sm={6} lg={4}>
+                                <TextField
+                                    required
+                                    label={"Тип комнаты"}
+                                    margin={"dense"}
+                                    fullWidth
+                                    value={filter.apartment.room_type}
+                                    variant={"outlined"}
+                                    name={'room_type'}
+                                    onChange={this.handleFilterChange('apartment', 'room_type')}
+                                    select={true}
+                                >
+                                    <MenuItem key={`all`} value={0}>{`Все`}</MenuItem>
+                                    {map(room_types, rt =>
+                                        <MenuItem key={rt.id} value={rt.id}>{rt.title}</MenuItem>
+                                    )}
+                                </TextField>
+                            </Grid>
+                            <Grid item xs={12} sm={6} lg={4}>
+                                <FormControl>
+                                    <FormControlLabel
+                                        label={"Только не полностью заселенные"}
+                                        control={
+                                            <Switch
+                                                checked={filter.apartment.only_not_full}
+                                                onChange={this.handleFilterChange('apartment', 'only_not_full')}
+                                            />
+                                        }
+                                    />
+                                </FormControl>
+                            </Grid>
+                        </Grid>
+                        <Grid container spacing={16}>
+                            {map(this.getApartments(), apart =>
                                 <Grid key={apart.id} item xs={12} sm={6} md={4} xl={3}>
                                     <ApartmentBlock
                                         apartment={apart}
@@ -57,17 +180,34 @@ class Resettlement extends React.Component {
                     <Grid item xs={4} sm={4} lg={3}>
                         <div>
                             <Typography gutterBottom variant={`h5`}>Участники</Typography>
-                            {map(members.items, mb =>
-                                <MemberInfoChipSource
-                                    key={mb.id}
-                                    member={mb}
-                                    extendInfo
-                                />
-                            )}
+                            <Grid container spacing={16}>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        label={"Поиск по ФИО или организации"}
+                                        margin={"dense"}
+                                        fullWidth
+                                        value={filter.member.search}
+                                        variant={"outlined"}
+                                        name={'search'}
+                                        onChange={this.handleFilterChange('member', 'search')}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    {map(this.getMembers(), mb =>
+                                        <MemberInfoChipSource
+                                            key={mb.id}
+                                            member={mb}
+                                            extendInfo
+                                            onDrop={this.holdPlace}
+                                        />
+                                    )}
+                                </Grid>
+                            </Grid>
                         </div>
                     </Grid>
                 </Grid>
-            </div>
+            </React.Fragment>
         );
     }
 }
@@ -75,6 +215,8 @@ class Resettlement extends React.Component {
 const mapStateToProps = state =>
     ({
         ...state.resettlement,
+        room_types: state.abode.room_type.items,
+        isFetching: state.resettlement.apartments.isFetching || state.resettlement.members.isFetching,
     });
 
 const mapDispatchToProps = (dispatch, ownProps) =>

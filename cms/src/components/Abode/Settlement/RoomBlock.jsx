@@ -15,7 +15,7 @@ function RoomBlock({ MemberComponent, room_type, room }) {
                 <Typography component={`div`} align={`center`} gutterBottom variant={`caption`}>пусто</Typography>
             }
 
-            <Grid container spacing={0} alignItems={`start`} direction={`column`}>
+            <Grid container spacing={0} alignItems={`flex-start`} direction={`column`}>
             {map(room.places, place => {
                 const member = place.member;
 

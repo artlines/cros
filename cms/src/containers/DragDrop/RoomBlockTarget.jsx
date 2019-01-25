@@ -29,7 +29,8 @@ const target = {
     drop(props, monitor) {
         const member = monitor.getItem();
         const { room } = props;
-        console.log(`Dropped member with ID ${member.id} to room with ID ${room.id}`);
+
+        member.onDrop(room.id, member.id);
     },
 
     canDrop(props, monitor) {

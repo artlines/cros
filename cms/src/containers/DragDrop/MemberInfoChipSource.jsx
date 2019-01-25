@@ -5,10 +5,11 @@ import MemberInfoChip from '../../components/Abode/Settlement/MemberInfoChip';
 
 const chipSource = {
     beginDrag(props) {
-        const { member: { id, room_type_id } } = props;
+        const { member: { id, room_type_id }, onDrop } = props;
         return {
             id,
             room_type_id,
+            onDrop,
         };
     }
 };
