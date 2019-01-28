@@ -6,6 +6,7 @@ import {
     Chip,
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import find from 'lodash/find';
 
 const styles = theme => ({
     chip: {
@@ -23,9 +24,8 @@ class MemberInfoChip extends React.PureComponent {
         let label = `${first_name} ${last_name}`;
 
         if (extendInfo) {
-            label += ` - (${org_name}`;
-
-            room_type_id && (label += ` - ${find(room_types, {id: room_type_id}).title}`);
+            label += `\r\n${org_name}`;
+            //room_type_id && (label += ` - ${find(room_types, {id: room_type_id}).title}`);
             neighbourhood && (label += ` - Совм. проживание с ${neighbourhood}`);
         }
 

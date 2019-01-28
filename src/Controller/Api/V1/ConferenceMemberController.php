@@ -285,13 +285,14 @@ class ConferenceMemberController extends ApiController
             if (!$conferenceMember->getPlace()) {
                 $user = $conferenceMember->getUser();
                 $neighbourhood = $conferenceMember->getNeighbourhood();
+                $roomType = $conferenceMember->getRoomType();
 
                 $items[] = [
                     'id'            => $conferenceMember->getId(),
                     'first_name'    => $user->getFirstName(),
                     'last_name'     => $user->getLastName(),
                     'org_name'      => $user->getOrganization()->getName(),
-                    'room_type_id'  => $conferenceMember->getRoomType()->getId(),
+                    'room_type_id'  => $roomType ? $roomType->getId() : null,
                     'neighbourhood' => $neighbourhood ? $neighbourhood->getUser()->getFullName() : null,
                 ];
             }

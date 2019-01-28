@@ -36,7 +36,7 @@ class ApartmentBlock extends React.PureComponent {
 
         return (
             <Paper className={classes.apartBlock}>
-                <Grid container justify={`space-between`}>
+                <Grid container justify={`space-between`} alignItems={`center`}>
                     <Grid item>
                         <Typography gutterBottom variant={`button`}>#{number}</Typography>
                     </Grid>

@@ -11,19 +11,24 @@ import {
     FormControl,
     FormControlLabel,
     Switch,
+    List,
+    TablePagination,
 } from '@material-ui/core';
 import map from 'lodash/map';
 import f from 'lodash/filter';
-import each from 'lodash/each';
 import find from 'lodash/find';
 import some from 'lodash/some';
+import every from 'lodash/every';
+import slice from 'lodash/slice';
 import ApartmentBlock from '../../components/Abode/Settlement/ApartmentBlock';
-import MemberInfoChipSource from "../../containers/DragDrop/MemberInfoChipSource";
+import MemberInfoSource from "../../containers/DragDrop/MemberInfoSource";
 import RoomBlockTarget from "../../containers/DragDrop/RoomBlockTarget";
 import abode from "../../actions/abode";
 import resettlement from "../../actions/resettlement";
 import LinearProgress from "../../components/utils/LinearProgress";
 import API from '../../libs/api';
+import MemberInfoChip from "../../components/Abode/Settlement/MemberInfoChip";
+import MemberInfoListItem from "../../components/Abode/Settlement/MemberInfoListItem";
 
 const api = new API();
 
@@ -39,6 +44,8 @@ class Resettlement extends React.Component {
                 },
                 member: {
                     search: '',
+                    page: 0,
+                    rowsPerPage: 12,
                 },
             },
         };
@@ -68,6 +75,12 @@ class Resettlement extends React.Component {
                 break;
         }
 
+        (object === 'member') && (filter.member.page = 0);
+
+        this.setState({filter});
+    };
+    handleMembersPageChange = (event, page) => {
+        const filter = {...this.state.filter, member: {...this.state.filter.member, page}};
         this.setState({filter});
     };
 
@@ -81,30 +94,30 @@ class Resettlement extends React.Component {
         }
 
         if (filter.apartment.only_not_full) {
-            result = f(result, i =>
-                some(i.rooms, room => {
-                    const room_type = find(room_types, {id: room.type_id});
-                    const isNotFull = room.places.length < room_type.max_places;
-                    const isNeededType = filter.apartment.only_not_full
-                        ? filter.apartment.room_type_id === room_type.id
-                        : true;
-                    console.log(isNeededType);
-
-                    return isNotFull && isNeededType;
-                })
-            );
+            result = f(result, i => {
+                if (filter.apartment.room_type) {
+                    const room_type = find(room_types, {id: filter.apartment.room_type});
+                    const filtered = f(i.rooms, g => g.type_id === filter.apartment.room_type);
+                    return !every(filtered, room => room.places.length >= room_type.max_places);
+                } else {
+                    return !every(i.rooms, room => {
+                        const room_type = find(room_types, {id: room.type_id});
+                        return room.places.length >= room_type.max_places;
+                    })
+                }
+            });
         }
 
         return result;
     };
     getMembers = () => {
         const { members } = this.props;
-        const { filter } = this.state;
+        const { member: { search } } = this.state.filter;
         let result = members.items;
 
-        if (filter.member.search) {
+        if (search) {
             result = f(result, i =>
-                `${i.first_name} ${i.last_name} ${i.org_name}`.toLowerCase().indexOf(filter.member.search.toLowerCase()) >= 0
+                `${i.first_name} ${i.last_name} ${i.org_name}`.toLowerCase().indexOf(search.toLowerCase()) >= 0
             )
         }
 
@@ -129,7 +142,10 @@ class Resettlement extends React.Component {
 
     render() {
         const { room_types, isFetching } = this.props;
-        const { filter } = this.state;
+        const { filter: {apartment, member} } = this.state;
+
+        const members = this.getMembers();
+        const members_list = slice(members, member.rowsPerPage*member.page, member.rowsPerPage*member.page + member.rowsPerPage);
 
         return (
             <React.Fragment>
@@ -145,7 +161,7 @@ class Resettlement extends React.Component {
                                     label={"Тип комнаты"}
                                     margin={"dense"}
                                     fullWidth
-                                    value={filter.apartment.room_type}
+                                    value={apartment.room_type}
                                     variant={"outlined"}
                                     name={'room_type'}
                                     onChange={this.handleFilterChange('apartment', 'room_type')}
@@ -163,7 +179,7 @@ class Resettlement extends React.Component {
                                         label={"Только не полностью заселенные"}
                                         control={
                                             <Switch
-                                                checked={filter.apartment.only_not_full}
+                                                checked={apartment.only_not_full}
                                                 onChange={this.handleFilterChange('apartment', 'only_not_full')}
                                             />
                                         }
@@ -178,11 +194,12 @@ class Resettlement extends React.Component {
                                         apartment={apart}
                                         RoomComponent={RoomBlockTarget}
                                         roomComponentProps={{
-                                            MemberComponent: MemberInfoChipSource,
+                                            MemberComponent: MemberInfoSource,
                                             memberComponentProps: {
                                                 holdPlace:      this.holdPlace,
                                                 changePlace:    this.changePlace,
                                                 dropPlace:      this.dropPlace,
+                                                Component:      MemberInfoChip,
                                             }
                                         }}
                                     />
@@ -192,7 +209,7 @@ class Resettlement extends React.Component {
                     </Grid>
                     <Grid
                         item xs={4} sm={4} lg={3}
-                        style={{ position: 'fixed', right: 0, }}
+                        style={{ position: 'fixed', right: 0, width: '100%' }}
                     >
                         <Typography gutterBottom variant={`h5`}>Участники</Typography>
                         <Grid container spacing={16}>
@@ -202,24 +219,37 @@ class Resettlement extends React.Component {
                                     label={"Поиск по ФИО или организации"}
                                     margin={"dense"}
                                     fullWidth
-                                    value={filter.member.search}
+                                    value={member.search}
                                     variant={"outlined"}
                                     name={'search'}
                                     onChange={this.handleFilterChange('member', 'search')}
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                {map(this.getMembers(), mb =>
-                                    <MemberInfoChipSource
-                                        key={mb.id}
-                                        extendInfo
-                                        member={mb}
-                                        place={null}
-                                        holdPlace={this.holdPlace}
-                                        changePlace={this.changePlace}
-                                        dropPlace={this.dropPlace}
-                                    />
-                                )}
+                                <List dense={true}>
+                                    {map(members_list, mb =>
+                                        <MemberInfoSource
+                                            key={mb.id}
+                                            extendInfo
+                                            member={mb}
+                                            place={null}
+                                            holdPlace={this.holdPlace}
+                                            changePlace={this.changePlace}
+                                            dropPlace={this.dropPlace}
+                                            Component={MemberInfoListItem}
+                                        />
+                                    )}
+                                </List>
+                                <TablePagination
+                                    style={{width: '100%'}}
+                                    component={`div`}
+                                    page={member.page}
+                                    rowsPerPage={member.rowsPerPage}
+                                    rowsPerPageOptions={[]}
+                                    count={members.length}
+                                    onChangePage={this.handleMembersPageChange}
+                                    labelDisplayedRows={({from, to, count}) => `${from}-${to} из ${count}`}
+                                />
                             </Grid>
                         </Grid>
                     </Grid>
@@ -234,32 +264,32 @@ const mapStateToProps = state =>
         ...state.resettlement,
         room_types: state.abode.room_type.items,
         isFetching: state.resettlement.apartments.isFetching || state.resettlement.members.isFetching,
-        members: {
-            isFetching: false,
-            count: 0,
-            items: [
-                { id: 1, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2, neighbourhood: 'Фамилия Имя Отчество' },
-                { id: 2, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
-                { id: 3, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
-                { id: 4, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2, neighbourhood: 'Фамилия Имя Отчество' },
-                { id: 5, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2, neighbourhood: 'Фамилия Имя Отчество' },
-                { id: 6, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
-                { id: 7, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
-                { id: 9, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2, neighbourhood: 'Фамилия Имя Отчество' },
-                { id: 8, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
-                { id: 11, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
-                { id: 22, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
-                { id: 33, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2, neighbourhood: 'Фамилия Имя Отчество' },
-                { id: 44, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
-                { id: 43, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2, neighbourhood: 'Фамилия Имя Отчество' },
-                { id: 12, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
-                { id: 13, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
-                { id: 14, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2, neighbourhood: 'Фамилия Имя Отчество' },
-                { id: 15, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
-                { id: 66, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
-                { id: 17, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2, neighbourhood: 'Фамилия Имя Отчество' },
-            ],
-        },
+        // members: {
+        //     isFetching: false,
+        //     count: 0,
+        //     items: [
+        //         { id: 1, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ фывфывфывфывфывфывфывфывфывфывфывфывфыв', room_type_id: 1, neighbourhood: 'Фамилия Имя Отчество фывфывфывфывфывфыв' },
+        //         { id: 2, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
+        //         { id: 3, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
+        //         { id: 4, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 1, neighbourhood: 'Фамилия Имя Отчество' },
+        //         { id: 5, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 1, neighbourhood: 'Фамилия Имя Отчество' },
+        //         { id: 6, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
+        //         { id: 7, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
+        //         { id: 9, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 1, neighbourhood: 'Фамилия Имя Отчество' },
+        //         { id: 8, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
+        //         { id: 11, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
+        //         { id: 22, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 1 },
+        //         { id: 33, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2, neighbourhood: 'Фамилия Имя Отчество' },
+        //         { id: 44, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 1 },
+        //         { id: 43, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2, neighbourhood: 'Фамилия Имя Отчество' },
+        //         { id: 12, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 1 },
+        //         { id: 13, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
+        //         { id: 14, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 1, neighbourhood: 'Фамилия Имя Отчество' },
+        //         { id: 15, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
+        //         { id: 66, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 1 },
+        //         { id: 17, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2, neighbourhood: 'Фамилия Имя Отчество' },
+        //     ],
+        // },
 
     });
 

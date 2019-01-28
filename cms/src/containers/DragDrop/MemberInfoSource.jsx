@@ -1,12 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { DragSource } from 'react-dnd';
 import { DnDItemTypes } from "../../config/lib";
-import MemberInfoChip from '../../components/Abode/Settlement/MemberInfoChip';
 
 const chipSource = {
     beginDrag(props) {
         const { member, holdPlace, changePlace, dropPlace, place } = props;
-        console.log(`beginDrag member chip`);
+
         return {
             member,
             place,
@@ -24,12 +24,16 @@ function collect(connect, monitor) {
     };
 }
 
-function WrappedMemberInfoChip({ isDragging, connectDragSource, ...props }) {
+function WrappedMemberInfoSource({ Component, isDragging, connectDragSource, ...props }) {
     return connectDragSource(
         <div>
-            <MemberInfoChip {...props}/>
+            <Component {...props}/>
         </div>
     );
 }
 
-export default DragSource(DnDItemTypes.MEMBER, chipSource, collect)(WrappedMemberInfoChip);
+WrappedMemberInfoSource.propTypes = {
+    Component: PropTypes.func.isRequired,
+};
+
+export default DragSource(DnDItemTypes.MEMBER, chipSource, collect)(WrappedMemberInfoSource);
