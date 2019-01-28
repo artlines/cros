@@ -284,6 +284,7 @@ class ConferenceMemberController extends ApiController
         foreach ($conferenceMembers as $conferenceMember) {
             if (!$conferenceMember->getPlace()) {
                 $user = $conferenceMember->getUser();
+                $neighbourhood = $conferenceMember->getNeighbourhood();
 
                 $items[] = [
                     'id'            => $conferenceMember->getId(),
@@ -291,6 +292,7 @@ class ConferenceMemberController extends ApiController
                     'last_name'     => $user->getLastName(),
                     'org_name'      => $user->getOrganization()->getName(),
                     'room_type_id'  => $conferenceMember->getRoomType()->getId(),
+                    'neighbourhood' => $neighbourhood ? $neighbourhood->getUser()->getFullName() : null,
                 ];
             }
         }

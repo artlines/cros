@@ -106,7 +106,9 @@ class AbodeManager
 
                 foreach ($room->getPlaces() as $place) {
                     $conferenceMember = $place->getConferenceMember();
+
                     $user = $conferenceMember->getUser();
+                    $neighbourhood = $conferenceMember->getNeighbourhood();
 
                     $places[] = [
                         'id'        => $place->getId(),
@@ -117,6 +119,7 @@ class AbodeManager
                             'last_name'     => $user->getLastName(),
                             'org_name'      => $user->getOrganization()->getName(),
                             'room_type_id'  => $conferenceMember->getRoomType()->getId(),
+                            'neighbourhood' => $neighbourhood ? $neighbourhood->getUser()->getFullName() : null,
                         ],
                     ];
                 }
