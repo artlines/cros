@@ -114,6 +114,7 @@ class AbodeManager
                     $places[] = [
                         'id'        => $place->getId(),
                         'approved'  => $place->isApproved() ? 1 : 0,
+                        'room_id'   => $room->getId(),
                         'member'    => [
                             'id'            => $conferenceMember->getId(),
                             'first_name'    => $user->getFirstName(),

@@ -25,7 +25,7 @@ class MembersList extends React.Component {
         };
     }
 
-    handleFitlerChange = (event) => this.setState({search: event.target.value, page: 0});
+    handleFilterChange = (event) => this.setState({search: event.target.value, page: 0});
     handlePageChange = (event, page) => this.setState({page});
 
     getMembers = () => {

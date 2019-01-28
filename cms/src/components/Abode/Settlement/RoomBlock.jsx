@@ -22,7 +22,6 @@ function RoomBlock({ MemberComponent, memberComponentProps, room_type, room }) {
                 return (
                     <Grid key={member.id} item>
                         <MemberComponent
-                            onlyName
                             member={member}
                             place={place}
                             {...memberComponentProps}

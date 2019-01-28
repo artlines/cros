@@ -25,12 +25,6 @@ function renderOverlay(color) {
     );
 }
 
-/**
- holdPlace={this.holdPlace}
- changePlace={this.changePlace}
- dropPlace={this.dropPlace}
- */
-
 const target = {
     drop(props, monitor) {
         const { member, place, holdPlace, changePlace } = monitor.getItem();
@@ -45,9 +39,11 @@ const target = {
 
     canDrop(props, monitor) {
         const { room, room_type } = props;
-        const { member } = monitor.getItem();
+        const { member, place } = monitor.getItem();
 
-        return member.room_type_id === room.type_id && room.places.length < room_type.max_places;
+        return member.room_type_id === room.type_id
+            && room.places.length < room_type.max_places
+            && (!place || place.room_id !== room.id);
     },
 };
 
