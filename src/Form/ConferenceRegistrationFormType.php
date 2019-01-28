@@ -3,7 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Participating\Organization;
+use App\Entity\Participating\User;
+use App\Repository\UserRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -130,12 +133,23 @@ class ConferenceRegistrationFormType extends AbstractType
                     'required' => false,
                 )
             )
+//            ->add(
+//                'member1',
+//                CollectionType::class, [
+//                'entry_type' => MemberFormType::class,
+//                'allow_add' => true,
+//                'prototype' => true,
+//                'prototype_data' => new User()
+//            ])
             ->add(
                 $builder->create(
-                    'member',
+                    'member2',
                     MemberFormType::class,
                     ['by_reference' => true]
-                )
+                ),
+                [
+                    'allow_add' => true,
+                ]
             )
             ->add('save', SubmitType::class)
 
