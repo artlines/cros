@@ -14,7 +14,7 @@ const chipSource = {
             changePlace,
             dropPlace,
         };
-    }
+    },
 };
 
 function collect(connect, monitor) {

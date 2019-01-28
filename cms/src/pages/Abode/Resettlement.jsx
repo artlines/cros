@@ -19,10 +19,10 @@ import f from 'lodash/filter';
 import find from 'lodash/find';
 import some from 'lodash/some';
 import every from 'lodash/every';
-import slice from 'lodash/slice';
 import ApartmentBlock from '../../components/Abode/Settlement/ApartmentBlock';
 import MemberInfoSource from "../../containers/DragDrop/MemberInfoSource";
 import RoomBlockTarget from "../../containers/DragDrop/RoomBlockTarget";
+import MembersListTarget from "../../containers/DragDrop/MembersListTarget";
 import abode from "../../actions/abode";
 import resettlement from "../../actions/resettlement";
 import LinearProgress from "../../components/utils/LinearProgress";
@@ -41,11 +41,6 @@ class Resettlement extends React.Component {
                 apartment: {
                     room_type: 0,
                     only_not_full: false,
-                },
-                member: {
-                    search: '',
-                    page: 0,
-                    rowsPerPage: 12,
                 },
             },
         };
@@ -75,12 +70,6 @@ class Resettlement extends React.Component {
                 break;
         }
 
-        (object === 'member') && (filter.member.page = 0);
-
-        this.setState({filter});
-    };
-    handleMembersPageChange = (event, page) => {
-        const filter = {...this.state.filter, member: {...this.state.filter.member, page}};
         this.setState({filter});
     };
 
@@ -110,19 +99,6 @@ class Resettlement extends React.Component {
 
         return result;
     };
-    getMembers = () => {
-        const { members } = this.props;
-        const { member: { search } } = this.state.filter;
-        let result = members.items;
-
-        if (search) {
-            result = f(result, i =>
-                `${i.first_name} ${i.last_name} ${i.org_name}`.toLowerCase().indexOf(search.toLowerCase()) >= 0
-            )
-        }
-
-        return result;
-    };
 
     holdPlace = (room_id, conference_member_id) => {
         api.post(`place/new`, {room_id, conference_member_id})
@@ -141,11 +117,8 @@ class Resettlement extends React.Component {
     };
 
     render() {
-        const { room_types, isFetching } = this.props;
-        const { filter: {apartment, member} } = this.state;
-
-        const members = this.getMembers();
-        const members_list = slice(members, member.rowsPerPage*member.page, member.rowsPerPage*member.page + member.rowsPerPage);
+        const { members, room_types, isFetching } = this.props;
+        const { filter: {apartment} } = this.state;
 
         return (
             <React.Fragment>
@@ -211,47 +184,16 @@ class Resettlement extends React.Component {
                         item xs={4} sm={4} lg={3}
                         style={{ position: 'fixed', right: 0, width: '100%' }}
                     >
-                        <Typography gutterBottom variant={`h5`}>Участники</Typography>
-                        <Grid container spacing={16}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    label={"Поиск по ФИО или организации"}
-                                    margin={"dense"}
-                                    fullWidth
-                                    value={member.search}
-                                    variant={"outlined"}
-                                    name={'search'}
-                                    onChange={this.handleFilterChange('member', 'search')}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <List dense={true}>
-                                    {map(members_list, mb =>
-                                        <MemberInfoSource
-                                            key={mb.id}
-                                            extendInfo
-                                            member={mb}
-                                            place={null}
-                                            holdPlace={this.holdPlace}
-                                            changePlace={this.changePlace}
-                                            dropPlace={this.dropPlace}
-                                            Component={MemberInfoListItem}
-                                        />
-                                    )}
-                                </List>
-                                <TablePagination
-                                    style={{width: '100%'}}
-                                    component={`div`}
-                                    page={member.page}
-                                    rowsPerPage={member.rowsPerPage}
-                                    rowsPerPageOptions={[]}
-                                    count={members.length}
-                                    onChangePage={this.handleMembersPageChange}
-                                    labelDisplayedRows={({from, to, count}) => `${from}-${to} из ${count}`}
-                                />
-                            </Grid>
-                        </Grid>
+                        <MembersListTarget
+                            members={members.items}
+                            MemberComponent={MemberInfoSource}
+                            memberComponentProps={{
+                                holdPlace:      this.holdPlace,
+                                changePlace:    this.changePlace,
+                                dropPlace:      this.dropPlace,
+                                Component:      MemberInfoListItem,
+                            }}
+                        />
                     </Grid>
                 </Grid>
             </React.Fragment>

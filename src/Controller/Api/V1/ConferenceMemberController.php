@@ -52,7 +52,7 @@ class ConferenceMemberController extends ApiController
                 ->findOneBy(['conferenceMember' => $conferenceMember]);
             if ($place) {
                 $placeInfo['room_num'] = $place->getRoom()->getApartment()->getNumber();
-                $placeInfo['approved'] = $place->isApproved() ? 'true' : 'false';
+                $placeInfo['approved'] = $place->isApproved() ? 1 : 0;
             }
 
             $_arrival = $conferenceMember->getArrival();
@@ -101,7 +101,7 @@ class ConferenceMemberController extends ApiController
         $car_number = $this->requestData['car_number'] ?? null;
         $arrival = $this->requestData['arrival'] ?? null;
         $leaving = $this->requestData['leaving'] ?? null;
-        $representative = isset($this->requestData['representative']) ? (bool) $this->requestData['representative'] : null;
+        $representative = isset($this->requestData['representative']) ? (bool) $this->requestData['representative'] : false;
         $room_type_id = $this->requestData['room_type_id'] ?? null;
 
         if (!$conference_organization_id || !$first_name || !$last_name || !$phone || !$email || !$room_type_id) {
@@ -133,7 +133,7 @@ class ConferenceMemberController extends ApiController
         $memberByPhone = $this->em->getRepository(User::class)->findOneBy(['phone' => $phone]);
         if ($memberByPhone && ($memberByPhone !== $member)) {
             return $this->badRequest('Пользователь (ID: '.$memberByPhone->getId().') "'
-                .$memberByPhone->getFirstName().'" имеет указанный телефон.');
+                .$memberByPhone->getFullName().'" имеет указанный телефон.');
         }
 
         $member->setFirstName($first_name);
@@ -180,7 +180,7 @@ class ConferenceMemberController extends ApiController
         $car_number = $this->requestData['car_number'] ?? null;
         $arrival = $this->requestData['arrival'] ?? null;
         $leaving = $this->requestData['leaving'] ?? null;
-        $representative = isset($this->requestData['representative']) ? (bool) $this->requestData['representative'] : null;
+        $representative = isset($this->requestData['representative']) ? (bool) $this->requestData['representative'] : false;
         $room_type_id = $this->requestData['room_type_id'] ?? null;
 
         if (!$first_name || !$last_name || !$phone || !$email || !$room_type_id) {
@@ -206,7 +206,7 @@ class ConferenceMemberController extends ApiController
         $memberByPhone = $this->em->getRepository(User::class)->findOneBy(['phone' => $phone]);
         if ($memberByPhone && ($memberByPhone !== $member)) {
             return $this->badRequest('Пользователь (ID: '.$memberByPhone->getId().') "'
-                .$memberByPhone->getFirstName().'" имеет указанный телефон.');
+                .$memberByPhone->getFullName().'" имеет указанный телефон.');
         }
 
         /**
@@ -215,7 +215,7 @@ class ConferenceMemberController extends ApiController
         $memberByEmail = $this->em->getRepository(User::class)->findOneBy(['email' => $email]);
         if ($memberByEmail && ($memberByEmail !== $member)) {
             return $this->badRequest('Пользователь (ID: '.$memberByEmail->getId().') "'
-                .$memberByEmail->getFirstName().'" имеет указанный email.');
+                .$memberByEmail->getFullName().'" имеет указанный email.');
         }
 
         $member->setFirstName($first_name);

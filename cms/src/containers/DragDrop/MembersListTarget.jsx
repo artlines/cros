@@ -1,7 +1,7 @@
 import React from 'react';
 import { DropTarget } from 'react-dnd';
 import { DnDItemTypes } from "../../config/lib";
-import RoomBlock from '../../components/Abode/Settlement/RoomBlock';
+import MembersList from '../../components/Abode/Settlement/MembersList';
 
 const overlayStyle = {
     position: 'absolute',
@@ -25,30 +25,16 @@ function renderOverlay(color) {
     );
 }
 
-/**
- holdPlace={this.holdPlace}
- changePlace={this.changePlace}
- dropPlace={this.dropPlace}
- */
-
 const target = {
     drop(props, monitor) {
-        const { member, place, holdPlace, changePlace } = monitor.getItem();
-        const { room } = props;
+        const { place, dropPlace } = monitor.getItem();
 
-        if (place) {
-            changePlace(place.id, room.id);
-        } else {
-            holdPlace(room.id, member.id);
-        }
+        dropPlace(place.id);
     },
-
     canDrop(props, monitor) {
-        const { room, room_type } = props;
-        const { member } = monitor.getItem();
-
-        return member.room_type_id === room.type_id && room.places.length < room_type.max_places;
-    },
+        const { place } = monitor.getItem();
+        return !!place;
+    }
 };
 
 function collect(connect, monitor) {
@@ -59,10 +45,10 @@ function collect(connect, monitor) {
     };
 }
 
-function WrappedRoomBlock({ connectDropTarget, isOver, canDrop, ...props}) {
+function WrappedMembersList({ connectDropTarget, isOver, canDrop, ...props}) {
     return connectDropTarget(
         <div style={overlayContainerStyle}>
-            <RoomBlock {...props}/>
+            <MembersList {...props}/>
             {!isOver && canDrop && renderOverlay('yellow')}
             {isOver && canDrop && renderOverlay('green')}
             {isOver && !canDrop && renderOverlay('red')}
@@ -70,4 +56,4 @@ function WrappedRoomBlock({ connectDropTarget, isOver, canDrop, ...props}) {
     );
 }
 
-export default DropTarget(DnDItemTypes.MEMBER, target, collect)(WrappedRoomBlock);
+export default DropTarget(DnDItemTypes.MEMBER, target, collect)(WrappedMembersList);
