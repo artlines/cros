@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {compose} from 'redux';
 import {
     Chip,
 } from '@material-ui/core';
@@ -14,13 +16,18 @@ const styles = theme => ({
 class MemberInfoChip extends React.PureComponent {
     render() {
         const {
-            member: { first_name, last_name, org_name },
-            classes, extendInfo,
+            member: { first_name, last_name, org_name, room_type_id, neighbourhood },
+            classes, extendInfo, room_types,
         } = this.props;
 
         let label = `${first_name} ${last_name}`;
 
-        extendInfo && (label += ` (${org_name})`);
+        if (extendInfo) {
+            label += ` - (${org_name}`;
+
+            room_type_id && (label += ` - ${find(room_types, {id: room_type_id}).title}`);
+            neighbourhood && (label += ` - Совм. проживание с ${neighbourhood}`);
+        }
 
         return (
             <Chip className={classes.chip} label={label}/>
@@ -41,4 +48,12 @@ MemberInfoChip.defaultProps = {
     extendInfo: false,
 };
 
-export default withStyles(styles)(MemberInfoChip);
+const mapStateToProps = state =>
+    ({
+        room_types: state.abode.room_type.items,
+    });
+
+export default compose(
+    withStyles(styles),
+    connect(mapStateToProps),
+)(MemberInfoChip);

@@ -94,6 +94,14 @@ class ConferenceMember
     private $roomType;
 
     /**
+     * @var ConferenceMember|null
+     *
+     * @ORM\ManyToOne(targetEntity="ConferenceMember")
+     * @ORM\JoinColumn(name="neighbourhood_id", referencedColumnName="id", nullable=true)
+     */
+    private $neighbourhood;
+
+    /**
      * ConferenceMember constructor.
      */
     public function __construct()
@@ -243,5 +251,21 @@ class ConferenceMember
     public function setRoomType($roomType)
     {
         $this->roomType = $roomType;
+    }
+
+    /**
+     * @return ConferenceMember|null
+     */
+    public function getNeighbourhood()
+    {
+        return $this->neighbourhood;
+    }
+
+    /**
+     * @param ConferenceMember|null $neighbourhood
+     */
+    public function setNeighbourhood(?ConferenceMember $neighbourhood)
+    {
+        $this->neighbourhood = $neighbourhood;
     }
 }

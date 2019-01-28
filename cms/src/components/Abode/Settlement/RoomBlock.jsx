@@ -7,7 +7,7 @@ import {
 import map from "lodash/map";
 import MemberInfoChip from "./MemberInfoChip";
 
-function RoomBlock({ MemberComponent, room_type, room }) {
+function RoomBlock({ MemberComponent, memberComponentProps, room_type, room }) {
     return (
         <div>
             <Typography gutterBottom variant={`caption`}>{room_type.title}</Typography>
@@ -22,8 +22,10 @@ function RoomBlock({ MemberComponent, room_type, room }) {
                 return (
                     <Grid key={member.id} item>
                         <MemberComponent
-                            member={member}
                             onlyName
+                            member={member}
+                            place={place}
+                            {...memberComponentProps}
                         />
                     </Grid>
                 );

@@ -83,6 +83,8 @@ ApartmentBlock.propTypes = {
 
     RoomComponent: PropTypes.func,
     roomComponentProps: PropTypes.object,
+
+    memberComponentProps: PropTypes.object,
 };
 
 ApartmentBlock.defaultProps = {

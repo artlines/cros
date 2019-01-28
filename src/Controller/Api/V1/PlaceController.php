@@ -47,7 +47,7 @@ class PlaceController extends ApiController
         }
 
         /** Check that conference member chosen room type equal $room type */
-        if ($conferenceMember->getRoomType() !== $roomType) {
+        if ($conferenceMember->getRoomType() && $conferenceMember->getRoomType() !== $roomType) {
             return $this->badRequest('Тип комнаты для заселения не соответствует типу, который указан у участника');
         }
 
@@ -55,6 +55,49 @@ class PlaceController extends ApiController
         $place->setRoom($room);
         $place->setConferenceMember($conferenceMember);
 
+        $this->em->persist($place);
+        $this->em->flush();
+
+        return $this->success();
+    }
+
+    /**
+     * @Route("place/{id}", requirements={"id":"\d+"}, methods={"PUT"}, name="edit")
+     *
+     * @param $id
+     *
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function edit($id)
+    {
+        /** @var Place $place */
+        if (!$place = $this->em->find(Place::class, $id)) {
+            return $this->notFound('Place not found.');
+        }
+
+        $room_id = $this->requestData['room_id'] ?? null;
+        if (!$room_id) {
+            return $this->badRequest("Room ID doesn't set.");
+        }
+
+        /** @var Room $room */
+        if (!$room = $this->em->find(Room::class, (int) $room_id)) {
+            return $this->badRequest('Room not found.');
+        }
+
+        $roomType = $room->getType();
+
+        /** Check count of room places */
+        if ($room->getPlaces()->count() >= $roomType->getMaxPlaces()) {
+            return $this->badRequest('В комнате закончились места.');
+        }
+
+        /** Check that conference member chosen room type equal $room type */
+        if ($place->getConferenceMember()->getRoomType() !== $roomType) {
+            return $this->badRequest('Тип комнаты для заселения не соответствует типу, который указан у участника');
+        }
+
+        $place->setRoom($room);
         $this->em->persist($place);
         $this->em->flush();
 

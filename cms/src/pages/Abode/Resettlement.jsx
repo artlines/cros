@@ -67,7 +67,6 @@ class Resettlement extends React.Component {
                 filter[object][field] = value;
                 break;
         }
-        console.log(filter);
 
         this.setState({filter});
     };
@@ -98,7 +97,6 @@ class Resettlement extends React.Component {
 
         return result;
     };
-
     getMembers = () => {
         const { members } = this.props;
         const { filter } = this.state;
@@ -116,7 +114,17 @@ class Resettlement extends React.Component {
     holdPlace = (room_id, conference_member_id) => {
         api.post(`place/new`, {room_id, conference_member_id})
             .then(this.update)
-            .catch(err => console.log(`Error while hold place`, err.message));
+            .catch(err => console.log(`Error while holding place`, err.message));
+    };
+    changePlace = (place_id, room_id) => {
+        api.put(`place/${place_id}`, {room_id})
+            .then(this.update)
+            .catch(err => console.log(`Error while changing place`, err.message));
+    };
+    dropPlace = (place_id) => {
+        api.delete(`place/${place_id}`)
+            .then(this.update)
+            .catch(err => console.log(`Error while deleting place`, err.message));
     };
 
     render() {
@@ -130,7 +138,7 @@ class Resettlement extends React.Component {
                 <Grid container spacing={16}>
                     <Grid item xs={8} sm={8} lg={9}>
                         <Typography gutterBottom variant={`h5`}>Номера</Typography>
-                        <Grid container spacing={16}>
+                        <Grid container spacing={16} alignItems={`center`}>
                             <Grid item xs={12} sm={6} lg={4}>
                                 <TextField
                                     required
@@ -171,40 +179,49 @@ class Resettlement extends React.Component {
                                         RoomComponent={RoomBlockTarget}
                                         roomComponentProps={{
                                             MemberComponent: MemberInfoChipSource,
+                                            memberComponentProps: {
+                                                holdPlace:      this.holdPlace,
+                                                changePlace:    this.changePlace,
+                                                dropPlace:      this.dropPlace,
+                                            }
                                         }}
                                     />
                                 </Grid>
                             )}
                         </Grid>
                     </Grid>
-                    <Grid item xs={4} sm={4} lg={3}>
-                        <div>
-                            <Typography gutterBottom variant={`h5`}>Участники</Typography>
-                            <Grid container spacing={16}>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        label={"Поиск по ФИО или организации"}
-                                        margin={"dense"}
-                                        fullWidth
-                                        value={filter.member.search}
-                                        variant={"outlined"}
-                                        name={'search'}
-                                        onChange={this.handleFilterChange('member', 'search')}
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    {map(this.getMembers(), mb =>
-                                        <MemberInfoChipSource
-                                            key={mb.id}
-                                            member={mb}
-                                            extendInfo
-                                            onDrop={this.holdPlace}
-                                        />
-                                    )}
-                                </Grid>
+                    <Grid
+                        item xs={4} sm={4} lg={3}
+                        style={{ position: 'fixed', right: 0, }}
+                    >
+                        <Typography gutterBottom variant={`h5`}>Участники</Typography>
+                        <Grid container spacing={16}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    label={"Поиск по ФИО или организации"}
+                                    margin={"dense"}
+                                    fullWidth
+                                    value={filter.member.search}
+                                    variant={"outlined"}
+                                    name={'search'}
+                                    onChange={this.handleFilterChange('member', 'search')}
+                                />
                             </Grid>
-                        </div>
+                            <Grid item xs={12}>
+                                {map(this.getMembers(), mb =>
+                                    <MemberInfoChipSource
+                                        key={mb.id}
+                                        extendInfo
+                                        member={mb}
+                                        place={null}
+                                        holdPlace={this.holdPlace}
+                                        changePlace={this.changePlace}
+                                        dropPlace={this.dropPlace}
+                                    />
+                                )}
+                            </Grid>
+                        </Grid>
                     </Grid>
                 </Grid>
             </React.Fragment>
@@ -217,6 +234,33 @@ const mapStateToProps = state =>
         ...state.resettlement,
         room_types: state.abode.room_type.items,
         isFetching: state.resettlement.apartments.isFetching || state.resettlement.members.isFetching,
+        members: {
+            isFetching: false,
+            count: 0,
+            items: [
+                { id: 1, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2, neighbourhood: 'Фамилия Имя Отчество' },
+                { id: 2, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
+                { id: 3, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
+                { id: 4, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2, neighbourhood: 'Фамилия Имя Отчество' },
+                { id: 5, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2, neighbourhood: 'Фамилия Имя Отчество' },
+                { id: 6, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
+                { id: 7, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
+                { id: 9, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2, neighbourhood: 'Фамилия Имя Отчество' },
+                { id: 8, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
+                { id: 11, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
+                { id: 22, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
+                { id: 33, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2, neighbourhood: 'Фамилия Имя Отчество' },
+                { id: 44, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
+                { id: 43, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2, neighbourhood: 'Фамилия Имя Отчество' },
+                { id: 12, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
+                { id: 13, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
+                { id: 14, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2, neighbourhood: 'Фамилия Имя Отчество' },
+                { id: 15, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
+                { id: 66, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
+                { id: 17, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2, neighbourhood: 'Фамилия Имя Отчество' },
+            ],
+        },
+
     });
 
 const mapDispatchToProps = (dispatch, ownProps) =>
