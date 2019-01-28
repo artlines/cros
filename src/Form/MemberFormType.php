@@ -30,9 +30,10 @@ class MemberFormType extends AbstractType
 + Номер автомобиля
 + Ранний заезд
 + Поздний выезд
-Класс участия (выпадающий список - как сейчас)
++ Класс участия (выпадающий список - как сейчас)
 Совместное проживание (checkbox, при его установке - показывается выпадающий список уже добавленных на странице участников).
-Представитель организации (checkbox). Должен быть минимум один на организацию. Представитель организации обязательно должен подтвердить свой e-mail - отправлять код на e-mail сразу после ввода (onBlur).
+Представитель организации (checkbox). Должен быть минимум один на организацию.
+Представитель организации обязательно должен подтвердить свой e-mail - отправлять код на e-mail сразу после ввода (onBlur).
  */
 
 
@@ -128,6 +129,8 @@ class MemberFormType extends AbstractType
                     'label' => 'Номер автомобиля',
                     'attr' => array(
                         'class' => 'col-md-3 cs-theme-color-gray-dark-v3',
+                        'placeholder' => 'А001АА 00',
+                        'pattern' => '[А-Яа-яA-Za-z]{1,1}[0-9]{3,3}[А-Яа-яA-Za-z]{2,2}[ ][0-9]{2,3}',
                     ),
                     'required' => false,
                 ]
@@ -157,7 +160,7 @@ class MemberFormType extends AbstractType
                 ]
             )
             ->add(
-                'laterOut',
+                'participationClass',
                 EntityType::class,
                 [
                     'class' => ParticipationClass::class,
@@ -169,15 +172,44 @@ class MemberFormType extends AbstractType
                 ]
             )
 
+// Совместное проживание
+            ->add(
+                'joint',
+                CheckboxType::class,
+                [
+                    'label' => 'Совместное проживание',
+                    'attr' => [
+                        'class' => 'cs-theme-color-gray-dark-v3',
+                    ],
+                    'required' => false,
+                ]
+            )
+            ->add(
+                'representative',
+                CheckboxType::class,
+                [
+                    'label' => 'Представитель организации',
+                    'attr' => [
+                        'class' => 'cs-theme-color-gray-dark-v3',
+                    ],
+                    'required' => false,
+                ]
+            )
+
+
+//
+//
+//            ->add('apartament', ChoiceType::class, array('label' => 'Класс участия', 'mapped' => false, 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'data-helper' => $class_help), 'choices' => $numbers, 'choice_attr' => array('Выберите номер проживания' => array('disabled' => '')), 'data' => $apartament_id))
+//            ->add('apartament', ChoiceType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Класс участия', 'mapped' => false, 'choices' => $numbers, 'choice_attr' => array('Выберите номер проживания' => array('disabled' => '')), 'data' => $apartament_id))
 
 
             //            ->add('isActive')
 //            ->add('password')
 //            ->add('telegram')
 //            ->add('roles')
-            ->add('nickname')
+//            ->add('nickname')
 //            ->add('sex')
-            ->add('representative')
+//            ->add('representative')
 //            ->add('createdAt')
 //            ->add('organization')
         ;
