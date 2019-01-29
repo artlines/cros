@@ -41,7 +41,7 @@ class ConferenceRegistrationFormType extends AbstractType
                 array(
                     'label' => 'Organization.Name.Label',
                     'attr' => array(
-                        'class' => 'col-md-6 cs-theme-color-gray-dark-v3',
+                        'class' => 'cs-theme-color-gray-dark-v3',
                         'placeholder' => 'Organization.Name.PlaceHolder',
                     ),
                     'help' => 'Organization.Name.Help',
@@ -54,7 +54,7 @@ class ConferenceRegistrationFormType extends AbstractType
                 array(
                     'label' => 'Organization.City.Label',
                     'attr' => array(
-                        'class' => 'col-md-6 cs-theme-color-gray-dark-v3',
+                        'class' => 'cs-theme-color-gray-dark-v3',
                         'placeholder' => 'Organization.City.PlaceHolder',
                     ),
                     'help' => 'Organization.City.Help',
@@ -67,7 +67,7 @@ class ConferenceRegistrationFormType extends AbstractType
                 array(
                     'label' => 'Organization.Address.Label',
                     'attr' => array(
-                        'class' => 'col-md-6 cs-theme-color-gray-dark-v3',
+                        'class' => 'cs-theme-color-gray-dark-v3',
                         'placeholder' => 'Organization.Address.PlaceHolder',
                     ),
                     'help' => 'Organization.Address.Help',
@@ -80,7 +80,7 @@ class ConferenceRegistrationFormType extends AbstractType
                 array(
                     'label' => 'Organization.Inn.Label',
                     'attr' => array(
-                        'class' => 'col-md-3 cs-theme-color-gray-dark-v3',
+                        'class' => 'cs-theme-color-gray-dark-v3',
                         'placeholder' => 'Organization.Inn.PlaceHolder',
                     ),
                     'help' => 'Organization.Inn.Help',
@@ -93,7 +93,7 @@ class ConferenceRegistrationFormType extends AbstractType
                 array(
                     'label' => 'Organization.Kpp.Label',
                     'attr' => array(
-                        'class' => 'col-md-3 cs-theme-color-gray-dark-v3',
+                        'class' => 'cs-theme-color-gray-dark-v3',
                         'placeholder' => 'Organization.Kpp.PlaceHolder',
                     ),
                     'help' => 'Organization.Kpp.Help',
@@ -109,7 +109,7 @@ class ConferenceRegistrationFormType extends AbstractType
                 array(
                     'label' => 'Organization.Requisites.Label',
                     'attr' => array(
-                        'class' => 'col-md-6 cs-theme-color-gray-dark-v3',
+                        'class' => 'cs-theme-color-gray-dark-v3',
                         'placeholder' => 'Organization.Requisites.PlaceHolder',
                         'rows' => '8',
                     ),
@@ -125,7 +125,7 @@ class ConferenceRegistrationFormType extends AbstractType
                 array(
                     'label' => 'Organization.Comment.Label',
                     'attr' => array(
-                        'class' => 'col-md-6 cs-theme-color-gray-dark-v3',
+                        'class' => 'cs-theme-color-gray-dark-v3',
                         'placeholder' => 'Organization.Comment.PlaceHolder',
                         'rows' => '4',
                     ),
@@ -142,12 +142,12 @@ class ConferenceRegistrationFormType extends AbstractType
 
 //                'prototype_data' => new User()
             ])
-            ->add('tags', CollectionType::class, [
-                'entry_type' => TextType::class,
-                'allow_add' => true,
-                'prototype' => true,
-                'prototype_data' => 'New Tag Placeholder',
-            ])
+//            ->add('tags', CollectionType::class, [
+//                'entry_type' => TextType::class,
+//                'allow_add' => true,
+//                'prototype' => true,
+//                'prototype_data' => 'New Tag Placeholder',
+//            ])
 //            ->add(
 //                $builder->create(
 //                    'member2',

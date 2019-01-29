@@ -5,27 +5,70 @@
 
 {% block body %}
 
-
-
-    {#{{ form(form) }}#}
     {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6">{{- form_row(form.name) -}}</div>
+        <div class="col-md-6">{{- form_row(form.city) -}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">{{- form_row(form.address) -}}</div>
+        <div class="col-md-3">{{- form_row(form.inn) -}}</div>
+        <div class="col-md-3">{{- form_row(form.kpp) -}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">{{- form_row(form.requisites) -}}</div>
+        <div class="col-md-6">{{- form_row(form.comment,{'attr':{'rows':8}}) -}}</div>
+    </div>
+
+    <h3>Участники</h3>
+    <div id="members-fields-list"
+         data-prototype="{{ form_widget(form.member.vars.prototype)|e }}"
+         data-widget-tags="data-widget-tags-{{ '<div></div>'|e }}"
+         >
+
+    </div>
+    <button
+        type="button"
+        class="add-another-collection-widget btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15"
+        data-list="#members-fields-list"
+        "
+        >
+        Добавить участников</button>
+
+    <script>
+
+    </script>
+
+
+    <div class="row">
+        <div class="col-md-6">{{- form_row(form.member) -}}</div>
+    </div>
+{% for child in form -%}
+    {% if not child.rendered %}
+    <div class="col-md-4">form_row(form.{{ child.vars.name }}) </div>
+    {%- endif -%}
+{%- endfor -%}
+    {#{{ form(form) }}#}
     {# ... #}
     {% for child in form -%}
         {% if child.vars.prototype is defined %}
-            {#{{ dump(child.vars.prototype) }}#}
-            <ul id="email-fields-list"
+            {{- form_label(child) -}}
+            <ul id="{{ child.vars.name }}-fields-list"
                 data-prototype="{{ form_widget(child.vars.prototype)|e }}"
                 data-widget-tags="{{ '<li></li>'|e }}">
-                {% for memberField in form.member %}
-                    <li>
-                        {{ form_errors(memberField) }}
-                        {{ form_widget(memberField) }}
-                    </li>
-                {% endfor %}
+                {#{% for memberField in form.member %}#}
+                    {#<li>#}
+                        {#{{ form_errors(memberField) }}#}
+                        {#{{ form_widget(memberField) }}#}
+                    {#</li>#}
+                {#{% endfor %}#}
             </ul>
+            {{- form_errors(child) -}}
+            {{- form_help(child) -}}
+            {{ dump(child) }}
             <button type="button"
                     class="add-another-collection-widget"
-                    data-list="#email-fields-list">Add another member</button>
+                    data-list="#{{ child.vars.name }}-fields-list">Добавить {#{ child.vars.name }#}</button>
         {% else %}
             {{- form_row(child) -}}
         {% endif %}
