@@ -133,24 +133,31 @@ class ConferenceRegistrationFormType extends AbstractType
                     'required' => false,
                 )
             )
-//            ->add(
-//                'member1',
-//                CollectionType::class, [
-//                'entry_type' => MemberFormType::class,
-//                'allow_add' => true,
-//                'prototype' => true,
-//                'prototype_data' => new User()
-//            ])
             ->add(
-                $builder->create(
-                    'member2',
-                    MemberFormType::class,
-                    ['by_reference' => true]
-                ),
-                [
-                    'allow_add' => true,
-                ]
-            )
+                'member',
+                CollectionType::class, [
+                'entry_type' => MemberFormType::class,
+                'allow_add' => true,
+                'prototype' => true,
+
+//                'prototype_data' => new User()
+            ])
+            ->add('tags', CollectionType::class, [
+                'entry_type' => TextType::class,
+                'allow_add' => true,
+                'prototype' => true,
+                'prototype_data' => 'New Tag Placeholder',
+            ])
+//            ->add(
+//                $builder->create(
+//                    'member2',
+//                    MemberFormType::class,
+//                    ['by_reference' => true]
+//                ),
+//                [
+//                    'allow_add' => true,
+//                ]
+//            )
             ->add('save', SubmitType::class)
 
 //            ->add('isActive')

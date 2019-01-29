@@ -3,5 +3,29 @@
 {% block title %}Hello !{% endblock %}
 
 {% block body %}
-    {{ form(form) }}
+    {#{{ form(form) }}#}
+    {{ form_start(form) }}
+    {# ... #}
+
+    {# store the prototype on the data-prototype attribute #}
+    <ul id="email-fields-list"
+        data-prototype="{{ form_widget(form.member.vars.prototype)|e }}"
+        data-widget-tags="{{ '<li></li>'|e }}">
+        {% for memberField in form.member %}
+            <li>
+                {{ form_errors(memberField) }}
+                {{ form_widget(memberField) }}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <button type="button"
+            class="add-another-collection-widget"
+            data-list="#email-fields-list">Add another member</button>
+
+    {# ... #}
+    {{ form_end(form) }}
+
+    <script src="add-collection-widget.js"></script>
+
 {% endblock %}
