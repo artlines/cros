@@ -172,7 +172,8 @@ class Resettlement extends React.Component {
                                                 holdPlace:      this.holdPlace,
                                                 changePlace:    this.changePlace,
                                                 dropPlace:      this.dropPlace,
-                                                Component:      MemberInfoChip,
+                                                Component:      MemberInfoListItem,
+                                                dense:          true,
                                             }
                                         }}
                                     />

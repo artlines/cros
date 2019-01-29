@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
     Grid,
+    List,
     Typography,
 } from '@material-ui/core';
 import map from "lodash/map";
@@ -15,21 +16,20 @@ function RoomBlock({ MemberComponent, memberComponentProps, room_type, room }) {
                 <Typography component={`div`} align={`center`} gutterBottom variant={`caption`}>пусто</Typography>
             }
 
-            <Grid container spacing={0} alignItems={`flex-start`} direction={`column`}>
+            <List dense>
             {map(room.places, place => {
                 const member = place.member;
 
                 return (
-                    <Grid key={member.id} item>
-                        <MemberComponent
-                            member={member}
-                            place={place}
-                            {...memberComponentProps}
-                        />
-                    </Grid>
+                    <MemberComponent
+                        key={member.id}
+                        member={member}
+                        place={place}
+                        {...memberComponentProps}
+                    />
                 );
             })}
-            </Grid>
+            </List>
         </div>
     );
 }

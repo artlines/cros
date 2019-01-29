@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import participating from '../actions/participating';
 import abode from '../actions/abode';
@@ -10,6 +11,7 @@ import {
 } from '@material-ui/core';
 import isArray from 'lodash/isArray';
 import isEqual from 'lodash/isEqual';
+import isNumber from 'lodash/isNumber';
 import find from "lodash/find";
 import map from "lodash/map";
 import OrganizationForm from '../components/Organization/Form';
@@ -50,8 +52,8 @@ class Organizations extends React.Component {
         const { fetchOrganizations } = this.props;
         let newQuery = {...query};
 
-        newQuery['@limit'] = rowsPerPage;
-        newQuery['@offset'] = rowsPerPage * page;
+        rowsPerPage && (newQuery['@limit'] = rowsPerPage);
+        rowsPerPage && isNumber(page) && (newQuery['@offset'] = rowsPerPage * page);
 
         if (!force) {
             this.setState({query: newQuery});
@@ -79,7 +81,7 @@ class Organizations extends React.Component {
     };
 
     openForm = (id) => {
-        const { items } = this.props;
+        const { items } = this.props.organizations;
         this.setState({
             form: {
                 ...this.state.form,
@@ -91,8 +93,8 @@ class Organizations extends React.Component {
     closeForm = () => this.setState({form: {...this.state.form, open: false}});
 
     render() {
-        const { fetchMembers, fetchComments, fetchInvoices, managers } = this.props;
-        const { form } = this.state;
+        const { fetchMembers, fetchComments, fetchInvoices, managers, organizations } = this.props;
+        const { form } = this.state; //s
 
         return (
             <React.Fragment>
@@ -100,7 +102,7 @@ class Organizations extends React.Component {
                     open={form.open}
                     initialValues={form.initialValues}
                     onClose={this.closeForm}
-                    onSuccess={this.update}
+                    onSuccess={() => this.update(null, null, true)}
                 />
                 <Grid container spacing={16}>
                     <Grid item xs={4}>
@@ -128,6 +130,7 @@ class Organizations extends React.Component {
                     </Grid>
                     <Grid item xs={12}>
                         <OrganizationTable
+                            {...organizations}
                             loadComments={fetchComments}
                             loadInvoices={fetchInvoices}
                             loadMembers={fetchMembers}
@@ -141,9 +144,33 @@ class Organizations extends React.Component {
     }
 }
 
+Organizations.propTypes = {
+    organizations: PropTypes.shape({
+        isFetching: PropTypes.bool.isRequired,
+        total_count: PropTypes.number.isRequired,
+        items: PropTypes.arrayOf(
+            PropTypes.shape({
+                id:                 PropTypes.number.isRequired,
+                name:               PropTypes.string.isRequired,
+                inn:                PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+                kpp:                PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+                city:               PropTypes.string,
+                address:            PropTypes.string,
+                requisites:         PropTypes.string,
+                total_members:      PropTypes.number.isRequired,
+                in_room_members:    PropTypes.number.isRequired,
+                comments_count:     PropTypes.number.isRequired,
+                invoices_count:     PropTypes.number.isRequired,
+                invited_by:         PropTypes.oneOfType([null, PropTypes.string]),
+            }),
+        ),
+    }),
+};
+
 const mapStateToProps = state =>
     ({
         managers: state.system.users.items,
+        organizations: state.participating.conference_organization,
     });
 
 const mapDispatchToProps = dispatch =>

@@ -17,7 +17,6 @@ import CommentsModal from "./CommentsModal";
 import MembersModal from "./MembersModal";
 import LinearProgress from '../utils/LinearProgress';
 import {Edit as EditIcon} from "@material-ui/icons";
-import find from 'lodash/find';
 
 class OrganizationTable extends React.Component {
 
@@ -27,10 +26,6 @@ class OrganizationTable extends React.Component {
         this.state = {
             page: 0,
             rowsPerPage: 10,
-            form: {
-                open: false,
-                initialValues: {},
-            },
         };
     }
 
@@ -105,6 +100,11 @@ class OrganizationTable extends React.Component {
                                         </TableCell>
                                         <TableCell>
                                             {item.name}
+                                            {item.invited_by &&
+                                                <div style={{fontSize: 10, color: '#a4a4a4'}}>
+                                                    {item.invited_by}
+                                                </div>
+                                            }
                                         </TableCell>
                                         <TableCell>
                                             <div style={{whiteSpace: 'nowrap'}}><b>ИНН:</b> {item.inn}</div>
@@ -160,21 +160,6 @@ class OrganizationTable extends React.Component {
 }
 
 OrganizationTable.propTypes = {
-    items: PropTypes.arrayOf(
-        PropTypes.shape({
-            id:                 PropTypes.number.isRequired,
-            name:               PropTypes.string.isRequired,
-            inn:                PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-            kpp:                PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-            city:               PropTypes.string,
-            address:            PropTypes.string,
-            requisites:         PropTypes.string,
-            total_members:      PropTypes.number.isRequired,
-            in_room_members:    PropTypes.number.isRequired,
-            comments_count:     PropTypes.number.isRequired,
-            invoices_count:     PropTypes.number.isRequired,
-        }),
-    ),
 
     loadComments: PropTypes.func.isRequired,
     loadInvoices: PropTypes.func.isRequired,

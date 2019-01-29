@@ -53,6 +53,7 @@ class ConferenceOrganizationController extends ApiController
         foreach ($conferenceOrganizations as $co) {
             $org = $co->getOrganization();
             $members = $co->getConferenceMembers();
+            $invitedBy = $co->getInvitedBy();
 
             $inRoom = 0;
             foreach ($members as $member) {
@@ -74,6 +75,7 @@ class ConferenceOrganizationController extends ApiController
                 'in_room_members'   => $inRoom,
                 'comments_count'    => $co->getComments()->count(),
                 'invoices_count'    => $co->getInvoices()->count(),
+                'invited_by'        => $invitedBy ? $invitedBy->getFullName() : null,
             ];
         }
 
