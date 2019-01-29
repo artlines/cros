@@ -1,10 +1,13 @@
 import React from "react";
+import {connect} from 'react-redux';
 import {
     Grid,
     Paper,
     Typography,
 } from "@material-ui/core";
-import ParticipantClasses from "../../components/Abode/ParticipantClasses";
+import ParticipationClassTable from "../../components/Abode/Settings/ParticipationClassTable";
+import ApartmentTypeTable from "../../components/Abode/Settings/ApartmentTypeTable";
+import RoomTypeTable from "../../components/Abode/Settings/RoomTypeTable";
 
 class Settings extends React.Component {
     render() {
@@ -13,30 +16,26 @@ class Settings extends React.Component {
                 <Grid item xs={12} sm={6}>
                     <Typography variant={`h4`} gutterBottom>Классы участия</Typography>
                     <Paper>
-                        <ParticipantClasses/>
+                        <ParticipationClassTable/>
                     </Paper>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <Typography variant={`h4`} gutterBottom>Классы участия</Typography>
+                    <Typography variant={`h4`} gutterBottom>Типы номеров</Typography>
                     <Paper>
-                        <ParticipantClasses/>
+                        <ApartmentTypeTable/>
                     </Paper>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                    <Typography variant={`h4`} gutterBottom>Классы участия</Typography>
+                <Grid item xs={12}>
+                    <Typography variant={`h4`} gutterBottom>Типы комнат</Typography>
                     <Paper>
-                        <ParticipantClasses/>
-                    </Paper>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <Typography variant={`h4`} gutterBottom>Классы участия</Typography>
-                    <Paper>
-                        <ParticipantClasses/>
+                        <RoomTypeTable/>
                     </Paper>
                 </Grid>
             </Grid>
         );
     }
 }
+
+//const mapStateToProps = state =>
 
 export default Settings;

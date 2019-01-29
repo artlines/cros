@@ -16,7 +16,7 @@ const data = [
     { id: 4, title: "VIP" },
 ];
 
-class ParticipantClasses extends React.PureComponent {
+class ApartmentTypeTable extends React.PureComponent {
     render() {
         const { data } = this.props;
 
@@ -41,12 +41,12 @@ class ParticipantClasses extends React.PureComponent {
     }
 }
 
-ParticipantClasses.propTypes = {
+ApartmentTypeTable.propTypes = {
     data: PropTypes.array.isRequired,
 };
 
-ParticipantClasses.defaultProps = {
+ApartmentTypeTable.defaultProps = {
     data
 };
 
-export default ParticipantClasses;
+export default ApartmentTypeTable;

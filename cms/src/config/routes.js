@@ -13,6 +13,7 @@ import {
     GroupAddOutlined as GroupAdd,
     LocationCityOutlined as LocationCity,
     DashboardOutlined as Dashboard,
+    SettingsApplicationsTwoTone as SettingsApplications,
 } from "@material-ui/icons";
 
 export default [
@@ -37,17 +38,17 @@ export default [
         },
         role: "ROLE_SETTLEMENT_MANAGER",
     },
-    // {
-    //     path: "/cms/abode/settings",
-    //     Component: AbodeSettings,
-    //     exact: true,
-    //     title: "Расселение",
-    //     menuItem: {
-    //         Icon: RoomServiceIcon,
-    //         title: "Настройка расселения",
-    //     },
-    //     role: "ROLE_SETTLEMENT_MANAGER",
-    // },
+    {
+        path: "/cms/abode/settings",
+        Component: AbodeSettings,
+        exact: true,
+        title: "Расселение",
+        menuItem: {
+            Icon: SettingsApplications,
+            title: "Настройка расселения",
+        },
+        role: "ROLE_SETTLEMENT_MANAGER",
+    },
     {
         path: "/cms/abode/housing/:id/apartments",
         Component: AbodeHousing,
@@ -104,6 +105,7 @@ export default [
             Icon: People,
             title: "TEST",
         },
+        role: "ROLE_ADMINISTRATOR",
     },
     {
         path: "*",

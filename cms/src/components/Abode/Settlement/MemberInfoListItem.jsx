@@ -36,8 +36,9 @@ class MemberInfoListItem extends React.PureComponent {
             } else {
                 secondaryText += ` | Нет счета`;
             }
+
+            neighbourhood && (secondaryText += `<br/>СП: ${neighbourhood}`);
         }
-        !dense && neighbourhood && (secondaryText += `\r\nСП: ${neighbourhood}`);
 
         return (
             <ListItem style={{
@@ -50,7 +51,7 @@ class MemberInfoListItem extends React.PureComponent {
                     primary={primaryText}
                     secondary={parseHTML(secondaryText)}
                     primaryTypographyProps={{ noWrap: true }}
-                    secondaryTypographyProps={{ noWrap: true }}
+                    secondaryTypographyProps={{ noWrap: true, style: { fontSize: 11 } }}
                 />
             </ListItem>
         );

@@ -11,7 +11,7 @@ import MemberInfoChip from "./MemberInfoChip";
 function RoomBlock({ MemberComponent, memberComponentProps, room_type, room }) {
     return (
         <div>
-            <Typography gutterBottom variant={`caption`}>{room_type.title}</Typography>
+            <Typography variant={`caption`}>{room_type.title}</Typography>
             {room.places.length === 0 &&
                 <Typography component={`div`} align={`center`} gutterBottom variant={`caption`}>пусто</Typography>
             }
