@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Participating\ConferenceOrganization;
+use App\Entity\Participating\Organization;
 use App\Form\ConferenceRegistrationFormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

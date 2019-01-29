@@ -20,62 +20,38 @@
         <div class="col-md-6">{{- form_row(form.comment,{'attr':{'rows':8}}) -}}</div>
     </div>
 
+{% set form2=form.member.vars.prototype %}
+{% set member_prototype %}
+    <div class="row">
+        <div class="col-md-3">{{- form_row(form2.firstName) -}}</div>
+        <div class="col-md-3">{{- form_row(form2.lastName) -}}</div>
+        <div class="col-md-3">{{- form_row(form2.middleName) -}}</div>
+        <div class="col-md-3">{{- form_row(form2.sex) -}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">{{- form_row(form2.phone) -}}</div>
+        <div class="col-md-3">{{- form_row(form2.email) -}}</div>
+        <div class="col-md-3">{{- form_row(form2.post) -}}</div>
+        <div class="col-md-3">{{- form_row(form2.representative) -}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">{{- form_row(form2.earlyIn) -}}</div>
+        <div class="col-md-3">{{- form_row(form2.laterOut) -}}</div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">{{- form_row(form2.participationClass) -}}</div>
+        <div class="col-md-3">{{- form_row(form2.joint) -}}</div>
+        <div class="col-md-3">{{- form_row(form2.carNumber) -}}</div>
+    </div>
+{% endset %}
+
     <h3>Участники</h3>
-    {% set form2=form.member.vars.prototype %}
-    {#{{ dump(form.member.vars.prototype.children) }}#}
-    {#{{- form_row(form.member.prototype.firstName) -}}#}
     <div id="members-fields-list"
-         {#data-prototype="{{ form_widget(form.member.vars.prototype)|e }}"#}
-         data-widget-tags="data-widget-tags-{{ '<div></div>'|e }}"
+         data-prototype="{{ member_prototype|e }}"
+         data-widget-tags="data-widget-tags-{{ '<div style="padding-left: 10px; border-left: solid 5px #87d37b; margin-top:20px"></div>'|e }}"
          >
-        <div class="row">
-            <div class="col-md-3">{{- form_row(form2.firstName) -}}</div>
-            <div class="col-md-3">{{- form_row(form2.lastName) -}}</div>
-            <div class="col-md-3">{{- form_row(form2.middleName) -}}</div>
-            <div class="col-md-3">{{- form_row(form2.sex) -}}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-3">{{- form_row(form2.phone) -}}</div>
-            <div class="col-md-3">{{- form_row(form2.email) -}}</div>
-            <div class="col-md-3">{{- form_row(form2.post) -}}</div>
-            <div class="col-md-3">{{- form_row(form2.representative) -}}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-3">{{- form_row(form2.earlyIn) -}}</div>
-            <div class="col-md-3">{{- form_row(form2.laterOut) -}}</div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-3">{{- form_row(form2.participationClass) -}}</div>
-            <div class="col-md-3">{{- form_row(form2.joint) -}}</div>
-            <div class="col-md-3">{{- form_row(form2.carNumber) -}}</div>
-        </div>
-
-        {% for child in form2 -%}
-            {% if not child.rendered %}
-                <div class="col-md-4">form_row(form.{{ child.vars.name }}) </div>
-            {%- endif -%}
-        {%- endfor -%}
-
     </div>
-    <hr>
-
-    <div>
-        <textarea>
-
-        </textarea>
-        <textarea>
-            {{ form_widget(form.member.vars.prototype)|e }}
-
-        </textarea>
-        {% for memberField in form.member.vars.prototype.firstName %}
-            [
-            {#{{- dump(memberField) -}}#}
-
-            ]
-        {% endfor %}
-    </div>
-    <hr>
     <button
         type="button"
         class="add-another-collection-widget btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15"
