@@ -5,6 +5,7 @@ namespace App\Manager;
 use App\Entity\Abode\Apartment;
 use App\Entity\Abode\Housing;
 use App\Entity\Abode\Room;
+use App\Entity\Participating\Invoice;
 use App\Repository\Abode\ApartmentRepository;
 use App\Repository\Abode\RoomRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -111,6 +112,14 @@ class AbodeManager
                     $neighbourhood = $conferenceMember->getNeighbourhood();
                     $roomType = $conferenceMember->getRoomType();
 
+                    $invoices = $conferenceMember->getConferenceOrganization()->getInvoices();
+                    $invoices_payed = true;
+                    foreach ($invoices as $invoice) {
+                        if ($invoice->getStatus() !== Invoice::STATUS__FULLY_PAYED) {
+                            $invoices_payed = false;
+                        }
+                    }
+
                     $places[] = [
                         'id'        => $place->getId(),
                         'room_id'   => $room->getId(),
@@ -121,6 +130,8 @@ class AbodeManager
                             'org_name'      => $user->getOrganization()->getName(),
                             'room_type_id'  => $roomType ? $roomType->getId() : null,
                             'neighbourhood' => $neighbourhood ? $neighbourhood->getUser()->getFullName() : null,
+                            'invoices_count'=> $invoices->count(),
+                            'invoices_payed'=> $invoices_payed,
                         ],
                     ];
                 }

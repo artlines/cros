@@ -73,7 +73,6 @@ class MembersList extends React.Component {
                                     {map(members_list, mb =>
                                         <MemberComponent
                                             key={mb.id}
-                                            extendInfo
                                             member={mb}
                                             place={null}
                                             {...memberComponentProps}

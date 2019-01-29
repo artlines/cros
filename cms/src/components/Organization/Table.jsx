@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {compose} from 'redux';
 import {
     Table,
     TableHead,
@@ -11,6 +12,7 @@ import {
     TablePagination,
     Grid,
 } from '@material-ui/core';
+import { green, red } from '@material-ui/core/colors';
 import map from 'lodash/map';
 import InvoicesModal from './InvoicesModal';
 import CommentsModal from "./CommentsModal";
@@ -122,7 +124,17 @@ class OrganizationTable extends React.Component {
                                             <InvoicesModal
                                                 organizationId={item.id}
                                                 organizationName={item.name}
-                                                trigger={<Button>{item.invoices_count}</Button>}
+                                                trigger={
+                                                    <Button
+                                                        style={{
+                                                            color: item.invoices_count > 0
+                                                                ? item.invoices_payed ? green[700] : red[700]
+                                                                : 'inherit'
+                                                        }}
+                                                    >
+                                                        {item.invoices_count}
+                                                    </Button>
+                                                }
                                                 update={this.updateInvoices}
                                             />
                                         </TableCell>
@@ -160,7 +172,6 @@ class OrganizationTable extends React.Component {
 }
 
 OrganizationTable.propTypes = {
-
     loadComments: PropTypes.func.isRequired,
     loadInvoices: PropTypes.func.isRequired,
     loadMembers: PropTypes.func.isRequired,
@@ -174,4 +185,6 @@ const mapStateToProps = state =>
         ...state.participating.conference_organization,
     });
 
-export default connect(mapStateToProps)(OrganizationTable);
+export default compose(
+    connect(mapStateToProps),
+)(OrganizationTable);

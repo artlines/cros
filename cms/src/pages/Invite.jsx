@@ -9,7 +9,9 @@ import {
     TableRow,
     TableCell,
     Typography,
+    Tooltip,
 } from '@material-ui/core';
+import { green, red } from '@material-ui/core/colors';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import FabButton from '../components/utils/FabButton';
 import InviteForm from "../components/Organization/InviteForm";
@@ -17,6 +19,7 @@ import participating from '../actions/participating';
 import map from "lodash/map";
 import ConfirmDialog from "../components/utils/ConfirmDialog";
 import API from '../libs/api';
+import Money from "../components/utils/Money";
 
 const request = new API();
 
@@ -42,9 +45,7 @@ class Invite extends React.Component {
         fetchOrganizations(data);
     };
 
-    reInvite = (id) => {
-        request.get(`conference_organization/re_invite/${id}`);
-    };
+    reInvite = (id) => request.get(`conference_organization/re_invite/${id}`);
 
     openForm = () => this.setState({form: {...this.state.form, open: true}});
     closeForm = () => this.setState({form: {...this.state.form, open: false}});
@@ -82,6 +83,7 @@ class Invite extends React.Component {
                                     <TableCell>ID</TableCell>
                                     <TableCell>Наименование</TableCell>
                                     <TableCell>Реквизиты</TableCell>
+                                    <TableCell>Счета</TableCell>
                                     <TableCell>Повторная отправка</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -97,6 +99,24 @@ class Invite extends React.Component {
                                         <TableCell>
                                             <div style={{whiteSpace: 'nowrap'}}><b>ИНН:</b> {item.inn}</div>
                                             <div style={{whiteSpace: 'nowrap'}}><b>КПП:</b> {item.kpp}</div>
+                                        </TableCell>
+                                        <TableCell>
+                                            {item.invoices.length === 0 && 'Нет счета'}
+                                            {map(item.invoices, (invoice, i) =>
+                                                <div key={i} style={{ whiteSpace: 'nowrap', padding: `2px 0` }}>
+                                                    Счет&nbsp;
+                                                    <Tooltip
+                                                        title={`${invoice.status === 3 ? `Оплачен` : `Не оплачен`} счет №${invoice.number} на сумму ${invoice.amount}₽`}
+                                                    >
+                                                        <span style={{
+                                                            cursor: 'pointer',
+                                                            color: invoice.status === 3 ? green[700] : red[700],
+                                                            borderBottom: `1px dotted ${invoice.status === 3 ? green[700] : red[700]}`,
+                                                        }}>№{invoice.number}</span>
+                                                    </Tooltip>
+                                                    &nbsp;на <Money value={invoice.amount}/>
+                                                </div>
+                                            )}
                                         </TableCell>
                                         <TableCell>
                                             <ConfirmDialog

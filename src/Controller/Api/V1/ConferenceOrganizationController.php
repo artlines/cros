@@ -11,6 +11,7 @@ namespace App\Controller\Api\V1;
 use App\Entity\Abode\Place;
 use App\Entity\Conference;
 use App\Entity\Participating\ConferenceOrganization;
+use App\Entity\Participating\Invoice;
 use App\Entity\Participating\Organization;
 use App\Repository\ConferenceOrganizationRepository;
 use App\Service\Mailer;
@@ -54,12 +55,28 @@ class ConferenceOrganizationController extends ApiController
             $org = $co->getOrganization();
             $members = $co->getConferenceMembers();
             $invitedBy = $co->getInvitedBy();
+            $invoices = $co->getInvoices();
 
             $inRoom = 0;
             foreach ($members as $member) {
                 /** @var Place $place */
                 if ($placeRepository->findOneBy(['conferenceMember' => $member])) {
                     $inRoom++;
+                }
+            }
+
+            $invoices_payed = true;
+            $invoice_items = [];
+            foreach ($invoices as $invoice) {
+                $invoice_items[] = [
+                    'number'    => $invoice->getNumber(),
+                    'amount'    => $invoice->getAmount(),
+                    'status'    => $invoice->getStatus(),
+                    'date'      => $invoice->getDate()->getTimestamp(),
+                ];
+
+                if ($invoice->getStatus() !== Invoice::STATUS__FULLY_PAYED) {
+                    $invoices_payed = false;
                 }
             }
 
@@ -74,7 +91,9 @@ class ConferenceOrganizationController extends ApiController
                 'total_members'     => $members->count(),
                 'in_room_members'   => $inRoom,
                 'comments_count'    => $co->getComments()->count(),
-                'invoices_count'    => $co->getInvoices()->count(),
+                'invoices'          => $invoice_items,
+                'invoices_count'    => $invoices->count(),
+                'invoices_payed'    => $invoices_payed,
                 'invited_by'        => $invitedBy ? $invitedBy->getFullName() : null,
             ];
         }

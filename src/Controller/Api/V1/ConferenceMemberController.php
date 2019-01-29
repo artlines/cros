@@ -7,6 +7,7 @@ use App\Entity\Abode\RoomType;
 use App\Entity\Conference;
 use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\ConferenceOrganization;
+use App\Entity\Participating\Invoice;
 use App\Entity\Participating\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Routing\Annotation\Route;
@@ -286,6 +287,14 @@ class ConferenceMemberController extends ApiController
                 $neighbourhood = $conferenceMember->getNeighbourhood();
                 $roomType = $conferenceMember->getRoomType();
 
+                $invoices = $conferenceMember->getConferenceOrganization()->getInvoices();
+                $invoices_payed = true;
+                foreach ($invoices as $invoice) {
+                    if ($invoice->getStatus() !== Invoice::STATUS__FULLY_PAYED) {
+                        $invoices_payed = false;
+                    }
+                }
+
                 $items[] = [
                     'id'            => $conferenceMember->getId(),
                     'first_name'    => $user->getFirstName(),
@@ -293,6 +302,8 @@ class ConferenceMemberController extends ApiController
                     'org_name'      => $user->getOrganization()->getName(),
                     'room_type_id'  => $roomType ? $roomType->getId() : null,
                     'neighbourhood' => $neighbourhood ? $neighbourhood->getUser()->getFullName() : null,
+                    'invoices_count'=> $invoices->count(),
+                    'invoices_payed'=> $invoices_payed,
                 ];
             }
         }
