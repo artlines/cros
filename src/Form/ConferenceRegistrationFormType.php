@@ -175,7 +175,16 @@ class ConferenceRegistrationFormType extends AbstractType
 //                    'allow_add' => true,
 //                ]
 //            )
-            ->add('save', SubmitType::class)
+            ->add(
+                'save',
+                SubmitType::class,
+                [
+                    'label' => 'Сохранить',
+                    'attr' => [
+                        'class' => 'add-another-collection-widget btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15'
+                    ]
+                ]
+            )
 
 //            ->add('isActive')
 //            ->add('hidden')
