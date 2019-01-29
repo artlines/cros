@@ -7,6 +7,7 @@ use App\Entity\Participating\User;
 use App\Repository\UserRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -75,6 +76,20 @@ class ConferenceRegistrationFormType extends AbstractType
                 )
             )
             ->add(
+                'logo',
+                FileType::class,
+                array(
+                    'label' => 'Organization.Logo.Label',
+                    'attr' => array(
+                        'class' => 'cs-theme-color-gray-dark-v3',
+                        'placeholder' => 'Organization.Logo.PlaceHolder',
+                    ),
+                    'help' => 'Organization.Logo.Help',
+                    'required' => true,
+                )
+            )
+
+            ->add(
                 'inn',
                 TextType::class,
                 array(
@@ -136,8 +151,10 @@ class ConferenceRegistrationFormType extends AbstractType
             ->add(
                 'member',
                 CollectionType::class, [
+                'label' => 'Organization.Member.Label',
                 'entry_type' => MemberFormType::class,
                 'allow_add' => true,
+                'allow_delete' => true,
                 'prototype' => true,
 
 //                'prototype_data' => new User()

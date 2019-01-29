@@ -255,6 +255,31 @@
                 <source>Organization.Comment.Help</source>
                 <target></target>
             </trans-unit>
+            <trans-unit id="63">
+                <source>Organization.Member.Label</source>
+                <target>Участники</target>
+            </trans-unit>
+            <trans-unit id="64">
+                <source>Organization.Member.PlaceHolder</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit id="65">
+                <source>Organization.Member.Help</source>
+                <target></target>
+            </trans-unit>
+
+            <trans-unit id="66">
+                <source>Organization.Logo.Label</source>
+                <target>Логотип компании</target>
+            </trans-unit>
+            <trans-unit id="67">
+                <source>Organization.Logo.PlaceHolder</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit id="68">
+                <source>Organization.Logo.Help</source>
+                <target></target>
+            </trans-unit>
 
 
 

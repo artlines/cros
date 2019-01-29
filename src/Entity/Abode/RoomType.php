@@ -123,4 +123,8 @@ class RoomType
     {
         $this->participationClass = $participationClass;
     }
+    public function __toString()
+    {
+        return $this->getTitle(). ' Мест: '. $this->getMaxPlaces() .' Цена: '. $this->getCost();
+    }
 }

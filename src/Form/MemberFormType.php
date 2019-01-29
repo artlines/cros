@@ -2,12 +2,14 @@
 
 namespace App\Form;
 
+use App\Entity\Abode\RoomType;
 use App\Entity\Participating\ParticipationClass;
 use App\Entity\Participating\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -138,11 +140,14 @@ class MemberFormType extends AbstractType
 
             ->add(
                 'earlyIn',
-                CheckboxType::class,
+                DateType::class,
                 [
                     'label' => 'Ранний заезд',
+                    'widget' => 'single_text',
                     'attr' => [
-                        'class' => 'cs-theme-color-gray-dark-v3',
+                        'class' => 'form-control input-inline datetimepicker cs-theme-color-gray-dark-v3',
+                        'data-provide' => 'datetimepicker',
+                        'html5' => false,
                     ],
                     'required' => false,
                 ]
@@ -150,11 +155,14 @@ class MemberFormType extends AbstractType
 
             ->add(
                 'laterOut',
-                CheckboxType::class,
+                DateType::class,
                 [
                     'label' => 'Поздний выезд',
+                    'widget' => 'single_text',
                     'attr' => [
-                        'class' => 'cs-theme-color-gray-dark-v3',
+                        'class' => 'form-control input-inline datetimepicker cs-theme-color-gray-dark-v3',
+                        'data-provide' => 'datetimepicker',
+                        'html5' => false,
                     ],
                     'required' => false,
                 ]
@@ -163,7 +171,7 @@ class MemberFormType extends AbstractType
                 'participationClass',
                 EntityType::class,
                 [
-                    'class' => ParticipationClass::class,
+                    'class' => RoomType::class,
                     'label' => 'Класс участия',
                     'attr' => [
                         'class' => 'cs-theme-color-gray-dark-v3',

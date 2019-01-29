@@ -8,7 +8,8 @@
     {{ form_start(form) }}
     <div class="row">
         <div class="col-md-6">{{- form_row(form.name) -}}</div>
-        <div class="col-md-6">{{- form_row(form.city) -}}</div>
+        <div class="col-md-3">{{- form_row(form.city) -}}</div>
+        <div class="col-md-3">{{- form_row(form.logo) -}}</div>
     </div>
     <div class="row">
         <div class="col-md-6">{{- form_row(form.address) -}}</div>
@@ -38,18 +39,22 @@
         <div class="col-md-3">{{- form_row(form2.earlyIn) -}}</div>
         <div class="col-md-3">{{- form_row(form2.laterOut) -}}</div>
     </div>
-
     <div class="row">
         <div class="col-md-3">{{- form_row(form2.participationClass) -}}</div>
         <div class="col-md-3">{{- form_row(form2.joint) -}}</div>
         <div class="col-md-3">{{- form_row(form2.carNumber) -}}</div>
     </div>
+    <div class="row">
+        <div style="width: 100%; text-align: center;">Информация о классе участия:</div>
+        <div style="width: 100%; text-align: center;">Класс учачтия не выбран</div>
+    </div>
 {% endset %}
 
-    <h3>Участники</h3>
+
+    <h3>{{- form_row(form.member) -}}</h3>
     <div id="members-fields-list"
          data-prototype="{{ member_prototype|e }}"
-         data-widget-tags="data-widget-tags-{{ '<div style="padding-left: 10px; border-left: solid 5px #87d37b; margin-top:20px"></div>'|e }}"
+         data-widget-tags="data-widget-tags-{{ '<div style="padding-left: 10px; border-left: solid 5px #87d37b; margin:20px 0 20px"></div>'|e }}"
          >
     </div>
     <button
@@ -58,45 +63,9 @@
         data-list="#members-fields-list"
         >
         Добавить участников</button>
+    {{ form_row(form._token) }}
+    {{ form_row(form.save) }}
 
-    <script>
-
-    </script>
-
-
-    <div class="row">
-        <div class="col-md-6">{{- form_row(form.member) -}}</div>
-    </div>
-{% for child in form -%}
-    {% if not child.rendered %}
-    <div class="col-md-4">form_row(form.{{ child.vars.name }}) </div>
-    {%- endif -%}
-{%- endfor -%}
-    {#{{ form(form) }}#}
-    {# ... #}
-    {% for child in form -%}
-        {% if child.vars.prototype is defined %}
-            {{- form_label(child) -}}
-            <ul id="{{ child.vars.name }}-fields-list"
-                data-prototype="{{ form_widget(child.vars.prototype)|e }}"
-                data-widget-tags="{{ '<li></li>'|e }}">
-                {#{% for memberField in form.member %}#}
-                    {#<li>#}
-                        {#{{ form_errors(memberField) }}#}
-                        {#{{ form_widget(memberField) }}#}
-                    {#</li>#}
-                {#{% endfor %}#}
-            </ul>
-            {{- form_errors(child) -}}
-            {{- form_help(child) -}}
-            {{ dump(child) }}
-            <button type="button"
-                    class="add-another-collection-widget"
-                    data-list="#{{ child.vars.name }}-fields-list">Добавить {#{ child.vars.name }#}</button>
-        {% else %}
-            {{- form_row(child) -}}
-        {% endif %}
-    {%- endfor -%}
 
     {# store the prototype on the data-prototype attribute #}
 
