@@ -181,7 +181,7 @@ class ConferenceRegistrationFormType extends AbstractType
                 [
                     'label' => 'Сохранить',
                     'attr' => [
-                        'class' => 'add-another-collection-widget btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15'
+                        'class' => 'u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15'
                     ]
                 ]
             )

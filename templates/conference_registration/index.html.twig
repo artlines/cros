@@ -42,7 +42,14 @@
     <div class="row">
         <div class="col-md-3">{{- form_row(form2.participationClass) -}}</div>
         <div class="col-md-3">{{- form_row(form2.joint) -}}</div>
-        <div class="col-md-3">{{- form_row(form2.carNumber) -}}</div>
+        <div class="col-md-3"></div>
+        <div class="col-md-3"><button
+            type="button"
+            class="btn-danger"
+            data-list="#members-fields-list"
+        >Удалить
+        </div>
+        <div class="col-md-3"></div>
     </div>
     <div class="row">
         <div style="width: 100%; text-align: center;">Информация о классе участия:</div>
@@ -64,7 +71,12 @@
         >
         Добавить участников</button>
     {{ form_row(form._token) }}
-    {{ form_row(form.save) }}
+
+    <div class="row">
+        <div style="width: 100%; text-align: right;">
+            {{ form_row(form.save) }}
+        </div>
+    </div>
 
 
     {# store the prototype on the data-prototype attribute #}
