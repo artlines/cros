@@ -1,3 +1,5 @@
+import sortBy from 'lodash/sortBy';
+
 export const RESETTLEMENT = {
     REQUEST_APARTMENTS: "RESETTLEMENT_REQUEST_APARTMENTS",
     RECEIVE_APARTMENTS: "RESETTLEMENT_RECEIVE_APARTMENTS",
@@ -31,12 +33,15 @@ export default (state = initialState, action) => {
                 }
             };
         case RESETTLEMENT.RECEIVE_MEMBERS:
+            const { items, ...other } = payload;
+
             return {
                 ...state,
                 members: {
                     ...state.members,
                     isFetching: false,
-                    ...payload,
+                    items: [...sortBy(items, ['org_name', 'first_name', 'last_name'])],
+                    ...other,
                 }
             };
         case RESETTLEMENT.REQUEST_APARTMENTS:
