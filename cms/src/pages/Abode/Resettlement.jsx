@@ -149,7 +149,7 @@ class Resettlement extends React.Component {
                             <Grid item xs={12} sm={6} lg={4}>
                                 <FormControl>
                                     <FormControlLabel
-                                        label={"Только не полностью заселенные"}
+                                        label={"Только свободные"}
                                         control={
                                             <Switch
                                                 checked={apartment.only_not_full}

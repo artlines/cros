@@ -6,6 +6,11 @@ export default createMuiTheme({
             container: {
                 
             }
-        }
+        },
+        MuiTableCell: {
+            root: {
+                padding: '4px 12px',
+            },
+        },
     }
 });

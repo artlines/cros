@@ -14,4 +14,13 @@ export default {
         };
     },
 
+    fetchUsers: () => {
+
+        return dispatch => {
+            dispatch({ type: SYSTEM.REQUEST_MANAGERS });
+            request.get(`users/managers`)
+                .then(payload => dispatch({ type: SYSTEM.RECEIVE_MANAGERS, payload }));
+        };
+    },
+
 };

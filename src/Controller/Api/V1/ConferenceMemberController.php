@@ -52,7 +52,6 @@ class ConferenceMemberController extends ApiController
                 ->findOneBy(['conferenceMember' => $conferenceMember]);
             if ($place) {
                 $placeInfo['room_num'] = $place->getRoom()->getApartment()->getNumber();
-                $placeInfo['approved'] = $place->isApproved() ? 1 : 0;
             }
 
             $_arrival = $conferenceMember->getArrival();
