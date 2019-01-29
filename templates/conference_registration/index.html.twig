@@ -1,8 +1,23 @@
 {% extends 'base.html.twig' %}
 
+
 {% block title %}Hello !{% endblock %}
 
+{% form_theme form _self %}
+
+{% use 'form_div_layout.html.twig' %}
+{% block form_widget_compound %}
+    <h1>form_widget</h1>
+    {{ parent() }}
+    <h1>form_widget</h1>
+
+{% endblock form_widget_compound %}
+
+
 {% block body %}
+
+
+
     {#{{ form(form) }}#}
     {{ form_start(form) }}
     {# ... #}
@@ -25,7 +40,5 @@
 
     {# ... #}
     {{ form_end(form) }}
-
-    <script src="add-collection-widget.js"></script>
 
 {% endblock %}
