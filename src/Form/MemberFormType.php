@@ -44,7 +44,7 @@ class MemberFormType extends AbstractType
                 [
                     'label' => 'Имя',
                     'attr' => array(
-                        'class' => 'col-md-3 cs-theme-color-gray-dark-v3',
+                        'class' => 'cs-theme-color-gray-dark-v3',
                     ),
                     'required' => true,
                 ]
@@ -55,7 +55,7 @@ class MemberFormType extends AbstractType
                 [
                     'label' => 'Фамилия',
                     'attr' => array(
-                        'class' => 'col-md-3 cs-theme-color-gray-dark-v3',
+                        'class' => 'cs-theme-color-gray-dark-v3',
                     ),
                     'required' => true,
                 ]
@@ -66,7 +66,7 @@ class MemberFormType extends AbstractType
                 [
                     'label' => 'Отчество',
                     'attr' => array(
-                        'class' => 'col-md-3 cs-theme-color-gray-dark-v3',
+                        'class' => 'cs-theme-color-gray-dark-v3',
                     ),
                     'required' => false,
                 ]
@@ -78,7 +78,7 @@ class MemberFormType extends AbstractType
                     'label' => 'Должность',
                     'required' => false,
                     'attr' => array(
-                        'class' => 'col-md-3 cs-theme-color-gray-dark-v3',
+                        'class' => 'cs-theme-color-gray-dark-v3',
                     ),
                 ]
             )
@@ -94,7 +94,7 @@ class MemberFormType extends AbstractType
                     ],
                     'data' => User::SEX__MAN, // default
                     'attr' => [
-                        'class' => 'col-md-3 cs-theme-color-gray-dark-v3',
+                        'class' => 'cs-theme-color-gray-dark-v3',
                     ],
                 ]
             )
@@ -105,7 +105,7 @@ class MemberFormType extends AbstractType
                 [
                     'label' => 'Телефон',
                     'attr' => array(
-                        'class' => 'col-md-3 cs-theme-color-gray-dark-v3',
+                        'class' => 'cs-theme-color-gray-dark-v3',
                     ),
                     'required' => true,
                 ]
@@ -116,7 +116,7 @@ class MemberFormType extends AbstractType
                 [
                     'label' => 'E-Mail',
                     'attr' => array(
-                        'class' => 'col-md-3 cs-theme-color-gray-dark-v3',
+                        'class' => 'cs-theme-color-gray-dark-v3',
                     ),
                     'required' => true,
                 ]
@@ -128,7 +128,7 @@ class MemberFormType extends AbstractType
                 [
                     'label' => 'Номер автомобиля',
                     'attr' => array(
-                        'class' => 'col-md-3 cs-theme-color-gray-dark-v3',
+                        'class' => 'cs-theme-color-gray-dark-v3',
                         'placeholder' => 'А001АА 00',
                         'pattern' => '[А-Яа-яA-Za-z]{1,1}[0-9]{3,3}[А-Яа-яA-Za-z]{2,2}[ ][0-9]{2,3}',
                     ),
@@ -166,7 +166,7 @@ class MemberFormType extends AbstractType
                     'class' => ParticipationClass::class,
                     'label' => 'Класс участия',
                     'attr' => [
-                        'class' => 'col-md-3 cs-theme-color-gray-dark-v3',
+                        'class' => 'cs-theme-color-gray-dark-v3',
                     ],
                     'required' => false,
                 ]
@@ -180,6 +180,7 @@ class MemberFormType extends AbstractType
                     'label' => 'Совместное проживание',
                     'attr' => [
                         'class' => 'cs-theme-color-gray-dark-v3',
+                        'style' => 'margin-top: 37px;'
                     ],
                     'required' => false,
                 ]
@@ -191,6 +192,7 @@ class MemberFormType extends AbstractType
                     'label' => 'Представитель организации',
                     'attr' => [
                         'class' => 'cs-theme-color-gray-dark-v3',
+                        'style' => 'margin-top: 37px;'
                     ],
                     'required' => false,
                 ]
@@ -207,7 +209,7 @@ class MemberFormType extends AbstractType
 //            ->add('password')
 //            ->add('telegram')
 //            ->add('roles')
-//            ->add('nickname')
+            ->add('nickname')
 //            ->add('sex')
 //            ->add('representative')
 //            ->add('createdAt')
