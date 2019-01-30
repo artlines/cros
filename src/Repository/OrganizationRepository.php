@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Participating\ConferenceOrganization;
 use AppBundle\Entity\ManagerGroup;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;

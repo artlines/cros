@@ -6,6 +6,7 @@ use App\Entity\Participating\ConferenceOrganization;
 use App\Entity\Participating\Organization;
 use App\Entity\Participating\User;
 use App\Repository\UserRepository;
+use App\Validator\InnKpp;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -49,9 +50,9 @@ class OrganizationFormType extends AbstractType
                     ),
                     'help' => 'Organization.Name.Help',
                     'required' => true,
-//                    'constraints' => [
-//                        new Length(['min' => 3]),
-//                    ]
+                    'constraints' => [
+                        new InnKpp(),
+                    ]
                 )
             )
             ->add(
