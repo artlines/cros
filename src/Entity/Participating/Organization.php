@@ -34,6 +34,31 @@ class Organization
     private $name;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="logo", type="string", length=255, nullable=true)
+     */
+    private $logo;
+
+    /**
+     * @return string
+     */
+    public function getLogo(): ?string
+    {
+        return $this->logo;
+    }
+
+    /**
+     * @param string $logo
+     * @return Organization
+     */
+    public function setLogo(?string $logo): Organization
+    {
+        $this->logo = $logo;
+        return $this;
+    }
+
+    /**
      * @var string|null
      *
      * @ORM\Column(name="email", type="string", nullable=true)

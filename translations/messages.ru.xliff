@@ -243,18 +243,6 @@
                 <target></target>
             </trans-unit>
 
-            <trans-unit id="60">
-                <source>Organization.Comment.Label</source>
-                <target>Комментарий</target>
-            </trans-unit>
-            <trans-unit id="61">
-                <source>Organization.Comment.PlaceHolder</source>
-                <target></target>
-            </trans-unit>
-            <trans-unit id="62">
-                <source>Organization.Comment.Help</source>
-                <target></target>
-            </trans-unit>
             <trans-unit id="63">
                 <source>Organization.Member.Label</source>
                 <target>Участники</target>

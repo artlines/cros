@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Participating\ConferenceOrganization;
 use App\Entity\Participating\Organization;
 use App\Entity\Participating\User;
 use App\Repository\UserRepository;
@@ -15,7 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ConferenceRegistrationFormType extends AbstractType
+class OrganizationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -46,7 +47,7 @@ class ConferenceRegistrationFormType extends AbstractType
                         'placeholder' => 'Organization.Name.PlaceHolder',
                     ),
                     'help' => 'Organization.Name.Help',
-                    'required' => true,
+                    'required' => false, // true,
                 )
             )
             ->add(
@@ -59,7 +60,7 @@ class ConferenceRegistrationFormType extends AbstractType
                         'placeholder' => 'Organization.City.PlaceHolder',
                     ),
                     'help' => 'Organization.City.Help',
-                    'required' => true,
+                    'required' => false, // true,
                 )
             )
             ->add(
@@ -72,7 +73,7 @@ class ConferenceRegistrationFormType extends AbstractType
                         'placeholder' => 'Organization.Address.PlaceHolder',
                     ),
                     'help' => 'Organization.Address.Help',
-                    'required' => true,
+                    'required' => false, // true,
                 )
             )
             ->add(
@@ -85,7 +86,7 @@ class ConferenceRegistrationFormType extends AbstractType
                         'placeholder' => 'Organization.Logo.PlaceHolder',
                     ),
                     'help' => 'Organization.Logo.Help',
-                    'required' => true,
+                    'required' => false,
                 )
             )
 
@@ -99,7 +100,7 @@ class ConferenceRegistrationFormType extends AbstractType
                         'placeholder' => 'Organization.Inn.PlaceHolder',
                     ),
                     'help' => 'Organization.Inn.Help',
-                    'required' => true,
+                    'required' => false, // true,
                 )
             )
             ->add(
@@ -112,7 +113,7 @@ class ConferenceRegistrationFormType extends AbstractType
                         'placeholder' => 'Organization.Kpp.PlaceHolder',
                     ),
                     'help' => 'Organization.Kpp.Help',
-                    'required' => true,
+                    'required' => false, // true,
                 )
             )
 
@@ -130,26 +131,12 @@ class ConferenceRegistrationFormType extends AbstractType
                     ),
                     'data' => "Полное наименование организации: \nОГРН: \nЮридический адрес: \nПочтовый адрес: \nБанк: \nБИК: \nК/С: \nР/С:",
                     'help' => 'Organization.Requisites.Help',
-                    'required' => true,
+                    'required' => false, // true,
                 )
 
             )
             ->add(
-                'comment',
-                TextareaType::class,
-                array(
-                    'label' => 'Organization.Comment.Label',
-                    'attr' => array(
-                        'class' => 'cs-theme-color-gray-dark-v3',
-                        'placeholder' => 'Organization.Comment.PlaceHolder',
-                        'rows' => '4',
-                    ),
-                    'help' => 'Organization.Comment.Help',
-                    'required' => false,
-                )
-            )
-            ->add(
-                'member',
+                'users',
                 CollectionType::class, [
                 'label' => 'Organization.Member.Label',
                 'entry_type' => MemberFormType::class,
