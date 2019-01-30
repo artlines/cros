@@ -12,8 +12,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @ORM\Entity(repositoryClass="App\Repository\OrganizationRepository")
  * @ORM\Table(schema="participating", name="organization")
- *
- * TODO: ADD LOGO FIELD
  */
 class Organization
 {
@@ -32,6 +30,13 @@ class Organization
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
     private $name;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="logo", type="string", length=255, nullable=true)
+     */
+    private $logo;
 
     /**
      * @var string|null
@@ -166,6 +171,22 @@ class Organization
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getLogo(): ?string
+    {
+        return $this->logo;
+    }
+
+    /**
+     * @param string|null $logo
+     */
+    public function setLogo(?string $logo)
+    {
+        $this->logo = $logo;
     }
 
     /**
