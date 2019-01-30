@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @package App\Entity\Abode
  *
  * @ORM\Table(schema="abode", name="place")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\Abode\PlaceRepository")
  */
 class Place
 {

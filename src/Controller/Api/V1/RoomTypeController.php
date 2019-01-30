@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api\V1;
 
+use App\Entity\Abode\Place;
 use App\Entity\Abode\Room;
 use App\Entity\Abode\RoomType;
 use App\Entity\Participating\ParticipationClass;
@@ -101,7 +102,18 @@ class RoomTypeController extends ApiController
             return $this->notFound('Participation class not found.');
         }
 
-        // TODO: Check maxPlaces change !
+        /** Check already hold places count */
+        $roomsInfo = $this->em->getRepository(Place::class)->getPlacesInfoByType($type);
+        $errorMsg = '';
+        foreach ($roomsInfo as $item) {
+            if ($item['places_count'] > $maxPlaces) {
+                $errorMsg .= "В {$item['housing_title']} в номере {$item['apartment_number']} "
+                    ."занято {$item['places_count']} мест.\r\n";
+            }
+        }
+        if ($errorMsg) {
+            return $this->badRequest($errorMsg);
+        }
 
         $type->setTitle($title);
         $type->setDescription($description);

@@ -5,6 +5,7 @@ import {
     Paper,
     Typography,
 } from "@material-ui/core";
+import abode from '../../actions/abode';
 import ParticipationClassTable from "../../components/Abode/Settings/ParticipationClassTable";
 import ApartmentTypeTable from "../../components/Abode/Settings/ApartmentTypeTable";
 import RoomTypeTable from "../../components/Abode/Settings/RoomTypeTable";
@@ -36,6 +37,16 @@ class Settings extends React.Component {
     }
 }
 
-//const mapStateToProps = state =>
+const mapStateToProps = state =>
+    ({
+        ...state.abode,
+    });
 
-export default Settings;
+const mapDispatchToProps = dispatch =>
+    ({
+        fetchParticipationClasses: () => dispatch(abode.fetchParticipationClasses()),
+        fetchApartmentTypes: () => dispatch(abode.fetchApartmentTypes()),
+        fetchRoomTypes: () => dispatch(abode.fetchRoomTypes()),
+    });
+
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);

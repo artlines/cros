@@ -4,6 +4,7 @@ namespace App\Controller\Api\V1;
 
 use App\Entity\Abode\Apartment;
 use App\Entity\Abode\ApartmentType;
+use App\Entity\Abode\Room;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
@@ -84,7 +85,9 @@ class ApartmentTypeController extends ApiController
             return $this->badRequest('Apartment type not found.');
         }
 
-        // TODO: Check macRooms change !
+        if ($type->getMaxRooms() !== $maxRooms && $this->em->getRepository(Apartment::class)->countByType($type)) {
+            return $this->badRequest('Для изменения количества комнат нужно отвязать существующие номера от данного типа');
+        }
 
         $type->setTitle($title);
         $type->setMaxRooms($maxRooms);

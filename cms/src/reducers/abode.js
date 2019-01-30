@@ -2,6 +2,9 @@ export const ABODE = {
     REQUEST_HOUSING: "ABODE_REQUEST_HOUSING",
     RECEIVE_HOUSING: "ABODE_RECEIVE_HOUSING",
 
+    REQUEST_PARTICIPATION_CLASS: "ABODE_REQUEST_PARTICIPATION_CLASS",
+    RECEIVE_PARTICIPATION_CLASS: "ABODE_RECEIVE_PARTICIPATION_CLASS",
+
     REQUEST_APARTMENT_TYPE: "ABODE_REQUEST_APARTMENT_TYPE",
     RECEIVE_APARTMENT_TYPE: "ABODE_RECEIVE_APARTMENT_TYPE",
 
@@ -30,10 +33,13 @@ const initialState = {
     housing: {
         ..._initialObjectState
     },
-    room_type: {
+    participation_class: {
         ..._initialObjectState
     },
     apartment_type: {
+        ..._initialObjectState
+    },
+    room_type: {
         ..._initialObjectState
     },
     room: {
@@ -108,24 +114,42 @@ export default (state = initialState, action) => {
                 ...payload,
             },
         };
-    case ABODE.REQUEST_APARTMENT_TYPE:
-        return {
-            ...state,
-            apartment_type: {
-                ...state.apartment_type,
-                isFetching: true,
-                error: false,
-            },
-        };
-    case ABODE.RECEIVE_APARTMENT_TYPE:
-        return {
-            ...state,
-            apartment_type: {
-                ...state.apartment_type,
-                isFetching: false,
-                ...payload,
-            },
-        };
+        case ABODE.REQUEST_PARTICIPATION_CLASS:
+            return {
+                ...state,
+                participation_class: {
+                    ...state.participation_class,
+                    isFetching: true,
+                    error: false,
+                },
+            };
+        case ABODE.RECEIVE_PARTICIPATION_CLASS:
+            return {
+                ...state,
+                participation_class: {
+                    ...state.participation_class,
+                    isFetching: false,
+                    ...payload,
+                },
+            };
+        case ABODE.REQUEST_APARTMENT_TYPE:
+            return {
+                ...state,
+                apartment_type: {
+                    ...state.apartment_type,
+                    isFetching: true,
+                    error: false,
+                },
+            };
+        case ABODE.RECEIVE_APARTMENT_TYPE:
+            return {
+                ...state,
+                apartment_type: {
+                    ...state.apartment_type,
+                    isFetching: false,
+                    ...payload,
+                },
+            };
     case ABODE.REQUEST_ROOM_TYPE:
         return {
             ...state,
