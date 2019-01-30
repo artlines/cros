@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Conference;
 use App\Entity\Participating\ConferenceOrganization;
 use App\Entity\Participating\Organization;
 use App\Form\ConferenceOrganizationFormType;
@@ -23,7 +24,17 @@ class ConferenceRegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            dd($form->getData());
+            $em = $this->getDoctrine()->getManager();
+            /** @var ConferenceOrganization $ConferenceOrganization */
+            $ConferenceOrganization = $form->getData();
+            $ConferenceOrganization->setConference($em->getReference(Conference::class, 272 ));
+            $em->getConnection()->beginTransaction();
+            $em->persist($ConferenceOrganization);
+            // TODO: get duplicate  Organization
+            $em->persist($ConferenceOrganization->getOrganization());
+            $em->flush();
+            $em->getConnection()->commit();
+            dd($ConferenceOrganization);
         }
 
         return $this->render('conference_registration/index.html.twig', [

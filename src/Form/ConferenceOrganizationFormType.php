@@ -2,8 +2,11 @@
 
 namespace App\Form;
 
+use App\Entity\Conference;
 use App\Entity\Participating\ConferenceOrganization;
 use App\Entity\Participating\Organization;
+use App\Repository\ConferenceRepository;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -52,7 +55,31 @@ class ConferenceOrganizationFormType extends AbstractType
                 )
                 ->remove('save')
             )
-//            ->add('conference')
+            ->add(
+                'conference',
+                EntityType::class,
+                [
+                    'label' => 'Конференция',
+                    'class' => Conference::class,
+                    'attr' => [
+                        'class' => 'cs-theme-color-gray-dark-v3',
+                    ],
+                    'required' => true,
+//                    'choices' =>  Conference::
+//                    'help' => 'Дополнительная информация',
+                    'query_builder' => function (ConferenceRepository $conferenceRepository) {
+                        return $conferenceRepository->createQueryBuilder('c')
+                            ->andWhere('c.registrationStart <= :registrationStart')
+                            ->andWhere('c.registrationFinish >= :registrationFinish')
+                            ->setParameters([
+                                'registrationStart' => new \DateTime(),
+                                'registrationFinish' => new \DateTime()
+                            ]);
+                    },
+//                    'choice_label' => 'id',
+                ]
+
+            )
 //            ->add('invitedBy')
             ->add(
                 'save',

@@ -6,8 +6,6 @@
 {% block body %}
 
 {{ form_start(form) }}
-    {{ dump(form) }}
-    {{ dump(form.organization.children.name) }}
 {% set formOrganization=form.organization %}
     <div class="row">
         <div class="col-md-6">{{- form_row(formOrganization.name) -}}</div>
