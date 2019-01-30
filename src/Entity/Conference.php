@@ -267,7 +267,7 @@ class Conference
 
     public function __toString()
     {
-        return 'Conference::'.$this->getId();
+        return 'Крос '.$this->getYear();
     }
 
 }

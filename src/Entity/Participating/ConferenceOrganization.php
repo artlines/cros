@@ -4,8 +4,12 @@ namespace App\Entity\Participating;
 
 use App\Entity\Conference;
 use App\Entity\Participating\Organization;
+use App\Validator\InnKpp;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class ConferenceOrganization
@@ -354,4 +358,39 @@ class ConferenceOrganization
     {
         $this->invitedBy = $invitedBy;
     }
+
+
+    /**
+     * @Assert\Callback
+     * По совокупности ИНН/КПП проводить валидацию - вдруг такая организация уже зарегистрирована.
+     * Уведомлять пользователя о дубле и наименовании зарегистрированной организации.
+     * Валидацию проводить только по организациям, завершившим регистрацию
+     * (participating.conference_organization.is_finish по conference_id за текущий год).
+     */
+
+    public function validate_inn_registered(ExecutionContextInterface $context, $payload)
+    {
+        dump('validate', $context,$payload);
+//        die();
+        /** @var ConferenceOrganization $ConferenceOrganization */
+        $ConferenceOrganization =  $context->getValue();
+        $inn = $ConferenceOrganization->getOrganization()->getInn();
+        $kpp = $ConferenceOrganization->getOrganization()->getKpp();
+
+        $context->buildViolation('validate_inn_registered :!'.$ConferenceOrganization->getOrganization()->getInn())
+            ->atPath('organization.inn')
+            ->addViolation();
+        $context->buildViolation('validate_inn_registered :!'.$ConferenceOrganization->getOrganization()->getInn())
+            ->atPath('organization.kpp')
+            ->addViolation();
+    }
+
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+//        dd('loadValidatorMetadata', $metadata);
+//        die();
+//        $metadata->addConstraint(new Assert\Callback('validate'));
+        $metadata->addPropertyConstraint('comments', new InnKpp());
+    }
+
 }

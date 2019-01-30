@@ -23,6 +23,6 @@ jQuery(document).ready(function () {
         console.log(list.attr('data-widget-tags'),jQuery(list.attr('data-widget-tags')),newElem,list);
         newElem.appendTo(list);
     })
-    .click()
+    //.click()
     ;
 });

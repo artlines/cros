@@ -80,7 +80,7 @@ class RegistrationController extends AbstractController
                 $form->handleRequest($request);
 
                 if ($form->isSubmitted() && $form->isValid()) {
-
+die('OK');
                     /** @var Organization $org */
                     $org = $form->getData();
 
