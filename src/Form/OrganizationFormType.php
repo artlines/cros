@@ -65,7 +65,7 @@ class OrganizationFormType extends AbstractType
                         'placeholder' => 'Organization.City.PlaceHolder',
                     ),
                     'help' => 'Organization.City.Help',
-                    'required' => false, // true,
+                    'required' => true,
 //                    'constraints' => [new Length(['min' => 3])]
                 )
             )
@@ -79,7 +79,7 @@ class OrganizationFormType extends AbstractType
                         'placeholder' => 'Organization.Address.PlaceHolder',
                     ),
                     'help' => 'Organization.Address.Help',
-                    'required' => false, // true,
+                    'required' => true,
                 )
             )
             ->add(
@@ -106,7 +106,7 @@ class OrganizationFormType extends AbstractType
                         'placeholder' => 'Organization.Inn.PlaceHolder',
                     ),
                     'help' => 'Organization.Inn.Help',
-                    'required' => false, // true,
+                    'required' => true,
                 )
             )
             ->add(
@@ -119,7 +119,7 @@ class OrganizationFormType extends AbstractType
                         'placeholder' => 'Organization.Kpp.PlaceHolder',
                     ),
                     'help' => 'Organization.Kpp.Help',
-                    'required' => false, // true,
+                    'required' => true,
                 )
             )
 
@@ -137,7 +137,7 @@ class OrganizationFormType extends AbstractType
                     ),
                     'data' => "Полное наименование организации: \nОГРН: \nЮридический адрес: \nПочтовый адрес: \nБанк: \nБИК: \nК/С: \nР/С:",
                     'help' => 'Organization.Requisites.Help',
-                    'required' => false, // true,
+                    'required' => true,
                 )
 
             )
