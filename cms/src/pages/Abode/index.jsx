@@ -11,6 +11,7 @@ import HousingForm from "../../components/Abode/HousingForm";
 import find from 'lodash/find';
 import abode from '../../actions/abode';
 import API from '../../libs/api';
+import LinearProgress from "../../components/utils/LinearProgress";
 
 const api = new API();
 
@@ -75,12 +76,9 @@ class Abode extends React.Component {
     render() {
         const { housing, error, isFetching, form: { open, initialValues } } = this.state;
 
-        if (isFetching) {
-            return (<span>Loading...</span>); // TODO: return loader
-        }
-
-        return (!isFetching &&
+        return (
             <div>
+                <LinearProgress show={isFetching}/>
                 <HousingForm
                     open={open}
                     initialValues={initialValues}
@@ -89,7 +87,7 @@ class Abode extends React.Component {
                 />
                 <Grid container spacing={24}>
                     <Grid item xs={12}>
-                        <Grid container spacing={0} justify={`space-between`}>
+                        <Grid container spacing={0} justify={`space-between`} alignItems={`center`}>
                             <Grid item>
                                 <Typography variant={`h5`} component={`span`}>Корпуса для проживания</Typography>
                             </Grid>

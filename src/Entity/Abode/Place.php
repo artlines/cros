@@ -40,13 +40,6 @@ class Place
     private $room;
 
     /**
-     * @var boolean
-     *
-     * @ORM\Column(name="approved", type="boolean", nullable=false, options={"default": 0})
-     */
-    private $approved;
-
-    /**
      * @return int
      */
     public function getId()
@@ -84,21 +77,5 @@ class Place
     public function setRoom($room)
     {
         $this->room = $room;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isApproved()
-    {
-        return $this->approved;
-    }
-
-    /**
-     * @param bool $approved
-     */
-    public function setApproved($approved)
-    {
-        $this->approved = $approved;
     }
 }

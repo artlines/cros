@@ -34,9 +34,9 @@ class ConferenceOrganizationRepository extends EntityRepository
             );
         }
 
-        if (isset($data['invite_by'])) {
-            $dql->andWhere('co.invited_by = :invited_by');
-
+        if (isset($data['invited_by'])) {
+            $dql->andWhere('co.invitedBy IN (:invited_by)');
+            $parameters['invited_by'] = $data['invited_by'];
         }
 
         /** Check for limit and offset */
@@ -50,6 +50,9 @@ class ConferenceOrganizationRepository extends EntityRepository
         $query = $dql
             ->addOrderBy('co.id', 'ASC')
             ->setParameters($parameters);
+
+        dump($data);
+        dump($query->getDQL());
 
         $queryC = clone $query;
 

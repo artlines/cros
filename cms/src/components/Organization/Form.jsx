@@ -208,7 +208,7 @@ class OrganizationForm extends React.Component {
                             <Grid item xs={12}>
                                 <TextField
                                     label={"Адрес"}
-                                    value={values.address}
+                                    value={values.address || ''}
                                     margin={"dense"}
                                     fullWidth
                                     multiline
@@ -224,7 +224,7 @@ class OrganizationForm extends React.Component {
                             <Grid item xs={12}>
                                 <TextField
                                     label={"Реквизиты"}
-                                    value={values.requisites}
+                                    value={values.requisites || ''}
                                     margin={"dense"}
                                     fullWidth
                                     multiline

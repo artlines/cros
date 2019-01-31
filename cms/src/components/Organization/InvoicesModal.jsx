@@ -177,7 +177,7 @@ InvoicesModal.propTypes = {
         PropTypes.shape({
             id:     PropTypes.number.isRequired,
             number: PropTypes.number.isRequired,
-            amount: PropTypes.number.isRequired,
+            amount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
             date:   PropTypes.number.isRequired,
             status: PropTypes.number.isRequired,
         }),

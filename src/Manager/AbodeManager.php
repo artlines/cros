@@ -5,6 +5,7 @@ namespace App\Manager;
 use App\Entity\Abode\Apartment;
 use App\Entity\Abode\Housing;
 use App\Entity\Abode\Room;
+use App\Entity\Participating\Invoice;
 use App\Repository\Abode\ApartmentRepository;
 use App\Repository\Abode\RoomRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -80,5 +81,72 @@ class AbodeManager
         }
 
         return $result;
+    }
+
+    /**
+     * Calculate resettlement info to build resettlement interface in CMS
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param Housing $housing
+     * @return array
+     */
+    public function calculateResettlementByHousing(Housing $housing)
+    {
+        $result = [];
+
+        foreach ($housing->getApartments() as $apartment) {
+            $item = [
+                'id'        => $apartment->getId(),
+                'number'    => $apartment->getNumber(),
+                'type_id'   => $apartment->getType()->getId(),
+                'rooms'     => [],
+            ];
+
+            foreach ($apartment->getRooms() as $room) {
+                $places = [];
+
+                foreach ($room->getPlaces() as $place) {
+                    $conferenceMember = $place->getConferenceMember();
+
+                    $user = $conferenceMember->getUser();
+                    $neighbourhood = $conferenceMember->getNeighbourhood();
+                    $roomType = $conferenceMember->getRoomType();
+
+                    $invoices = $conferenceMember->getConferenceOrganization()->getInvoices();
+                    $invoices_payed = true;
+                    foreach ($invoices as $invoice) {
+                        if ($invoice->getStatus() !== Invoice::STATUS__FULLY_PAYED) {
+                            $invoices_payed = false;
+                        }
+                    }
+
+                    $places[] = [
+                        'id'        => $place->getId(),
+                        'room_id'   => $room->getId(),
+                        'member'    => [
+                            'id'            => $conferenceMember->getId(),
+                            'first_name'    => $user->getFirstName(),
+                            'last_name'     => $user->getLastName(),
+                            'org_name'      => $user->getOrganization()->getName(),
+                            'room_type_id'  => $roomType ? $roomType->getId() : null,
+                            'neighbourhood' => $neighbourhood ? $neighbourhood->getUser()->getFullName() : null,
+                            'invoices_count'=> $invoices->count(),
+                            'invoices_payed'=> $invoices_payed,
+                        ],
+                    ];
+                }
+
+                $item['rooms'][] = [
+                    'id'        => $room->getId(),
+                    'type_id'   => $room->getType()->getId(),
+                    'places'    => $places,
+                ];
+            }
+
+            $result[] = $item;
+        }
+
+        return $result;
+
     }
 }

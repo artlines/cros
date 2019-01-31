@@ -16,6 +16,7 @@ import {
     TableCell,
 } from "@material-ui/core";
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import find from "lodash/find";
 import map from "lodash/map";
 import ConfirmDialog from "../utils/ConfirmDialog";
@@ -33,9 +34,14 @@ class HousingCard extends React.PureComponent {
         return (
             <Card>
                 <CardContent>
-                    <Typography variant={`h5`} gutterBottom>{title}</Typography>
-                    <Typography variant={`subtitle1`}>Этажность</Typography>
-                    <Typography paragraph>{num_of_floors}</Typography>
+                    <Grid container justify={`space-between`} alignItems={`center`}>
+                        <Grid item>
+                            <Typography variant={`h5`} gutterBottom>{title}</Typography>
+                        </Grid>
+                        <Grid item>
+                          <Typography gutterBottom color={`textSecondary`} variant={`subtitle1`}>{num_of_floors} эт.</Typography>
+                        </Grid>
+                    </Grid>
                     {description &&
                         <div>
                             <Typography variant={`subtitle1`}>Описание</Typography>
@@ -65,7 +71,7 @@ class HousingCard extends React.PureComponent {
                         <Grid item>
                             <Button onClick={() => onEdit(id)}><EditIcon/></Button>
                             <ConfirmDialog
-                                trigger={<Button>Удалить</Button>}
+                                trigger={<Button><DeleteIcon/></Button>}
                                 onConfirm={() => onDelete(id)}
                             />
                         </Grid>

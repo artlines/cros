@@ -5,6 +5,7 @@ import AbodeResettlement from "../pages/Abode/Resettlement";
 import AbodeHousing from "../pages/Abode/Housing";
 import Organizations from "../pages/Organizations";
 import Invite from "../pages/Invite";
+import Test from "../pages/Test";
 import NotFound from "../pages/NotFound";
 import {
     PeopleOutlined as People,
@@ -93,6 +94,16 @@ export default [
             title: "Пользователи",
         },
         role: "ROLE_ADMINISTRATOR",
+    },
+    {
+        path: "/cms/test",
+        Component: Test,
+        exact: true,
+        title: "TEST",
+        menuItem: {
+            Icon: People,
+            title: "TEST",
+        },
     },
     {
         path: "*",

@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {compose} from 'redux';
 import PropTypes from 'prop-types';
 import {
     Button,
@@ -14,6 +15,7 @@ import {
     TableRow,
     TableCell,
 } from '@material-ui/core';
+import {withStyles} from '@material-ui/core/styles';
 import {
     Close as CloseIcon,
     Edit as EditIcon,
@@ -25,6 +27,13 @@ import ConfirmDialog from "../utils/ConfirmDialog";
 import FabButton from '../utils/FabButton';
 import LinearProgress from '../utils/LinearProgress';
 import API from '../../libs/api';
+
+const styles = () =>
+    ({
+        noWrap: {
+            whiteSpace: 'nowrap',
+        },
+    });
 
 const api = new API();
 
@@ -76,7 +85,7 @@ class MembersModal extends React.Component {
     closeForm = () => this.setState({form: {...this.state.form, open: false}});
 
     render() {
-        const { organizationName, items, trigger, isFetching } = this.props;
+        const { classes, organizationName, items, trigger, isFetching } = this.props;
         const { open, form } = this.state;
 
         return (
@@ -131,29 +140,24 @@ class MembersModal extends React.Component {
                                             {item.post}
                                         </TableCell>
                                         <TableCell>
-                                            <div><b>Телефон:</b> {item.phone}</div>
-                                            <div><b>Email:</b> {item.email}</div>
+                                            <div className={classes.noWrap}><b>Телефон:</b> {item.phone}</div>
+                                            <div className={classes.noWrap}><b>Email:</b> {item.email}</div>
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell >
                                             {item.place.room_num
-                                                ? <React.Fragment>
-                                                    <div><b>Номер:</b> {item.place.room_num}</div>
-                                                    <div><b>Подтвержден: </b>
-                                                        {item.place.approved
-                                                            ? <span style={{color: 'green'}}>Да</span>
-                                                            : <span style={{color: 'red'}}>Нет</span>
-                                                        }
-                                                    </div>
-                                                </React.Fragment>
+                                                ? <div className={classes.noWrap}>
+                                                    <b>Номер:</b> {item.place.room_num}
+                                                </div>
                                                 : 'Не заселен'
                                             }
                                         </TableCell>
                                         <TableCell align={'right'}>
-                                            <Button onClick={() => this.openForm(item.id)}><EditIcon/></Button>
-                                            <ConfirmDialog
-                                                trigger={<Button><CloseIcon/></Button>}
-                                                onConfirm={() => this.delete(item.id)}
-                                            />
+                                                    <Button onClick={() => this.openForm(item.id)}><EditIcon/></Button>
+
+                                                    <ConfirmDialog
+                                                        trigger={<Button><CloseIcon/></Button>}
+                                                        onConfirm={() => this.delete(item.id)}
+                                                    />
                                         </TableCell>
                                     </TableRow>
                                 )}
@@ -199,10 +203,15 @@ MembersModal.propTypes = {
             }),
         }),
     ),
+
+    classes: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => ({
     ...state.participating.member,
 });
 
-export default connect(mapStateToProps)(MembersModal);
+export default compose(
+    connect(mapStateToProps),
+    withStyles(styles),
+)(MembersModal);

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {compose} from 'redux';
 import {
     Table,
     TableHead,
@@ -11,16 +12,13 @@ import {
     TablePagination,
     Grid,
 } from '@material-ui/core';
+import { green, red } from '@material-ui/core/colors';
 import map from 'lodash/map';
 import InvoicesModal from './InvoicesModal';
 import CommentsModal from "./CommentsModal";
 import MembersModal from "./MembersModal";
-import FabButton from '../utils/FabButton';
 import LinearProgress from '../utils/LinearProgress';
 import {Edit as EditIcon} from "@material-ui/icons";
-import OrganizationForm from './Form';
-import find from 'lodash/find';
-import CustomLinearProgress from "../utils/LinearProgress";
 
 class OrganizationTable extends React.Component {
 
@@ -30,10 +28,6 @@ class OrganizationTable extends React.Component {
         this.state = {
             page: 0,
             rowsPerPage: 10,
-            form: {
-                open: false,
-                initialValues: {},
-            },
         };
     }
 
@@ -76,40 +70,16 @@ class OrganizationTable extends React.Component {
     handleChangePage = (event, page) => this.setState({page});
     handleChangeRowsPerPage = (event) => this.setState({rowsPerPage: event.target.value});
 
-    openForm = (id) => {
-        const { items } = this.props;
-        this.setState({
-            form: {
-                ...this.state.form,
-                open: true,
-                initialValues: id ? find(items, {id}) : {},
-            }
-        });
-    };
-    closeForm = () => this.setState({form: {...this.state.form, open: false}});
-
     render() {
-        const { page, rowsPerPage, form } = this.state;
-        const { items, isFetching, total_count } = this.props;
+        const { page, rowsPerPage } = this.state;
+        const { items, isFetching, total_count, onEdit } = this.props;
 
         return (
             <React.Fragment>
-                <OrganizationForm
-                    open={form.open}
-                    initialValues={form.initialValues}
-                    onClose={this.closeForm}
-                    onSuccess={this.update}
-                />
+
                 <Grid container spacing={16}>
                     <Grid item xs={12}>
                         <LinearProgress show={isFetching}/>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Grid container justify={`flex-end`}>
-                            <Grid item>
-                                <FabButton title={`Добавить организацию`} onClick={this.openForm}/>
-                            </Grid>
-                        </Grid>
                     </Grid>
                     <Grid item xs={12}>
                         <Table>
@@ -132,6 +102,11 @@ class OrganizationTable extends React.Component {
                                         </TableCell>
                                         <TableCell>
                                             {item.name}
+                                            {item.invited_by &&
+                                                <div style={{fontSize: 10, color: '#a4a4a4'}}>
+                                                    {item.invited_by}
+                                                </div>
+                                            }
                                         </TableCell>
                                         <TableCell>
                                             <div style={{whiteSpace: 'nowrap'}}><b>ИНН:</b> {item.inn}</div>
@@ -149,7 +124,17 @@ class OrganizationTable extends React.Component {
                                             <InvoicesModal
                                                 organizationId={item.id}
                                                 organizationName={item.name}
-                                                trigger={<Button>{item.invoices_count}</Button>}
+                                                trigger={
+                                                    <Button
+                                                        style={{
+                                                            color: item.invoices_count > 0
+                                                                ? item.invoices_payed ? green[700] : red[700]
+                                                                : 'inherit'
+                                                        }}
+                                                    >
+                                                        {item.invoices_count}
+                                                    </Button>
+                                                }
                                                 update={this.updateInvoices}
                                             />
                                         </TableCell>
@@ -162,7 +147,7 @@ class OrganizationTable extends React.Component {
                                             />
                                         </TableCell>
                                         <TableCell>
-                                            <Button onClick={() => this.openForm(item.id)}><EditIcon/></Button>
+                                            <Button onClick={() => onEdit(item.id)}><EditIcon/></Button>
                                         </TableCell>
                                     </TableRow>
                                 )}
@@ -187,27 +172,12 @@ class OrganizationTable extends React.Component {
 }
 
 OrganizationTable.propTypes = {
-    items: PropTypes.arrayOf(
-        PropTypes.shape({
-            id:                 PropTypes.number.isRequired,
-            name:               PropTypes.string.isRequired,
-            inn:                PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-            kpp:                PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-            city:               PropTypes.string,
-            address:            PropTypes.string,
-            requisites:         PropTypes.string,
-            total_members:      PropTypes.number.isRequired,
-            in_room_members:    PropTypes.number.isRequired,
-            comments_count:     PropTypes.number.isRequired,
-            invoices_count:     PropTypes.number.isRequired,
-        }),
-    ),
-
     loadComments: PropTypes.func.isRequired,
     loadInvoices: PropTypes.func.isRequired,
     loadMembers: PropTypes.func.isRequired,
 
     update: PropTypes.func.isRequired,
+    onEdit: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state =>
@@ -215,4 +185,6 @@ const mapStateToProps = state =>
         ...state.participating.conference_organization,
     });
 
-export default connect(mapStateToProps)(OrganizationTable);
+export default compose(
+    connect(mapStateToProps),
+)(OrganizationTable);
