@@ -66,16 +66,17 @@ class ConferenceOrganizationRepository extends EntityRepository
     {
         return $this
             ->createQueryBuilder('co')
-            ->leftJoin(Organization::class, 'o')
+            ->leftJoin(Organization::class, 'o',"WITH",'co.organization=o.id')
             ->where('o.inn = :inn')
-            ->where('o.kpp = :kpp')
-            ->where('co.is_finish = true')
-            ->where('co.conference_id = :conference_id')
+            ->andWhere('o.kpp = :kpp')
+//            ->andWhere('co.finish = true')
+//            ->andWhere('co.conference = :conference_id')
             ->setParameters([
                 'inn' => $inn,
                 'kpp' => $kpp,
-                'conference_id' => $conference_id,
+//                'conference_id' => $conference_id,
             ])
+            ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
     }

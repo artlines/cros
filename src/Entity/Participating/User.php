@@ -522,4 +522,5 @@ class User implements UserInterface
     {
         $this->representative = $representative;
     }
+
 }

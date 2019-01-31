@@ -359,6 +359,9 @@ class ConferenceOrganization
         $this->invitedBy = $invitedBy;
     }
 
+    public function __toString(){
+	return 'ConferenceOrganization::'.$this->getId();
+    }
 
     /**
      * @Assert\Callback
@@ -390,7 +393,9 @@ class ConferenceOrganization
 //        dd('loadValidatorMetadata', $metadata);
 //        die();
 //        $metadata->addConstraint(new Assert\Callback('validate'));
-        $metadata->addPropertyConstraint('comments', new InnKpp());
+//        $metadata->addPropertyConstraint('comments', new InnKpp());
+        $metadata->addConstraint( new InnKpp());
+
     }
 
 }

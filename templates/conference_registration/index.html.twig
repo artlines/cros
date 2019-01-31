@@ -5,10 +5,10 @@
 
 {% block body %}
 
+{{ form_start(form) }}
     <div class="row">
         <div class="col-md-12">{{- form_row(form.conference) -}}</div>
     </div>
-{{ form_start(form) }}
 {% set formOrganization=form.organization %}
     <div class="row">
         <div class="col-md-6">{{- form_row(formOrganization.name) -}}</div>
@@ -49,8 +49,9 @@
         <div class="col-md-3"></div>
         <div class="col-md-3"><button
             type="button"
-            class="btn-danger"
+            class="btn-danger remove-collection-widget"
             data-list="#members-fields-list"
+
         >Удалить
         </div>
         <div class="col-md-3"></div>

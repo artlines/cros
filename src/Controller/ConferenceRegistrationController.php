@@ -26,8 +26,8 @@ class ConferenceRegistrationController extends AbstractController
 
 
         /** @var ConferenceOrganization $ConferenceOrganization */
-        $ConferenceOrganization = $form->getData();
-        dump($ConferenceOrganization);
+//        $ConferenceOrganization = $form->getData();
+//        dump($ConferenceOrganization);
 //        /** @var Organization $check_org */
 //        $check_org = $this->getDoctrine()
 //            ->getRepository( ConferenceOrganization::class)
@@ -41,6 +41,7 @@ class ConferenceRegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var ConferenceOrganization $ConferenceOrganization */
             $ConferenceOrganization = $form->getData();
+        dump($ConferenceOrganization);
 
             /** @var Organization $check_org */
             $check_org = $this->getDoctrine()

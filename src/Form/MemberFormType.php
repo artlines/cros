@@ -124,6 +124,7 @@ class MemberFormType extends AbstractType
                 ]
             )
 
+/*
             ->add(
                 'carNumber',
                 TextType::class,
@@ -137,7 +138,7 @@ class MemberFormType extends AbstractType
                     'required' => false,
                 ]
             )
-
+*/
             ->add(
                 'earlyIn',
                 DateType::class,
