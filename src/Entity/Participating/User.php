@@ -140,6 +140,11 @@ class User implements UserInterface
     private $entityName = 'user';
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $foto;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -521,5 +526,17 @@ class User implements UserInterface
     public function setRepresentative(bool $representative)
     {
         $this->representative = $representative;
+    }
+
+    public function getFoto(): ?string
+    {
+        return $this->foto;
+    }
+
+    public function setFoto(?string $foto): self
+    {
+        $this->foto = $foto;
+
+        return $this;
     }
 }
