@@ -523,4 +523,9 @@ class User implements UserInterface
         $this->representative = $representative;
     }
 
+    public function __toString()
+    {
+        // TODO: Implement __toString() method.
+        return "user_show::".$this->getId();
+    }
 }

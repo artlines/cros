@@ -9,6 +9,7 @@ use App\Repository\ConferenceRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -55,6 +56,29 @@ class ConferenceOrganizationFormType extends AbstractType
                 )
                 ->remove('save')
             )
+//            ->add(
+//                $builder->create(
+//                    'ConferenceMembers',
+//                    ConferenceMemberFormType::class,
+//                    ['by_reference' => true]
+//                )
+//                    ->remove('save')
+//            )
+
+            ->add(
+                'ConferenceMembers',
+                CollectionType::class, [
+                'label' => 'ConferenceMembers',
+                'entry_type' => ConferenceMemberFormType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+
+//                'prototype_data' => new User()
+            ])
+
+
+
             ->add(
                 'conference',
                 EntityType::class,

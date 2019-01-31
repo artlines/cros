@@ -9,23 +9,23 @@
     <div class="row">
         <div class="col-md-12">{{- form_row(form.conference) -}}</div>
     </div>
-{% set formOrganization=form.organization %}
     <div class="row">
-        <div class="col-md-6">{{- form_row(formOrganization.name) -}}</div>
-        <div class="col-md-3">{{- form_row(formOrganization.city) -}}</div>
-        <div class="col-md-3">{{- form_row(formOrganization.logo) -}}</div>
+        <div class="col-md-6">{{- form_row(form.organization.name) -}}</div>
+        <div class="col-md-3">{{- form_row(form.organization.city) -}}</div>
+        <div class="col-md-3">{{- form_row(form.organization.logo) -}}</div>
     </div>
     <div class="row">
-        <div class="col-md-6">{{- form_row(formOrganization.address) -}}</div>
-        <div class="col-md-3">{{- form_row(formOrganization.inn) -}}</div>
-        <div class="col-md-3">{{- form_row(formOrganization.kpp) -}}</div>
+        <div class="col-md-6">{{- form_row(form.organization.address) -}}</div>
+        <div class="col-md-3">{{- form_row(form.organization.inn) -}}</div>
+        <div class="col-md-3">{{- form_row(form.organization.kpp) -}}</div>
     </div>
     <div class="row">
-        <div class="col-md-6">{{- form_row(formOrganization.requisites) -}}</div>
+        <div class="col-md-6">{{- form_row(form.organization.requisites) -}}</div>
         <div class="col-md-6">{{- form_row(form.notes,{'attr':{'rows':8}}) -}}</div>
     </div>
 
-{% set form2=formOrganization.users.vars.prototype %}
+{% set form2=form.organization.users.vars.prototype %}
+{% set formConferenceMembers=form.ConferenceMembers.vars.prototype %}
 {% set member_prototype %}
     <div class="row">
         <div class="col-md-3">{{- form_row(form2.firstName) -}}</div>
@@ -40,12 +40,12 @@
         <div class="col-md-3">{{- form_row(form2.representative) -}}</div>
     </div>
     <div class="row">
-        <div class="col-md-3">{{- form_row(form2.earlyIn) -}}</div>
-        <div class="col-md-3">{{- form_row(form2.laterOut) -}}</div>
+        <div class="col-md-3">{{- form_row(formConferenceMembers.arrival) -}}</div>
+        <div class="col-md-3">{{- form_row(formConferenceMembers.leaving) -}}</div>
     </div>
     <div class="row">
-        <div class="col-md-3">{{- form_row(form2.participationClass) -}}</div>
-        <div class="col-md-3">{{- form_row(form2.joint) -}}</div>
+        <div class="col-md-3">{{- form_row(formConferenceMembers.RoomType) -}}</div>
+        <div class="col-md-3">{{- form_row(formConferenceMembers.neighbourhood) -}}</div>
         <div class="col-md-3"></div>
         <div class="col-md-3"><button
             type="button"
@@ -62,8 +62,9 @@
     </div>
 {% endset %}
 
-
-    <h3>{{- form_row(formOrganization.users) -}}</h3>
+{% set form_trash %}
+    <h3>{{- form_row(form.organization.users) -}}</h3>
+{% endset %}
     <div id="members-fields-list"
          data-prototype="{{ member_prototype|e }}"
          data-widget-tags="data-widget-tags-{{ '<div style="padding-left: 10px; border-left: solid 5px #87d37b; margin:20px 0 20px"></div>'|e }}"
@@ -88,6 +89,6 @@
 
 
     {# ... #}
-    {{ form_end(form) }}
+    {#{{ form_end(form) }}#}
 
 {% endblock %}

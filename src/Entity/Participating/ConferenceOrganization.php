@@ -299,6 +299,7 @@ class ConferenceOrganization
     {
         if (!$this->conferenceMembers->contains($conferenceMember)) {
             $this->conferenceMembers->add($conferenceMember);
+            $conferenceMember->setConferenceOrganization($this);
         }
     }
 
@@ -309,6 +310,7 @@ class ConferenceOrganization
     public function removeConferenceMember(ConferenceMember $conferenceMember)
     {
         $this->conferenceMembers->removeElement($conferenceMember);
+        $conferenceMember->setConferenceOrganization($this);
     }
 
     /**
@@ -374,6 +376,7 @@ class ConferenceOrganization
     public function validate_inn_registered(ExecutionContextInterface $context, $payload)
     {
         dump('validate', $context,$payload);
+        return;
 //        die();
         /** @var ConferenceOrganization $ConferenceOrganization */
         $ConferenceOrganization =  $context->getValue();
