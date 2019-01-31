@@ -21,7 +21,7 @@ class ConferenceMemberFormType extends AbstractType
 //            ->add('user')
 //            ->add('conference')
 //   !!!            ->add('conferenceOrganization')
-            ->add('roomType')
+//            ->add('roomType')
             ->add(
                 'carNumber',
                 TextType::class,

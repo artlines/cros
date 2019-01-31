@@ -72,12 +72,12 @@ class ConferenceOrganizationRepository extends EntityRepository
             ->leftJoin(Organization::class, 'o',"WITH",'co.organization=o.id')
             ->where('o.inn = :inn')
             ->andWhere('o.kpp = :kpp')
-//            ->andWhere('co.finish = true')
-//            ->andWhere('co.conference = :conference_id')
+            ->andWhere('co.finish = true')
+            ->andWhere('co.conference = :conference_id')
             ->setParameters([
                 'inn' => $inn,
                 'kpp' => $kpp,
-//                'conference_id' => $conference_id,
+                'conference_id' => $conference_id,
             ])
             ->setMaxResults(1)
             ->getQuery()

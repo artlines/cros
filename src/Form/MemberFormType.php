@@ -148,7 +148,7 @@ class MemberFormType extends AbstractType
 //            ->add('password')
 //            ->add('telegram')
 //            ->add('roles')
-            ->add('nickname')
+            //->add('nickname')
 //            ->add('sex')
 //            ->add('representative')
 //            ->add('createdAt')
