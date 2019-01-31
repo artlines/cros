@@ -11,6 +11,7 @@ use App\Form\OrganizationFormType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -55,34 +56,31 @@ class ConferenceRegistrationController extends AbstractController
 
             //setup Conference for conferenceMembers
             foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember ) {
-                $conferenceMember->setConference($ConferenceOrganization->getConference());
                 $user = $conferenceMember->getUser();
+                $conferenceMember->setUser(null);
                 /** @var User $oldUser */
                 $oldUser = $em->getRepository(User::class)
                     ->findOneBy(['email' =>$user->getEmail() ]);
-                dump('oldUser',$oldUser,'user', $user);
+                if( $oldUser ){
+                    $em->remove($user);
+                    $conferenceMember->setUser($oldUser);
+                    $user = $oldUser;
+                }
+                $organization = $ConferenceOrganization->getOrganization();
 
-                $user->setId($oldUser->getId());
-                $user->setFirstName('DUPLICATE');
-                $user->setOrganization($ConferenceOrganization->getOrganization());
-                $em->persist($ConferenceOrganization->getOrganization());
-                $password = $this->getRandomPassword();
-                dump($password );
-                $user->setPassword(
-                    $passwordEncoder->encodePassword( $user, $password)
-                );
+                $user->setOrganization($organization);
 
-                $em->merge($user);
-///                $em->persist($user);
+
+                $em->persist($organization);
+
+
+                $conference = $ConferenceOrganization->getConference();
+                $conferenceMember->setConference($conference);
+                $conferenceMember->setConferenceOrganization($ConferenceOrganization);
+                $em->persist($ConferenceOrganization); // !!DUP
                 $em->flush();
-//                $user->
-                dump('oldUser',$oldUser,'user', $user);
-
+                $em->flush();
             }
-//            dd($ConferenceOrganization);
-            $em->persist($ConferenceOrganization);
-
-//            dd($ConferenceOrganization);
             // TODO: get duplicate  Organization
 //            $em->persist($ConferenceOrganization->getOrganization());
             $em->flush();
