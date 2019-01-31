@@ -21,7 +21,7 @@ class InnKppValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        dump('InnKppValidator', $value, $constraint);
+//        dump('InnKppValidator', $value, $constraint);
         /* @var $constraint InnKpp */
         if (is_object($value) && $value instanceof ConferenceOrganization) {
             $em = $this->registry->getManagerForClass(\get_class($value));
@@ -38,7 +38,7 @@ class InnKppValidator extends ConstraintValidator
             //$co = $repository->findByInnKppIsFinish('4502013089', '450201001', 3);
             $co = $repository->findByInnKppIsFinish($inn, $kpp, $conf_id);
             if($co){
-                dump('repos', $co);
+//                dump('repos', $co);
                 $this->context->buildViolation(/*$constraint->message*/
                     'Организация \'{{ value }}\' уже зарегистрирована'
                 )
@@ -48,7 +48,7 @@ class InnKppValidator extends ConstraintValidator
                     ->addViolation();
             } else {
                 return;
-                dump('repos', $co);
+//                dump('repos', $co);
                 $this->context->buildViolation('Все ок, можем продолжать')
                     ->setParameter('{{ value }}', $inn)
                     ->atPath('organization.inn')

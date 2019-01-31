@@ -375,7 +375,7 @@ class ConferenceOrganization
 
     public function validate_inn_registered(ExecutionContextInterface $context, $payload)
     {
-        dump('validate', $context,$payload);
+ //       dump('validate', $context,$payload);
         return;
 //        die();
         /** @var ConferenceOrganization $ConferenceOrganization */
