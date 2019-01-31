@@ -22,15 +22,25 @@ class ConferenceRegistrationController extends AbstractController
         return substr( md5(random_bytes(10)),-6);
     }
     /**
+     * @Route("/conference/registration/{hash}", name="conference_registration_hash")
      * @Route("/conference/registration", name="conference_registration")
      */
     public function index(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
+        $hash = $request->get('hash');
+        if( $hash ) {
+            $ConferenceOrganization = $this->getDoctrine()
+                ->getRepository(ConferenceOrganization::class)
+                ->findOneBy(['inviteHash'=>$hash]);
+
+        } else {
+            $ConferenceOrganization = null;
+        }
 //        $form = $this->createForm(MyFrmType::class,null,['attr'=>['class'=>'row']]);
-        $form = $this->createForm(ConferenceOrganizationFormType::class);
+        $form = $this->createForm(
+            ConferenceOrganizationFormType::class, $ConferenceOrganization);
 
         $form->handleRequest($request);
-
         $Conference = $this->getDoctrine()
             ->getRepository(Conference::class)
             ->findOneBy(['year' => date("Y")]);
