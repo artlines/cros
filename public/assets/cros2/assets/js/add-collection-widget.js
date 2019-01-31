@@ -6,7 +6,10 @@ jQuery(document).ready(function () {
         console.log(jQuery(this).attr('data-list'));
         // Try to find the counter of the list or use the length of the list
         var counter = list.data('widget-counter') | list.children().length;
-	if( list.children().length>=limit) return;
+	if( list.children().length>=limit){
+	  console.log(list.children());
+        return;
+    }
         // grab the prototype template
         var newWidget = list.attr('data-prototype');
 //        console.log(newWidget);
@@ -22,10 +25,12 @@ jQuery(document).ready(function () {
         // create a new list element and add it to the list
         var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
         console.log(list.attr('data-widget-tags'),jQuery(list.attr('data-widget-tags')),newElem,list);
-newElem.find('.remove-collection-widget').click(function (e) {
-       jQuery(this).parent().parent().parent().remove();
-    })
+        newElem.find('.remove-collection-widget').click(function (e) {
+           jQuery(this).parent().parent().parent().parent().remove();
+        });
         newElem.appendTo(list);
+        newElem.hide();
+        newElem.show('blind',{},500);
     })
     // .click()
     ;

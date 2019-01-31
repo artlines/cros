@@ -5,7 +5,6 @@
 
 {% block body %}
 
-
     {#{{ dump(form) }}#}
 {{ form_start(form) }}
     <div class="row">
@@ -30,6 +29,7 @@
 {% set formConferenceMembers=form.ConferenceMembers.vars.prototype %}
 {% set form2=formConferenceMembers.user %}
 {% set member_prototype %}
+<div>
     <div class="row">
         <div class="col-md-3">{{- form_row(form2.firstName) -}}</div>
         <div class="col-md-3">{{- form_row(form2.lastName) -}}</div>
@@ -53,8 +53,6 @@
         <div class="col-md-3"><button
             type="button"
             class="btn-danger remove-collection-widget"
-            data-list="#members-fields-list"
-
         >Удалить
         </div>
         <div class="col-md-3"></div>
@@ -63,7 +61,9 @@
         <div style="width: 100%; text-align: center;">Информация о классе участия:</div>
         <div style="width: 100%; text-align: center;">Класс учачтия не выбран</div>
     </div>
+</div>
 {% endset %}
+
 <textarea cols="100" rows="8">
 id     name    inn kpp
 25	Курьер Флюс	4502013089	450201001 [finish]
@@ -78,7 +78,7 @@ id     name    inn kpp
     <div id="members-fields-list"
          data-prototype="{{ member_prototype|e }}"
          data-LimitUsersByOrg="{{ LimitUsersByOrg }}"
-         data-widget-tags="data-widget-tags-{{ '<div style="padding-left: 10px; border-left: solid 5px #87d37b; margin:20px 0 20px"></div>'|e }}"
+         data-widget-tags="{{ '<div style="padding-left: 10px; border-left: solid 5px #87d37b; margin:20px 0 20px"></div>'|e }}"
          >
 {% for item in form.ConferenceMembers %}
 <div style="padding-left: 10px; border-left: solid 5px #87d37b; margin:20px 0 20px">
@@ -105,8 +105,6 @@ id     name    inn kpp
         <div class="col-md-3"><button
                     type="button"
                     class="btn-danger remove-collection-widget"
-                    data-list="#members-fields-list"
-
             >Удалить
         </div>
         <div class="col-md-3"></div>
