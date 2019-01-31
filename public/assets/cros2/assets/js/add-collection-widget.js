@@ -31,6 +31,7 @@ jQuery(document).ready(function () {
         newElem.appendTo(list);
         newElem.hide();
         newElem.show('blind',{},500);
+        jQuery('#end-red').show();
     })
     // .click()
     ;

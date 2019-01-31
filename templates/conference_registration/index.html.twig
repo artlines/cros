@@ -172,11 +172,16 @@ id     name    inn kpp
             $('.debug-url').html('Delete URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
         });
     </script>
-
+{% set form_trash %}
+    {{ form_row(form.ConferenceMembers) }}
+    {#<h3>{{- form_row(form.organization.users) -}}</h3>#}
+{% endset %}
     {# ... #}
     {{ form_end(form) }}
-    <button class="btn u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15 btn" data-href="/delete.php?id=54" data-toggle="modal" data-target="#confirm-delete">
-        Завершить регистрацию
-    </button>
+    <div id="end-red" style="display: none">
+        <button class="btn u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15 btn" data-href="/delete.php?id=54" data-toggle="modal" data-target="#confirm-delete">
+            Завершить регистрацию
+        </button>
+    </div>
 
 {% endblock %}
