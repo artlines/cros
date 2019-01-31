@@ -25,7 +25,7 @@ class ParticipationClassController extends ApiController
     public function getAll()
     {
         /** @var ParticipationClass[] $participationClasses */
-        $participationClasses = $this->em->getRepository(ParticipationClass::class)->findAll();
+        $participationClasses = $this->em->getRepository(ParticipationClass::class)->findBy([], ['id' => 'ASC']);
 
         $items = [];
         foreach ($participationClasses as $class) {

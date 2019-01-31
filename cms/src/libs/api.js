@@ -43,6 +43,14 @@ export default class API {
             .catch(this[errorHandler])
     };
 
+    upload = (endPoint, formData) => {
+        return request
+            .post(`${this.apiHost}/${endPoint}`)
+            .send(formData)
+            .catch(this[errorHandler]);
+
+    };
+
     [errorHandler](err) {
         let errorMessage = err.message;
 

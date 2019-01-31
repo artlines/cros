@@ -26,7 +26,7 @@ class ApartmentTypeController extends ApiController
     public function getAll()
     {
         /** @var ApartmentType[] $apartmentTypes */
-        $apartmentTypes = $this->em->getRepository(ApartmentType::class)->findAll();
+        $apartmentTypes = $this->em->getRepository(ApartmentType::class)->findBy([], ['id' => 'ASC']);
 
         $items = [];
         foreach ($apartmentTypes as $apartmentType) {
@@ -81,7 +81,7 @@ class ApartmentTypeController extends ApiController
         }
 
         /** @var ApartmentType $type */
-        if (!$type = $this->em->find(Apartment::class, $id)) {
+        if (!$type = $this->em->find(ApartmentType::class, $id)) {
             return $this->badRequest('Apartment type not found.');
         }
 
@@ -109,7 +109,7 @@ class ApartmentTypeController extends ApiController
     public function delete($id)
     {
         /** @var ApartmentType $type */
-        if (!$type = $this->em->find(Apartment::class, $id)) {
+        if (!$type = $this->em->find(ApartmentType::class, $id)) {
             return $this->badRequest('Apartment type not found.');
         }
 
@@ -134,6 +134,7 @@ class ApartmentTypeController extends ApiController
             'id'        => $apartmentType->getId(),
             'title'     => $apartmentType->getTitle(),
             'max_rooms' => $apartmentType->getMaxRooms(),
+            'code'      => $apartmentType->getCode(),
         ];
 
         return $item;

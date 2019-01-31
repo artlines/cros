@@ -31,9 +31,9 @@ export default {
 
     fetchParticipationClasses: () => {
         return dispatch => {
-            dispatch({ type: ABODE.REQUEST_APARTMENT_TYPE });
+            dispatch({ type: ABODE.REQUEST_PARTICIPATION_CLASS });
             request.get(`participation_class`)
-                .then(payload => dispatch({ type: ABODE.RECEIVE_APARTMENT_TYPE, payload }));
+                .then(payload => dispatch({ type: ABODE.RECEIVE_PARTICIPATION_CLASS, payload }));
         };
     },
 

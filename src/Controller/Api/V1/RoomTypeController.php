@@ -27,7 +27,7 @@ class RoomTypeController extends ApiController
     public function getAll()
     {
         /** @var RoomType[] $roomTypes */
-        $roomTypes = $this->em->getRepository(RoomType::class)->findAll();
+        $roomTypes = $this->em->getRepository(RoomType::class)->findBy([], ['id' => 'ASC']);
 
         $items = [];
         foreach ($roomTypes as $roomType) {
@@ -161,7 +161,11 @@ class RoomTypeController extends ApiController
         $item = [
             'id'            => $roomType->getId(),
             'title'         => $roomType->getTitle(),
+            'description'   => $roomType->getDescription(),
+            'cost'          => $roomType->getCost(),
             'max_places'    => $roomType->getMaxPlaces(),
+
+            'participation_class_id' => $roomType->getParticipationClass()->getId(),
         ];
 
         return $item;

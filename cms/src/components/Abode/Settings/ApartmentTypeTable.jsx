@@ -1,52 +1,117 @@
 import React from "react";
 import PropTypes from "prop-types";
+import {connect} from 'react-redux';
 import {
     Table,
     TableBody,
     TableCell,
     TableHead,
     TableRow,
+    Button,
+    Grid,
+    Typography,
+    Paper,
 } from "@material-ui/core";
+import {Edit as EditIcon} from '@material-ui/icons';
 import map from "lodash/map";
+import find from "lodash/find";
+import ApartmentTypeForm from "./ApartmentTypeForm";
+import FabButton from "../../utils/FabButton";
 
-const data = [
-    { id: 1, title: "Эконом" },
-    { id: 2, title: "Комфорт" },
-    { id: 3, title: "Бизнес" },
-    { id: 4, title: "VIP" },
-];
+class ApartmentTypeTable extends React.Component {
+    constructor(props) {
+        super(props);
 
-class ApartmentTypeTable extends React.PureComponent {
+        this.state = {
+            form: {
+                open: false,
+                initialValues: {},
+            },
+        };
+    }
+
+    componentDidMount = () => {
+        this.props.load();
+    };
+
+    openForm = (id) => {
+        const { items } = this.props;
+        this.setState({
+            form: {
+                ...this.state.form,
+                open: true,
+                initialValues: id ? find(items, {id}) : {},
+            }
+        });
+    };
+    closeForm = () => this.setState({form: {...this.state.form, open: false}});
+
+    handleSuccess = () => {
+        this.closeForm();
+        this.props.load();
+    };
+
     render() {
-        const { data } = this.props;
+        const { open, initialValues } = this.state.form;
+        const { items } = this.props;
 
         return (
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Наименование</TableCell>
-                        <TableCell align={`right`}>Действия</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {map(data, item =>
-                        <TableRow key={item.id}>
-                            <TableCell>{item.title}</TableCell>
-                            <TableCell align={`right`}>Действия</TableCell>
-                        </TableRow>
-                    )}
-                </TableBody>
-            </Table>
+            <React.Fragment>
+                <Grid container justify={`space-between`}>
+                    <Grid item>
+                        <Typography variant={`h4`} gutterBottom>Типы номеров</Typography>
+                    </Grid>
+                    <Grid item>
+                        <FabButton title={`Добавить`} onClick={this.openForm}/>
+                    </Grid>
+                </Grid>
+                <Paper>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Наименование</TableCell>
+                                <TableCell>Код</TableCell>
+                                <TableCell>Кол-во комнат</TableCell>
+                                <TableCell align={`right`}>Действия</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {map(items, item =>
+                                <TableRow key={item.id}>
+                                    <TableCell>{item.title}</TableCell>
+                                    <TableCell>{item.code}</TableCell>
+                                    <TableCell>{item.max_rooms}</TableCell>
+                                    <TableCell align={`right`}>
+                                        <Button onClick={() => this.openForm(item.id)}>
+                                            <EditIcon/>
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                </Paper>
+                <ApartmentTypeForm
+                    initialValues={initialValues}
+                    open={open}
+                    onClose={this.closeForm}
+                    onSuccess={this.handleSuccess}
+                />
+            </React.Fragment>
         );
     }
 }
 
 ApartmentTypeTable.propTypes = {
-    data: PropTypes.array.isRequired,
+    load: PropTypes.func.isRequired,
+
+    items: PropTypes.array.isRequired,
+    isFetching: PropTypes.bool.isRequired,
 };
 
-ApartmentTypeTable.defaultProps = {
-    data
-};
+const mapStateToProps = state =>
+    ({
+        ...state.abode.apartment_type,
+    });
 
-export default ApartmentTypeTable;
+export default connect(mapStateToProps)(ApartmentTypeTable);

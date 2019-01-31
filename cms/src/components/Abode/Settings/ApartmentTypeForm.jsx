@@ -10,20 +10,21 @@ import {
     TextField,
 } from '@material-ui/core';
 import isEqual from 'lodash/isEqual';
-import API from '../../libs/api';
-import ErrorMessage from "../utils/ErrorMessage";
+import API from '../../../libs/api';
+import ErrorMessage from "../../utils/ErrorMessage";
+import ConfirmDialog from "../../utils/ConfirmDialog";
 
 const api = new API();
 
-class HousingForm extends React.Component {
+class ApartmentTypeForm extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             values: {
                 title: '',
-                description: '',
-                num_of_floors: '',
+                max_rooms: '',
+                code: '',
             },
             errors: {},
             submitting: false,
@@ -79,12 +80,18 @@ class HousingForm extends React.Component {
          * Create or update entity
          */
         values.id
-            ? api.put(`housing/${values.id}`, values)
+            ? api.put(`apartment_type/${values.id}`, values)
                 .then(this.handleSuccessSubmit)
                 .catch(this.handleErrorSubmit)
-            : api.post(`housing/new`, values)
+            : api.post(`apartment_type/new`, values)
                 .then(this.handleSuccessSubmit)
                 .catch(this.handleErrorSubmit);
+    };
+
+    handleDelete = (id) => {
+        api.delete(`apartment_type/${id}`)
+            .then(this.handleSuccessSubmit)
+            .catch(this.handleErrorSubmit);
     };
 
     handleSuccessSubmit = () => {
@@ -98,17 +105,19 @@ class HousingForm extends React.Component {
         const { initialValues, open } = this.props;
         const { values, errors, submitting, submitError } = this.state;
 
+        const isUpdate = initialValues && initialValues.id;
+
         return (
             <Dialog
                 open={open}
                 fullWidth={true}
                 maxWidth={"sm"}
             >
-                <DialogTitle>{!initialValues ? 'Добавление' : 'Редактирование'} корпуса</DialogTitle>
+                <DialogTitle>{!initialValues ? 'Добавление' : 'Редактирование'} типа номера</DialogTitle>
                 <DialogContent>
-                    <form onSubmit={this.handleSubmit} id={"housing-form"}>
+                    <form onSubmit={this.handleSubmit} id={"apartment_type-form"}>
                         <Grid container spacing={16}>
-                            <Grid item xs={12} sm={6}>
+                            <Grid item xs={12}>
                                 <TextField
                                     required
                                     label={"Наименование"}
@@ -121,35 +130,33 @@ class HousingForm extends React.Component {
                                     helperText={errors.title}
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={6}>
+                            <Grid item xs={6}>
                                 <TextField
                                     required
-                                    label={"Этажность"}
+                                    label={"Количество комнат"}
                                     type={"number"}
-                                    inputProps={{ min: 1, max: 100, step: 1 }}
-                                    value={values.num_of_floors}
+                                    inputProps={{ min: 1, max: 10, step: 1 }}
+                                    value={values.max_rooms}
                                     margin={"dense"}
                                     fullWidth
                                     variant={"outlined"}
-                                    onChange={this.handleChange('num_of_floors')}
-                                    error={!!errors.num_of_floors}
-                                    helperText={errors.num_of_floors}
+                                    onChange={this.handleChange('max_rooms')}
+                                    error={!!errors.max_rooms}
+                                    helperText={errors.max_rooms}
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item xs={6}>
                                 <TextField
                                     required
-                                    label={"Описание"}
-                                    value={values.description}
+                                    label={"Код"}
+                                    value={values.code}
+                                    placeholder={`A2B`}
                                     margin={"dense"}
                                     fullWidth
                                     variant={"outlined"}
-                                    onChange={this.handleChange('description')}
-                                    error={!!errors.description}
-                                    helperText={errors.description}
-                                    multiline
-                                    rows={3}
-                                    rowsMax={5}
+                                    onChange={this.handleChange('code')}
+                                    error={!!errors.code}
+                                    helperText={errors.code}
                                 />
                             </Grid>
                         </Grid>
@@ -157,29 +164,52 @@ class HousingForm extends React.Component {
                     {submitError && <ErrorMessage description={submitError} extended={true}/>} {/*title={} description={} extended={}*/}
                 </DialogContent>
                 <DialogActions>
-                    <Button
-                        color={"primary"}
-                        disabled={submitting}
-                        onClick={this.handleCancel}
-                    >
-                        Отмена
-                    </Button>
-                    <Button
-                        variant={"contained"}
-                        color={"primary"}
-                        form={"housing-form"}
-                        type={"submit"}
-                        disabled={submitting}
-                    >
-                        {!initialValues ? 'Добавить' : 'Сохранить'}
-                    </Button>
+                    <Grid container spacing={0} justify={`space-between`}>
+                        <Grid item>
+                            {isUpdate &&
+                            <ConfirmDialog
+                                onConfirm={() => this.handleDelete(isUpdate)}
+                                trigger={<Button
+                                    color={"secondary"}
+                                    disabled={submitting}
+                                >
+                                    Удалить
+                                </Button>}
+                            />
+                            }
+                        </Grid>
+                        <Grid item>
+                            <Grid container spacing={8}>
+                                <Grid item>
+                                    <Button
+                                        color={"primary"}
+                                        disabled={submitting}
+                                        onClick={this.handleCancel}
+                                    >
+                                        Отмена
+                                    </Button>
+                                </Grid>
+                                <Grid item>
+                                    <Button
+                                        variant={"contained"}
+                                        color={"primary"}
+                                        form={"apartment_type-form"}
+                                        type={"submit"}
+                                        disabled={submitting}
+                                    >
+                                        {!initialValues ? 'Добавить' : 'Сохранить'}
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
                 </DialogActions>
             </Dialog>
         );
     }
 }
 
-HousingForm.propTypes = {
+ApartmentTypeForm.propTypes = {
     /**
      * Is form open?
      */
@@ -201,4 +231,4 @@ HousingForm.propTypes = {
     onSuccess: PropTypes.func.isRequired,
 };
 
-export default HousingForm;
+export default ApartmentTypeForm;
