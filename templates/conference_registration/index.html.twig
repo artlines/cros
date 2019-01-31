@@ -5,6 +5,7 @@
 
 {% block body %}
 
+    {{ dump(form) }}
 {{ form_start(form) }}
     <div class="row">
         <div class="col-md-12">{{- form_row(form.conference) -}}</div>
@@ -24,8 +25,9 @@
         <div class="col-md-6">{{- form_row(form.notes,{'attr':{'rows':8}}) -}}</div>
     </div>
 
-{% set form2=form.organization.users.vars.prototype %}
+    {#{{ dump(form.organization.users) }}#}
 {% set formConferenceMembers=form.ConferenceMembers.vars.prototype %}
+{% set form2=formConferenceMembers.user %}
 {% set member_prototype %}
     <div class="row">
         <div class="col-md-3">{{- form_row(form2.firstName) -}}</div>
@@ -45,8 +47,8 @@
     </div>
     <div class="row">
         <div class="col-md-3">{{- form_row(formConferenceMembers.RoomType) -}}</div>
+        <div class="col-md-3">{{- form_row(formConferenceMembers.carNumber) -}}</div>
         <div class="col-md-3">{{- form_row(formConferenceMembers.neighbourhood) -}}</div>
-        <div class="col-md-3"></div>
         <div class="col-md-3"><button
             type="button"
             class="btn-danger remove-collection-widget"
@@ -62,13 +64,50 @@
     </div>
 {% endset %}
 
-{% set form_trash %}
-    <h3>{{- form_row(form.organization.users) -}}</h3>
-{% endset %}
+{#{% set form_trash %}#}
+    {#<h3>{{- form_row(form.organization.users) -}}</h3>#}
+{#{% endset %}#}
     <div id="members-fields-list"
          data-prototype="{{ member_prototype|e }}"
          data-widget-tags="data-widget-tags-{{ '<div style="padding-left: 10px; border-left: solid 5px #87d37b; margin:20px 0 20px"></div>'|e }}"
          >
+{% for item in form.ConferenceMembers %}
+<div style="padding-left: 10px; border-left: solid 5px #87d37b; margin:20px 0 20px">
+    <div class="row">
+        <div class="col-md-3">{{- form_row(item.user.firstName) -}}</div>
+        <div class="col-md-3">{{- form_row(item.user.lastName) -}}</div>
+        <div class="col-md-3">{{- form_row(item.user.middleName) -}}</div>
+        <div class="col-md-3">{{- form_row(item.user.sex) -}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">{{- form_row(item.user.phone) -}}</div>
+        <div class="col-md-3">{{- form_row(item.user.email) -}}</div>
+        <div class="col-md-3">{{- form_row(item.user.post) -}}</div>
+        <div class="col-md-3">{{- form_row(item.user.representative) -}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">{{- form_row(item.arrival) -}}</div>
+        <div class="col-md-3">{{- form_row(item.leaving) -}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">{{- form_row(item.RoomType) -}}</div>
+        <div class="col-md-3">{{- form_row(item.carNumber) -}}</div>
+        <div class="col-md-3">{{- form_row(item.neighbourhood) -}}</div>
+        <div class="col-md-3"><button
+                    type="button"
+                    class="btn-danger remove-collection-widget"
+                    data-list="#members-fields-list"
+
+            >Удалить
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+    <div class="row">
+        <div style="width: 100%; text-align: center;">Информация о классе участия:</div>
+        <div style="width: 100%; text-align: center;">Класс учачтия не выбран</div>
+    </div>
+</div>
+{% endfor %}
     </div>
     <button
         type="button"
@@ -89,6 +128,6 @@
 
 
     {# ... #}
-    {#{{ form_end(form) }}#}
+    {{ form_end(form) }}
 
 {% endblock %}

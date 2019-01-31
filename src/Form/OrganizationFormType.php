@@ -141,17 +141,17 @@ class OrganizationFormType extends AbstractType
                 )
 
             )
-            ->add(
-                'users',
-                CollectionType::class, [
-                'label' => 'Organization.Member.Label',
-                'entry_type' => MemberFormType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'prototype' => true,
-
-//                'prototype_data' => new User()
-            ])
+//            ->add(
+//                'users',
+//                CollectionType::class, [
+//                'label' => 'Organization.Member.Label',
+//                'entry_type' => MemberFormType::class,
+//                'allow_add' => true,
+//                'allow_delete' => true,
+//                'prototype' => true,
+//
+////                'prototype_data' => new User()
+//            ])
 //            ->add('tags', CollectionType::class, [
 //                'entry_type' => TextType::class,
 //                'allow_add' => true,

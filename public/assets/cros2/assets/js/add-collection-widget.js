@@ -26,7 +26,7 @@ newElem.find('.remove-collection-widget').click(function (e) {
     })
         newElem.appendTo(list);
     })
-    .click()
+    // .click()
     ;
     jQuery('.remove-collection-widget').click(function (e) {
        

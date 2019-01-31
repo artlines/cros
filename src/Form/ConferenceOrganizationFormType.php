@@ -44,15 +44,6 @@ class ConferenceOrganizationFormType extends AbstractType
                     'organization',
                     OrganizationFormType::class,
                     ['by_reference' => true]
-//                EntityType::class,
-//                [
-//                    'class' => Organization::class,
-//                    'label' => 'Organization class',
-//                    'attr' => [
-//                        'class' => 'cs-theme-color-gray-dark-v3',
-//                    ],
-//                    'required' => true,
-//                ]
                 )
                 ->remove('save')
             )

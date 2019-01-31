@@ -7,6 +7,7 @@ use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -77,20 +78,16 @@ class ConferenceMemberFormType extends AbstractType
                 ]
             )
             ->add(
-                'member',
-                EntityType::class,
-                [
-                    'label' => 'member usre',
-                    'class' => User::class,
-                    'attr' => [
-                        'class' => 'cs-theme-color-gray-dark-v3',
-                    ],
-                    'required' => false,
-                ]
+                $builder->create(
+                    'user',
+                    MemberFormType::class,
+                    ['by_reference' => true]
+                )
+                    ->remove('save')
             )
 
             ->add(
-                'neighbourhood',
+                'carNumber',
                 TextType::class,
                 [
                     'label' => 'Номер автомобиля',
@@ -103,19 +100,22 @@ class ConferenceMemberFormType extends AbstractType
                 ]
             )
 // Совместное проживание ???
-//            ->add(
-//                'neighbourhood',
-//                EntityType::class,
-//                [
-//                    'class' => ConferenceMember::class,
-//                    'label' => 'Совместное проживание',
-//                    'attr' => [
-//                        'class' => 'cs-theme-color-gray-dark-v3',
-//                        'style' => 'margin-top: 37px;'
-//                    ],
-//                    'required' => false,
-//                ]
-//            )
+            ->add(
+                'neighbourhood',
+                ChoiceType::class,
+                [
+                    'label' => 'Совместное проживание', // 'Member.sex.Label',
+                    'required' => true,
+                    'choices'  => [
+                        "Нет" => null,
+                        "Да"  => null,
+                    ],
+                    'data' => 'Да' , // default
+                    'attr' => [
+                        'class' => 'cs-theme-color-gray-dark-v3',
+                    ],
+                ]
+            )
         ;
     }
 
