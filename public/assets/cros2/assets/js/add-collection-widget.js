@@ -2,10 +2,11 @@
 jQuery(document).ready(function () {
     jQuery('.add-another-collection-widget').click(function (e) {
         var list = jQuery(jQuery(this).attr('data-list'));
+        var limit = list.attr('data-LimitUsersByOrg');
         console.log(jQuery(this).attr('data-list'));
         // Try to find the counter of the list or use the length of the list
         var counter = list.data('widget-counter') | list.children().length;
-	if( list.children().length>=2) return;
+	if( list.children().length>=limit) return;
         // grab the prototype template
         var newWidget = list.attr('data-prototype');
 //        console.log(newWidget);
@@ -28,8 +29,5 @@ newElem.find('.remove-collection-widget').click(function (e) {
     })
     // .click()
     ;
-    jQuery('.remove-collection-widget').click(function (e) {
-       
-    })
 
 });

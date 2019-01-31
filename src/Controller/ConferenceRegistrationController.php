@@ -24,7 +24,10 @@ class ConferenceRegistrationController extends AbstractController
 
         $form->handleRequest($request);
 
-
+        $Conference = $this->getDoctrine()
+            ->getRepository(Conference::class)
+            ->findOneBy(['year' => date("Y")]);
+        /** @var Conference $Conference */
         /** @var ConferenceOrganization $ConferenceOrganization */
 //        $ConferenceOrganization = $form->getData();
 //        dump($ConferenceOrganization);
@@ -41,31 +44,28 @@ class ConferenceRegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var ConferenceOrganization $ConferenceOrganization */
             $ConferenceOrganization = $form->getData();
-        dump($ConferenceOrganization);
-
-            /** @var Organization $check_org */
-            $check_org = $this->getDoctrine()
-                ->getRepository( ConferenceOrganization::class)
-                ->findByInnKppIsFinish(
-                    $org->getInn(),
-                    $org->getKpp(),
-                    $ConferenceOrganization->getConference()->getId()
-            );
-            dump($check_org);
-            $em = $this->getDoctrine()->getManager();
-            $ConferenceOrganization->setConference($em->getReference(Conference::class, 272 ));
+            $em  = $this->getDoctrine()->getManager();
             $em->getConnection()->beginTransaction();
+
             $em->persist($ConferenceOrganization);
             // TODO: get duplicate  Organization
             $em->persist($ConferenceOrganization->getOrganization());
             $em->flush();
+
             $em->getConnection()->commit();
-            dd($ConferenceOrganization);
+
+            return $this->render('conference_registration/registration_success.html.twig', [
+                'ConferenceOrganization' => $ConferenceOrganization,
+            ]);
         }
+
 
         return $this->render('conference_registration/index.html.twig', [
 //            'controller_name' => 'ConferenceRegistrationController',
             'form' => $form->createView(),
+            'LimitUsersByOrg' => $Conference->getLimitUsersByOrg(),
+            'LimitUsersGlobal' => $Conference->getLimitUsersGlobal(),
+            'Users'   => 0, // TODD: get real users value
         ]);
     }
 }

@@ -29,7 +29,7 @@ class ConferenceMember
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Participating\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Participating\User",cascade={"persist"})
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
@@ -37,7 +37,7 @@ class ConferenceMember
     /**
      * @var Conference
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Conference")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Conference",cascade={"persist"})
      * @ORM\JoinColumn(name="conference_id", referencedColumnName="id", nullable=false)
      */
     private $conference;

@@ -14,6 +14,8 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConferenceOrganizationFormType extends AbstractType
@@ -96,13 +98,31 @@ class ConferenceOrganizationFormType extends AbstractType
 
             )
 //            ->add('invitedBy')
+        ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
+            $user = $event->getData();
+            $form = $event->getForm();
+
+            if (!$user) {
+                return;
+            }
+
+            // checks whether the user has chosen to display their email or not.
+            // If the data was submitted previously, the additional value that is
+            // included in the request variables needs to be removed.
+//            if (true === $user['show_email']) {
+//                $form->add('email', EmailType::class);
+//            } else {
+//                unset($user['email']);
+//                $event->setData($user);
+//            }
+        })
             ->add(
                 'save',
                 SubmitType::class,
                 [
-                    'label' => 'Сохранить',
+                    'label' => 'Завершить регистрацию',
                     'attr' => [
-                        'class' => 'u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15'
+                        'class' => 'reg-save u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15'
                     ]
                 ]
             )

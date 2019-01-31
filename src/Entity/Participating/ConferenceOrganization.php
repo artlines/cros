@@ -32,7 +32,7 @@ class ConferenceOrganization
     /**
      * @var Organization
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Participating\Organization")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Participating\Organization",cascade={"persist"})
      * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", nullable=false)
      */
     private $organization;
@@ -97,7 +97,7 @@ class ConferenceOrganization
     /**
      * @var ArrayCollection|ConferenceMember[]
      *
-     * @ORM\OneToMany(targetEntity="ConferenceMember", mappedBy="conferenceOrganization")
+     * @ORM\OneToMany(targetEntity="ConferenceMember", mappedBy="conferenceOrganization",cascade={"persist"})
      */
     private $conferenceMembers;
 
