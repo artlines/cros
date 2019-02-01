@@ -58,7 +58,6 @@ const changeRoomType = function() {
 
 const neighbourhood = function() {
     let selector = jQuery(this);
-//    selector.empty();
 //    console.log( jQuery('.conference-member'));
     jQuery.each( jQuery('.conference-member'), function(i,el){
         var fio = [
@@ -72,16 +71,62 @@ const neighbourhood = function() {
 //        console.log(fio);
         selector.append(
             jQuery("<option></option>")
-                .attr("value", 'value')
+                .attr("value", i)
                 .text(fio)
         );
     });
+
+    jQuery('.firstName').on('change', neighbourhoodRename)
+    jQuery('.middleName').on('change', neighbourhoodRename)
+    jQuery('.lastName').on('change', neighbourhoodRename)
 
     // newOptions.map( (key,value) => {
     //     selector.append($("<option></option>")
     //     .attr("value", value).text(key));
     // })
 };
+
+const neighbourhoodRename =  function() {
+    console.log('neighbourhoodRename', jQuery(this).val());
+
+    let block = jQuery(this).parents('.conference-member');
+
+    let num  = block.attr('data-num');
+
+    let options = jQuery('.conference-member .select-neighbourhood option[value='+num+']');
+    console.log(
+        'neighbourhoodRename',
+        '.conference-member .select-neighbourhood option[value='+num+']',
+        options
+    );
+
+    var fio = [
+        jQuery(block).find('.lastName').val(),
+        jQuery(block).find('.firstName').val(),
+        jQuery(block).find('.middleName').val()
+    ].join(' ').trim();
+    if(fio === "") {
+        fio = 'Участник ' + (1+i);
+    }
+
+    jQuery.each(options,function (i,el) {
+       console.log('option',el);
+        jQuery(el)  .text(fio);
+    });
+
+
+    // jQuery.each( jQuery('.conference-member'), function(i,el){
+    //
+    //     selector.append(
+    //         jQuery("<option></option>")
+    //             .attr("value", 'value')
+    //             .text(fio)
+    //     );
+    // });
+    //
+    // ;
+};
+
 
 jQuery(document).ready(function () {
 
@@ -93,6 +138,8 @@ jQuery(document).ready(function () {
         .change()
     ;
     jQuery('.select-neighbourhood').each(neighbourhood);
-
+    // jQuery('.firstName').on('change', neighbourhoodRename)
+    // jQuery('.middleName').on('change', neighbourhoodRename)
+    // jQuery('.lastName').on('change', neighbourhoodRename)
 
 });

@@ -107,7 +107,7 @@ class ConferenceMemberFormType extends AbstractType
                     'label' => 'Совместное проживание', // 'Member.sex.Label',
                     'required' => true,
                     'choices'  => [
-                        "Нет" => null,
+                        "Нет" => '',
 //                        "Да"  => null,
                     ],
                     'data' => 'Да' , // default
