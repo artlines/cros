@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Печать таблицы</title>
+    <style type="text/css">
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+        }
+
+        tr{
+            page-break-inside: avoid;
+        }
+
+        td, th {
+            vertical-align: top;
+        }
+
+        .org td, .org th {
+            border-top: 1px solid silver;
+        }
+
+        @media print {
+            textarea {
+                border: 0;
+                resize: none;
+            }
+            @page {
+                size: landscape;
+            }
+        }
+    </style>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>№</th>
+        {% for title in titles %}
+            <th>{{ title }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    {% set i = 1 %}
+
+    {% for org in orgs %}
+
+        {% set do = true %}
+
+        {% if woinvoice %}
+            {% if org.users|length != 0 %}
+                {% for otc in org.otc %}
+                    {% if otc.conferenceid == conf.id %}
+                        {% if otc.invoice != 0 %}
+                            {% set do = false %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endif %}
+        {% if wopaid %}
+            {% if org.users|length != 0 %}
+                {% for otc in org.otc %}
+                    {% if otc.conferenceid == conf.id %}
+                        {% if otc.invoice == 0 %}
+                            {% set do = false %}
+                        {% endif %}
+                        {% if otc.paid != 0 %}
+                            {% set do = false %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endif %}
+
+        {% if do %}
+            {% if org.users|length != 0 %}
+                <tr class="org">
+                    {% set userlength = 0 %}
+                    {% for user in org.users %}
+                        {% if user.utoas|length != 0 %}
+                            {% set userlength = userlength + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    <td rowspan="{{ userlength }}">
+                        {{ i }}{% set i = i + 1 %}
+                    </td>
+                    <td rowspan="{{ userlength }}" width="70px">
+                        <b>{{ org.name }}</b><br>
+                        {% if org.managers != null %}
+                            {{ org.managers.title }}
+                        {% else %}
+                            Нет менеджера
+                        {% endif %}
+                        {% if org.ourcomment is not null %}<br><br>
+                            <b>Наш комментарий:</b><br>
+                            {{ org.ourcomment }}
+                        {% endif %}
+
+                    </td>
+                    <td>
+                        {% set firstuser = 1 %}
+                        {% set userstring = '' %}
+                        {% for user in org.users %}
+                            {% if user.utoas|length != 0 %}
+                                {% if firstuser == 1 %}
+                                    <strong>{{ user.lastname }} {{ user.firstname }} {{ user.middlename }}</strong>
+                                    {% if user.post %}
+                                        <span style="color: #656565;"> - {{ user.post }}</span>
+                                    {% endif %}
+                                    {% for utas in user.utoas %}
+                                        {% set apart = utas.apartament.apartament %}
+                                        ({{ apart.title }} - {{ apart.price }})
+                                    {% endfor %}
+                                    <br>
+                                    {% set firstuser = 0 %}
+                                {% else %}
+                                    {% set class = '' %}
+                                    {% for utas in user.utoas %}
+                                        {% set apart = utas.apartament.apartament %}
+                                        {% set class = '(' ~ apart.title ~ ' - ' ~ apart.price ~ ')' %}
+                                    {% endfor %}
+                                    {% set userstring = userstring ~ '<tr><td><strong>' ~ user.lastname ~ ' ' ~ user.firstname ~ ' ' ~ user.middlename ~ '</strong> ' ~ class ~ '</td></tr>' %}
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td rowspan="{{ userlength }}">
+                        {% for otc in org.otc %}
+                            {% if otc.conferenceid == conf.id %}
+                                {% if otc.invoice != 0 %}
+                                    № {{ otc.invoice }} на сумму {{ otc.summ }}р.<br>
+
+                                    {% if otc.paymentdate|date('Y') < "now"|date('Y') %}Нет даты
+                                    {% else %}{{ otc.paymentdate|date('Y.m.d H:i:s') }}
+                                    {% endif %}<br>
+
+                                    {% if otc.paid == 1 %}Оплачено {% if otc.paidsum != null %}{{ otc.paidsum }}{% else %}0{% endif %}р.
+                                    {% elseif otc.paid == 2 %}Частично оплачено {% if otc.paidsum != null %}{{ otc.paidsum }}{% else %}0{% endif %}р.
+                                    {% else %}Не оплачено
+                                    {% endif %}<br>
+                                {% else %}Счет не выставлен
+                                {% endif %}<br>
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td rowspan="{{ userlength }}">
+                        <div style="max-width: 180px">
+                            {% if org.comment is not null %}<br><br>
+                                <b>Комментарий клиента:</b><br>
+                                {{ org.comment }}
+                            {% endif %}
+                        </div>
+                        <textarea></textarea>
+                    </td>
+                </tr>
+                {{ userstring|raw }}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="5"></td>
+    </tr>
+    </tfoot>
+</table>
+</body>

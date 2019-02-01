@@ -1,0 +1,15 @@
+monolog:
+    handlers:
+        main:
+            type:         fingers_crossed
+            handler:      syslog
+            action_level: notice
+        console:
+            type:  console
+        syslog:
+            type: syslog
+            level: notice
+            facility: local0
+
+parameters:
+    cros_emails: [ 'e.nachuychenko@nag.ru', 'a.gazetdinov@nag.ru', 'esuzev@nag.ru', 'cros@nag.ru' ]

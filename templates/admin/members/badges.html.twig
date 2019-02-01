@@ -1,0 +1,386 @@
+{% extends 'admin.html.twig' %}
+{% block body %}
+    <style>
+        .bg_load {
+            display: none;
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            background: #EEE;
+        }
+
+        .wrapper {
+            display: none;
+            /* Size and position */
+            font-size: 25px; /* 1em */
+            width: 9em;
+            height: 9em;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            margin-top: -100px;
+            margin-left: -100px;
+
+            /* Styles */
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: 1em dashed rgba(138,189,195,0.5);
+            box-shadow:
+                    inset 0 0 2em rgba(255,255,255,0.3),
+                    0 0 0 0.7em rgba(255,255,255,0.3);
+            animation: rota 3.5s linear infinite;
+
+            /* Font styles */
+            font-family: 'Racing Sans One', sans-serif;
+
+            color: #444;
+            text-align: center;
+            text-transform: uppercase;
+            text-shadow: 0 .04em rgba(255,255,255,0.9);
+            line-height: 7em;
+        }
+
+        .wrapper:before,
+        .wrapper:after {
+            content: "";
+            position: absolute;
+            z-index: -1;
+            border-radius: inherit;
+            box-shadow: inset 0 0 2em rgba(255,255,255,0.3);
+            border: 1em dashed;
+        }
+
+        .wrapper:before {
+            border-color: rgba(138,189,195,0.2);
+            top: 0; right: 0; bottom: 0; left: 0;
+        }
+
+        .wrapper:after {
+            border-color: rgba(138,189,195,0.4);
+            top: 1em; right: 1em; bottom: 1em; left: 1em;
+        }
+
+        .wrapper .inner {
+            width: 100%;
+            height: 100%;
+            animation: rota 3.5s linear reverse infinite;
+        }
+
+        .wrapper span {
+            display: inline-block;
+            animation: placeholder 1.5s ease-out infinite;
+        }
+
+        .wrapper span:nth-child(1)  { animation-name: loading-1;  }
+        .wrapper span:nth-child(2)  { animation-name: loading-2;  }
+        .wrapper span:nth-child(3)  { animation-name: loading-3;  }
+        .wrapper span:nth-child(4)  { animation-name: loading-4;  }
+        .wrapper span:nth-child(5)  { animation-name: loading-5;  }
+        .wrapper span:nth-child(6)  { animation-name: loading-6;  }
+        .wrapper span:nth-child(7)  { animation-name: loading-7;  }
+        .wrapper span:nth-child(8)  { animation-name: loading-8;  }
+
+        @keyframes rota {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes loading-1 {
+            12.5% { opacity: 0.3; }
+        }
+
+        @keyframes loading-2 {
+            25% { opacity: 0.3; }
+        }
+
+        @keyframes loading-3 {
+            37.5% { opacity: 0.3; }
+        }
+
+        @keyframes loading-4 {
+            50% { opacity: 0.3; }
+        }
+
+        @keyframes loading-5 {
+            62.5% { opacity: 0.3; }
+        }
+
+        @keyframes loading-6 {
+            75% { opacity: 0.3; }
+        }
+
+        @keyframes loading-7 {
+            87.5% { opacity: 0.3; }
+        }
+
+        @keyframes loading-8 {
+            100% { opacity: 0.3; }
+        }
+    </style>
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Бейджи</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#autogen">Автоматическая генерция</a>
+                        </h4>
+                    </div>
+                </div>
+                <div id="autogen" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        {% if archive %}
+                            <a href="/uploads/badges/{{ archive }}.zip" class="btn btn-default">Скачать бейджи за {{ gen_date }}</a>
+                        {% endif %}<br>
+                        <div class="form-group">
+                            <label for="image_width">Ширина шаблона</label>
+                            <select id="image_width" class="form-control">
+                                <option value="2840" selected>2838</option>
+                                <option value="2602">2602</option>
+                                <option value="1654">1654</option>
+                                <option value="596">596</option>
+                            </select>
+                            <label for="image_height">Высота шаблона</label>
+                            <select id="image_height" class="form-control">
+                                <option value="1811" selected>1811</option>
+                                <option value="1774">1774</option>
+                                <option value="1182">1182</option>
+                                <option value="426">426</option>
+                            </select>
+                            <label for="padding-top">Поле сверху</label>
+                            <input id="padding-top" type="text" class="form-control" value="950">400
+                            <label for="padding-bottom">Поле снизу</label>
+                            <input id="padding-bottom" type="text" class="form-control" value="100">
+                            <label for="padding-left">Поле слева</label>
+                            <input id="padding-left" type="text" class="form-control" value="585">150
+                            <label for="padding-right">Поле справа</label>
+                            <input id="padding-right" type="text" class="form-control" value="250">150
+                        </div>
+
+                        <button class="do_generate btn btn-default" type="button">Сгенерировать новые</button><br>
+                        Предпросмотр (Масштаб 1:4)
+                        <div id="temp">
+                            <div id="wrap-left" class="wrap">
+                                Фамилия<br>Имя<br>Отчество
+                                <div style="text-align: center; font-size: 60px; margin-top: 70px;">Должность</div>
+                            </div>
+                            <div id="wrap-right" class="wrap">
+                                Фамилия<br>Имя<br>Отчество
+                                <div style="text-align: center; font-size: 60px; margin-top: 70px;">Должность</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#mangen">Ручная генерация</a>
+                        </h4>
+                    </div>
+                    <div id="mangen" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>
+                                    <input type="text" id="search" class="form-control" name="search" placeholder="Поиск">
+                                </div>
+                                <div class="search_result"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="badge_type">Тип бейджа</label>
+                                <select name="badge_type" id="badge_type">
+                                    <option value="nag">НАГ</option>
+                                    <option value="vip">VIP</option>
+                                    <option value="all">Остальные</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="last_name">Фамилия</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name">
+                            </div>
+                            <div class="form-group">
+                                <label for="first_name">Имя</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name">
+                            </div>
+                            <div class="form-group">
+                                <label for="middle_name">Отчество</label>
+                                <input type="text" class="form-control" id="middle_name" name="middle_name">
+                            </div>
+                            <div class="form-group">
+                                <label for="middle_name">Nickname</label>
+                                <input type="text" class="form-control" id="nickname" name="nickname">
+                            </div>
+                            <div class="form-group">
+                                <label for="post">Должность</label>
+                                <input type="text" class="form-control" id="post" name="post">
+                            </div>
+                            <div class="form-group">
+                                <label for="org">Компания</label>
+                                <input type="text" class="form-control" id="org" name="org">
+                            </div>
+                            <div class="form-group">
+                                <label for="city">Город</label>
+                                <input type="text" class="form-control" id="city" name="city">
+                            </div>
+                            <button type="button" class="btn btn-default" id="generate-personal">Генерировать</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <style>
+                #temp{
+                    font-size: 110px;
+                    transform: scale(0.25, 0.25);
+                    position: relative;
+                    width: 2603px;
+                    height: 1774px;
+                    border: 1px solid black;
+                    transform-origin: 0 0;
+                    padding-top: 650px;
+                    padding-bottom: 100px;
+                    padding-left: 250px;
+                    padding-right: 250px;
+                    background: url('/uploads/badges/forgen/1px.png') repeat-y 50%;
+                }
+                .wrap{
+                    position: relative;
+                    width: calc(50% - 250px);
+                    height: 100%;
+                    outline: 1px dashed black;
+                    float: left;
+                }
+                #wrap-left{
+                    margin-right: 500px;
+                }
+            </style>
+            <div class="bg_load"></div>
+            <div class="wrapper">
+                <div class="inner">
+                    <span>З</span>
+                    <span>а</span>
+                    <span>г</span>
+                    <span>р</span>
+                    <span>у</span>
+                    <span>з</span>
+                    <span>к</span>
+                    <span>а</span>
+                </div>
+            </div>
+        </div>
+        <div id="editor"></div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/admin.js') }}"></script>
+    <script>
+        $('.do_generate').on('click', function () {
+            $(".bg_load").fadeIn("slow");
+            $(".wrapper").fadeIn("slow");
+            $.ajax({
+                url: "{{ path('admin-generate-badges') }}",
+                type: "post",
+                method: "post",
+                data: {w: $('#image_width').val(), h: $('#image_height').val(), pt: $('#padding-top').val(), pb: $('#padding-bottom').val(), pl: $('#padding-left').val(), pr: $('#padding-right').val() },
+                success: function(){
+                    location.reload();
+                }
+            });
+        });
+        
+        $('#generate-personal').on('click', function () {
+            var bt = $('#badge_type').val();
+            var ln = $('#last_name').val();
+            var fn = $('#first_name').val();
+            var mn = $('#middle_name').val();
+            var po = $('#post').val();
+            var or = $('#org').val();
+            var ci = $('#city').val();
+            var nn = $('#nickname').val();
+            $(".bg_load").fadeIn("slow");
+            $(".wrapper").fadeIn("slow");
+            $.ajax({
+                url: "{{ path('admin-generate-badges') }}",
+                type: "post",
+                method: "post",
+                data: {man: true, type: bt, last_name: ln, first_name: fn, middle_name: mn, post: po, organization: or, city: ci, nickname: nn},
+                success: function(data){
+                    var d = data.split('.');
+                    var dl = d.length - 1;
+                    var a = $("<a>")
+                        .attr("href", data)
+                        .attr("download", ln + '_' + fn + '_' + or + '.' + d[dl])
+                        .appendTo("body");
+                    a[0].click();
+                    a.remove();
+                    $(".bg_load").fadeOut("slow");
+                    $(".wrapper").fadeOut("slow");
+                }
+            });
+        });
+
+        var typingTimer;
+        var doneTypingInterval = 500;
+
+        function reloadAddListener(){
+            var $search_result = $('.sresu');
+            $search_result.off();
+            $search_result.on('click', function () {
+                var ln = $(this).attr('data-lastname');
+                var fn = $(this).attr('data-firstname');
+                var mn = $(this).attr('data-middlename');
+                var po = $(this).attr('data-post');
+                var or = $(this).attr('data-organization');
+                var ci = $(this).attr('data-city');
+                var nn = $(this).attr('data-nickname');
+                $('#search').val('');
+                $('.search_result').html('');
+                $('#last_name').val(ln);
+                $('#first_name').val(fn);
+                $('#middle_name').val(mn);
+                $('#post').val(po);
+                $('#org').val(or);
+                $('#city').val(ci);
+                $('#nickname').val(nn);
+            });
+        }
+
+        function doFind(){
+            var $s = $('#search');
+            if($s.val().length > 3){
+                var search = $s.val();
+                $.ajax({
+                    url: "{{ path('admin-badges-find') }}",
+                    type: "post",
+                    method: "post",
+                    data: {search: search},
+                    success: function(data){
+                        $('.search_result').html(data);
+                        reloadAddListener();
+                    }
+                });
+            }
+        }
+
+        $('#search').on('change keyup paste input', function(){
+            if(typingTimer){
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(doFind, doneTypingInterval);
+            }
+            else{
+                doFind();
+                typingTimer = setTimeout(doFind, doneTypingInterval);
+            }
+        });
+    </script>
+{% endblock %}

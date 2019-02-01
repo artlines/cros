@@ -1,0 +1,173 @@
+{% extends 'admin.html.twig' %}
+{% block body %}
+    <style>
+        .avatar{
+            width: 50px;
+            height: 50px;
+            overflow: hidden;
+            border-radius: 50%;
+        }
+        .avatar img{
+            max-height: 100%;
+            margin-left: -15%;
+        }
+    </style>
+    <div class="row">
+        <div class="col-lg-12">
+            {% if list is empty %}
+                {% set uc = false %}
+            {% else %}
+                {% set uc = list|length %}
+            {% endif %}
+            <h1 class="page-header">Докладчики{% if uc %} <small>{{ uc }} человек</small>{% endif %}</h1><a href="{{ path('admin-speaker-add')}}" class="btn btn-success">
+                Добавить докладчика
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            {% if list is empty %}
+                <h3>Нет докладчиков</h3>
+            {% else %}
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Фото</th>
+                        <th>ФИО</th>
+                        <th>Доклад</th>
+                        <th>Действия</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set ui = 1 %}
+                    {% for speaker in list %}
+                        {% set user = speaker.user %}
+                        <tr>
+                            <td>
+                                <div class="avatar">
+                                    <img src="/uploads/speakers/{{ speaker.avatar }}" alt="{{ user.lastname }} {{ user.firstname }}">
+                                </div>
+                            </td>
+                            <td>
+                                {{ user.lastname }} {{ user.firstname }} {{ user.middlename }}
+                            </td>
+                            <td>
+                                <a href="{{ path('speakers-list-report', {'id': speaker.id}) }}" class="btn btn-success">
+                                    Список докладов
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{{ path('admin-speaker-edit', {'id': speaker.id}) }}" class="btn btn-success">
+                                    <i class="fa fa-edit fa-fw"></i>
+                                </a>
+                                <a href="{{ path('admin-speaker-remove', {'id': speaker.id}) }}" class="btn btn-danger remove-speaker">
+                                    <i class="fa fa-remove fa-fw"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+        <div id="editor"></div>
+    </div>
+    <div id="remove-confirm" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Подтвердите удаление</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Вы точно хотите удалить докладчика?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning btn-ok" data-dismiss="modal">Удалить</button>
+                    <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/admin.js') }}"></script>
+    <script>
+        var linkforemove = false;
+        $('.remove-speaker').on('click', function(e){
+            e.preventDefault();
+            linkforemove = $(this).attr('href');
+            $('#remove-confirm').modal();
+        });
+
+        $('.btn-ok').on('click', function () {
+            window.location = linkforemove;
+        });
+
+        $('.btn-cancel').on('click', function () {
+            linkforemove = false;
+        });
+
+        var typingTimer;
+        var doneTypingInterval = 500;
+
+
+        function doFind() {
+            var find_str = $('#find_user').val();
+            $('.userlist').html('');
+            if(find_str.length > 3) {
+
+                $.ajax({
+                    url: "{{ path('admin-speaker-find') }}",
+                    type: "post",
+                    method: "post",
+                    data: {find: find_str},
+                    success: function (data) {
+                        var res = $.parseJSON(data);
+                        $.each(res, function (id, params) {
+                            console.log(params);
+                            $('.userlist').append('<div><button class="btn btn-success add_speaker" type="button" data-userid="' + params.id + '"><i class="fa fa-plus fa-fw"></i></button>' + params.lastname + ' ' + params.firstname + ' ' + params.middlename + ' (' + params.org + ')</div>');
+                        });
+                        reloadAddListener();
+                    }
+                });
+            }
+        }
+
+        $('#find_user').on('change input keyup', function () {
+            if(typingTimer){
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(doFind, doneTypingInterval);
+            }
+            else{
+                doFind();
+                typingTimer = setTimeout(doFind, doneTypingInterval);
+            }
+
+
+        });
+
+        function reloadAddListener() {
+            $('.add_speaker').off();
+            $('.add_speaker').on('click', function () {
+                var add_id = $(this).attr('data-userid');
+                $.ajax({
+                    url: "{{ path('admin-speaker-new') }}",
+                    type: "post",
+                    method: "post",
+                    data: {add_id: add_id},
+                    success: function (data) {
+                        if(data != 'false') {
+                            window.location = '/app_dev.php/admin/speaker/' + data;
+                        }
+                    }
+                });
+            });
+        }
+    </script>
+{% endblock %}

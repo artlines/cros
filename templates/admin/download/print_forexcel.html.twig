@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Печать таблицы</title>
+    <style type="text/css">
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+        }
+
+        h4 {
+            margin: 0;
+        }
+
+        tr {
+            page-break-inside: avoid;
+        }
+
+        td, th {
+            vertical-align: top;
+        }
+
+        td {
+            border-top: 1px solid silver;
+            padding-top: 5px;
+        }
+
+        .room {
+            margin-bottom: -1px;
+            margin-right: -4px;
+            display: inline-block;
+            width: calc(50% - 12px);
+            padding: 5px;
+            vertical-align: top;
+        }
+
+        .nag {
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        @media print {
+            textarea {
+                border: 0;
+                resize: none;
+            }
+
+            @page {
+                size: landscape;
+            }
+        }
+    </style>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>ФИО</th>
+        <th>Компания</th>
+        <th>Должность</th>
+        <th>Город</th>
+        <th>Почта</th>
+        <th>Телефон</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for utc in userstoconf %}
+        {% set post = utc.user.post %}
+        {% if utc.user.organization.id != 0 %}
+            {% if "Уточняется" not in utc.user.lastname %}
+                <tr>
+                    <td>{{ utc.user.lastname }} {{ utc.user.firstname }} {{ utc.user.middlename }}</td>
+                    <td>{{ utc.user.organization.name|replace({'ООО"ЭйрЛинк"': 'ЭйрЛинк', 'ООО ': '', 'ЗАО ': '', 'ОАО ': '', 'НОУ ': '', 'ПАО ': '', 'АО ': '', 'ТОО ': '', 'РУП': '', 'AО ': '', '"': '', "'": '', '«': '', '»': '', 'Докладчик': ''}) }}</td>
+                    <td>{% if utc.user.organization.name != "Докладчик" %}{{ post }}{% else %}Докладчик{% endif %}</td>
+                    <td>{{ utc.user.organization.city }}</td>
+                    <td>{% if utc.user.email != "needsetemail@gmail.com" %}{% if 'illumi-nation.ru' not in utc.user.email %}{{ utc.user.email }}{% endif %}{% endif %}</td>
+                    <td>{% if utc.user.username|length < 16 %}
+                            {% if post != "Менеджер по работе с партнерами" or utc.user.organization.name != "ЛАЙФСТРИМ" %}
+                                {% if utc.user.username not in ["+1111111111", "+179857776075", "+77777777777", "+70000000000", "+7989999999999", "+9114688286"] %}тел. {{ utc.user.username }}
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}</td>
+                </tr>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+    </tbody>
+</table>
+</body>

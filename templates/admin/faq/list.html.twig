@@ -1,0 +1,87 @@
+{% extends 'admin.html.twig' %}
+{% block body %}
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Вопросы и ответы {% if result %}<small class="bg-{{ result.status }}">{{ result.text }}</small>{% endif %}</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                {% if faq is empty %}
+                <h3>Нет вопросов и ответов</h3>
+                {% else %}
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>
+                                Вопрос
+                                <a href="{{ path('admin-faq-edit', {'id': 'new'}) }}">
+                                    <button type="button" class="btn btn-success"><i class="fa fa-plus fa-fw"></i></button>
+                                </a>
+                            </th>
+                            <th>Действия</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for question in faq %}
+                            <tr>
+                                <td><span {% if question.isactive == 1 %}class="text-success"{% set active = true %}{% else %}class="text-danger"{% set active = false %}{% endif %}>{{ question.question|raw }}</span></td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="{{ path('admin-faq-edit', {'id': question.id }) }}" class="btn btn-default" role="button">
+                                            <i class="fa fa-edit fa-fw"></i> Редактировать
+                                        </a>
+                                        <a href="{{ path('admin-faq-remove', {'id': question.id}) }}" class="btn btn-danger remove-faq" role="button">
+                                            <i class="fa fa-remove fa-fw"></i> Удалить
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            </div>
+            <div id="editor"></div>
+        </div>
+    <div id="remove-confirm" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Подтвердите удаление</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Вы точно хотите удалить вопрос?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning btn-ok" data-dismiss="modal">Удалить</button>
+                    <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/admin.js') }}"></script>
+    <script>
+        var linkforemove = false;
+        $('.remove-faq').on('click', function(e){
+            e.preventDefault();
+            linkforemove = $(this).attr('href');
+            $('#remove-confirm').modal();
+        });
+        
+        $('.btn-ok').on('click', function () {
+            window.location = linkforemove;
+        });
+
+        $('.btn-cancel').on('click', function () {
+            linkforemove = false;
+        });
+    </script>
+{% endblock %}

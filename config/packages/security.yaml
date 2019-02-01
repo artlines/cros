@@ -1,0 +1,73 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/security.html
+security:
+    encoders:
+        App\Entity\Participating\User:
+            algorithm: bcrypt
+
+    # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    providers:
+        chain_provider:
+          chain:
+            providers: [user_db]
+        in_memory:
+            memory: ~
+        user_db:
+            entity: { class: App\Entity\Participating\User }
+
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        default:
+            provider: chain_provider
+            anonymous: ~
+            logout:
+                path: logout
+                target: homepage
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
+                    - App\Security\GoogleAuthenticator
+                entry_point: App\Security\LoginFormAuthenticator
+
+    ###
+    # Fresh roles
+    #
+    # ROLE_CMS_USER           - access to CMS
+    # ROLE_SALES_MANAGER      - sales manager
+    # ROLE_SALES_HEAD         - head of sales manager
+    # ROLE_SETTLEMENT_MANAGER - settlement coordinator
+    # ROLE_CONTENT_MANAGER    - content manager
+    # ROLE_ADMINISTRATOR      - administrator
+    ###
+
+    access_control:
+        # new roles
+        - { path: ^/api, roles: ROLE_CMS_USER }
+
+        # require ROLE_ADMIN for /admin*
+        #- { path: ^/admin/table, roles: ROLE_MANAGER }
+        #- { path: ^/admin/org, roles: ROLE_MANAGER }
+        #- { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/profile, roles: ROLE_ORG }
+        - { path: ^/registration2, roles: ROLE_ORG}
+        - { path: ^/registration3, roles: ROLE_ORG}
+
+    role_hierarchy:
+        # new hierarchy
+        ROLE_SALES_MANAGER:       [ROLE_CMS_USER]
+        ROLE_SALES_HEAD:          [ROLE_CMS_USER, ROLE_SALES_MANAGER]
+        ROLE_SETTLEMENT_MANAGER:  [ROLE_CMS_USER]
+        ROLE_CONTENT_MANAGER:     [ROLE_CMS_USER]
+        ROLE_ADMINISTRATOR:
+            - ROLE_CMS_USER
+            - ROLE_SALES_MANAGER
+            - ROLE_SALES_HEAD
+            - ROLE_SETTLEMENT_MANAGER
+            - ROLE_CONTENT_MANAGER
+
+        ROLE_ADMIN: ROLE_MANAGER

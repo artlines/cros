@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Конференция Российских Операторов Связи{% endblock %}
+
+{% block header_title %}Регистрация{% endblock %}
+
+{% block page_image %}registration{% endblock %}
+
+{% block body %}
+    <h3 class="text-success">Спасибо! Ваша заявка принята.
+        <br/>Данные отправлены Вам на почту.
+        <br/>В ближайшее время с Вами свяжется наш менеджер.</h3>
+
+    <a class="btn btn-default u-btn-yellow cs-color-white cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ path('registration-3') }}">Перейти в личный кабинет</a>
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+

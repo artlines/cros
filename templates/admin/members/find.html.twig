@@ -1,0 +1,20 @@
+{% block body %}
+    <ul class="list-group">
+    {% if users %}
+        {% for user in users %}
+            <a href="#" class="list-group-item sresu" data-lastname="{{ user.lastname }}"
+               data-firstname="{{ user.firstname }}" data-middlename="{{ user.middlename }}"
+               data-post="{{ user.post }}" data-organization="{{ user.organization.name }}"
+               data-city="{{ user.organization.city }}" data-nickname="{{ user.nickname }}">{{ user.lastname }} {{ user.firstname }} {{ user.middlename }} - {{ user.post }} ({{ user.organization.name }})</a>
+        {% endfor %}
+    {% else %}
+        <li class="list-group-item disabled">Ничего не найдено</li>
+    {% endif %}
+    </ul>
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}

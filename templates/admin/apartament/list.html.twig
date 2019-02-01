@@ -1,0 +1,118 @@
+{% extends 'admin.html.twig' %}
+{% block body %}
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Номера {% if result %}<small class="bg-{{ result.status }}">{{ result.text }}</small>{% endif %}</h1>
+            </div>
+        </div>
+        <a href="{{ path('admin-apartament-text') }}" class="btn btn-default">Редактировать дополнительный текст</a>
+        <div class="row">
+            <div class="col-lg-12">
+                {% if apartaments is empty %}
+                <h3>Нет номеров {% if selectedconf.finish.date > 'now'|date('Y-m-d H:i:s') %}<a href="{{ path('admin-apartament-edit', {'id': 'new'}) }}"><button type="button" class="btn btn-default">Добавить</button></a>{% endif %}</h3>
+            {% else %}
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>
+                                Номер
+                                <a href="{{ path('admin-apartament-edit', {'id': 'new'}) }}">
+                                    <button type="button" class="btn btn-success"><i class="fa fa-plus fa-fw"></i></button>
+                                </a>
+                            </th>
+                            <th>Код</th>
+                            <th>Вместимость</th>
+                            <th>Количество</th>
+                            <th>Стоимость</th>
+                            <th>Действия</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for apartament in apartaments %}
+                            <tr>
+                                <td><span>{{ apartament.title|raw }}</span></td>
+                                <td>{{ apartament.code }}</td>
+                                <td>{{ apartament.places }} человек</td>
+                                <td>{{ apartament.price }} руб.</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="{{ path('admin-apartament-edit', {'id': apartament.id }) }}" class="btn btn-default" role="button">
+                                            <i class="fa fa-edit fa-fw"></i> Редактировать
+                                        </a>
+                                        <a href="{{ path('admin-apartament-remove', {'id': apartament.id}) }}" class="btn btn-danger remove-price" role="button">
+                                            <i class="fa fa-remove fa-fw"></i> Удалить
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {#{% if apartament.attoa|length > 0 %}
+                                <tr>
+                                    <td colspan="5">
+                                        {% for ap_type in apartament.attoa %}
+                                            {{ dump(ap_type) }}
+                                            <div class="panel-group">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <h4 class="panel-title">
+                                                            <a data-toggle="collapse" href="#apt{{ ap_type.id }}">
+                                                                {{ ap_type.title }}</a>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="apt{{ ap_type.id }}" class="panel-collapse collapse">
+                                                        <div class="panel-body">Panel Body</div>
+                                                        <div class="panel-footer">Panel Footer</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </td>
+                                </tr>
+                            {% endif %}#}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            </div>
+            <div id="editor"></div>
+        </div>
+    <div id="remove-confirm" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Подтвердите удаление</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Вы точно хотите удалить номер?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning btn-ok" data-dismiss="modal">Удалить</button>
+                    <button type="button" class="btn btn-default btn-cancel" data-dismiss="modal">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/admin.js') }}"></script>
+    <script>
+        var linkforemove = false;
+        $('.remove-price').on('click', function(e){
+            e.preventDefault();
+            linkforemove = $(this).attr('href');
+            $('#remove-confirm').modal();
+        });
+        
+        $('.btn-ok').on('click', function () {
+            window.location = linkforemove;
+        });
+
+        $('.btn-cancel').on('click', function () {
+            linkforemove = false;
+        });
+    </script>
+{% endblock %}

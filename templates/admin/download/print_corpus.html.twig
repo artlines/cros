@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Печать таблицы</title>
+    <style type="text/css">
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+        }
+
+        h4 {
+            margin: 0;
+        }
+
+        tr {
+            page-break-inside: avoid;
+        }
+
+        td, th {
+            vertical-align: top;
+        }
+
+        td, th {
+            border-top: 1px solid silver;
+            padding: 5px;
+        }
+
+        .room {
+            margin-bottom: -1px;
+            margin-right: -4px;
+            display: inline-block;
+            width: calc(50% - 12px);
+            padding: 5px;
+            vertical-align: top;
+        }
+
+        .nag {
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        @media print {
+            textarea {
+                border: 0;
+                resize: none;
+            }
+
+            @page {
+                size: landscape;
+            }
+        }
+        .draggable_flat{
+            border-bottom: 1px solid silver;
+        }
+    </style>
+</head>
+<body>
+<table>
+    <tbody>
+    {% for corpus in corpuses %}
+        <tr>
+            <th>Корпус {{ corpus.id }}</th>
+            <td>Этаж 1{% if corpus.stage1 != null %} - {{ corpus.stages1.maxflat }} номера{% endif %}<br><br>
+                {% if corpus.stage1 != null %}
+                    {% set flat = corpus.stages1.realflat1 %}
+                    {% if flat %}
+                        <div class="draggable_flat">
+                            <b>Номер {{ flat.realid }} id:{{ flat.id }}</b>
+                            {% if flat.room1 != null %}
+                                {% if flat.realroom1.apartament %}
+                                <div class="rif">
+                                    <b>{{ flat.realroom1.apartament.title }}</b><br>
+                                    {% for uta in flat.realroom1.atoais %}
+                                        {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                        <br>
+                                    {% endfor %}
+                                </div>
+                                    {% endif %}
+                            {% endif %}
+                            {% if flat.room2 != null %}
+                                <div class="rif">
+                                    <b>{{ flat.realroom2.apartament.title }}</b><br>
+                                    {% for uta in flat.realroom2.atoais %}
+                                        {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                        <br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {% if flat.room3 != null %}
+                                <div class="rif">
+                                    <b>{{ flat.realroom3.apartament.title }}</b><br>
+                                    {% for uta in flat.realroom3.atoais %}
+                                        {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                        <br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {% if flat.room4 != null %}
+                                <div class="rif">
+                                    <b>{{ flat.realroom4.apartament.title }}</b><br>
+                                    {% for uta in flat.realroom4.atoais %}
+                                        {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                        <br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {% if flat.room5 != null %}
+                                <div class="rif">
+                                    <b>{{ flat.realroom5.apartament.title }}</b><br>
+                                    {% for uta in flat.realroom5.atoais %}
+                                        {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                        <br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    {% set flat = corpus.stages1.realflat2 %}
+                    {% if flat %}
+                        <div draggable="true" ondragstart="drag(event)"
+                             id="flat{{ flat.id }}" width="88" height="31"
+                             class="draggable_flat" data-id="{{ flat.id }}">
+                            <b>Номер {{ flat.realid }} id:{{ flat.id }}</b>
+                            {% if flat.room1 != null %}
+                                <div class="rif">
+                                    <b>{{ flat.realroom1.apartament.title }}</b><br>
+                                    {% for uta in flat.realroom1.atoais %}
+                                        {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                        <br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {% if flat.room2 != null %}
+                                <div class="rif">
+                                    <b>{{ flat.realroom2.apartament.title }}</b><br>
+                                    {% for uta in flat.realroom2.atoais %}
+                                        {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                        <br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {% if flat.room3 != null %}
+                                <div class="rif">
+                                    <b>{{ flat.realroom3.apartament.title }}</b><br>
+                                    {% for uta in flat.realroom3.atoais %}
+                                        {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                        <br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {% if flat.room4 != null %}
+                                <div class="rif">
+                                    <b>{{ flat.realroom4.apartament.title }}</b><br>
+                                    {% for uta in flat.realroom4.atoais %}
+                                        {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                        <br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {% if flat.room5 != null %}
+                                <div class="rif">
+                                    <b>{{ flat.realroom5.apartament.title }}</b><br>
+                                    {% for uta in flat.realroom5.atoais %}
+                                        {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                        <br>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                    </div>
+                    </div>
+                {% endif %}
+            </td>
+            <td>Этаж 2{% if corpus.stage2 != null %} - {{ corpus.stages2.maxflat }} номера{% endif %}<br><br>
+                {% if corpus.stage2 != null %}
+                    <div class="panel-group">
+                        <div class="panel panel-default">
+                            <div class="panlel-body">
+                                <div class="drag_field">
+                                    <div id="stage{{ corpus.stages2.id }}" ondrop="drop(event)"
+                                         ondragover="allowDrop(event)" class="real_drag"
+                                         data-places="{{ corpus.stages2.maxflat }}" data-stage="{{ corpus.stages2.id }}"
+                                         data-flat1="{{ corpus.stages2.flat1 }}" data-flat2="{{ corpus.stages2.flat2 }}"
+                                         data-flat3="{{ corpus.stages3.flat3 }}"
+                                         data-flat4="{{ corpus.stages3.flat4 }}">{% set flat = corpus.stages2.realflat1 %}
+                                        {% if flat %}
+                                            <div draggable="true" ondragstart="drag(event)" id="flat{{ flat.id }}"
+                                                 width="88" height="31" class="draggable_flat"
+                                                 data-id="{{ flat.id }}">
+                                                <b>Номер {{ flat.realid }} id:{{ flat.id }}</b>
+                                                {% if flat.room1 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom1.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom1.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room2 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom2.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom2.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room3 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom3.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom3.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room4 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom4.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom4.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room5 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom5.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom5.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                        {% set flat = corpus.stages2.realflat2 %}
+                                        {% if flat %}
+                                            <div draggable="true" ondragstart="drag(event)"
+                                                 id="flat{{ flat.id }}" width="88" height="31"
+                                                 class="draggable_flat" data-id="{{ flat.id }}">
+                                                <b>Номер {{ flat.realid }} id:{{ flat.id }}</b>
+                                                {% if flat.room1 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom1.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom1.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room2 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom2.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom2.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room3 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom3.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom3.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room4 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom4.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom4.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room5 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom5.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom5.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                        {% set flat = corpus.stages2.realflat3 %}
+                                        {% if flat %}
+                                            <div draggable="true" ondragstart="drag(event)"
+                                                 id="flat{{ flat.id }}" width="88" height="31"
+                                                 class="draggable_flat" data-id="{{ flat.id }}">
+                                                <b>Номер {{ flat.realid }} id:{{ flat.id }}</b>
+                                                {% if flat.room1 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom1.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom1.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room2 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom2.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom2.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room3 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom3.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom3.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room4 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom4.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom4.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room5 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom5.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom5.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                        {% set flat = corpus.stages2.realflat4 %}
+                                        {% if flat %}
+                                            <div draggable="true" ondragstart="drag(event)"
+                                                 id="flat{{ flat.id }}" width="88" height="31"
+                                                 class="draggable_flat" data-id="{{ flat.id }}">
+                                                <b>Номер {{ flat.realid }} id:{{ flat.id }}</b>
+                                                {% if flat.room1 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom1.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom1.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room2 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom2.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom2.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room3 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom3.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom3.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room4 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom4.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom4.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room5 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom5.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom5.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </td>
+            <td>Этаж 3{% if corpus.stage3 != null %} - {{ corpus.stages3.maxflat }} номера{% endif %}<br><br>
+                {% if corpus.stage3 != null %}
+                    <div class="panel-group">
+                        <div class="panel panel-default">
+                            <div class="panlel-body">
+                                <div class="drag_field">
+                                    <div id="stage{{ corpus.stages3.id }}" ondrop="drop(event)"
+                                         ondragover="allowDrop(event)" class="real_drag"
+                                         data-places="{{ corpus.stages3.maxflat }}" data-stage="{{ corpus.stages3.id }}"
+                                         data-flat1="{{ corpus.stages3.flat1 }}" data-flat2="{{ corpus.stages3.flat2 }}"
+                                         data-flat3="{{ corpus.stages3.flat3 }}"
+                                         data-flat4="{{ corpus.stages3.flat4 }}">{% set flat = corpus.stages3.realflat1 %}
+                                        {% if flat %}
+                                            <div draggable="true" ondragstart="drag(event)" id="flat{{ flat.id }}"
+                                                 width="88" height="31" class="draggable_flat"
+                                                 data-id="{{ flat.id }}">
+                                                <b>Номер {{ flat.realid }} id:{{ flat.id }}</b>
+                                                {% if flat.room1 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom1.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom1.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room2 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom2.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom2.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room3 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom3.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom3.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room4 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom4.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom4.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room5 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom5.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom5.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                        {% set flat = corpus.stages3.realflat2 %}
+                                        {% if flat %}
+                                            <div draggable="true" ondragstart="drag(event)"
+                                                 id="flat{{ flat.id }}" width="88" height="31"
+                                                 class="draggable_flat" data-id="{{ flat.id }}">
+                                                <b>Номер {{ flat.realid }} id:{{ flat.id }}</b>
+                                                {% if flat.room1 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom1.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom1.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room2 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom2.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom2.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room3 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom3.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom3.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room4 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom4.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom4.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room5 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom5.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom5.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                        {% set flat = corpus.stages3.realflat3 %}
+                                        {% if flat %}
+                                            <div draggable="true" ondragstart="drag(event)"
+                                                 id="flat{{ flat.id }}" width="88" height="31"
+                                                 class="draggable_flat" data-id="{{ flat.id }}">
+                                                <b>Номер {{ flat.realid }} id:{{ flat.id }}</b>
+                                                {% if flat.room1 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom1.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom1.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room2 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom2.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom2.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room3 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom3.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom3.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room4 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom4.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom4.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room5 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom5.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom5.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                        {% set flat = corpus.stages3.realflat4 %}
+                                        {% if flat %}
+                                            <div draggable="true" ondragstart="drag(event)"
+                                                 id="flat{{ flat.id }}" width="88" height="31"
+                                                 class="draggable_flat" data-id="{{ flat.id }}">
+                                                <b>Номер {{ flat.realid }} id:{{ flat.id }}</b>
+                                                {% if flat.room1 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom1.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom1.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room2 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom2.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom2.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room3 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom3.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom3.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room4 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom4.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom4.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                                {% if flat.room5 != null %}
+                                                    <div class="rif">
+                                                        <b>{{ flat.realroom5.apartament.title }}</b><br>
+                                                        {% for uta in flat.realroom5.atoais %}
+                                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }} ({{ uta.user.organization.name }})
+                                                            <br>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="5"></td>
+    </tr>
+    </tfoot>
+</table>
+</body>

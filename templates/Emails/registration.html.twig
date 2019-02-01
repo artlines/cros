@@ -1,0 +1,56 @@
+{% extends 'Emails/base.html.twig' %}
+{% block title %}Здравствуйте, {{ fio }}.{% endblock %}
+
+{% block message %}
+    <p>
+        Мы получили Вашу заявку на участие
+        в Конференции российских операторов связи
+        КРОС-2.0-18 от компании {{ org }}.<br>
+        <div
+            style="
+                    padding: 10px 15px;
+                    background-color: rgba(232, 246, 253, 0.86);
+                    margin: 0px 20px;
+                ">
+
+            <strong>Информация о регистрации:</strong><br>
+            ФИО: {{ user.lastname }} {{ user.firstname }} {{ user.middlename }}<br>
+            Должность: {{ user.post }}<br>
+            Телефон: {{ user.username }}<br>
+            E-mail: {{ user.email }}<br>
+            Nickname: {{ user.nickname }}<br>
+            Номер автомобиля: {{ user.carnumber }}<br>
+            Класс участия: {% for toa in user.utoas  %}{{ toa.apartament.apartament.title }} ({{ toa.apartament.apartament.price }}.р){% endfor %}<br>
+            Ранний заезд: {{ arrival }}<br>
+            Поздний выезд: {{ leaving }}
+        </div>
+        <br>
+
+        Мы свяжемся с Вами в ближайшее время.
+
+        <br><br>
+        Чтобы быть в курсе последних новостей о КРОС,
+        легко решать бытовые и организационные вопросы,
+        а также общаться с другими участниками конференции,
+        присоединяйтесь к нам в Telegram
+        <br><br>
+
+        <table width="680px" style="width: 680px; font-size: 16px; font-family: arial;">
+            <tbody>
+            <tr>
+                <td style="text-align: center;">
+                    <img
+                            src="{{ absolute_url(asset('temp/telegram-logo-56x56.png')) }}"
+                            alt="Telegram" />
+                </td>
+                <td style="text-align: left;">
+                    <a href="https://t.me/joinchat/AAAAAD8Ll_zQJjIrIv136Q"><b>Группа участников КРОС в Telegram</b></a><br>
+                    <a href="https://t.me/cros2017"><b>Информационный канал в Telegram</b></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <br>
+        Если произошла какая-либо ошибка, просим Вас сообщить об этом по адресу: <a href="mailto:cros@nag.ru">cros@nag.ru</a><br>
+    </p>
+{% endblock %}

@@ -1,0 +1,16 @@
+.history-margin{
+    height: 66px;
+}
+
+.add-conference:hover{
+    cursor: pointer;
+    background: #5bc0de !important;
+}
+
+.scrollable-text{
+    background: white;
+    min-height: 100%;
+    max-height: 100px;
+    overflow: auto;
+    padding: 5px;
+}

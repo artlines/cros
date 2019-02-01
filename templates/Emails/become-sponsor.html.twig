@@ -1,0 +1,20 @@
+{% extends 'Emails/base.html.twig' %}
+{% block title %}Спасибо. Ваша заявка принята.{% endblock %}
+
+{% block message %}
+
+	<p>
+		<b>Компания:</b> {{ company|raw }}
+		<br/>
+		<b>E-mail:</b> {{ email|raw }}
+		<br/>
+		<b>Контактный телефон:</b> {{ mobile|raw }}
+		<br/>
+		<b>Тип пакета:</b> {{ packet|raw }}
+		<br/>
+		<br/>
+		<b>Что будет представлено:</b>
+		<br/> {{ present|nl2br }}
+	</p>
+
+{% endblock %}
