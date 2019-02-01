@@ -20,7 +20,7 @@ const addWidget = function (e) {
 
     // create a new list element and add it to the list
     var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
-    newElem.attr('data-num',counter);
+    newElem.find('.conference-member').attr('data-num',counter);
     console.log(list.attr('data-widget-tags'),jQuery(list.attr('data-widget-tags')),newElem,list);
 
     // Increase the counter
@@ -35,6 +35,9 @@ const addWidget = function (e) {
         .on('change', changeRoomType)
         .change()
     ;
+    newElem.find('.firstName').on('change', neighbourhoodRename);
+    newElem.find('.middleName').on('change', neighbourhoodRename);
+    newElem.find('.lastName').on('change', neighbourhoodRename);
 
     // append with animation
     newElem.hide();
@@ -43,6 +46,8 @@ const addWidget = function (e) {
     // show end registration button
     jQuery('#end-red').show();
     jQuery('.select-neighbourhood').each(neighbourhood);
+
+
 };
 
 const changeRoomType = function() {
@@ -69,16 +74,20 @@ const neighbourhood = function() {
             fio = 'Участник ' + (1+i);
         }
 //        console.log(fio);
-        selector.append(
-            jQuery("<option></option>")
-                .attr("value", i)
-                .text(fio)
-        );
+        // look options exist
+        let options = selector.find('option[value='+i+']');
+        if( !options.length )
+        {
+            selector.append(
+                jQuery("<option></option>")
+                    .attr("value", i)
+                    .text(fio)
+            );
+        }else{
+            console.log(options);
+        }
     });
 
-    jQuery('.firstName').on('change', neighbourhoodRename)
-    jQuery('.middleName').on('change', neighbourhoodRename)
-    jQuery('.lastName').on('change', neighbourhoodRename)
 
     // newOptions.map( (key,value) => {
     //     selector.append($("<option></option>")
@@ -138,8 +147,9 @@ jQuery(document).ready(function () {
         .change()
     ;
     jQuery('.select-neighbourhood').each(neighbourhood);
-    // jQuery('.firstName').on('change', neighbourhoodRename)
-    // jQuery('.middleName').on('change', neighbourhoodRename)
-    // jQuery('.lastName').on('change', neighbourhoodRename)
+
+    jQuery('.firstName').on('change', neighbourhoodRename);
+    jQuery('.middleName').on('change', neighbourhoodRename);
+    jQuery('.lastName').on('change', neighbourhoodRename);
 
 });
