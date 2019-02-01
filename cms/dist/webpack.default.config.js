@@ -1,5 +1,5 @@
 const CKEditorWebpackPlugin = require('@ckeditor/ckeditor5-dev-webpack-plugin');
-const {styles} = require('@ckeditor/ckeditor5-dev-utils');
+//const {styles} = require('@ckeditor/ckeditor5-dev-utils');
 
 module.exports = {
     entry: './src/index.jsx',
@@ -17,27 +17,7 @@ module.exports = {
             { test: /\.(png|woff|woff2|eot|ttf|svg)(\?\S*)?$/, loader: 'url-loader?limit=100000' },
             {
                 test: /\.(s*)css$/,
-                loader: 'style-loader!css-loader!sass-loader'
-            },
-            {
-                test: /ckeditor5-[^/]+\/theme\/[\w-/]+\.css$/,
-                use: [
-                    {
-                        loader: 'style-loader',
-                        options: {
-                            singleton: true
-                        }
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: styles.getPostCssConfig({
-                            themeImporter: {
-                                themePath: require.resolve('@ckeditor/ckeditor5-theme-lark')
-                            },
-                            minify: true
-                        })
-                    }
-                ]
+                loader: 'style-loader!css-loader'
             }
         ]
     },
