@@ -112,6 +112,7 @@ class ConferenceRegistrationController extends AbstractController
 //            'controller_name' => 'ConferenceRegistrationController',
             'form' => $form->createView(),
             'RoomTypes' => $roomTypes,
+            'Conference' => $Conference,
             'LimitUsersByOrg' => $Conference->getLimitUsersByOrg(),
             'LimitUsersGlobal' => $Conference->getLimitUsersGlobal(),
             'Users'   => 0, // TODD: get real users value

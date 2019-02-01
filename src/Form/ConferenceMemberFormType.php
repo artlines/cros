@@ -8,6 +8,7 @@ use App\Entity\Participating\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -38,7 +39,7 @@ class ConferenceMemberFormType extends AbstractType
 
             ->add(
                 'arrival',
-                DateType::class,
+                DateTimeType::class,
                 [
                     'label' => 'Ранний заезд',
                     'widget' => 'single_text',
@@ -53,11 +54,12 @@ class ConferenceMemberFormType extends AbstractType
 
             ->add(
                 'leaving',
-                DateType::class,
+                DateTimeType::class,
                 [
                     'label' => 'Поздний выезд',
                     'widget' => 'single_text',
                     'attr' => [
+                        'type' => "text",
                         'class' => 'form-control input-inline datetimepicker cs-theme-color-gray-dark-v3',
                         'data-provide' => 'datetimepicker',
                         'html5' => false,
@@ -74,7 +76,7 @@ class ConferenceMemberFormType extends AbstractType
                     'attr' => [
                         'class' => 'cs-theme-color-gray-dark-v3 select-roomtype',
                     ],
-                    'required' => false,
+                    'required' => true,
                 ]
             )
             ->add(
@@ -86,26 +88,13 @@ class ConferenceMemberFormType extends AbstractType
                     ->remove('save')
             )
 
-            ->add(
-                'carNumber',
-                TextType::class,
-                [
-                    'label' => 'Номер автомобиля',
-                    'attr' => array(
-                        'class' => 'cs-theme-color-gray-dark-v3',
-                        'placeholder' => 'А001АА 00',
-                        'pattern' => '[А-Яа-яA-Za-z]{1,1}[0-9]{3,3}[А-Яа-яA-Za-z]{2,2}[ ][0-9]{2,3}',
-                    ),
-                    'required' => false,
-                ]
-            )
 // Совместное проживание ???
             ->add(
                 'neighbourhood',
                 ChoiceType::class,
                 [
                     'label' => 'Совместное проживание', // 'Member.sex.Label',
-                    'required' => true,
+                    'required' => false,
                     'choices'  => [
                         "Нет" => '',
 //                        "Да"  => null,

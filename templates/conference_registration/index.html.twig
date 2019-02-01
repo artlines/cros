@@ -12,7 +12,8 @@
     background-color: rgba(120, 210, 94, 0.47);
 }
 </style>
-<div class="roomTypes debug">
+
+<div class="roomTypes debug" style="display: none">
     <div id="roomType_">
         Класс участия не выбран
     </div>
@@ -52,7 +53,10 @@
 {% set formConferenceMembers=form.ConferenceMembers.vars.prototype %}
 {% set form2=formConferenceMembers.user %}
 {% set member_prototype %}
-<div class="conference-member">
+<div class="conference-member"
+     data-start="{{ Conference.eventStart|date("Y-m-d") }}'
+     data-end="{{ Conference.eventFinish|date("Y-m-d") }}'
+     >
     <div class="row">
         <div class="col-md-3">{{- form_row(form2.firstName) -}}</div>
         <div class="col-md-3">{{- form_row(form2.lastName) -}}</div>
@@ -66,17 +70,23 @@
         <div class="col-md-3">{{- form_row(form2.representative) -}}</div>
     </div>
     <div class="row">
-        <div class="col-md-3">{{- form_row(formConferenceMembers.arrival) -}}</div>
-        <div class="col-md-3">{{- form_row(formConferenceMembers.leaving) -}}</div>
+        {% set start %}{{ Conference.eventStart|date("Y-m-d") }}T12:00{% endset %}
+        {% set end %}{{ Conference.eventFinish|date("Y-m-d") }}T12:00{% endset %}
+        <div class="col-md-3">{{- form_row(formConferenceMembers.arrival,{'value':start}) -}}</div>
+        <div class="col-md-3">{{- form_row(formConferenceMembers.leaving,{'value':end }) -}}</div>
+        <div class="col-md-3">{{- form_row(formConferenceMembers.carNumber) -}}</div>
     </div>
     <div class="row">
         <div class="col-md-3">{{- form_row(formConferenceMembers.RoomType) -}}</div>
-        <div class="col-md-3">{{- form_row(formConferenceMembers.carNumber) -}}</div>
         <div class="col-md-3">{{- form_row(formConferenceMembers.neighbourhood) -}}</div>
-        <div class="col-md-3"><button
-            type="button"
-            class="btn-danger remove-collection-widget"
-        >Удалить
+        <div class="col-md-3"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-10"></div>
+        <div class="col-md-2"><button
+                    type="button"
+                    class="btn btn-danger remove-collection-widget cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15"
+            ><i class="fa fa-trash"></i> Удалить
         </div>
         <div class="col-md-3"></div>
     </div>
@@ -122,10 +132,10 @@ id     name    inn kpp
     <div class="row">
         <div class="col-md-3">{{- form_row(item.arrival) -}}</div>
         <div class="col-md-3">{{- form_row(item.leaving) -}}</div>
+        <div class="col-md-3">{{- form_row(item.carNumber) -}}</div>
     </div>
     <div class="row">
         <div class="col-md-3">{{- form_row(item.RoomType) -}}</div>
-        <div class="col-md-3">{{- form_row(item.carNumber) -}}</div>
         <div class="col-md-3">{{- form_row(item.neighbourhood) -}}</div>
     </div>
     <div class="row">

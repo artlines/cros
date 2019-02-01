@@ -148,6 +148,12 @@ jQuery(document).ready(function () {
         .on('change', changeRoomType)
         .change()
     ;
+
+    jQuery('.remove-collection-widget').click(function (e) {
+        jQuery(this).parent().parent().parent().remove();
+    });
+
+
     jQuery('.select-neighbourhood').each(neighbourhood);
 
     jQuery('.firstName').on('change', neighbourhoodRename);
