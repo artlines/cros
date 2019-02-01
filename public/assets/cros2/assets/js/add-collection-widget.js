@@ -97,6 +97,24 @@ const neighbourhood = function() {
     // })
 };
 
+const validateRequired = function () {
+    var empty_flds = 0;
+    jQuery("[required]").each(function() {
+        if(!jQuery.trim(jQuery(this).val())) {
+            //empty_flds++;
+
+            jQuery(this).addClass('is-invalid');
+            jQuery('html, body').animate({
+                scrollTop: jQuery(this).offset().top-400
+            }, 1000);
+            console.log(jQuery(this));
+            jQuery(this).focus();
+            return;
+        }
+    });
+    return empty_flds;
+};
+
 const validateInnKpp = function () {
     let data = {};
     data.inn = jQuery('.inn').val();
@@ -138,8 +156,7 @@ const validateInnKpp = function () {
         console.log(data.found);
     });
 
-
-    $.ajax();
+    validateRequired();
 };
 
 const neighbourhoodRename =  function() {
@@ -207,5 +224,7 @@ jQuery(document).ready(function () {
 
     jQuery('.inn').on('change', validateInnKpp);
     jQuery('.kpp').on('change', validateInnKpp);
+
+    jQuery('.validateRequired').on('click', validateRequired);
 
 });
