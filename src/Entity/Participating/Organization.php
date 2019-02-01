@@ -196,6 +196,22 @@ class Organization
     /**
      * @return string|null
      */
+    public function getNewLogo(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * @param mixed
+     */
+    public function setNewLogo( $logo)
+    {
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
     public function getEmail()
     {
         return $this->email;

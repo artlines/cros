@@ -94,7 +94,7 @@ class ConferenceMember
     private $roomType;
 
     /**
-     * @var ConferenceMember|null
+     * @var mixed
      *
      * @ORM\ManyToOne(targetEntity="ConferenceMember")
      * @ORM\JoinColumn(name="neighbourhood_id", referencedColumnName="id", nullable=true)
@@ -262,9 +262,9 @@ class ConferenceMember
     }
 
     /**
-     * @param ConferenceMember|null $neighbourhood
+     * @param mixed $neighbourhood
      */
-    public function setNeighbourhood(?ConferenceMember $neighbourhood)
+    public function setNeighbourhood( $neighbourhood)
     {
         $this->neighbourhood = $neighbourhood;
     }

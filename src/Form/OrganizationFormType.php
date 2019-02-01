@@ -83,7 +83,7 @@ class OrganizationFormType extends AbstractType
                 )
             )
             ->add(
-                'logo',
+                'newlogo',
                 FileType::class,
                 array(
                     'label' => 'Organization.Logo.Label',
