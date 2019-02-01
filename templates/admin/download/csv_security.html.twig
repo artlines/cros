@@ -1,0 +1,10 @@
+{% block body %}
+ФИО;Организация;Номер авто;Дата заезда;Дата выезда
+{% for utc in userstoconf %}{#
+#}{{ utc.user.lastname }} {{ utc.user.firstname }} {{ utc.user.middlename }};{#
+#}{{ utc.user.organization.name|replace({'"': '', "'": '', '«': '', '»': '', ',': '', '&': 'and'}) }};{#
+#}{% if utc.user.carnumber %}{{ utc.user.carnumber }}{% else %}-{% endif %};{#
+#}{% if utc.user.arrival %}{{ utc.user.arrival|date("d.m.Y") }}{% else %}Дата заезда неизвестна{% endif %};{#
+#}{% if utc.user.departures %}{{ utc.user.departures|date("d.m.Y") }}{% else %}Дата выезда неизвестна{% endif %};
+{% endfor %}
+{% endblock %}

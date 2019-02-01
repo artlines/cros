@@ -1,0 +1,152 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Конференция Российских Операторов Связи{% endblock %}
+
+{% block header_title %}Регистрация{% endblock %}
+
+{% block body %}
+    <div class="row justify-content-center">
+        <h2>Шаг 1 - регистрация компании на конференцию</h2>
+    </div>
+    {% if result is defined %}
+        {% if result.status == 'success' %}
+            <p class="text-success">Вы успешно зарегистрировали свою организацию! Мы отправили письмо с паролем и дальнейшими инструкциями на почту {{ email }}</p>
+        {% else %}
+            <p class="text-info">Внимание! Вы регистрируетесь как официальный представитель организации. От каждой организации может зарегистрироваться только один представитель. Остальных сотрудников регистрирует официальный представитель.</p>
+            <p class="bg-error">{{ result.text }}</p>
+            {{ form_start(form) }}
+
+            <div class="row">
+                {{ form_row(form.name) }}
+                {{ form_row(form.city) }}
+            </div>
+            {#<div class="row">#}
+                {#{{ form_row(form.email) }}#}
+                {#{{ form_row(form.email_confirm) }}#}
+            {#</div>#}
+            {#<div class="row">#}
+                {#{{ form_row(form.username) }}#}
+            {#</div>#}
+            <div class="row">
+                {{ form_row(form.country) }}
+                {{ form_row(form.type_person) }}
+            </div>
+
+            <div class="row">
+                {{ form_row(form.inn) }}
+                {{ form_row(form.kpp) }}
+            </div>
+            <div class="row">
+                {{ form_row(form.requisites) }}
+                {{ form_row(form.address) }}
+                {{ form_row(form.comment) }}
+            </div>
+            {#<div class="row">#}
+                {#{{ form_row(form.comment) }}#}
+            {#</div>#}
+
+            {#{{ form_row(form.manager) }}#}
+            {{ form_row(form.save) }}
+
+            {{ form_end(form) }}
+            <span style="color: #a94442;">*</span> - поля обязательны к заполнению
+        {% endif %}
+    {% else %}
+        <p class="text-info">Внимание! Вы регистрируетесь как официальный представитель организации. От каждой организации может зарегистрироваться только один представитель. Остальных сотрудников регистрирует официальный представитель.</p>
+        {{ form_start(form) }}
+
+        <div class="row">
+            {{ form_row(form.name) }}
+            {{ form_row(form.city) }}
+        </div>
+        {#<div class="row">#}
+            {#{{ form_row(form.email) }}#}
+            {#{{ form_row(form.email_confirm) }}#}
+        {#</div>#}
+        {#<div class="row">#}
+            {#{{ form_row(form.username) }}#}
+        {#</div>#}
+        <div class="row">
+            {{ form_row(form.country) }}
+            {{ form_row(form.type_person) }}
+        </div>
+
+        <div class="row">
+            {{ form_row(form.inn) }}
+            {{ form_row(form.kpp) }}
+        </div>
+        <div class="row">
+            {{ form_row(form.requisites) }}
+            {{ form_row(form.address) }}
+            {{ form_row(form.comment) }}
+        </div>
+        {#<div class="row">#}
+            {#{{ form_row(form.comment) }}#}
+        {#</div>#}
+
+        {#{{ form_row(form.manager) }}#}
+        {{ form_row(form.save) }}
+
+        {{ form_end(form) }}
+        <span style="color: #a94442;">*</span> - поля обязательны к заполнению
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+<script>
+
+    $(document).ready(function () {
+        $('form > .row > .form-group').addClass('col-sm-12 col-md-6');
+    });
+
+    $(function () {
+        $('*[data-helper]').each(function () {
+            $(this).after('<span class="text-muted cs-font-size-11">' + $(this).attr('data-helper') + '</span>');
+        });
+
+        //$('#form_name, #form_city, #form_inn, #form_kpp, #form_email, #form_email_confirm').parent('.form-group').css('width', '49%').css('display', 'inline-block').css('vertical-align', 'top');
+
+        // $('#form_email_confirm').bind('paste', function(e){
+        //     e.preventDefault();
+        // });
+
+        {% if result is defined %}
+            {% if result.element is defined %}
+                var $input = $('#form_{{ result.element }}');
+                $input.after('<span class="bg-error">{{ result.text }}</span><br>');
+                $input.focus();
+            {% endif %}
+        {% endif %}
+    });
+
+    if (navigator.geolocation) {
+        console.log('Geolocation is supported!');
+
+        /*
+        var startPos;
+        var geoOptions = {
+            maximumAge: 5 * 60 * 1000,
+        }
+        var geoSuccess = function(position) {
+            startPos = position;
+            document.getElementById('startLat').innerHTML = startPos.coords.latitude;
+            document.getElementById('startLon').innerHTML = startPos.coords.longitude;
+        };
+        var geoError = function(position) {
+         console.log('Error occurred. Error code: ' + error.code);
+         // error.code can be:
+         //   0: unknown error
+         //   1: permission denied
+         //   2: position unavailable (error response from location provider)
+         //   3: timed out
+         };
+         navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions);
+        */
+    }
+</script>
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+

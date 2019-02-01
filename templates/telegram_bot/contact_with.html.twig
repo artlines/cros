@@ -1,0 +1,26 @@
+Связь c компанией <b>«{{ org_name }}»</b>
+
+{% if phone %}
+<b>Имя:</b> {{ name }}
+<b>Компания:</b> {{ company }}
+<b>Телефон:</b> {{ phone }}
+
+Я разошлю СМС сообщение со следующим текстом:
+<i>{% include 'telegram_bot/_contact_sms.html.twig' %}</i>
+
+всем участникам из организации <b>{{ org.name }}</b>:
+{% for user in org.users %}
+{{ user.firstName }}{% if user.post %}, {{ user.post }}{% endif %}
+{% endfor %}
+{% elseif company %}
+<b>Имя:</b> {{ name }}
+<b>Компания:</b> {{ company }}
+
+<i>Введите телефон для связи</i>
+{% elseif name %}
+<b>Имя:</b> {{ name }}
+
+<i>Введите название компании</i>
+{% else %}
+<i>Введите ваше имя</i>
+{% endif %}

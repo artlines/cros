@@ -1,0 +1,105 @@
+<table width="1000px" height="500px" cellspacing="0" cellpadding="0" border="0"
+	   style="font-family: arial; background-position: bottom; width: 1000px; height: 500px; border-collapse:collapse; border-spacing: 0; background: url('{{ absolute_url(asset('temp/bg2018.jpg')) }}') no-repeat; background-size: cover;">
+	<tr>
+		<td height="50px" style="height: 50px;"></td>
+		<td height="50px" style="height: 50px;"></td>
+		<td height="50px" style="height: 50px;"></td>
+	</tr>
+	<tr>
+		<td width="40px"></td>
+		<td width="920px">
+			<table width="820px" cellspacing="0" cellpadding="0" border="0"
+				   style="width: 820px; margin: 0 auto; border-collapse:collapse; border-spacing: 0; background-color: rgba(255,255,255,0.87);">
+				<tr>
+					<td>&nbsp;</td>
+					<td style="padding: 10px 0;">
+						<h1>Здравствуйте, TESTO</h1>
+					</td>
+				</tr>
+				<tr>
+					<td width="320px"
+						style="text-align: center; padding: 0 20px; width: 320px; vertical-align: top;">
+						<a href="https://shop.nag.ru">
+							<img style="width: 250px;"
+								 src="{{ absolute_url(asset('temp/cros-logo_300px.png')) }}"
+								 alt="Вас приветствует компания НАГ">
+						</a>
+						<img src="{{ absolute_url(asset('temp/cros-logo-desc.png')) }}"
+							 alt="Конференция Российских Операторов Связи">
+					</td>
+					<td width="500px" style="width: 500px; padding-right: 20px; max-width: 500px; word-wrap: break-word; font-size: 16px;">
+						<p>
+							Мы получили Вашу заявку на участие
+							в Конференции российских операторов связи
+							КРОС-2.0-18 от компании {{ org }}.<br>
+						<div
+								style="
+                    padding: 10px 15px;
+                    background-color: rgba(232, 246, 253, 0.86);
+                    margin: 0px 20px;
+                ">
+
+							<strong>Информация о регистрации:</strong><br>
+							ФИО: {{ user.lastname }} {{ user.firstname }} {{ user.middlename }}<br>
+							Должность: {{ user.post }}<br>
+							Телефон: {{ user.username }}<br>
+							E-mail: {{ user.email }}<br>
+							Nickname: {{ user.nickname }}<br>
+							Номер автомобиля: {{ user.carnumber }}<br>
+							Класс участия: {% for toa in user.utoas  %}{{ toa.apartament.apartament.title }} ({{ toa.apartament.apartament.price }}.р){% endfor %}<br>
+							Ранний заезд: {{ arrival }}<br>
+							Поздний выезд: {{ leaving }}
+						</div>
+						<br>
+
+						Мы свяжемся с Вами в ближайшее время.
+
+						<br><br>
+						Чтобы быть в курсе последних новостей о КРОС,
+						легко решать бытовые и организационные вопросы,
+						а также общаться с другими участниками конференции,
+						присоединяйтесь к нам в Telegram
+						<br><br>
+
+						<table width="680px" style="width: 680px; font-size: 16px; font-family: arial;">
+							<tbody>
+							<tr>
+								<td style="text-align: center;">
+									<img
+											src="{{ absolute_url(asset('temp/telegram-logo-56x56.png')) }}"
+											alt="Telegram" />
+								</td>
+								<td style="text-align: left;">
+									<a href="https://t.me/joinchat/AAAAAD8Ll_zQJjIrIv136Q"><b>Группа участников КРОС в Telegram</b></a><br>
+									<a href="https://t.me/cros2017"><b>Информационный канал в Telegram</b></a>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+						<br>
+						Если произошла какая-либо ошибка, просим Вас сообщить об этом по адресу: <a href="mailto:cros@nag.ru">cros@nag.ru</a><br>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<td>
+
+					</td>
+					<td width="400px" style="font-size: 16px;">
+						С уважением,<br>Оргкомитет КРОС-2.0-18<br>E-mail: <a href="mailto:cros@nag.ru">cros@nag.ru</a><br>+7 (343) 379-98-38
+					</td>
+				</tr>
+				<tr>
+					<td height="20px" style="height: 20px;"></td>
+					<td height="20px" style="height: 20px;"></td>
+				</tr>
+			</table>
+		</td>
+		<td width="40px"></td>
+	</tr>
+	<tr>
+		<td height="50px" style="height: 50px;"></td>
+		<td height="50px" style="height: 50px;"></td>
+		<td height="50px" style="height: 50px;"></td>
+	</tr>
+</table>

@@ -1,0 +1,25 @@
+{% extends 'door.html.twig' %}
+
+{% block title %}Академия НАГ{% endblock %}
+
+{% block body %}
+    <img class="logo" src="{{ asset('assets/images/logo_academy.png') }}" alt="Конференция Российских Операторов Связи">
+    <div class="menu">
+        <div class="elements">
+            <a class="circle" href="/"><img src="{{ asset('assets/images/menu_registration.png') }}" alt="Регистрация"></a>
+            <a class="circle" href="/"><img src="{{ asset('assets/images/menu_program.png') }}" alt="Программа"></a>
+            <a class="circle" href="/"><img src="{{ asset('assets/images/menu_academy.png') }}" alt="КРОС"></a>
+            <a class="circle" href="/"><img src="{{ asset('assets/images/menu_price.png') }}" alt="Стоимость участия"></a>
+            <a class="circle" href="/"><img src="{{ asset('assets/images/menu_targets.png') }}" alt="Цели и задачи"></a>
+            <a class="circle" href="/"><img src="{{ asset('assets/images/menu_place.png') }}" alt="Место проведения"></a>
+            <a class="circle" href="/"><img src="{{ asset('assets/images/menu_members.png') }}" alt="Участники"></a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    .logo{
+    top: calc(50% - 140px);
+    left: calc(50% - 135px);
+    }
+{% endblock %}

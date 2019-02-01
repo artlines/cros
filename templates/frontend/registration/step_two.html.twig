@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Конференция Российских Операторов Связи{% endblock %}
+
+{% block header_title %}Регистрация{% endblock %}
+
+{% block page_image %}registration{% endblock %}
+
+{% block body %}
+    <h2>Шаг 2 - регистрация участников конференции</h2>
+    <h3>{% if upd %}Редактирование участника - {{ upd.lastname }} {{ upd.firstname }} {{ upd.middlename }}
+        {% else %}Участник №{{ counter }}
+    {% endif %}</h3>
+    {% if result is defined %}
+        {% if result.status == 'success' %}
+        {% else %}<p class="bg-error">{{ result.text }}</p>
+        {% endif %}
+    {% endif %}
+
+    {{ form_start(form) }}
+
+    <div class="alert alert-info">
+        <p>Обращаем ваше внимание на официальные даты заезда/выезда</p>
+        <p><strong>Заезд:</strong> 14:00 16.05.2018</p>
+        <p><strong>Выезд:</strong> 12:00 19.05.2018</p>
+    </div>
+
+    <div class="row">
+        {{ form_row(form.last_name) }}
+        {{ form_row(form.first_name) }}
+    </div>
+
+    <div class="row">
+        {{ form_row(form.middle_name) }}
+        {{ form_row(form.post) }}
+    </div>
+
+    <div class="row">
+        {{ form_row(form.email) }}
+        {{ form_row(form.username) }}
+    </div>
+
+    <div class="row">
+        {{ form_row(form.nickname) }}
+        {{ form_row(form.car_number) }}
+    </div>
+
+    <div class="row">
+        {{ form_row(form.arrival) }}
+        {{ form_row(form.leaving) }}
+    </div>
+
+    <div class="row">
+        {{ form_row(form.apartament) }}
+    </div>
+
+    {{ form_end(form) }}
+    <span style="color: #a94442;">*</span> - поля обязательны к заполнению
+{% endblock %}
+
+{% block javascripts %}
+<script>
+
+    $(document).ready(function () {
+        $('form > .row > .form-group').addClass('col-sm-12 col-md-6');
+    });
+
+    var numberdescJSON = {{ numberdesc|raw }};
+
+    $(function () {
+        //$('<br><p id="numberdesc" class="alert alert-info"></p>').insertAfter('#form_apartament');
+        $('#form_apartament').on('select change', function(){
+            var val = $(this).val();
+            if(val in numberdescJSON){
+                $nd = $('#numberdesc');
+                $nd.html(numberdescJSON[val]).show();
+                $nd.find('a').each(function () {
+                    if($(this)[0].hasAttribute('target')){
+                        if($(this).attr('target') != '_blank'){
+                            $(this).attr('target', '_blank');
+                        }
+                    }
+                    else{
+                        $(this).attr('target', '_blank');
+                    }
+                });
+            }
+        });
+
+        $('*[data-helper]').each(function () {
+            $(this).after('<span class="text-muted cs-font-size-11">' + $(this).attr('data-helper') + '</span>');
+        });
+
+        //$('#form_last_name, #form_middle_name, #form_email, #form_save_and_add, #form_save').parent('.form-group').css('margin-right', '2%');
+        //$('#form_last_name, #form_first_name, #form_middle_name, #form_post, #form_email, #form_username').parent('.form-group').css('width', '49%').css('display', 'inline-block').css('vertical-align', 'top');
+        //$('#form_save_and_add, #form_save, #form_continue').parent('.form-group').css('width', 'auto').css('display', 'inline-block').css('vertical-align', 'top');
+
+        $('#form_continue').on('click', function(){
+            $('*[required]').removeAttr('required');
+        });
+
+        {% if result is defined %}
+            {% if result.element is defined %}
+                var $input = $('#form_{{ result.element }}');
+                $input.after('<span class="bg-error">{{ result.text }}</span><br>');
+                $input.focus();
+            {% endif %}
+        {% endif %}
+    });
+
+</script>
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}

@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" datatype="plaintext" original="file.ext">
+        <body>
+            <trans-unit id="1">
+                <source>Question</source>
+                <target>Question</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>Answer</source>
+                <target>Answer</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>On</source>
+                <target>On</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>Save</source>
+                <target>Save</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>Start registration</source>
+                <target>Start registration</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>Finish registration</source>
+                <target>Finish registration</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>Start event</source>
+                <target>Start event</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>Finish event</source>
+                <target>Finish event</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>Price</source>
+                <target>Price</target>
+            </trans-unit>
+            <trans-unit id="10">
+                <source>Number title</source>
+                <target>Number title</target>
+            </trans-unit>
+            <trans-unit id="11">
+                <source>Code</source>
+                <target>Code</target>
+            </trans-unit>
+            <trans-unit id="12">
+                <source>Description</source>
+                <target>Description</target>
+            </trans-unit>
+            <trans-unit id="13">
+                <source>Places</source>
+                <target>Places</target>
+            </trans-unit>
+            <trans-unit id="14">
+                <source>Count</source>
+                <target>Count</target>
+            </trans-unit>
+            <trans-unit id="15">
+                <source>Organisation name</source>
+                <target>Organisation name</target>
+            </trans-unit>
+            <trans-unit id="16">
+                <source>City</source>
+                <target>City</target>
+            </trans-unit>
+            <trans-unit id="17">
+                <source>Requisites</source>
+                <target>Requisites</target>
+            </trans-unit>
+            <trans-unit id="18">
+                <source>Address</source>
+                <target>Address</target>
+            </trans-unit>
+            <trans-unit id="19">
+                <source>Mobile phone</source>
+                <target>Mobile phone</target>
+            </trans-unit>
+            <trans-unit id="20">
+                <source>Last name</source>
+                <target>Last name</target>
+            </trans-unit>
+            <trans-unit id="21">
+                <source>First name</source>
+                <target>First name</target>
+            </trans-unit>
+            <trans-unit id="22">
+                <source>Middle name</source>
+                <target>Middle name</target>
+            </trans-unit>
+            <trans-unit id="23">
+                <source>Post</source>
+                <target>Post</target>
+            </trans-unit>
+            <trans-unit id="24">
+                <source>E-mail</source>
+                <target>E-mail</target>
+            </trans-unit>
+            <trans-unit id="25">
+                <source>This text will be displayed before questions and answers list</source>
+                <target>This text will be displayed before questions and answers list</target>
+            </trans-unit>
+            <trans-unit id="26">
+                <source>Event</source>
+                <target>Event</target>
+            </trans-unit>
+            <trans-unit id="27">
+                <source>Date</source>
+                <target>Date</target>
+            </trans-unit>
+            <trans-unit id="28">
+                <source>Start</source>
+                <target>Start</target>
+            </trans-unit>
+            <trans-unit id="29">
+                <source>Finish</source>
+                <target>Finish</target>
+            </trans-unit>
+            <trans-unit id="30">
+                <source>Text will be displayed in footer</source>
+                <target>Text will be displayed in footer</target>
+            </trans-unit>
+            <trans-unit id="31">
+                <source>Alias</source>
+                <target>Alias</target>
+            </trans-unit>
+            <trans-unit id="32">
+                <source>Title</source>
+                <target>Title</target>
+            </trans-unit>
+            <trans-unit id="33">
+                <source>Text</source>
+                <target>Text</target>
+            </trans-unit>
+            <trans-unit id="34">
+                <source>Password</source>
+                <target>Password</target>
+            </trans-unit>
+            <trans-unit id="35">
+                <source>Confirm password</source>
+                <target>Confirm password</target>
+            </trans-unit>
+            <trans-unit id="36">
+                <source>Manager</source>
+                <target>Manager</target>
+            </trans-unit>
+            <trans-unit id="37">
+                <source>Without manager</source>
+                <target>Without manager</target>
+            </trans-unit>
+            <trans-unit id="38">
+                <source>Email</source>
+                <target>Email</target>
+            </trans-unit>
+            <trans-unit id="39">
+                <source>Telegram</source>
+                <target>Telegram</target>
+            </trans-unit>
+            <trans-unit id="40">
+                <source>Apartament</source>
+                <target>Apartament</target>
+            </trans-unit>
+            <trans-unit id="41">
+                <source>Photo</source>
+                <target>Photo</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

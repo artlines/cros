@@ -1,0 +1,255 @@
+/* ----- DEFAULT COLOR ----- */
+/* ----- Green ----- */
+body {
+    background-color: #fff;
+  }
+ a {
+    color: #212121;
+  }
+
+  a:focus, a:hover {
+    color: rgb(141, 162, 48);
+  }
+  
+  h1, h2, .h2, h3, h4 {
+    color: rgb(141, 198, 63);
+  }
+  h2:after {
+    background: rgb(141, 198, 63);
+  }
+  .nav-link:focus, .nav-link:hover {
+    color: rgb(141, 198, 63);
+  }
+
+  #ourguests, #contact {
+    background:rgb(141, 198, 63) !important;
+  }
+
+  .icon-set {
+    filter: gray; 
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1); 
+    opacity: 0.8;
+   
+  }
+
+  ::-moz-selection {
+    color: #fff;
+    background-color: rgb(141, 198, 63);
+  }
+  .u-go-to-v1:hover {
+    color: #fff;
+    background-color: rgb(141, 198, 63);
+  }
+
+  .light-theme .nav-item .nav-link {
+    color: rgba(255, 255, 255, .8) !important;
+  }
+  
+  .light-theme .nav-item .nav-link:hover, .light-theme .nav-item.active .nav-link {
+    color: rgb(141, 198, 63) !important;
+  }
+  
+.dark-theme .nav-item .nav-link {
+  color: rgba(0, 0, 0, .8) !important;
+}
+
+.dark-theme .nav-item .nav-link:hover, .dark-theme .nav-item.active .nav-link {
+  color: rgb(141, 198, 63) !important;
+  
+}  
+
+.u-btn-primary {
+  color: #fff;
+  background-color: rgb(141, 198, 63);
+}
+
+.u-btn-primary:hover {
+  border-color: #4180a8;
+  background-color: #4180a8;
+}
+
+.u-btn-primary:hover, .u-btn-primary:focus {
+  color: #fff;
+}
+
+.u-btn-white {
+  color: #555;
+  background-color: #fff;
+}
+
+.u-btn-white:hover {
+  border-color: #87d37c;
+  background-color: #87d37c;
+}
+
+.u-btn-white:hover, .u-btn-white:focus {
+  color: #fff;
+}
+
+.u-btn-yellow {
+  color: #fff !important;
+  background-color: #FF8A00;
+}
+
+.u-btn-yellow:hover, .cs-bg-primary--hover:hover {
+  border-color: #D67400 !important;
+  background-color:#D67400 !important;
+}
+
+.u-btn-yellow:hover, .u-btn-yellow:focus {
+  color: #212121;
+}
+
+.u-btn-green {
+  color: #212121;
+  background-color: #fff;
+}
+
+.u-btn-green:hover {
+  border-color: rgb(141, 162, 48);;
+  background-color: rgb(141, 162, 48);;
+}
+
+.u-btn-green:hover, .u-btn-green:focus {
+  color: #212121;
+}
+  
+.form-control {
+  border-color: #212121;
+}
+
+.form-control, .form-control:focus {
+  color: #eeefef;
+}
+
+.form-control:focus {
+  border-color: rgb(141, 198, 63);
+}
+/* ----- MAIN COLORS ----- */
+.cs-color-primary:focus {
+  color: rgb(141, 198, 63);
+}
+
+.cs-bg-gray-dark-v1--focus:focus {
+  background-color: #111!important;
+}
+
+.cs-bg-light-v1--focus:focus {
+  background-color: #fff!important;
+}
+
+.cs-bg-secondary_block {
+  background-color: #f5f5f5!important;
+}
+
+.cs-bg-primary_block {
+  background-color: #fff!important;
+}
+
+.cs-bg-yellow_block {
+  background-color:#343d47 !important;
+}
+.cs-bg-yellow_block h3, .cs-bg-yellow_block p {
+    color: #999ea3 !important;
+}
+
+.cs-bg-primary--hover:hover {
+  background-color: rgb(141, 198, 63)!important;
+}
+
+.cs-bg-white {
+  background-color: #fff!important;
+}
+
+.cs-bg-white--hover:hover {
+  background-color: #fff!important;
+}
+
+.cs-bg-white-opacity-0_9 {
+  background-color: rgba(255, 255, 255, .9)!important;
+}
+
+.cs-color-primary {
+  color: rgb(141, 198, 63)!important;
+}
+
+.cs-color-primary--hover:hover {
+  color: rgb(141, 198, 63)!important;
+}
+
+.cs-color-black {
+  color: #000!important;
+}
+
+.cs-color-white {
+  color: #fff!important;
+}
+
+.cs-color-white--hover:hover {
+  color: #fff!important;
+}
+
+.cs-color-gray-dark-v4 {
+  color: #777!important;
+}
+
+.cs-color-gray-dark-v5 {
+  color: #999!important;
+}
+
+.cs-color-lightblue-v1 {
+  color: #212121 !important;
+}
+
+.cs-color-lightblue-v1:hover {
+  color: rgb(141, 162, 48) !important;
+}
+
+.cs-theme-color-gray-dark-v1 {
+  color: #eeefef !important;
+}
+
+.cs-theme-color-gray-dark-v2 {
+  color: #7c7e89 !important;
+}
+
+.cs-theme-color-black-v2 {
+  color: #212121 !important;
+}
+
+.cs-theme-color-dark-grey-v2 {
+  color: #a5a5a5 !important;
+}
+
+.cs-theme-bg-blue-dark-v2 {
+  background-color: #8dc63f;
+  opacity:0.9;
+}
+.cs-theme-bg-blue-dark-v2 a {
+  color:#212121 !important; 
+}
+
+.cs-bg-darkblue-opacity-0_5 {
+  background-color: rgba(22, 26, 39, .5)!important;
+}
+
+.cs-bg-darkblue-opacity-0_5--after:after {
+  background-color: rgba(22, 26, 39, .5)!important;
+}
+
+.cs-bg-darkblue-opacity-0_5--after::after {
+  background-color: rgba(22, 26, 39, .5)!important;
+}
+
+.cs-bg-light-opacity-0_8 {
+  background-color: rgba(255, 255, 255, .8)!important;
+}
+
+.ccs-bg-light-opacity-0_8--after:after {
+  background-color: rgba(255, 255, 255, .8)!important;
+}
+
+.cs-bg-light-opacity-0_8--after::after {
+  background-color: rgba(255, 255, 255, .8)!important;
+}

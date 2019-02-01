@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Печать таблицы</title>
+    <style type="text/css">
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+        }
+
+        h4 {
+            margin: 0;
+        }
+
+        tr{
+            page-break-inside: avoid;
+        }
+
+        td, th {
+            vertical-align: top;
+        }
+
+        td {
+            border-top: 1px solid silver;
+            padding-top: 5px;
+        }
+
+        .room {
+            margin-bottom: -1px;
+            margin-right: -4px;
+            display: inline-block;
+            width: calc(50% - 12px);
+            padding: 5px;
+            vertical-align: top;
+        }
+
+        .nag{
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        @media print {
+            textarea {
+                border: 0;
+                resize: none;
+            }
+
+            @page {
+                size: landscape;
+            }
+        }
+    </style>
+</head>
+<body>
+<table>
+    <tbody>
+    {% for pair in pairs %}
+        {% for type in pair.apartamentTypes %}
+            {% for flat in type.flats %}
+                <tr>
+                    <td><strong>Номер: {{ flat.realid }} (id: {{ flat.id }})</strong> {% if flat.finished == 1 %}<span style="color: red; font-weight: bold;">🔒</span>{% endif %}<br>{{ pair.title }}<br>
+                        {{ type.title }},&nbsp;{{ type.flats.first.maxroom }}к<br><br>
+                    </td>
+                    <td>
+                        {% if flat.realroom1 is not null %}
+                            <div class="room">
+                                <h4>(id: {{ flat.realroom1.id }}) Комната 1 {% if flat.realroom1.apartament.places == 1 %}Single{% endif %}</h4>
+                                {% for uta in flat.realroom1.atoais %}
+                                    {% if uta.approved == 1 %}
+                                        <div {% if uta.user.organizationid == 1 %}class="nag"{% endif %}>
+                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }}{% if uta.user.post %}
+                                                {#<span style="color: #656565;"> - {{ uta.user.post }}</span>#}
+                                            {% endif %}
+                                            - {{ uta.user.organization.name }}{#{% if uta.user.organization.sponsor %} - СПОНСОР{% endif %}
+                                            - {% if uta.user.organization.managers is empty %}Нет менеджера{% else %}{{ uta.user.organization.managers.title }}{% endif %}#}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {% if flat.realroom2 is not null %}
+                            <div class="room">
+                                <h4>(id: {{ flat.realroom2.id }}) Комната 2 {% if flat.realroom2.apartament.places == 1 %}Single{% endif %}</h4>
+                                {% for uta in flat.realroom2.atoais %}
+                                    {% if uta.approved == 1 %}
+                                        <div {% if uta.user.organizationid == 1 %}class="nag"{% endif %}>
+                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }}{% if uta.user.post %}
+                                                {#<span style="color: #656565;"> - {{ uta.user.post }}</span>#}
+                                            {% endif %}
+                                            - {{ uta.user.organization.name }}{#{% if uta.user.organization.sponsor %} - СПОНСОР{% endif %}
+                                            - {% if uta.user.organization.managers is empty %}Нет менеджера{% else %}{{ uta.user.organization.managers.title }}{% endif %}#}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {% if flat.realroom3 is not null %}
+                            <div class="room">
+                                <h4>(id: {{ flat.realroom3.id }}) Комната 3 {% if flat.realroom3.apartament.places == 1 %}Single{% endif %}</h4>
+                                {% for uta in flat.realroom3.atoais %}
+                                    {% if uta.approved == 1 %}
+                                        <div {% if uta.user.organizationid == 1 %}class="nag"{% endif %}>
+                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }}{% if uta.user.post %}
+                                                {#<span style="color: #656565;"> - {{ uta.user.post }}</span>#}
+                                            {% endif %}
+                                            - {{ uta.user.organization.name }}{#{% if uta.user.organization.sponsor %} - СПОНСОР{% endif %}
+                                            - {% if uta.user.organization.managers is empty %}Нет менеджера{% else %}{{ uta.user.organization.managers.title }}{% endif %}#}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {% if flat.realroom4 is not null %}
+                            <div class="room">
+                                <h4>(id: {{ flat.realroom4.id }}) Комната 4 {% if flat.realroom4.apartament.places == 1 %}Single{% endif %}</h4>
+                                {% for uta in flat.realroom4.atoais %}
+                                    {% if uta.approved == 1 %}
+                                        <div {% if uta.user.organizationid == 1 %}class="nag"{% endif %}>
+                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }}{% if uta.user.post %}
+                                                {#<span style="color: #656565;"> - {{ uta.user.post }}</span>#}
+                                            {% endif %}
+                                            - {{ uta.user.organization.name }}{#{% if uta.user.organization.sponsor %} - СПОНСОР{% endif %}
+                                            - {% if uta.user.organization.managers is empty %}Нет менеджера{% else %}{{ uta.user.organization.managers.title }}{% endif %}#}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {% if flat.realroom5 is not null %}
+                            <div class="room">
+                                <h4>(id: {{ flat.realroom5.id }}) Комната 5 {% if flat.realroom5.apartament.places == 1 %}Single{% endif %}</h4>
+                                {% for uta in flat.realroom5.atoais %}
+                                    {% if uta.approved == 1 %}
+                                        <div {% if uta.user.organizationid == 1 %}class="nag"{% endif %}>
+                                            {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }}{% if uta.user.post %}
+                                                {#<span style="color: #656565;"> - {{ uta.user.post }}</span>#}
+                                            {% endif %}
+                                            - {{ uta.user.organization.name }}{#{% if uta.user.organization.sponsor %} - СПОНСОР{% endif %}
+                                            - {% if uta.user.organization.managers is empty %}Нет менеджера{% else %}{{ uta.user.organization.managers.title }}{% endif %}#}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="5"></td>
+    </tr>
+    </tfoot>
+</table>
+</body>

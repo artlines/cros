@@ -1,0 +1,8 @@
+<b>Внимание!</b>
+
+{% if minDiff != 0 %}До доклада <i>«{{ lecture.title }}»</i> осталось {{ minDiff }} минут
+{% else %}Доклад <i>«{{ lecture.title }}»</i> начинается
+{% endif %}
+
+<b>Зал:</b> {{ lecture.hall }}
+<b>Время начала:</b> {{ startTime }}

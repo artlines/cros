@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Печать таблицы</title>
+    <style type="text/css">
+        * {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+        }
+
+        h4 {
+            margin: 0;
+        }
+
+        tr {
+            page-break-inside: avoid;
+        }
+
+        td, th {
+            vertical-align: top;
+        }
+
+        td {
+            border-top: 1px solid silver;
+            padding-top: 5px;
+        }
+
+        .room {
+            margin-bottom: -1px;
+            margin-right: -4px;
+            display: inline-block;
+            width: calc(50% - 12px);
+            padding: 5px;
+            vertical-align: top;
+        }
+
+        .nag {
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
+        @media print {
+            textarea {
+                border: 0;
+                resize: none;
+            }
+
+            @page {
+                size: landscape;
+            }
+        }
+    </style>
+</head>
+<body>
+<table>
+    <tbody>
+    {% set lastroomid = 0 %}
+    {% for user in users %}
+        {% set aptitle = '' %}
+        {% set aid = 0 %}
+        {% for ai in user.utoas %}
+            {% set aid = ai.apartamentsid %}
+            {% set aptitle = ai.apartament.apartament.title %}
+        {% endfor %}
+        <tr>
+            <td class="room_id" data-room="{{ aid }}" {% if lastroomid != aid %}style="border-top: 3px solid black;"{% endif %}>{{ aid }}</td>
+            <td {% if lastroomid != aid %}style="border-top: 3px solid black;"{% endif %}>{{ aptitle }}</td>
+            {% set org = user.organization %}
+            <td {% if lastroomid != aid %}style="border-top: 3px solid black;"{% endif %}>{{ org.name }}</td>
+            <td {% if lastroomid != aid %}style="border-top: 3px solid black;"{% endif %}>{{ user.lastname }} {{ user.firstname }} {{ user.middlename }}</td>
+            <td {% if lastroomid != aid %}style="border-top: 3px solid black;"{% endif %}>{{ user.email }}</td>
+            {% if lastroomid != aid %}{% set lastroomid = aid %}{% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>

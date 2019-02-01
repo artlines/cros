@@ -1,0 +1,200 @@
+/* Add here all your css styles (customizations) */
+
+body {
+    color: #5f5f63;
+    font-size: 1rem;
+}
+
+.cs-theme-color-gray-dark-v3 {
+    color: #666 !important;
+}
+
+a:hover, .login-main a:focus, .login-main a:hover {
+    text-decoration: none;
+}
+
+/* LOGIN */
+.login-open {
+    padding: 14px;
+    box-shadow: 0 1px 3px #ddd;
+    min-width: initial;
+    right: 30px;
+    top: 47px;
+    display: none;
+    background: #fff; /* Old browsers */
+}
+
+@media (min-width: 992px) {
+    .login-open {
+        width: 400px;
+    }
+}
+
+.login-main a {
+    background: #5c97bf;
+    padding: 5px;
+    border-radius: 20px;
+    color: white;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+}
+
+.cs-z-index-4 {
+    z-index: 4;
+}
+
+.collapse-header-link:focus, .nav-link-2:focus, .cs-no-focus-underline:focus {
+    text-decoration: none;
+}
+
+.collapse-header-link p {
+    margin: 0;
+}
+
+input.cs-p-text-white--checked[type="radio"]:checked + * p {
+    color: #fff !important;
+}
+
+.container h2 {
+    text-align: center;
+}
+
+.archive-nav .nav-link.active {
+    background: #6ea1e1;
+}
+
+.archive-nav .nav-link {
+    color: #6ca0dc;
+}
+
+.cs-sub-menu-home {
+    background-color: rgba(22, 26, 39, .5);
+}
+
+.cs-sub-menu-home a {
+    color: #fff;
+}
+
+.cs-sub-menu-home a:hover {
+    color: #5c97bf !important;
+}
+
+.cs-sub-menu-home-dow {
+    background-color: #87b1e2 !important;
+}
+
+.cs-sub-menu-home-dow a {
+    color: #fff !important;
+}
+
+.cs-sub-menu-home-dow a:hover {
+    color: #fff !important;
+}
+
+#submenu {
+    margin-right: 15px;
+    margin-left: 15px;
+}
+
+#TitleBotton {
+    margin-top: 0px !important;
+    bottom: 0px !important;
+}
+
+#Title {
+    margin-bottom: 7%;
+}
+
+#frame_google {
+    height: 3900px;
+    overflow-x: hidden;
+}
+
+#program.nav-tabs .nav-link {
+    color: #6ca0dc;
+}
+
+#program.nav-tabs .nav-link.active {
+    background: #6ea1e1;
+    color: #fff;
+    border-color: #eceeef #eceeef #ddd;
+}
+
+#programContent thead th {
+    white-space: nowrap;
+}
+
+.margin-image-sponsor {
+    margin: 2px;
+}
+
+.cursor-pointer {
+    cursor: pointer
+}
+
+@media screen and (max-width: 576px) {
+    .centering-silver-partners {
+        max-width: 300px;
+        margin: 0 auto;
+        float: none;
+    }
+
+    .centering-speaker {
+        max-width: 253px;
+        margin: 0 auto;
+        float: none;
+    }
+
+    .resize-gold-partners {
+        max-width: 350px;
+    }
+}
+
+@media screen and (max-width: 577px) {
+    .gold-justify-576 {
+        -webkit-box-pack: center !important;
+        -webkit-justify-content: center !important;
+        -ms-flex-pack: center !important;
+        justify-content: center !important;
+    }
+}
+
+@media screen and (min-width: 577px) {
+    .centering-silver-partners {
+        max-width: 800px;
+        margin: 0 auto;
+        float: none;
+    }
+}
+
+.prohibit-changes-images {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0 auto;
+}
+.bt-pdb-25{
+    margin-bottom: 25px;
+}
+#submenu2 {
+    margin-right: 15px;
+    margin-left: 15px;
+}
+
+label.required:after
+{
+    color: #a94442;
+    content: " *";
+}
+
+.google-sign-in__container {
+    text-align: center;
+}
+.google-sign-in__container img {
+    height: 50px;
+}
+.google-sign-in__btn {
+    background: inherit !important;
+    padding: 0 !important;
+}

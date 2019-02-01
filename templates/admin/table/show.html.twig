@@ -1,0 +1,360 @@
+{% extends 'admin.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/dataTables.min.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        {% if fulltable is empty %}
+            <h2>Нет данных</h2>
+        {% else %}
+            <h2>Сводная таблица КРОС {{ conf.year }}</h2>
+            {% if is_granted('ROLE_ADMIN') %}
+                <select id="selectbygroup" class="form-control"
+                        title="Фильтр подтвержденных участников по группам менеджеров">
+                    <option disabled {% if groupsort == null or groupsort == 0 %}selected{% endif %}>
+                        Подтвержденные участники группы менеджеров
+                    </option>
+                    <option value="0">Сбросить фильтр</option>
+                    {% for managergroup in managergroups %}
+                        <option value="{{ managergroup.id }}" {% if groupsort == managergroup.id %}selected{% endif %}>
+                            {{ managergroup.title }}
+                        </option>
+                    {% endfor %}
+                </select>
+            {% endif %}
+            <table class="table" id="fulltable">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Компания (Всего: {{ organizations|length }}) {% if is_granted('ROLE_ADMIN') %}<a
+                                href="{{ path('admin-org-manage', {'id': 'new'}) }}" class="btn btn-success"
+                                target="_blank"><i class="fa fa-plus fa-fw"></i></a>{% endif %}</th>
+                    <th>Участники (Всего: {{ memberscount }})</th>
+                    <th>Общие контакты</th>
+                    <th>Реквизиты</th>
+                    <th>Оплата</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% set full_price = 0 %}
+                {% for organization in organizations %}
+                    {% set full_price = 0 %}
+                    <tr {% if organization.txtstatus.id != 1 %}class="bg-success"{% endif %}>
+                        <td>{{ organization.id }}</td>
+                        <td>
+                            {% if organization.hidden == 1 %}
+                                <p class="text-danger">Участник скрыт из общего списка!</p>
+                            {% endif %}
+                            {{ organization.name }}<br>
+                            <span class="text-{% if organization.status == 1 %}danger{% else %}success{% endif %}">
+                            {{ organization.txtstatus.title }}{% if organization.sponsor %} - СПОНСОР{% endif %}
+                        </span><br>
+                            {% if organization.managers is not null %}{{ organization.managers.title }}
+                        {% else %}Без менеджера
+                            {% endif %}<br><br>
+                            {#<button type="button" class="btn btn-info open_invoice_management" data-toggle="modal" data-target="#invoice_management" data-orgid="{{ organization.id }}">modal</button>#}
+                            <a href="{{ path('admin-org-manage', {'id': organization.id}) }}" class="btn btn-info"
+                               target="_blank">Управление счетами<br> и организацией</a> <button type="button" class="btn btn-danger rm_org" data-rmorgid="{{ organization.id }}"><i class="fa fa-remove fa-fw"></i></button><br>
+                            Комментарий: <span id="orgcom{{ organization.id }}"></span><br>
+                            <textarea style="width: 300px; height: calc(100% - 170px);" class="comment_field"
+                                      data-orgid="{{ organization.id }}"
+                                      title="Комментарий">{{ organization.ourcomment|raw }}</textarea><br>
+                            <button type="button" class="btn save_comment" data-orgid="{{ organization.id }}">Сохранить
+                                комментарий
+                            </button>
+                        </td>
+                        <td>
+                            {% if organization.users|length >= 1 %}
+                            <div class="panel-group">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" href="#org_{{ organization.id }}">Участники
+                                                ({{ organization.users|length }})</a>
+                                        </h4>
+                                    </div>
+                                    <div id="org_{{ organization.id }}" class="panel-collapse collapse">
+                                        {% endif %}
+
+                                        {% for user in organization.users %}
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    {{ user.lastname }} {{ user.firstname }} {{ user.middlename }}
+                                                    {% if user.post %}<span class="text-muted">
+                                                        - {{ user.post }}</span>{% endif %}
+                                                </div>
+                                                <div class="panel-body">
+                                                    {% if user.nickname %}<p>Ник: {{ user.nickname }} </p>{% endif %}
+                                                    <p>Телефон: {{ user.username }}</p>
+                                                    <p>E-mail: <a href="mailto:{{ user.email }}"
+                                                                  target="_blank">{{ user.email }}</a></p>
+                                                    {% if user.carnumber %}<p>Автомобильный
+                                                        номер: {{ user.carnumber }}</p>{% endif %}
+                                                </div>
+                                                <div class="panel-footer">
+                                                    {% if user.utoas is empty %}
+                                                        <b>Участник не заселен</b>
+                                                    {% else %}
+                                                        {% for toa in user.utoas %}
+                                                            <button type="button"
+                                                                    class="btn {% if toa.approved == 1 %}btn-success{% set approved = 'заселен' %}{% else %}btn-info{% set approved = 'не заселен' %}{% endif %}"
+                                                                    data-toggle="modal"
+                                                                    data-target="#fullnumber{{ toa.apartamentsid }}">
+                                                                id:{{ toa.apartamentsid }}
+                                                                - {{ toa.apartament.apartament.title }}
+                                                                ({{ toa.apartament.apartament.price }}.р)
+                                                                {% if toa.apartament.flats1 is not empty %}
+                                                                    {% for flat in toa.apartament.flats1 %}<br>
+                                                                        id: {{ flat.type.id }} {{ flat.type.title }}
+                                                                    {% endfor %}
+                                                                {% elseif toa.apartament.flats2 is not empty %}
+                                                                    {% for flat in toa.apartament.flats2 %}<br>
+                                                                        id: {{ flat.type.id }} {{ flat.type.title }}
+                                                                    {% endfor %}
+                                                                {% elseif toa.apartament.flats3 is not empty %}
+                                                                    {% for flat in toa.apartament.flats3 %}<br>
+                                                                        id: {{ flat.type.id }} {{ flat.type.title }}
+                                                                    {% endfor %}
+                                                                {% elseif toa.apartament.flats4 is not empty %}
+                                                                    {% for flat in toa.apartament.flats4 %}<br>
+                                                                        id: {{ flat.type.id }} {{ flat.type.title }}
+                                                                    {% endfor %}
+                                                                {% elseif toa.apartament.flats5 is not empty %}
+                                                                    {% for flat in toa.apartament.flats5 %}<br>
+                                                                        id: {{ flat.type.id }} {{ flat.type.title }}
+                                                                    {% endfor %}
+                                                                {% endif %} - {{ approved }}
+                                                            </button>
+                                                            {% set full_price = full_price + toa.apartament.apartament.price %}
+                                                        {% endfor %}
+                                                    {% endif %}
+                                                    {% if is_granted('ROLE_ADMIN') %}
+                                                    <a href="{{ path('admin-member-edit', {'id': user.id}) }}" class="btn btn-success"
+                                                       target="_blank"><i class="fa fa-edit fa-fw"></i></a>
+                                                        <button type="button" class="btn btn-danger rm_mem" data-rmmemid="{{ user.id }}"><i class="fa fa-remove fa-fw"></i></button>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+
+                                        {% if organization.users|length >= 1 %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            <a href="{{ path('admin-member-add', {'orgid': organization.id}) }}" class="btn btn-success"
+                                    target="_blank"><i class="fa fa-plus fa-fw"></i></a>
+                        </td>
+                        <td>
+                            Телефон: {{ organization.username }}<br>
+                            E-mail: {{ organization.email }}<br>
+                            <hr>
+                            Адрес:
+                            <textarea style="width: 300px; height: 100%;"
+                                      title="Адрес">{{ organization.address }}</textarea>
+                        </td>
+                        <td>
+                            ИНН: {{ organization.inn }}<br>
+                            КПП: {{ organization.kpp }}<br>
+                            Реквизиты:<br>
+                            <textarea style="width: 300px; height: calc(50% - 35px);"
+                                      title="Реквизиты">{{ organization.requisites|raw }}</textarea>
+                            Комментарий клиента:<br>
+                            <textarea style="width: 300px; height: calc(50% - 35px);"
+                                      title="Комментарий клиента">{{ organization.comment|raw }}</textarea>
+                        </td>
+                        <td>
+                            {{ full_price }}р.<br>
+                            {% for otc in organization.otc %}
+                                {% set otcsumm = otc.summ %}
+                                {% if otcsumm == null %}{% set otcsumm = 0 %}{% endif %}
+                                {% if full_price != otcsumm %}<span class="text-danger">{{ otcsumm }}
+                                    р.</span>{% else %}{{ otcsumm }}р.{% endif %}
+                            {% endfor %}
+                            {% set psh = 0 %}{% for otc in organization.otc %}
+                                {% if psh == 0 %}
+                                    {% if otc.invoice %}Счет №{{ otc.invoice }}{% else %}Счет не выставлен{% endif %}
+                                    <br>
+                                    {% set psh = 1 %}
+                                    {% if otc.paid == 1 %}<span class="text-success">Оплачено</span><br>
+                                    {% elseif otc.paid == 2 %}<span class="text-info">Частично оплачено</span><br>
+                                    {% else %}<span class="text-danger">Не оплачено</span><br>{% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% for number in numbersfull %}
+                <div id="fullnumber{{ number.id }}" class="modal fade" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4>id:{{ number.id }} - <b>{{ number.apartament.title }}</b>
+                                    ({{ number.apartament.places }}-местный номер, {{ number.apartament.price }}р.)</h4>
+                            </div>
+                            <div class="modal-body">
+                                {% for uta in number.atoais %}
+                                    <h4>
+                                        {{ uta.user.lastname }} {{ uta.user.firstname }} {{ uta.user.middlename }}
+                                        <small> - {{ uta.user.post }} ({{ uta.user.organization.name }})</small>
+                                    </h4>
+                                    {% if uta.user.nickname %}<p>Ник: {{ uta.user.nickname }}</p>{% endif %}
+                                    <p>Телефон: {{ uta.user.username }}</p>
+                                    <p>E-mail: <a href="mailto:{{ uta.user.email }}"
+                                                  target="_blank">{{ uta.user.email }}</a></p>
+                                    {% if uta.user.telegram %}
+                                        <p>Telegram: <a href="https://telegram.me/{{ uta.user.telegram }}"
+                                                        target="_blank">{{ uta.user.telegram }}</a></p>
+                                    {% endif %}
+                                    {% if uta.approved == 1 %}<span class="text-success">Заселен</span>{% else %}<span
+                                            class="text-danger">Не заселен</span>{% endif %}
+                                    <hr>
+                                {% endfor %}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div id="invoice_management" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Управление счетами</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block javascripts %}
+    <script>
+        $(function () {
+            $('#fulltable').DataTable({
+                paging: false,
+                fixedHeader: true,
+                "language": {
+                    "processing": "Подождите...",
+                    "search": "Поиск:",
+                    "lengthMenu": "Показать _MENU_ записей",
+                    "info": "Записи с _START_ до _END_ из _TOTAL_ записей",
+                    "infoEmpty": "Записи с 0 до 0 из 0 записей",
+                    "infoFiltered": "(отфильтровано из _MAX_ записей)",
+                    "infoPostFix": "",
+                    "loadingRecords": "Загрузка записей...",
+                    "zeroRecords": "Записи отсутствуют.",
+                    "emptyTable": "В таблице отсутствуют данные",
+                    "paginate": {
+                        "first": "Первая",
+                        "previous": "Предыдущая",
+                        "next": "Следующая",
+                        "last": "Последняя"
+                    },
+                    "aria": {
+                        "sortAscending": ": активировать для сортировки столбца по возрастанию",
+                        "sortDescending": ": активировать для сортировки столбца по убыванию"
+                    }
+                }
+            });
+
+            var $fulltable_filter = $('#fulltable_filter');
+
+            if (window.location.hash !== "") {
+                $fulltable_filter.find('input').val(window.location.hash.replace('#', '')).trigger('input');
+            }
+
+            $fulltable_filter.find('input').on('input paste change insert', function () {
+                window.location.hash = $(this).val();
+            });
+
+            $('.comment_field').on('change input paste insert', function () {
+                var id = $(this).attr('data-orgid');
+                $('#orgcom' + id).html('Не сохранено');
+            });
+
+            $('.save_comment').on('click', function () {
+                var data_comment = $(this).prev('br').prev('textarea').val();
+                var id = $(this).attr('data-orgid');
+                $.ajax({
+                    url: "{{ path('admin-save-comment') }}",
+                    type: "post",
+                    method: "post",
+                    data: {data: data_comment, id: id},
+                    success: function () {
+                        $('#orgcom' + id).html('Сохранено');
+                    }
+                });
+            });
+
+            $('.rm_mem').on('click', function () {
+                var rm = confirm('Вы уверены, что хотите удалить участника?');
+                if(rm) {
+                    var mem_id = $(this).attr('data-rmmemid');
+                    $(this).html('Подождите...');
+                    $.ajax({
+                        url: '{{ path('admin-table-remove-user') }}/' + mem_id,
+                        type: "post",
+                        method: "post",
+                        success: function (data) {
+
+                        }
+                    });
+                    $(this).parent('div').parent('div').remove();
+                }
+            });
+
+            $('.rm_org').on('click', function () {
+                var rm = confirm('Вы уверены, что хотите удалить организацию?');
+                if(rm){
+                    var org_id = $(this).attr('data-rmorgid');
+                    $(this).html('Подождите...');
+                    $.ajax({
+                        url: '{{ path('admin-table-remove-org') }}/' + org_id,
+                        type: "post",
+                        method: "post",
+                        success: function(data){
+
+                        }
+                    });
+                    $(this).parent('td').parent('tr').remove();
+                }
+            });
+
+            $('.open_invoice_management').on('click', function () {
+                var url = $(this).attr('data-orgid');
+                $.ajax({
+                    url: '{{ path('admin-org-manage') }}/' + url,
+                    type: "post",
+                    method: "post",
+                    success: function (html) {
+                        $('#invoice_management').find('.modal-body').html(html);
+                    }
+                });
+            });
+
+            $('#selectbygroup').on('change', function () {
+                var sch = window.location.search;
+                var wlh = window.location.href.replace(sch, '').split('#');
+                window.location.href = wlh[0] + '?group=' + $(this).val();
+            });
+        });
+    </script>
+    <script src="{{ asset('assets/js/jquery/dataTables.min.js') }}"></script>
+{% endblock %}

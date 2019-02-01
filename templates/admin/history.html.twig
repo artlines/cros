@@ -1,0 +1,106 @@
+{% extends 'admin.html.twig' %}
+{% block body %}
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Архив</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-clock-o fa-fw"></i>Хроника
+                    </div>
+                    <div class="panel-body">
+                        <ul class="timeline">
+                            <li>
+                                <div class="timeline-badge add-conference">
+                                    <a href="{{ path('admin-date-edit', {'id': 'new'}) }}"><i class="fa fa-plus"></i></a>
+                                </div>
+                                <div class="history-margin"></div>
+                            </li>
+                            {% set inverse = false %}
+                            {% for conf in history %}
+                                <li {% if inverse %}class="timeline-inverted" {% set inverse = false %}{% else %}{% set inverse = true %}{% endif %}>
+                                    <div class="timeline-badge success"><i class="fa fa-users"></i>
+                                    </div>
+                                    <div class="timeline-panel">
+                                        <div class="timeline-heading">
+                                            <h4 class="timeline-title">КРОС - {{ conf.year }}</h4>
+                                        </div>
+                                        <div class="timeline-body">
+                                            <p>
+                                                {% if conf.finish.date < "now"|date("Y-m-d H:i:s") %}
+                                                    {% if conf.finish.date|date("Y") < "now"|date("Y") %}В архиве
+                                                    {% else %}Мероприятие завершено {{ conf.finish.date|date("d.m.Y") }}
+                                                    {% endif %}
+                                                {% elseif conf.start.date < "now"|date("Y-m-d H:i:s") %}Идет мероприятие, завершится {{ conf.finish.date|date("d.m.Y") }}
+                                                {% elseif conf.registrationfinish.date < "now"|date("Y-m-d H:i:s") %}Регистрация завершена, мероприятие начнется {{ conf.start.date|date("d.m.Y") }}
+                                                {% elseif conf.registrationstart.date < "now"|date("Y-m-d H:i:s") %}Открыта регистрация до {{ conf.registrationfinish.date|date("d.m.Y") }}
+                                                {% else %}Регистрация начнется {{ conf.registrationstart.date|date("d.m.Y") }}
+                                                {% endif %}
+                                            </p>
+                                            <hr>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                                                    <i class="fa fa-gear"></i> <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                    {% for infolist in conf.infotoconfs %}
+                                                        {% set info = infolist.info %}
+                                                        {% if info.alias == "targets" %}
+                                                            <li><a href="{{ path('admin-text-edit', {'id': info.id}) }}"><i class="fa fa-check-circle-o fa-fw"></i> {{ info.title }}</a>
+                                                            </li>
+                                                        {% elseif info.alias == "place" %}
+                                                            <li><a href="{{ path('admin-text-edit', {'id': info.id}) }}"><i class="fa fa-map-marker fa-fw"></i> {{ info.title }}</a>
+                                                            </li>
+                                                        {% elseif info.alias == "transfer" %}
+                                                            <li><a href="{{ path('admin-text-edit', {'id': info.id}) }}"><i class="fa fa-taxi fa-fw"></i> {{ info.title }}</a>
+                                                            </li>
+                                                        {% elseif info.alias == "terms" %}
+                                                            <li><a href="{{ path('admin-text-edit', {'id': info.id}) }}"><i class="fa fa-file-text-o fa-fw"></i> {{ info.title }}</a>
+                                                            </li>
+                                                        {% elseif info.alias == "result" %}
+                                                            <li><a href="{{ path('admin-text-edit', {'id': info.id}) }}"><i class="fa fa-trophy fa-fw"></i> {{ info.title }}</a>
+                                                            </li>
+                                                        {% elseif info.alias == "sponsors" %}
+                                                            <li><a href="{{ path('admin-sponsor-list') }}"><i class="fa fa-money fa-fw"></i> {{ info.title }}</a>
+                                                            </li>
+                                                        {% elseif info.alias == "organize" %}
+                                                            <li><a href="{{ path('admin-text-edit', {'id': info.id}) }}"><i class="fa fa-money fa-fw"></i> {{ info.title }}</a>
+                                                            </li>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    <li><a href="{{ path('admin-speakers')}}"><i class="fa fa-wechat fa-fw"></i>Докладчики</a>
+                                                    </li>
+                                                    <li class="divider"></li>
+                                                    <li><a href="{{ path('admin-members', {'year': conf.year}) }}"><i class="fa fa-users fa-fw"></i> Расселение по комнатам</a>
+                                                    </li>
+                                                    <li><a href="{{ path('admin-classes', {'year': conf.year}) }}"><i class="fa fa-home fa-fw"></i> Распределение комнат</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="{{ path('admin-corpuses', {'year': conf.year}) }}"><i class="fa fa-building fa-fw"></i> Корпуса</a>
+                                                    </li>
+                                                    <li class="divider"></li>
+                                                    <li><a href="{{ path('admin-date-edit', {'id': conf.id}) }}"><i class="fa fa-wrench fa-fw"></i> Редактировать даты</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('assets/js/admin.js') }}"></script>
+{% endblock %}
