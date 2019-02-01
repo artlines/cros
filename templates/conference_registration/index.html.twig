@@ -14,10 +14,15 @@
 </style>
 <div class="roomTypes debug">
     <div id="roomType_">
-        Класс учаcтия не выбран
+        Класс участия не выбран
     </div>
 {% for roomType in RoomTypes  %}
 <div id="roomType_{{ roomType.id }}">
+    Класс участия: <b>{{ roomType.participationClass.title }}</b><br />
+    Тип проживания: <b>{{ roomType.title }}</b><br />
+    Стоимость:  <b>{{ roomType.cost }}</b><br />
+    Общее количство мест: <b>{{ roomType.maxPlaces }}</b><br />
+    <h4>Описание:</h4>
     {{ roomType.description|raw }}
 </div>
 {% endfor %}
@@ -122,10 +127,13 @@ id     name    inn kpp
         <div class="col-md-3">{{- form_row(item.RoomType) -}}</div>
         <div class="col-md-3">{{- form_row(item.carNumber) -}}</div>
         <div class="col-md-3">{{- form_row(item.neighbourhood) -}}</div>
-        <div class="col-md-3"><button
+    </div>
+    <div class="row">
+        <div class="col-md-10"></div>
+        <div class="col-md-2"><button
                     type="button"
-                    class="btn-danger remove-collection-widget"
-            >Удалить
+                    class="btn btn-danger remove-collection-widget cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15"
+            ><i class="fa fa-trash"></i> Удалить
         </div>
         <div class="col-md-3"></div>
     </div>
