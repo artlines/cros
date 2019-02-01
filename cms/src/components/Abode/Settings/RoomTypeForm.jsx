@@ -14,7 +14,6 @@ import isEqual from 'lodash/isEqual';
 import API from '../../../libs/api';
 import ErrorMessage from "../../utils/ErrorMessage";
 import map from "lodash/map";
-import WysiwygField from "../../utils/WysiwygField";
 import CKEditorField from "../../utils/CKEditorField";
 import ConfirmDialog from "../../utils/ConfirmDialog";
 
@@ -161,20 +160,6 @@ class RoomTypeForm extends React.Component {
                                 </TextField>
                             </Grid>
                             <Grid item xs={12}>
-                                {/*<TextField*/}
-                                    {/*required*/}
-                                    {/*label={"Описание"}*/}
-                                    {/*value={values.description}*/}
-                                    {/*margin={"dense"}*/}
-                                    {/*fullWidth*/}
-                                    {/*variant={"outlined"}*/}
-                                    {/*onChange={this.handleChange('description')}*/}
-                                    {/*error={!!errors.description}*/}
-                                    {/*helperText={errors.description}*/}
-                                    {/*multiline*/}
-                                    {/*rows={3}*/}
-                                    {/*rowsMax={5}*/}
-                                {/*/>*/}
                                 <CKEditorField
                                     required
                                     value={values.description}

@@ -7,7 +7,6 @@ import {
     Chip,
     Typography,
 } from "@material-ui/core";
-import WysiwygField from "../components/utils/WysiwygField";
 
 const types = {
     CHIP: "chip",
@@ -110,9 +109,6 @@ const DropPaper = DropTarget(types.CHIP, paperTarget, collectTarget)(MyPaper);
 function Test() {
     return (
         <Grid container spacing={16}>
-            <Grid item xs={12}>
-                <WysiwygField/>
-            </Grid>
             <Grid item xs={6}>
                 <DropPaper id={1}>
                     <DragChip id={1} type_id={1}/>
