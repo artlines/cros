@@ -15,7 +15,7 @@ module.exports = {
     },
     devServer: {
         hot: true,
-        port: '5505',
+        port: '5506',
         host: '127.0.0.1',
         index: 'index.html',
         public: 'https://cros-eugene.nag.how',

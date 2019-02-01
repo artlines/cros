@@ -51,6 +51,9 @@ class ApartmentType
      */
     private $apartments;
 
+    /**
+     * ApartmentType constructor.
+     */
     public function __construct()
     {
         $this->apartments = new ArrayCollection();
@@ -110,5 +113,21 @@ class ApartmentType
     public function setCode($code)
     {
         $this->code = $code;
+    }
+
+    /**
+     * @return Apartment[]|ArrayCollection
+     */
+    public function getApartments()
+    {
+        return $this->apartments;
+    }
+
+    /**
+     * @param Apartment[]|ArrayCollection $apartments
+     */
+    public function setApartments($apartments)
+    {
+        $this->apartments = $apartments;
     }
 }

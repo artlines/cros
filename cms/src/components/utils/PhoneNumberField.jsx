@@ -1,5 +1,5 @@
-import React from 'react';
-import MaskedInput from 'react-text-mask';
+import React from "react";
+import MaskedInput from "react-text-mask";
 
 function PhoneNumberField(props) {
     const { inputRef, ...other } = props;
@@ -8,8 +8,8 @@ function PhoneNumberField(props) {
         <MaskedInput
             {...other}
             ref={ref => inputRef(ref ? ref.inputElement : null)}
-            mask={['8', '(', '9', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
-            placeholderChar={'\u2000'}
+            mask={["8", "(", "9", /\d/, /\d/, ")", " ", /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/]}
+            placeholderChar={"\u2000"}
             showMask
         />
     );

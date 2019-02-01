@@ -3,6 +3,7 @@
 namespace App\Entity\Abode;
 
 use App\Entity\Participating\ParticipationClass;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +32,13 @@ class RoomType
     private $title;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="max_places", type="integer", nullable=false)
@@ -51,6 +59,13 @@ class RoomType
      * @ORM\JoinColumn(name="participation_class_id", referencedColumnName="id", nullable=true)
      */
     private $participationClass;
+
+    /**
+     * @var Room[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="RoomType", mappedBy="type")
+     */
+    private $rooms;
 
     /**
      * @return int
@@ -74,6 +89,22 @@ class RoomType
     public function setTitle($title)
     {
         $this->title = $title;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string|null $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
     }
 
     /**
@@ -122,5 +153,21 @@ class RoomType
     public function setParticipationClass($participationClass)
     {
         $this->participationClass = $participationClass;
+    }
+
+    /**
+     * @return Room[]|ArrayCollection
+     */
+    public function getRooms()
+    {
+        return $this->rooms;
+    }
+
+    /**
+     * @param Room[]|ArrayCollection $rooms
+     */
+    public function setRooms($rooms)
+    {
+        $this->rooms = $rooms;
     }
 }

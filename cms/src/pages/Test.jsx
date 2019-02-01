@@ -1,15 +1,16 @@
-import React from 'react';
-import { DragSource, DropTarget, DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import React from "react";
+import { DragSource, DropTarget, DragDropContext } from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
 import {
     Grid,
     Paper,
     Chip,
     Typography,
-} from '@material-ui/core';
+} from "@material-ui/core";
+import WysiwygField from "../components/utils/WysiwygField";
 
 const types = {
-    CHIP: 'chip',
+    CHIP: "chip",
 };
 
 /**
@@ -32,7 +33,7 @@ function collectSource(connect, monitor) {
 }
 function MyChip({ id, isDragging, connectDragSource }) {
     return connectDragSource(
-        <div style={{cursor: 'pointer'}}><Chip label={`Chip #${id} | Dragging: ${isDragging ? 'true' : 'false'}`}/></div>
+        <div style={{cursor: "pointer"}}><Chip label={`Chip #${id} | Dragging: ${isDragging ? "true" : "false"}`}/></div>
     );
 }
 const DragChip = DragSource(types.CHIP, chipSource, collectSource)(MyChip);
@@ -48,7 +49,7 @@ const paperTarget = {
     drop(props, monitor) {
         const item = monitor.getItem();
         // TODO: sideEffect
-        console.log('Dropped');
+        console.log("Dropped");
     },
 
     canDrop(props, monitor) {
@@ -66,13 +67,13 @@ function collectTarget(connect, monitor) {
 function renderOverlay(color) {
     return (
         <div style={{
-            position: 'absolute',
+            position: "absolute",
             top: 0,
             left: 0,
             backgroundColor: color,
             opacity: 0.4,
-            height: '100%',
-            width: '100%',
+            height: "100%",
+            width: "100%",
         }} />
     );
 }
@@ -82,21 +83,21 @@ function MyPaper({ id, connectDropTarget, isOver, canDrop, children }) {
         <div>
             <Paper style={{
                 padding: 16,
-                position: 'relative',
-                width: '100%',
-                height: '100%',
+                position: "relative",
+                width: "100%",
+                height: "100%",
             }}>
                 <Typography gutterBottom variant={`h4`}>Place #{id}</Typography>
                 <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'start',
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "start",
                 }}>
                     {children}
                 </div>
-                {!isOver && canDrop && renderOverlay('yellow')}
-                {isOver && canDrop && renderOverlay('green')}
-                {isOver && !canDrop && renderOverlay('red')}
+                {!isOver && canDrop && renderOverlay("yellow")}
+                {isOver && canDrop && renderOverlay("green")}
+                {isOver && !canDrop && renderOverlay("red")}
             </Paper>
         </div>
     );
@@ -109,6 +110,9 @@ const DropPaper = DropTarget(types.CHIP, paperTarget, collectTarget)(MyPaper);
 function Test() {
     return (
         <Grid container spacing={16}>
+            <Grid item xs={12}>
+                <WysiwygField/>
+            </Grid>
             <Grid item xs={6}>
                 <DropPaper id={1}>
                     <DragChip id={1} type_id={1}/>

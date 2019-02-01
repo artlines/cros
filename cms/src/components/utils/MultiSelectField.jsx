@@ -1,5 +1,5 @@
-import React from 'react';
-import Select from 'react-select';
+import React from "react";
+import Select from "react-select";
 import {
     Typography,
     TextField,
@@ -7,13 +7,13 @@ import {
     Chip,
     Paper,
 
-} from '@material-ui/core';
+} from "@material-ui/core";
 import {
     Cancel as CancelIcon,
-} from '@material-ui/icons';
-import { withStyles } from '@material-ui/core/styles';
-import { emphasize } from '@material-ui/core/styles/colorManipulator';
-import classNames from 'classnames';
+} from "@material-ui/icons";
+import { withStyles } from "@material-ui/core/styles";
+import { emphasize } from "@material-ui/core/styles/colorManipulator";
+import classNames from "classnames";
 
 const styles = theme => ({
     root: {
@@ -21,22 +21,22 @@ const styles = theme => ({
         height: 250,
     },
     input: {
-        display: 'flex',
+        display: "flex",
         padding: 0,
     },
     valueContainer: {
-        display: 'flex',
-        flexWrap: 'wrap',
+        display: "flex",
+        flexWrap: "wrap",
         flex: 1,
-        alignItems: 'center',
-        overflow: 'hidden',
+        alignItems: "center",
+        overflow: "hidden",
     },
     chip: {
         margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
     },
     chipFocused: {
         backgroundColor: emphasize(
-            theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
+            theme.palette.type === "light" ? theme.palette.grey[300] : theme.palette.grey[700],
             0.08,
         ),
     },
@@ -47,12 +47,12 @@ const styles = theme => ({
         fontSize: 16,
     },
     placeholder: {
-        position: 'absolute',
+        position: "absolute",
         left: 2,
         fontSize: 16,
     },
     paper: {
-        position: 'absolute',
+        position: "absolute",
         zIndex: 1,
         marginTop: theme.spacing.unit,
         left: 0,
@@ -178,8 +178,8 @@ class MultiSelectField extends React.PureComponent {
             input: base => ({
                 ...base,
                 color: theme.palette.text.primary,
-                '& input': {
-                    font: 'inherit',
+                "& input": {
+                    font: "inherit",
                 },
             }),
         };
