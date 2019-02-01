@@ -76,7 +76,9 @@ const neighbourhood = function() {
 //        console.log(fio);
         // look options exist
         let options = selector.find('option[value='+i+']');
-        if( !options.length )
+        let self_num = selector.parents('.conference-member')
+            .attr('data-num');
+        if( !options.length && Number(self_num) !== Number(i))
         {
             selector.append(
                 jQuery("<option></option>")
