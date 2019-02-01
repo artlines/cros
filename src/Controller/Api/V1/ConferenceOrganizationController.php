@@ -23,12 +23,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
  * @package App\Controller\Api\V1
  *
  * @Route("/api/v1/", name="api_v1__conference_organization__")
- * @IsGranted("ROLE_SETTLEMENT_MANAGER")
  */
 class ConferenceOrganizationController extends ApiController
 {
     /**
      * @Route("conference_organization", methods={"GET"}, name="get_all")
+     * @IsGranted("ROLE_SETTLEMENT_MANAGER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -103,6 +103,7 @@ class ConferenceOrganizationController extends ApiController
 
     /**
      * @Route("conference_organization/new", methods={"POST"}, name="new")
+     * @IsGranted("ROLE_SETTLEMENT_MANAGER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      */
@@ -154,6 +155,7 @@ class ConferenceOrganizationController extends ApiController
 
     /**
      * @Route("conference_organization/{id}", requirements={"id":"\d+"}, methods={"PUT"}, name="update")
+     * @IsGranted("ROLE_SETTLEMENT_MANAGER")
      *
      * @param $id
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -199,6 +201,7 @@ class ConferenceOrganizationController extends ApiController
 
     /**
      * @Route("conference_organization/{id}", requirements={"id":"\d+"}, methods={"DELETE"}, name="delete")
+     * @IsGranted("ROLE_SETTLEMENT_MANAGER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param $id
@@ -228,6 +231,7 @@ class ConferenceOrganizationController extends ApiController
 
     /**
      * @Route("conference_organization/invite", methods={"POST"}, name="invite")
+     * @IsGranted("ROLE_SALES_MANAGER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      */
@@ -294,6 +298,7 @@ class ConferenceOrganizationController extends ApiController
 
     /**
      * @Route("conference_organization/re_invite/{id}", requirements={"id":"\d+"}, methods={"GET"}, name="re_invite")
+     * @IsGranted("ROLE_SALES_MANAGER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param $id
