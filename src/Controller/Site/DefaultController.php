@@ -19,7 +19,7 @@ class DefaultController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         /** @var Speaker[] $speakers */
-        $speakers = $em->getRepository('App:Participating\Speaker')->findAll();
+        $speakers = $em->getRepository('App:Participating\Speaker')->findBy(['publish' => true]);
 
         $speakers_rand = [];
         if (count($speakers) > 1) {
