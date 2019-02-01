@@ -326,6 +326,8 @@ class ConferenceOrganizationController extends ApiController
             'title' => 'CROS2019',
             'body'  => 'bodybody'
         ];
+
+        // TODO: add valid data and organization email !!!
         $res = $mailer->send('TEST', $data, 'e.nachuychenko@nag.ru');
 
         return $this->success();
