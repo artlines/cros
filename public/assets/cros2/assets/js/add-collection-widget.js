@@ -112,6 +112,7 @@ const validateRequired = function () {
             return;
         }
     });
+    $('#confirm-reg').modal('show');
     return empty_flds;
 };
 
