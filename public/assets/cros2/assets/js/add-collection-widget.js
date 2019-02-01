@@ -107,8 +107,8 @@ const validateInnKpp = function () {
         url: "/conference/registration-validate",
         data: data
     }).done(function(data) {
+        let trg = jQuery('.inn').parent();
         if( data && data.found){
-            let trg = jQuery('.inn').parent();
             if(!trg.find('.error').length) {
                 trg.append(
                     jQuery('<span></span')
@@ -120,10 +120,18 @@ const validateInnKpp = function () {
             console.log(trg);
             let err = trg.find('.error');
             err.html('<span class="form-error-icon badge badge-danger text-uppercase">Ошибка</span> <span class="form-error-message">Организация \''+data.found+'\' уже зарегистрирована</span>');
+            jQuery('html, body').animate({
+                scrollTop: err.offset().top-400
+            }, 1000);
+
             console.log(trg);
+        } else {
+            if(trg.find('.error')) {
+                trg.find('.error').remove();
+            }
         }
+        // $('body').scrollTo('#target');
         console.log(data.found);
-//        jQuery( this ).addClass( "done" );
     });
 
 

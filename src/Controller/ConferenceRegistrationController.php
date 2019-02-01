@@ -61,7 +61,7 @@ class ConferenceRegistrationController extends AbstractController
         if($co){
             return new JsonResponse(['found'=>$co->getOrganization()->getName()]);
         }
-        return new JsonResponse(['found'=>"false name ".$inn]);
+        return new JsonResponse(['found'=>false]);
     }
 
 
