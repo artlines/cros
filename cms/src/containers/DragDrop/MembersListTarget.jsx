@@ -1,22 +1,22 @@
-import React from 'react';
-import { DropTarget } from 'react-dnd';
+import React from "react";
+import { DropTarget } from "react-dnd";
 import { DnDItemTypes } from "../../config/lib";
-import MembersList from '../../components/Abode/Settlement/MembersList';
+import MembersList from "../../components/Abode/Settlement/MembersList";
 
 const overlayStyle = {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     opacity: 0.4,
-    height: '100%',
-    width: '100%',
+    height: "100%",
+    width: "100%",
     zIndex: 1,
 };
 
 const overlayContainerStyle = {
-    position: 'relative',
-    width: '100%',
-    height: '100%',
+    position: "relative",
+    width: "100%",
+    height: "100%",
 };
 
 function renderOverlay(color) {
@@ -49,9 +49,9 @@ function WrappedMembersList({ connectDropTarget, isOver, canDrop, ...props}) {
     return connectDropTarget(
         <div style={overlayContainerStyle}>
             <MembersList {...props}/>
-            {!isOver && canDrop && renderOverlay('yellow')}
-            {isOver && canDrop && renderOverlay('green')}
-            {isOver && !canDrop && renderOverlay('red')}
+            {!isOver && canDrop && renderOverlay("yellow")}
+            {isOver && canDrop && renderOverlay("green")}
+            {isOver && !canDrop && renderOverlay("red")}
         </div>
     );
 }

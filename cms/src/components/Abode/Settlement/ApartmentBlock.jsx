@@ -1,17 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {compose} from 'redux';
+import React from "react";
+import PropTypes from "prop-types";
+import {connect} from "react-redux";
+import {compose} from "redux";
 import {
     Paper,
     Typography,
     Divider,
     Grid,
-} from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import map from 'lodash/map';
-import find from 'lodash/find';
-import RoomBlock from './RoomBlock';
+} from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
+import map from "lodash/map";
+import find from "lodash/find";
+import RoomBlock from "./RoomBlock";
 
 const styles = theme => ({
     apartBlock: {

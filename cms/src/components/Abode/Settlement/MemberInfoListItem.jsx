@@ -1,15 +1,15 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import {compose} from 'redux';
-import PropTypes from 'prop-types';
-import parseHTML from 'react-html-parser';
-import { green, red } from '@material-ui/core/colors';
+import React from "react";
+import {connect} from "react-redux";
+import {compose} from "redux";
+import PropTypes from "prop-types";
+import parseHTML from "react-html-parser";
+import { green, red } from "@material-ui/core/colors";
 import {
     ListItem,
     ListItemText,
-} from '@material-ui/core';
-import { withTheme } from '@material-ui/core/styles';
-import find from 'lodash/find';
+} from "@material-ui/core";
+import { withTheme } from "@material-ui/core/styles";
+import find from "lodash/find";
 
 class MemberInfoListItem extends React.PureComponent {
     render() {
@@ -42,7 +42,7 @@ class MemberInfoListItem extends React.PureComponent {
 
         return (
             <ListItem style={{
-                userSelect: 'none',
+                userSelect: "none",
                 padding: `0 4px`,
                 margin: dense ? `2px 0` : `4px 0`,
                 borderLeft: `2px solid ${theme.palette.primary.light}`

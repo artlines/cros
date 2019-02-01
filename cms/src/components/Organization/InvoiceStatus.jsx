@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 const statuses = {
-    1: 'Не оплачен',
-    2: 'Частично оплачен',
-    3: 'Оплачен',
+    1: "Не оплачен",
+    2: "Частично оплачен",
+    3: "Оплачен",
 };
 
 class InvoiceStatus extends React.PureComponent {

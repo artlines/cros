@@ -1,4 +1,4 @@
-import API from './api';
+import API from "./api";
 
 class UploadAdapter {
     constructor(loader) {
@@ -8,8 +8,8 @@ class UploadAdapter {
 
     upload() {
         const data = new FormData();
-        data.append('typeOption', 'file');
-        data.append('file', this.loader.file);
+        data.append("typeOption", "file");
+        data.append("file", this.loader.file);
 
         return new Promise((resolve, reject) => {
             this.api

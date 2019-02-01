@@ -1,5 +1,5 @@
 
 
 export const DnDItemTypes = {
-    MEMBER: 'member',
+    MEMBER: "member",
 };

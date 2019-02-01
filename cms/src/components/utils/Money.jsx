@@ -10,7 +10,7 @@ class Money extends React.PureComponent {
         let res = toNumber(value);
 
         // Разбираемся с копейками
-         res = res.toFixed(withPenny ? 2 : 0);
+        res = res.toFixed(withPenny ? 2 : 0);
 
         // Добавляем разделитель
         res = String(res).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1" + delimiter);

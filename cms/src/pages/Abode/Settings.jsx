@@ -1,9 +1,9 @@
 import React from "react";
-import {connect} from 'react-redux';
+import {connect} from "react-redux";
 import {
     Grid,
 } from "@material-ui/core";
-import abode from '../../actions/abode';
+import abode from "../../actions/abode";
 import ParticipationClassTable from "../../components/Abode/Settings/ParticipationClassTable";
 import ApartmentTypeTable from "../../components/Abode/Settings/ApartmentTypeTable";
 import RoomTypeTable from "../../components/Abode/Settings/RoomTypeTable";

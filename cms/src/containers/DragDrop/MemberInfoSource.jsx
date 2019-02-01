@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { DragSource } from 'react-dnd';
+import React from "react";
+import PropTypes from "prop-types";
+import { DragSource } from "react-dnd";
 import { DnDItemTypes } from "../../config/lib";
 
 const chipSource = {

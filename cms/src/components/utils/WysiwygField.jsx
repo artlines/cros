@@ -1,12 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 import {
     FormControl,
     FormHelperText,
     Input,
     InputLabel,
-} from '@material-ui/core';
-import CKEditor from 'ckeditor4-react';
+} from "@material-ui/core";
+import CKEditor from "ckeditor4-react";
 
 class WysiwygField extends React.PureComponent {
     render() {
@@ -24,11 +24,11 @@ class WysiwygField extends React.PureComponent {
                             required={required}
                             aria-describedby={`${name}-error-text`}
                             config={{
-                                extraPlugins: 'uploadimage',
+                                extraPlugins: "uploadimage",
                             }}
                         />
                     </div>
-                    <FormHelperText id={`${name}-error-text`}>{helperText || ''}</FormHelperText>
+                    <FormHelperText id={`${name}-error-text`}>{helperText || ""}</FormHelperText>
                 </FormControl>
             </React.Fragment>
         );

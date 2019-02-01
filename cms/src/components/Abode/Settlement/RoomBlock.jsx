@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 import {
     Grid,
     List,
     Typography,
-} from '@material-ui/core';
+} from "@material-ui/core";
 import map from "lodash/map";
 import MemberInfoChip from "./MemberInfoChip";
 
@@ -17,18 +17,18 @@ function RoomBlock({ MemberComponent, memberComponentProps, room_type, room }) {
             }
 
             <List dense>
-            {map(room.places, place => {
-                const member = place.member;
+                {map(room.places, place => {
+                    const member = place.member;
 
-                return (
-                    <MemberComponent
-                        key={member.id}
-                        member={member}
-                        place={place}
-                        {...memberComponentProps}
-                    />
-                );
-            })}
+                    return (
+                        <MemberComponent
+                            key={member.id}
+                            member={member}
+                            place={place}
+                            {...memberComponentProps}
+                        />
+                    );
+                })}
             </List>
         </div>
     );
