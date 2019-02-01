@@ -18,7 +18,7 @@ class SpeakersController extends AbstractController
     {
         /** @var Speaker[] $speakers */
         $speakers = $this->getDoctrine()
-            ->getRepository('App\Entity\Participating\Speaker', 'pgsql')
+            ->getRepository('App\Entity\Participating\Speaker')
             ->findBy(['publish' => true]);
 
         $speakerList = [];
@@ -47,7 +47,7 @@ class SpeakersController extends AbstractController
     {
         /** @var Speaker $speaker */
         $speaker = $this->getDoctrine()
-            ->getRepository('App\Entity\Participating\Speaker', 'pgsql')
+            ->getRepository('App\Entity\Participating\Speaker')
             ->find($id);
 
         return $this->render('frontend/speakers/show.html.twig', [
