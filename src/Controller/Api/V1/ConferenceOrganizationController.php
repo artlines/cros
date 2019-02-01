@@ -28,7 +28,7 @@ class ConferenceOrganizationController extends ApiController
 {
     /**
      * @Route("conference_organization", methods={"GET"}, name="get_all")
-     * @IsGranted("ROLE_SETTLEMENT_MANAGER")
+     * @IsGranted("ROLE_CMS_USER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @return \Symfony\Component\HttpFoundation\JsonResponse
