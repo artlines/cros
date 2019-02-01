@@ -119,6 +119,8 @@ const validateInnKpp = function () {
             }
             console.log(trg);
             let err = trg.find('.error');
+            jQuery('.inn').addClass('is-invalid');
+            jQuery('.kpp').addClass('is-invalid');
             err.html('<span class="form-error-icon badge badge-danger text-uppercase">Ошибка</span> <span class="form-error-message">Организация \''+data.found+'\' уже зарегистрирована</span>');
             jQuery('html, body').animate({
                 scrollTop: err.offset().top-400
@@ -128,6 +130,8 @@ const validateInnKpp = function () {
         } else {
             if(trg.find('.error')) {
                 trg.find('.error').remove();
+                jQuery('.inn').removeClass('is-invalid');
+                jQuery('.kpp').removeClass('is-invalid');
             }
         }
         // $('body').scrollTo('#target');
