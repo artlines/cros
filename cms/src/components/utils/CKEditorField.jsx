@@ -8,7 +8,6 @@ import {
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import UploadAdapter from "../../libs/ckeditor-upload-adapter";
-import Link from "@ckeditor/ckeditor5-link/src/link";
 
 class CKEditorField extends React.PureComponent {
     render() {
@@ -21,9 +20,6 @@ class CKEditorField extends React.PureComponent {
                     <div style={{ marginTop: 48 }}>
                         <CKEditor
                             editor={ ClassicEditor }
-                            config={{
-                                plugins: [ Link ],
-                            }}
                             data={value}
                             onInit={ editor => {
                                 editor.plugins.get("FileRepository").createUploadAdapter = loader => {
