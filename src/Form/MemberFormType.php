@@ -46,7 +46,7 @@ class MemberFormType extends AbstractType
                 [
                     'label' => 'Имя',
                     'attr' => array(
-                        'class' => 'cs-theme-color-gray-dark-v3',
+                        'class' => 'firstName cs-theme-color-gray-dark-v3',
                     ),
                     'required' => true,
                 ]
@@ -57,7 +57,7 @@ class MemberFormType extends AbstractType
                 [
                     'label' => 'Фамилия',
                     'attr' => array(
-                        'class' => 'cs-theme-color-gray-dark-v3',
+                        'class' => 'lastName cs-theme-color-gray-dark-v3',
                     ),
                     'required' => true,
                 ]
@@ -68,7 +68,7 @@ class MemberFormType extends AbstractType
                 [
                     'label' => 'Отчество',
                     'attr' => array(
-                        'class' => 'cs-theme-color-gray-dark-v3',
+                        'class' => 'middleName cs-theme-color-gray-dark-v3',
                     ),
                     'required' => false,
                 ]

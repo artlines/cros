@@ -4,7 +4,15 @@
 {% block title %}Hello !{% endblock %}
 
 {% block body %}
-<div class="roomTypes">
+<style>
+    .debug:before{
+        content: "begin debug"
+    }
+.debug {
+    background-color: rgba(120, 210, 94, 0.47);
+}
+</style>
+<div class="roomTypes debug">
     <div id="roomType_">
         Класс учаcтия не выбран
     </div>
@@ -17,7 +25,7 @@
 
     {#{{ dump(form) }}#}
 {{ form_start(form) }}
-    <div class="row">
+    <div class="row debug">
         <div class="col-md-12">{{- form_row(form.conference) -}}</div>
     </div>
     <div class="row">
@@ -76,7 +84,7 @@
 </div>
 {% endset %}
 
-<textarea cols="100" rows="8">
+<textarea cols="100" rows="8" class="debug">
 id     name    inn kpp
 25	Курьер Флюс	4502013089	450201001 [finish]
 13	НАГ	123	477
@@ -93,7 +101,7 @@ id     name    inn kpp
          data-widget-tags="{{ '<div style="padding-left: 10px; border-left: solid 5px #87d37b; margin:20px 0 20px"></div>'|e }}"
          >
 {% for item in form.ConferenceMembers %}
-<div class="conference-member" style="padding-left: 10px; border-left: solid 5px #87d37b; margin:20px 0 20px">
+<div data-num="{{ loop.index0 }}" class="conference-member" style="padding-left: 10px; border-left: solid 5px #87d37b; margin:20px 0 20px">
     <div class="row">
         <div class="col-md-3">{{- form_row(item.user.firstName) -}}</div>
         <div class="col-md-3">{{- form_row(item.user.lastName) -}}</div>
