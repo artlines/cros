@@ -141,7 +141,7 @@ class ConferenceRegistrationController extends AbstractController
 
 
 
-            $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
+            $fileName = $organization->getId().'.'.$file->guessExtension();
             // Move the file to the directory where brochures are stored
             try {
                 $r =
@@ -149,14 +149,13 @@ class ConferenceRegistrationController extends AbstractController
                     self::DIRECTORY_UPLOAD.'logos/',
                     $fileName
                 );
-                dd($r);
             } catch (FileException $e) {
-                dd($e);
                 // ... handle exception if something happens during file upload
             }
 
             // updates the 'brochure' property to store the PDF file name
             // instead of its contents
+
             $organization->setLogo($fileName);
 
             }
