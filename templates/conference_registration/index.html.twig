@@ -14,6 +14,7 @@
 </style>
 
 <div class="roomTypes debug" style="display: none">
+    <input type="hidden" class="conf_id" value="{{ Conference.id }}"/>
     <div id="roomType_">
         Класс участия не выбран
     </div>
@@ -115,7 +116,10 @@ id     name    inn kpp
          data-LimitUsersByOrg="{{ LimitUsersByOrg }}"
          data-widget-tags="{{ '<div style="padding-left: 10px; border-left: solid 5px #87d37b; margin:20px 0 20px"></div>'|e }}"
          >
+
+{% set hide = 1 %}
 {% for item in form.ConferenceMembers %}
+{% set hide = 0 %}
 <div data-num="{{ loop.index0 }}" class="conference-member" style="padding-left: 10px; border-left: solid 5px #87d37b; margin:20px 0 20px">
     <div class="row">
         <div class="col-md-3">{{- form_row(item.user.firstName) -}}</div>
@@ -156,12 +160,6 @@ id     name    inn kpp
 </div>
 {% endfor %}
     </div>
-    <button
-        type="button"
-        class="add-another-collection-widget btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15"
-        data-list="#members-fields-list"
-        >
-        Добавить участников</button>
     {{ form_row(form._token) }}
 
     {#<div class="row">#}
@@ -218,10 +216,17 @@ id     name    inn kpp
 {% endset %}
     {# ... #}
     {{ form_end(form) }}
-    <div id="end-red" style="display: none">
+    <button
+            type="button"
+            class="add-another-collection-widget btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15"
+            data-list="#members-fields-list"
+    >
+        Добавить участников</button>
+
+    <span id="end-red" style="{% if hide %}display: none{%  endif %}">
         <button class="btn u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15 btn" data-href="/delete.php?id=54" data-toggle="modal" data-target="#confirm-delete">
             Завершить регистрацию
         </button>
-    </div>
+    </span>
 
 {% endblock %}

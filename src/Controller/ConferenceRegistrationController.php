@@ -9,9 +9,11 @@ use App\Entity\Participating\Organization;
 use App\Entity\Participating\User;
 use App\Form\ConferenceOrganizationFormType;
 use App\Form\OrganizationFormType;
+use App\Repository\ConferenceOrganizationRepository;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,6 +38,32 @@ class ConferenceRegistrationController extends AbstractController
         // uniqid(), which is based on timestamps
         return md5(uniqid());
     }
+
+
+
+    /**
+     * @Route("/conference/registration-validate")
+     */
+
+    public function validateInn(Request $request){
+        $inn = $request->get('inn');
+        $kpp = $request->get('kpp');
+        $conf_id = $request->get('conf_id');
+
+        $repository = $this
+            ->getDoctrine()
+            ->getRepository(ConferenceOrganization::class);
+        /** @var ConferenceOrganization $value */
+
+        /** @var ConferenceOrganizationRepository $repository */
+        //$co = $repository->findByInnKppIsFinish('4502013089', '450201001', 3);
+        $co = $repository->findByInnKppIsFinish($inn, $kpp, $conf_id);
+        if($co){
+            return new JsonResponse(['found'=>$co->getOrganization()->getName()]);
+        }
+        return new JsonResponse(['found'=>"false name ".$inn]);
+    }
+
 
     /**
      * @Route("/conference/registration/{hash}", name="conference_registration_hash")

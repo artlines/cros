@@ -97,6 +97,39 @@ const neighbourhood = function() {
     // })
 };
 
+const validateInnKpp = function () {
+    let data = {};
+    data.inn = jQuery('.inn').val();
+    data.kpp = jQuery('.kpp').val();
+    data.conf_id= jQuery('.conf_id').val();
+    console.log(data);
+    jQuery.ajax({
+        url: "/conference/registration-validate",
+        data: data
+    }).done(function(data) {
+        if( data && data.found){
+            let trg = jQuery('.inn').parent();
+            if(!trg.find('.error').length) {
+                trg.append(
+                    jQuery('<span></span')
+                        .html('DDD')
+                        .addClass('error invalid-feedback d-block')
+                );
+                console.log(trg);
+            }
+            console.log(trg);
+            let err = trg.find('.error');
+            err.html('<span class="form-error-icon badge badge-danger text-uppercase">Ошибка</span> <span class="form-error-message">Организация \''+data.found+'\' уже зарегистрирована</span>');
+            console.log(trg);
+        }
+        console.log(data.found);
+//        jQuery( this ).addClass( "done" );
+    });
+
+
+    $.ajax();
+};
+
 const neighbourhoodRename =  function() {
     console.log('neighbourhoodRename', jQuery(this).val());
 
@@ -159,5 +192,8 @@ jQuery(document).ready(function () {
     jQuery('.firstName').on('change', neighbourhoodRename);
     jQuery('.middleName').on('change', neighbourhoodRename);
     jQuery('.lastName').on('change', neighbourhoodRename);
+
+    jQuery('.inn').on('change', validateInnKpp);
+    jQuery('.kpp').on('change', validateInnKpp);
 
 });
