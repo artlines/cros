@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Abode\RoomType;
 use App\Entity\Conference;
 use App\Entity\Participating\ConferenceOrganization;
 use App\Entity\Participating\Organization;
@@ -57,11 +58,12 @@ class ConferenceRegistrationController extends AbstractController
 //                $ConferenceOrganization->getConference()->getId()
 //            );
 
+        $em  = $this->getDoctrine()->getManager();
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var ConferenceOrganization $ConferenceOrganization */
             $ConferenceOrganization = $form->getData();
-            $em  = $this->getDoctrine()->getManager();
             $em->getConnection()->beginTransaction();
 
             //setup Conference for conferenceMembers
@@ -89,7 +91,6 @@ class ConferenceRegistrationController extends AbstractController
                 $conferenceMember->setConferenceOrganization($ConferenceOrganization);
                 $em->persist($ConferenceOrganization); // !!DUP
                 $em->flush();
-                $em->flush();
             }
             // TODO: get duplicate  Organization
 //            $em->persist($ConferenceOrganization->getOrganization());
@@ -97,15 +98,20 @@ class ConferenceRegistrationController extends AbstractController
 
             $em->getConnection()->commit();
 
+
             return $this->render('conference_registration/registration_success.html.twig', [
                 'ConferenceOrganization' => $ConferenceOrganization,
             ]);
         }
+        $roomTypes = $em
+            ->getRepository(RoomType::class)
+            ->findAll();
 
 
         return $this->render('conference_registration/index.html.twig', [
 //            'controller_name' => 'ConferenceRegistrationController',
             'form' => $form->createView(),
+            'RoomTypes' => $roomTypes,
             'LimitUsersByOrg' => $Conference->getLimitUsersByOrg(),
             'LimitUsersGlobal' => $Conference->getLimitUsersGlobal(),
             'Users'   => 0, // TODD: get real users value

@@ -1,39 +1,66 @@
 // add-collection-widget.js
-jQuery(document).ready(function () {
-    jQuery('.add-another-collection-widget').click(function (e) {
-        var list = jQuery(jQuery(this).attr('data-list'));
-        var limit = list.attr('data-LimitUsersByOrg');
-        console.log(jQuery(this).attr('data-list'));
-        // Try to find the counter of the list or use the length of the list
-        var counter = list.data('widget-counter') | list.children().length;
-	if( list.children().length>=limit){
-	  console.log(list.children());
+
+const addWidget = function (e) {
+    var list = jQuery(jQuery(this).attr('data-list'));
+    var limit = list.attr('data-LimitUsersByOrg');
+    // Try to find the counter of the list or use the length of the list
+    var counter = list.data('widget-counter') | list.children().length;
+    if( list.children().length>=limit){
+        console.log(list.children());
         return;
     }
-        // grab the prototype template
-        var newWidget = list.attr('data-prototype');
-//        console.log(newWidget);
-        // replace the "__name__" used in the id and name of the prototype
-        // with a number that's unique to your emails
-        // end name attribute looks like name="contact[emails][2]"
-        newWidget = newWidget.replace(/__name__/g, counter);
-        // Increase the counter
-        counter++;
-        // And store it, the length cannot be used if deleting widgets is allowed
-        list.data('widget-counter', counter);
+    // grab the prototype template
+    var newWidget = list.attr('data-prototype');
+    // replace the "__name__" used in the id and name of the prototype
+    // with a number that's unique to your emails
+    // end name attribute looks like name="contact[emails][2]"
+    newWidget = newWidget.replace(/__name__/g, counter);
+    // Increase the counter
+    counter++;
+    // And store it, the length cannot be used if deleting widgets is allowed
+    list.data('widget-counter', counter);
 
-        // create a new list element and add it to the list
-        var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
-        console.log(list.attr('data-widget-tags'),jQuery(list.attr('data-widget-tags')),newElem,list);
-        newElem.find('.remove-collection-widget').click(function (e) {
-           jQuery(this).parent().parent().parent().parent().remove();
-        });
-        newElem.appendTo(list);
-        newElem.hide();
-        newElem.show('blind',{},500);
-        jQuery('#end-red').show();
-    })
+    // create a new list element and add it to the list
+    var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
+
+    console.log(list.attr('data-widget-tags'),jQuery(list.attr('data-widget-tags')),newElem,list);
+    // add remove button
+    newElem.find('.remove-collection-widget').click(function (e) {
+        jQuery(this).parent().parent().parent().parent().remove();
+    });
+
+    newElem.find('.select-roomtype')
+        .on('change', changeRoomType)
+        .change()
+    ;
+
+    // append with animation
+    newElem.hide();
+    newElem.appendTo(list);
+    newElem.show('blind',{},500);
+    // show end registration button
+    jQuery('#end-red').show();
+};
+
+const changeRoomType = function() {
+    //alert(  );
+    let id = this.value;
+    let roomTypeHtml = jQuery('#roomType_'+ id).html();
+    console.log('#roomType_'+ id,roomTypeHtml);
+    let roomTypeInfo = jQuery(this).parents('.conference-member').find('.roomTypeInfo');
+    console.log(jQuery(this).parents('.conference-member'));
+    roomTypeInfo.html(roomTypeHtml);
+
+};
+
+jQuery(document).ready(function () {
+
+    jQuery('.add-another-collection-widget').click(addWidget)
     // .click()
+    ;
+    jQuery('.select-roomtype')
+        .on('change', changeRoomType)
+        .change()
     ;
 
 });

@@ -53,6 +53,11 @@ class RoomType
     private $participationClass;
 
     /**
+     * @ORM\Column(type="text")
+     */
+    private $Description;
+
+    /**
      * @return int
      */
     public function getId()
@@ -126,5 +131,17 @@ class RoomType
     public function __toString()
     {
         return $this->getTitle(). ' Мест: '. $this->getMaxPlaces() .' Цена: '. $this->getCost();
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->Description;
+    }
+
+    public function setDescription(string $Description): self
+    {
+        $this->Description = $Description;
+
+        return $this;
     }
 }

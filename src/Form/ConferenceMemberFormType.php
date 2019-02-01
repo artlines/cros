@@ -72,7 +72,8 @@ class ConferenceMemberFormType extends AbstractType
                     'class' => RoomType::class,
                     'label' => 'Класс участия',
                     'attr' => [
-                        'class' => 'cs-theme-color-gray-dark-v3',
+
+                        'class' => 'cs-theme-color-gray-dark-v3 select-roomtype',
                     ],
                     'required' => false,
                 ]
