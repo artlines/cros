@@ -3,6 +3,7 @@
 namespace App\Repository\Abode;
 
 use App\Entity\Abode\Apartment;
+use App\Entity\Abode\ApartmentType;
 use App\Entity\Abode\Housing;
 use Doctrine\ORM\EntityRepository;
 
@@ -33,5 +34,18 @@ class ApartmentRepository extends EntityRepository
             ->getQuery();
 
         return $query->getResult();
+    }
+
+    public function countByType(ApartmentType $type)
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        $query = $qb
+            ->select('count(a.id)')
+            ->where('a.type = :type')
+            ->setParameter('type', $type)
+            ->getQuery();
+
+        return $query->getSingleScalarResult();
     }
 }

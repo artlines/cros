@@ -52,59 +52,59 @@ export default (state = initialState, action) => {
             }
         };
 
-        case PARTICIPATING.REQUEST_CONFERENCE_ORGANIZATIONS:
-            return {
-                ...state,
-                conference_organization: {
-                    ...state.conference_organization,
-                    isFetching: true,
-                }
-            };
-        case PARTICIPATING.RECEIVE_CONFERENCE_ORGANIZATIONS:
-            return {
-                ...state,
-                conference_organization: {
-                    ...state.conference_organization,
-                    isFetching: false,
-                    ...payload,
-                }
-            };
+    case PARTICIPATING.REQUEST_CONFERENCE_ORGANIZATIONS:
+        return {
+            ...state,
+            conference_organization: {
+                ...state.conference_organization,
+                isFetching: true,
+            }
+        };
+    case PARTICIPATING.RECEIVE_CONFERENCE_ORGANIZATIONS:
+        return {
+            ...state,
+            conference_organization: {
+                ...state.conference_organization,
+                isFetching: false,
+                ...payload,
+            }
+        };
 
-        case PARTICIPATING.REQUEST_MEMBERS:
-            return {
-                ...state,
-                member: {
-                    ...state.member,
-                    isFetching: true,
-                }
-            };
-        case PARTICIPATING.RECEIVE_MEMBERS:
-            return {
-                ...state,
-                member: {
-                    ...state.member,
-                    isFetching: false,
-                    ...payload,
-                }
-            };
+    case PARTICIPATING.REQUEST_MEMBERS:
+        return {
+            ...state,
+            member: {
+                ...state.member,
+                isFetching: true,
+            }
+        };
+    case PARTICIPATING.RECEIVE_MEMBERS:
+        return {
+            ...state,
+            member: {
+                ...state.member,
+                isFetching: false,
+                ...payload,
+            }
+        };
 
-        case PARTICIPATING.REQUEST_INVOICES:
-            return {
-                ...state,
-                invoice: {
-                    ...state.invoice,
-                    isFetching: true,
-                }
-            };
-        case PARTICIPATING.RECEIVE_INVOICES:
-            return {
-                ...state,
-                invoice: {
-                    ...state.invoice,
-                    isFetching: false,
-                    ...payload,
-                }
-            };
+    case PARTICIPATING.REQUEST_INVOICES:
+        return {
+            ...state,
+            invoice: {
+                ...state.invoice,
+                isFetching: true,
+            }
+        };
+    case PARTICIPATING.RECEIVE_INVOICES:
+        return {
+            ...state,
+            invoice: {
+                ...state.invoice,
+                isFetching: false,
+                ...payload,
+            }
+        };
     default:
         return state;
     }

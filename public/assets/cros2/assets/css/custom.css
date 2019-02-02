@@ -187,3 +187,14 @@ label.required:after
     color: #a94442;
     content: " *";
 }
+
+.google-sign-in__container {
+    text-align: center;
+}
+.google-sign-in__container img {
+    height: 50px;
+}
+.google-sign-in__btn {
+    background: inherit !important;
+    padding: 0 !important;
+}

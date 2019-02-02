@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Hall
- * @package AppBundle\Entity
+ * @package App\Old\Entity
  *
  * @ORM\Table(name="hall")
  * @ORM\Entity(repositoryClass="App\Repository\HallRepository")

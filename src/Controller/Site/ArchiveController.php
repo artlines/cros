@@ -18,7 +18,7 @@ class ArchiveController extends AbstractController
     {
         /** @var ConferenceRepository $conferences */
         $confRepo = $this->getDoctrine()
-            ->getRepository('App\Entity\Conference', 'pgsql');
+            ->getRepository('App\Entity\Conference');
 
         /** @var Conference[] $conferences */
         $conferences = $confRepo->findBy([]);
@@ -49,7 +49,7 @@ class ArchiveController extends AbstractController
         }
 
         $info = $this->getDoctrine()
-            ->getRepository('App\Entity\Content\Info', 'pgsql')
+            ->getRepository('App\Entity\Content\Info')
             ->findOneBy(['alias' => 'result', 'conference' => $conference]);
 
         return $this->render('frontend/archive/list.html.twig', [

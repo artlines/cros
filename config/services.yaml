@@ -6,6 +6,10 @@
 parameters:
     locale: 'ru'
 
+    attachments:
+        public_save_path: '%kernel.project_dir%/public/uploads'
+        uploads_path: 'uploads'
+
     tg.bot.token: "527782633:AAFPLooKU0KwINR_CwRj7R-1Z_nHv9b5t0o"
     tg.bot.token_test: "560591203:AAGbR2dImWaYdY1LzT5qZfE4wmRoleMU9vc"
 

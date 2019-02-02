@@ -1,12 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {compose} from 'redux';
+import React from "react";
+import PropTypes from "prop-types";
+import {connect} from "react-redux";
+import {compose} from "redux";
 import {
     Chip,
-} from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import find from 'lodash/find';
+} from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
+import find from "lodash/find";
 
 const styles = theme => ({
     chip: {

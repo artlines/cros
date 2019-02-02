@@ -37,12 +37,12 @@ security:
     ###
     # Fresh roles
     #
-    # ROLE_CMS_USER         - access to CMS
-    # ROLE_SALES_MANAGER    - sales manager
-    # ROLE_SALES_HEAD       - head of sales manager
-    # ROLE_SETTLEMENT_ADMIN - settlement coordinator
-    # ROLE_CONTENT_MANAGER  - content manager
-    # ROLE_ADMINISTRATOR    - administrator
+    # ROLE_CMS_USER           - access to CMS
+    # ROLE_SALES_MANAGER      - sales manager
+    # ROLE_SALES_HEAD         - head of sales manager
+    # ROLE_SETTLEMENT_MANAGER - settlement coordinator
+    # ROLE_CONTENT_MANAGER    - content manager
+    # ROLE_ADMINISTRATOR      - administrator
     ###
 
     access_control:

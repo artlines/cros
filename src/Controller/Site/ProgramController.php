@@ -18,7 +18,7 @@ class ProgramController extends AbstractController
     {
         /** @var Conference $conf */
         $lectures = $this->getDoctrine()
-            ->getRepository('App\Entity\Lecture', 'pgsql')
+            ->getRepository('App\Entity\Lecture')
             ->findBy([], ['date' => 'ASC', 'startTime' => 'ASC', 'endTime' => 'ASC']);
 
         $program = [];

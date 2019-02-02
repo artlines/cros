@@ -1,6 +1,6 @@
-import times from 'lodash/times';
+import times from "lodash/times";
 
-function createDevData(obj, count = 10, id = 'id') {
+function createDevData(obj, count = 10, id = "id") {
     let items = [];
 
     times(count, i => {

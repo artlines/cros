@@ -64,15 +64,9 @@
                                     </a>
                                 </div>
                             {% endif %}
-                            {% if is_granted('ROLE_ADMIN') %}
+                            {% if is_granted('ROLE_CMS_USER') %}
                                 <div class="login-v1">
-                                    <a href="{{ path('admin-history') }}" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
-                                        &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;CMS&nbsp;
-                                    </a>
-                                </div>
-                            {% elseif is_granted('ROLE_MANAGER') %}
-                                <div class="login-v1">
-                                    <a href="{{ path('admin-table') }}" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+                                    <a href="/cms" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
                                         &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;CMS&nbsp;
                                     </a>
                                 </div>
@@ -156,15 +150,9 @@
                                     </a>
                                 </div>
                             {% endif %}
-                            {% if is_granted('ROLE_ADMIN') %}
+                            {% if is_granted('ROLE_CMS_USER') %}
                                 <div class="login-v1">
-                                    <a href="{{ path('admin-history') }}" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
-                                        &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;CMS&nbsp;
-                                    </a>
-                                </div>
-                            {% elseif is_granted('ROLE_MANAGER') %}
-                                <div class="login-v1">
-                                    <a href="{{ path('admin-table') }}" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+                                    <a href="/cms" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
                                         &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;CMS&nbsp;
                                     </a>
                                 </div>
