@@ -278,10 +278,9 @@ const representative = function (e) {
                 jQuery('input:checkbox.representative').not(t).prop('checked', false);
             });
         } else {
-            jQuery('#required-reg').modal('show');
+            jQuery('#representative-email').modal('show');
         }
     });
-
     return false;
 };
 

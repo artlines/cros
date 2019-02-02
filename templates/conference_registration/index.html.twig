@@ -201,7 +201,7 @@ id     name    inn kpp
                 </div>
                 <div class="modal-body">
                     <p>На указанную почту пользователя выслан код подтверждения почты.</p>
-                    <p>Введите код из письма </p>da981233
+                    <p>Введите код из письма ( da981233 )</p>
                     <div style="text-align: center">
                     <input id="validation-code"
                        style="font-size:30px; text-align: center; width:50%"
@@ -271,6 +271,30 @@ id     name    inn kpp
         </div>
     </div>
 
+    <div class="modal fade" id="representative-email" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Внимание!!!</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <p>Не указано, или указана не верно почта ответственного</p>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-danger cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15 btn" data-dismiss="modal">
+                            OK
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="limit-reg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -295,6 +319,8 @@ id     name    inn kpp
             </div>
         </div>
     </div>
+
+
 
     {#<a href="#" data-href="/delete.php?id=23" data-toggle="modal" data-target="#confirm-delete">Delete record #23</a><br>#}
 

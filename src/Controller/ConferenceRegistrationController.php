@@ -88,7 +88,7 @@ class ConferenceRegistrationController extends AbstractController
     public function validateEmailSend(Request $request){
         $email = $request->get('email');
 
-        if($email) {
+        if($email and filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return new JsonResponse(['found'=>true]);
         }
         return new JsonResponse(['found'=>false]);
