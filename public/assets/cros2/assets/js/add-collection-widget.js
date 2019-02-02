@@ -213,9 +213,22 @@ jQuery(document).ready(function () {
         .change()
     ;
 
-    jQuery('.remove-collection-widget').click(function (e) {
-        jQuery(this).parent().parent().parent().remove();
+//     jQuery('.remove-collection-widget').click(function (e) {
+//         console.log('modalConfirm');
+// //        jQuery(this).parent().parent().parent().remove();
+//         modalConfirm(function(confirm){
+//             console.log('confirm',confirm);
+//         })
+//     });
+
+    modalConfirm('.remove-collection-widget', function(confirm){
+        if(confirm) {
+            console.log('confirm', confirm);
+        }else{
+            console.log('no confirm', confirm);
+        }
     });
+
 
 
     jQuery('.select-neighbourhood').each(neighbourhood);
@@ -227,6 +240,48 @@ jQuery(document).ready(function () {
     jQuery('.inn').on('change', validateInnKpp);
     jQuery('.kpp').on('change', validateInnKpp);
 
+    jQuery('.phone').each( function () {
+        new IMask( this, {
+            mask: [
+                {
+                    mask: '{8}(000)000-00-00'
+                },
+                {
+                    mask: '+{7}(000)000-00-00'
+                }
+            ]
+        });
+    });
+
     jQuery('.validateRequired').on('click', validateRequired);
 
 });
+
+
+var modalConfirm = function(btn_id,callback){
+
+    jQuery(btn_id).on("click", function(){
+        jQuery("#confirm-modal").modal('show');
+    });
+
+    // jQuery("#confirm-modal").modal('show');
+
+    jQuery("#confirm-modal-btn-yes").on("click", function(){
+        callback(true);
+        jQuery("#confirm-modal").modal('hide');
+    });
+
+    jQuery("#confirm-modal-btn-no").on("click", function(){
+        callback(false);
+        jQuery("#confirm-modal").modal('hide');
+    });
+};
+// modalConfirm(function(confirm){
+//     if(confirm){
+//         //Acciones si el usuario confirma
+//         $("#result").html("CONFIRMADO");
+//     }else{
+//         //Acciones si el usuario no confirma
+//         $("#result").html("NO CONFIRMADO");
+//     }
+// });

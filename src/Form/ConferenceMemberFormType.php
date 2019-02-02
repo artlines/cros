@@ -33,6 +33,7 @@ class ConferenceMemberFormType extends AbstractType
                         'placeholder' => 'А001АА 00',
                         'pattern' => '[А-Яа-яA-Za-z]{1,1}[0-9]{3,3}[А-Яа-яA-Za-z]{2,2}[ ][0-9]{2,3}',
                     ),
+                    'help' => 'Если Вы приедете на личном транспорте, укажите его государственный номер',
                     'required' => false,
                 ]
             )
@@ -48,6 +49,7 @@ class ConferenceMemberFormType extends AbstractType
                         'data-provide' => 'datetimepicker',
                         'html5' => false,
                     ],
+                    'help' => 'Укажите, если Вы приедете заранее',
                     'required' => false,
                 ]
             )
@@ -64,6 +66,7 @@ class ConferenceMemberFormType extends AbstractType
                         'data-provide' => 'datetimepicker',
                         'html5' => false,
                     ],
+                    'help' => 'Укажите, если Вы планируете задержаться',
                     'required' => false,
                 ]
             )
@@ -103,6 +106,7 @@ class ConferenceMemberFormType extends AbstractType
                     'attr' => [
                         'class' => 'cs-theme-color-gray-dark-v3 select-neighbourhood',
                     ],
+                    'help' => 'Выбор участика, для размещения в одном номере'
                 ]
             )
         ;

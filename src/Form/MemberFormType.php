@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -107,8 +108,10 @@ class MemberFormType extends AbstractType
                 [
                     'label' => 'Телефон',
                     'attr' => array(
-                        'class' => 'cs-theme-color-gray-dark-v3',
+                        'class' => 'phone cs-theme-color-gray-dark-v3',
+                        'title' => "Номер телефона в федеральном формате (+79990009999), без пробелов",
                     ),
+                    'help' => 'Формат +79990009999',
                     'required' => true,
                 ]
             )

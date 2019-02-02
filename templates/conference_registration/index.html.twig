@@ -59,8 +59,8 @@
      data-end="{{ Conference.eventFinish|date("Y-m-d") }}'
      >
     <div class="row">
-        <div class="col-md-3">{{- form_row(form2.firstName) -}}</div>
         <div class="col-md-3">{{- form_row(form2.lastName) -}}</div>
+        <div class="col-md-3">{{- form_row(form2.firstName) -}}</div>
         <div class="col-md-3">{{- form_row(form2.middleName) -}}</div>
         <div class="col-md-3">{{- form_row(form2.sex) -}}</div>
     </div>
@@ -122,8 +122,8 @@ id     name    inn kpp
 {% set hide = 0 %}
 <div data-num="{{ loop.index0 }}" class="conference-member" style="padding-left: 10px; border-left: solid 5px #87d37b; margin:20px 0 20px">
     <div class="row">
-        <div class="col-md-3">{{- form_row(item.user.firstName) -}}</div>
         <div class="col-md-3">{{- form_row(item.user.lastName) -}}</div>
+        <div class="col-md-3">{{- form_row(item.user.firstName) -}}</div>
         <div class="col-md-3">{{- form_row(item.user.middleName) -}}</div>
         <div class="col-md-3">{{- form_row(item.user.sex) -}}</div>
     </div>
@@ -139,17 +139,16 @@ id     name    inn kpp
         <div class="col-md-3">{{- form_row(item.carNumber) -}}</div>
     </div>
     <div class="row">
-        <div class="col-md-3">{{- form_row(item.RoomType) -}}</div>
+        <div class="col-md-6">{{- form_row(item.RoomType) -}}</div>
         <div class="col-md-3">{{- form_row(item.neighbourhood) -}}</div>
-    </div>
-    <div class="row">
-        <div class="col-md-10"></div>
-        <div class="col-md-2"><button
+        <div class="col-md-3">
+            <button
+                    style="margin-top: 30px; margin-left:30px"
                     type="button"
-                    class="btn btn-danger remove-collection-widget cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15"
+                    {#data-toggle="modal" data-target="#member-delete"#}
+                    class="btn btn-danger remove-collection-widget cs-font-size-13 cs-px-10 cs-py-10 mb-0"
             ><i class="fa fa-trash"></i> Удалить
-        </div>
-        <div class="col-md-3"></div>
+        </div></div>
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -159,7 +158,6 @@ id     name    inn kpp
     </div>
 </div>
 {% endfor %}
-    </div>
     {{ form_row(form._token) }}
 
     {#<div class="row">#}
@@ -167,7 +165,26 @@ id     name    inn kpp
             {#{{ form_row(form.save) }}#}
         {#</div>#}
     {#</div>#}
-
+    <!-- Modal -->
+    <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Подтвердите действие</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Удалить форму с пользователем
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="confirm-modal-btn-no" class="btn btn-secondary">Нет</button>
+                    <button type="button" id="confirm-modal-btn-yes" class="btn btn-primary">Да, подтверждаю</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {# store the prototype on the data-prototype attribute #}
     <div class="modal fade" id="confirm-reg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -231,10 +248,10 @@ id     name    inn kpp
     {#</button>#}
 
     <script>
-        $('#confirm-delete').on('show.bs.modal', function(e) {
-            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
-            $('.debug-url').html('Delete URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
-        });
+        // $('#confirm-delete').on('show.bs.modal', function(e) {
+        //     $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+        //     $('.debug-url').html('Delete URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
+        // });
     </script>
 {% set form_trash %}
     {{ form_row(form.ConferenceMembers) }}
