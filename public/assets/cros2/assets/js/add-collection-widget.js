@@ -146,8 +146,8 @@ const validateCode = function (force=false) {
 
 const validateInnKpp = function () {
     let data = {};
-    data.inn =
-        data.kpp = jQuery('.kpp').val();
+    data.inn = jQuery('.inn').val();
+    data.kpp = jQuery('.kpp').val();
     data.conf_id= jQuery('.conf_id').val();
     console.log(data);
     jQuery.ajax({
@@ -159,7 +159,6 @@ const validateInnKpp = function () {
             if(!trg.find('.error').length) {
                 trg.append(
                     jQuery('<span></span')
-                        .html('DDD')
                         .addClass('error invalid-feedback d-block')
                 );
                 console.log(trg);
@@ -168,7 +167,7 @@ const validateInnKpp = function () {
             let err = trg.find('.error');
             jQuery('.inn').addClass('is-invalid');
             jQuery('.kpp').addClass('is-invalid');
-            err.html('<span class="form-error-icon badge badge-danger text-uppercase">Ошибка</span> <span class="form-error-message">Организация \''+data.found+'\' уже зарегистрирована</span>');
+            err.html('<span class="form-error-message">Организация \''+data.found+'\' уже зарегистрирована</span>');
             jQuery('html, body').animate({
                 scrollTop: err.offset().top-400
             }, 1000);
@@ -184,8 +183,6 @@ const validateInnKpp = function () {
         // $('body').scrollTo('#target');
         console.log(data.found);
     });
-
-    validateRequired();
 };
 
 const neighbourhoodRename =  function() {
@@ -343,8 +340,22 @@ jQuery(document).ready(function () {
     jQuery('#representative-modal').find('.btn-primary').on("click", function(){
         validateCode(true);
     });
-});
 
+    jQuery(window).bind('beforeunload', function(e){
+        if(!blockUnload) return;
+        e.returnValue = 'Если вы покинете это страницу, данные о регистрации будет потеряны?';
+        return e.returnValue;
+    });
+    jQuery('input').on('change',function (e) {
+        blockUnload = true;
+    });
+    jQuery('#conference_organization_form_save').on('click',function (e) {
+        blockUnload = false;
+    });
+
+
+});
+var blockUnload = false;
 
 var modalConfirm = function(_callback){
 
@@ -356,6 +367,7 @@ var modalConfirm = function(_callback){
     // jQuery("#confirm-modal").modal('show');
 
 };
+
 var modalValidate = function(_callback){
     callback = _callback;
     jQuery("#representative-modal").modal('show');
