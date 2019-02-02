@@ -106,13 +106,14 @@ class ConferenceRegistrationController extends AbstractController
             $ConferenceOrganization = $this->getDoctrine()
                 ->getRepository(ConferenceOrganization::class)
                 ->findOneBy(['inviteHash'=>$hash]);
+            $form = $this->createForm(
+                ConferenceOrganizationFormType::class, $ConferenceOrganization);
 
         } else {
-            $ConferenceOrganization = null;
+            $form = $this->createForm(
+                ConferenceOrganizationFormType::class);
         }
 //        $form = $this->createForm(MyFrmType::class,null,['attr'=>['class'=>'row']]);
-        $form = $this->createForm(
-            ConferenceOrganizationFormType::class, $ConferenceOrganization);
         $arUserPassword = [];
 //        $data = $request->get('conference_organization_form');
 //        foreach ($data['ConferenceMembers'] as $key => $cm ){
@@ -147,7 +148,7 @@ class ConferenceRegistrationController extends AbstractController
             /** @var ConferenceOrganization $ConferenceOrganization */
             $ConferenceOrganization = $form->getData();
             $em->getConnection()->beginTransaction();
-
+            dd($ConferenceOrganization);
             $organization = $ConferenceOrganization->getOrganization();
             $files = $request->files->get('conference_organization_form');
 

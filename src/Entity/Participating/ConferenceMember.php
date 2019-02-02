@@ -96,7 +96,7 @@ class ConferenceMember
     /**
      * @var mixed
      *
-     * @ORM\ManyToOne(targetEntity="ConferenceMember")
+     * @ORM\ManyToOne(targetEntity="ConferenceMember",cascade={"persist"})
      * @ORM\JoinColumn(name="neighbourhood_id", referencedColumnName="id", nullable=true)
      */
     private $neighbourhood;
