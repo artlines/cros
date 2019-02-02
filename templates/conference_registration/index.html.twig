@@ -55,8 +55,6 @@
 {% set member_prototype %}
 <div class="conference-member"
      style="padding-left: 10px; border-left: solid 5px #87d37b; margin:20px 0 20px"
-     data-start="{{ Conference.eventStart|date("Y-m-d") }}'
-     data-end="{{ Conference.eventFinish|date("Y-m-d") }}'
      >
     <div class="row">
         <div class="col-md-3">{{- form_row(form2.lastName) -}}</div>
@@ -112,13 +110,18 @@ id     name    inn kpp
     <div id="members-fields-list"
          data-prototype="{{ member_prototype|e }}"
          data-LimitUsersByOrg="{{ LimitUsersByOrg }}"
-         data-widget-tags="{{ '<div ></div>'|e }}"
+         data-start="{{ Conference.eventStart|date("Y-m-d") }}"
+         data-end="{{ Conference.eventFinish|date("Y-m-d") }}"
+         data-widget-counter="{{ form.ConferenceMembers|length }}"
          >
 
 {% set hide = 1 %}
 {% for item in form.ConferenceMembers %}
 {% set hide = 0 %}
-<div data-num="{{ loop.index0 }}" class="conference-member" style="padding-left: 10px; border-left: solid 5px #87d37b; margin:20px 0 20px">
+<div class="conference-member"
+    style="padding-left: 10px; border-left: solid 5px #87d37b; margin:20px 0 20px"
+    data-num="{{ loop.index0 }}"
+>
     <div class="row">
         <div class="col-md-3">{{- form_row(item.user.lastName) -}}</div>
         <div class="col-md-3">{{- form_row(item.user.firstName) -}}</div>
@@ -156,7 +159,8 @@ id     name    inn kpp
     </div>
 </div>
 {% endfor %}
-    </div>
+</div>
+
     {{ form_row(form._token) }}
 
     {#<div class="row">#}

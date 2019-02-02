@@ -133,7 +133,7 @@ class MemberFormType extends AbstractType
                 [
                     'label' => 'Представитель организации',
                     'attr' => [
-                        'class' => 'cs-theme-color-gray-dark-v3',
+                        'class' => 'representative cs-theme-color-gray-dark-v3',
 //                        'style' => 'margin-top: 37px;'
                     ],
                     'required' => false,

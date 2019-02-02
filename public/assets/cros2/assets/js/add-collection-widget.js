@@ -6,8 +6,8 @@ const addWidget = function (e) {
     console.log(list);
     var limit = list.attr('data-LimitUsersByOrg');
     // Try to find the counter of the list or use the length of the list
-    var counter = list.data('widget-counter') | list.children().length;
-    if (list.children().length >= limit) {
+    var counter = list.data('widget-counter');
+    if (list.children().length >= 10) {
         console.log('max children', list.children().length);
         jQuery("#limit-reg").modal('show');
         return;
@@ -19,15 +19,15 @@ const addWidget = function (e) {
     // end name attribute looks like name="contact[emails][2]"
     newWidget = newWidget.replace(/__name__/g, counter);
     // And store it, the length cannot be used if deleting widgets is allowed
-    list.data('widget-counter', counter);
 
     // create a new list element and add it to the list
     var newElem = jQuery(newWidget);
     console.log('newWidget', newWidget, newElem);
-    newElem.find('.conference-member').attr('data-num', counter);
+    newElem.attr('data-num', counter);
 
     // Increase the counter
     counter++;
+    list.data('widget-counter', counter);
 
     // add remove button
     newElem.find('.remove-collection-widget').click(removeConferenceMember);
@@ -36,9 +36,7 @@ const addWidget = function (e) {
         .on('change', changeRoomType)
         .change()
     ;
-    newElem.find('.firstName').on('change', neighbourhoodRename);
-    newElem.find('.middleName').on('change', neighbourhoodRename);
-    newElem.find('.lastName').on('change', neighbourhoodRename);
+    updateItem(newElem);
 
     // append with animation
 //    newElem.hide();
@@ -216,7 +214,12 @@ const removeConferenceMember = function (e) {
         jQuery(t).parents('.conference-member').remove();
     })
 };
+const updateItem = function (item) {
+    item.find('.firstName').on('change', neighbourhoodRename);
+    item.find('.middleName').on('change', neighbourhoodRename);
+    item.find('.lastName').on('change', neighbourhoodRename);
 
+};
 jQuery(document).ready(function () {
 
     jQuery('.add-another-collection-widget').click(addWidget)
@@ -246,13 +249,11 @@ jQuery(document).ready(function () {
     //     }
     // });
 
-
+    jQuery.each( jQuery('.conference-member'), function(i,el){
+        updateItem(jQuery(el));
+    });
 
     jQuery('.select-neighbourhood').each(neighbourhood);
-
-    jQuery('.firstName').on('change', neighbourhoodRename);
-    jQuery('.middleName').on('change', neighbourhoodRename);
-    jQuery('.lastName').on('change', neighbourhoodRename);
 
     jQuery('.inn').on('change', validateInnKpp);
     jQuery('.kpp').on('change', validateInnKpp);
