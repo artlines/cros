@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -100,6 +101,17 @@ class MemberFormType extends AbstractType
                         'class' => 'cs-theme-color-gray-dark-v3',
                     ],
                 ]
+            )
+            ->add(
+                'photo',
+                FileType::class,
+                array(
+                    'label' => 'Фото',
+                    'attr' => array(
+                        'class' => 'cs-theme-color-gray-dark-v3',
+                    ),
+                    'required' => false,
+                )
             )
 
             ->add(

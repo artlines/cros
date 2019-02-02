@@ -140,6 +140,11 @@ class User implements UserInterface
     private $entityName = 'user';
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $photo;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -537,5 +542,17 @@ class User implements UserInterface
     {
         // TODO: Implement __toString() method.
         return "user_show::".$this->getId();
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?string $photo): self
+    {
+        $this->photo = $photo;
+
+        return $this;
     }
 }
