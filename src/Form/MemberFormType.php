@@ -103,7 +103,7 @@ class MemberFormType extends AbstractType
                 ]
             )
             ->add(
-                'photo',
+                'newphoto',
                 FileType::class,
                 array(
                     'label' => 'Фото',

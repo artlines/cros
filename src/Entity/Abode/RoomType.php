@@ -68,11 +68,6 @@ class RoomType
     private $rooms;
 
     /**
-     * @ORM\Column(type="text")
-     */
-    private $Description;
-
-    /**
      * @return int
      */
     public function getId()
@@ -94,22 +89,6 @@ class RoomType
     public function setTitle($title)
     {
         $this->title = $title;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string|null $description
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
     }
 
     /**
@@ -182,12 +161,12 @@ class RoomType
 
     public function getDescription(): ?string
     {
-        return $this->Description;
+        return $this->description;
     }
 
     public function setDescription(string $Description): self
     {
-        $this->Description = $Description;
+        $this->description = $Description;
 
         return $this;
     }

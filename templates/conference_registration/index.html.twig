@@ -74,6 +74,7 @@
         <div class="col-md-3">{{- form_row(formConferenceMembers.arrival,{'value':start}) -}}</div>
         <div class="col-md-3">{{- form_row(formConferenceMembers.leaving,{'value':end }) -}}</div>
         <div class="col-md-3">{{- form_row(formConferenceMembers.carNumber) -}}</div>
+        <div class="col-md-3">{{- form_row(form2.newphoto) -}}</div>
     </div>
     <div class="row">
         <div class="col-md-6">{{- form_row(formConferenceMembers.RoomType) -}}</div>
@@ -138,6 +139,7 @@ id     name    inn kpp
         <div class="col-md-3">{{- form_row(item.arrival) -}}</div>
         <div class="col-md-3">{{- form_row(item.leaving) -}}</div>
         <div class="col-md-3">{{- form_row(item.carNumber) -}}</div>
+        <div class="col-md-3">{{- form_row(item.user.newphoto) -}}</div>
     </div>
     <div class="row">
         <div class="col-md-6">{{- form_row(item.RoomType) -}}</div>
