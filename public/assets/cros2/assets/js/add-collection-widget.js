@@ -122,9 +122,31 @@ const validateRequired = function () {
     return empty_flds;
 };
 
+const validateCode = function (force=false) {
+    let data = {
+        code: jQuery('#validation-code').val()
+    };
+
+    if(data.code.length<3 && !force){
+        return
+    }
+
+    jQuery.ajax({
+        url: "/conference/registration-validate-code",
+        data: data
+    }).done(function (data) {
+        if (data && data.found) {
+            jQuery('#validation-code-error').hide();
+            callback();
+        } else {
+            jQuery('#validation-code-error').show();
+        }
+    });
+};
+
 const validateInnKpp = function () {
     let data = {};
-    data.inn = jQuery('.inn').val();
+    data.inn =
     data.kpp = jQuery('.kpp').val();
     data.conf_id= jQuery('.conf_id').val();
     console.log(data);
@@ -227,14 +249,27 @@ const updateItem = function (item) {
             ]
         });
     });
-    item.find('.representative').on('change',representative);
+    item.find('.representative').on('click',representative);
 
 };
 
 const representative = function (e) {
     //console.log(this,e,jQuery(this).prop('checked'));
     //jQuery(this).prop('checked', false);
-    jQuery('input:checkbox.representative').not(this).prop('checked', false);
+
+    let t = this;
+    if(!jQuery(t).prop('checked')){
+        console.log('MAIL SEND: confirm code');
+        return;
+    }
+
+    modalValidate(function(e){
+       // jQuery(t).parents('.representative-member').remove();
+        jQuery(t).prop('checked', true);
+        jQuery("#representative-modal").modal('hide');
+        jQuery('input:checkbox.representative').not(t).prop('checked', false);
+    });
+    return false;
 };
 
 jQuery(document).ready(function () {
@@ -275,6 +310,7 @@ jQuery(document).ready(function () {
     jQuery('.inn').on('change', validateInnKpp);
     jQuery('.kpp').on('change', validateInnKpp);
 
+    jQuery('#validation-code').on('change', validateCode);
 
     jQuery('.validateRequired').on('click', validateRequired);
 
@@ -292,6 +328,9 @@ jQuery(document).ready(function () {
         jQuery("#confirm-modal").modal('hide');
     });
 
+    jQuery('#representative-modal').find('.btn-primary').on("click", function(){
+        validateCode(true);
+    });
 });
 
 
@@ -299,11 +338,15 @@ var modalConfirm = function(_callback){
 
     callback = _callback;
     // jQuery(btn_id).on("click", function(){
-        jQuery("#confirm-modal").modal('show');
+    jQuery("#confirm-modal").modal('show');
     // });
 
     // jQuery("#confirm-modal").modal('show');
 
+};
+var modalValidate = function(_callback){
+    callback = _callback;
+    jQuery("#representative-modal").modal('show');
 };
 
 

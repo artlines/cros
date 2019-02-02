@@ -64,6 +64,22 @@ class ConferenceRegistrationController extends AbstractController
         return new JsonResponse(['found'=>false]);
     }
 
+    /**
+     * @Route("/conference/registration-validate-code")
+     */
+
+    public function validateCode(Request $request){
+        $code = $request->get('code');
+
+        if($code
+            and strlen($code)==8
+            and substr($code,0,4) == substr(md5(substr($code,-4)),-4)
+        ){
+            // substr($code,4,4)==md5(substr($code,0,4))
+            return new JsonResponse(['found'=>true]);
+        }
+        return new JsonResponse(['found'=>false]);
+    }
 
     /**
      * @Route("/conference/registration/{hash}", name="conference_registration_hash")
