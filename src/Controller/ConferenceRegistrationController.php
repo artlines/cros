@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Abode\RoomType;
 use App\Entity\Conference;
+use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\ConferenceOrganization;
 use App\Entity\Participating\Organization;
 use App\Entity\Participating\User;
@@ -112,7 +113,7 @@ class ConferenceRegistrationController extends AbstractController
 //        $form = $this->createForm(MyFrmType::class,null,['attr'=>['class'=>'row']]);
         $form = $this->createForm(
             ConferenceOrganizationFormType::class, $ConferenceOrganization);
-
+        $arUserPassword = [];
 //        $data = $request->get('conference_organization_form');
 //        foreach ($data['ConferenceMembers'] as $key => $cm ){
 //            if( $cm['neighbourhood']=='' ){
@@ -189,6 +190,11 @@ class ConferenceRegistrationController extends AbstractController
                         $passwordEncoder->encodePassword( $user, $password)
                     );
                     $user->setPhoto($fileName);
+
+                    $arUserPassword[] = [
+                        'id' => $user->getId(),
+                        'password' => $password,
+                    ];
                 }
 
                 $em->persist($organization);
@@ -200,6 +206,7 @@ class ConferenceRegistrationController extends AbstractController
                 $conferenceMember->setNeighbourhood(null);
                 $em->persist($ConferenceOrganization); // !!DUP
                 $em->flush();
+                $conferenceMember->setNeighbourhood(new ConferenceMember());
             }
             // TODO: get duplicate  Organization
 //            $em->persist($ConferenceOrganization->getOrganization());
@@ -226,7 +233,7 @@ class ConferenceRegistrationController extends AbstractController
 
                 $organization->setLogo($fileName);
             }
-
+            $ConferenceOrganization->setFinish(true);
             $em->flush();
 
             $em->getConnection()->commit();
@@ -234,6 +241,7 @@ class ConferenceRegistrationController extends AbstractController
 
             return $this->render('conference_registration/registration_success.html.twig', [
                 'ConferenceOrganization' => $ConferenceOrganization,
+                'UserPasswords' => $arUserPassword,
             ]);
         }
         $roomTypes = $em

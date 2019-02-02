@@ -118,7 +118,12 @@ const validateRequired = function () {
         jQuery('#required-reg').modal('show');
         return false;
     }
-    jQuery('#confirm-reg').modal('show');
+    if(jQuery('#members-fields-list').children().length){
+        jQuery('#confirm-reg').modal('show');
+
+    } else {
+        alert('TODO: Нет участников');
+    }
     return empty_flds;
 };
 
