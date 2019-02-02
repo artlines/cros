@@ -22,7 +22,7 @@ const addWidget = function (e) {
 
     // create a new list element and add it to the list
     var newElem = jQuery(newWidget);
-    console.log('newWidget', newWidget, newElem);
+
     newElem.attr('data-num', counter);
 
     // Increase the counter
@@ -219,6 +219,15 @@ const updateItem = function (item) {
     item.find('.middleName').on('change', neighbourhoodRename);
     item.find('.lastName').on('change', neighbourhoodRename);
 
+    item.find('.phone').each( function () {
+        new IMask( this, {
+            mask: [
+                { mask:  '{8}(000)000-00-00' },
+                { mask: '+{7}(000)000-00-00' },
+            ]
+        });
+    });
+
 };
 jQuery(document).ready(function () {
 
@@ -258,18 +267,6 @@ jQuery(document).ready(function () {
     jQuery('.inn').on('change', validateInnKpp);
     jQuery('.kpp').on('change', validateInnKpp);
 
-    jQuery('.phone').each( function () {
-        new IMask( this, {
-            mask: [
-                {
-                    mask: '{8}(000)000-00-00'
-                },
-                {
-                    mask: '+{7}(000)000-00-00'
-                }
-            ]
-        });
-    });
 
     jQuery('.validateRequired').on('click', validateRequired);
 
