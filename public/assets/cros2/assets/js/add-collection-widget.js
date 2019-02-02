@@ -99,20 +99,21 @@ const neighbourhood = function() {
 
 const validateRequired = function () {
     var empty_flds = 0;
-    jQuery("[required]").each(function() {
-        if(!jQuery.trim(jQuery(this).val())) {
-            //empty_flds++;
-
-            jQuery(this).addClass('is-invalid');
-            jQuery('html, body').animate({
-                scrollTop: jQuery(this).offset().top-400
-            }, 1000);
-            console.log(jQuery(this));
-            jQuery(this).focus();
-            return;
-        }
-    });
-    $('#confirm-reg').modal('show');
+    let r = jQuery("[required]").filter(function() {
+        return !jQuery.trim(jQuery(this).val());
+    }).each(function() {
+        jQuery(this).addClass('is-invalid');
+        jQuery('html, body').animate({
+            scrollTop: jQuery(this).offset().top-400
+        }, 1000);
+        jQuery(this).focus();
+        return false;
+    }).length;
+    if (r) {
+        jQuery('#required-reg').modal('show');
+        return false;
+    }
+    jQuery('#confirm-reg').modal('show');
     return empty_flds;
 };
 
