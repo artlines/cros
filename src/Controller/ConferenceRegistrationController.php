@@ -148,9 +148,10 @@ class ConferenceRegistrationController extends AbstractController
             $em->getConnection()->beginTransaction();
 
             $organization = $ConferenceOrganization->getOrganization();
+            $files = $request->files->get('conference_organization_form');
 
             //setup Conference for conferenceMembers
-            foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember ) {
+            foreach ($ConferenceOrganization->getConferenceMembers() as $user_num => $conferenceMember ) {
                 $user = $conferenceMember->getUser();
                 $conferenceMember->setUser(null);
                 /** @var User $oldUser */
@@ -163,7 +164,29 @@ class ConferenceRegistrationController extends AbstractController
                 }
 
                 $user->setOrganization($organization);
+                // conference_organization_form[ConferenceMembers][0][user][newphoto]
+                if($files and isset(
+                        $files['ConferenceMembers'],
+                        $files['ConferenceMembers'][$user_num],
+                        $files['ConferenceMembers'][$user_num]['user'],
+                        $files['ConferenceMembers'][$user_num]['user']['newphoto']
+                    )) {
 
+                    /** @var UploadedFile $file */
+                    $file = $files['ConferenceMembers'][$user_num]['user']['newphoto'];
+                    $fileName = $user->getId().'.'.$file->guessExtension();
+                    // Move the file to the directory where brochures are stored
+                    try {
+                        $file->move(
+                            self::DIRECTORY_UPLOAD.'/members/users/',
+                            $fileName
+                        );
+                    } catch (FileException $e) {
+                        // ... handle exception if something happens during file upload
+                    }
+
+                    $user->setPhoto($fileName);
+                }
 
                 $em->persist($organization);
 
@@ -181,18 +204,17 @@ class ConferenceRegistrationController extends AbstractController
 
 
 
-            $files = $request->files->get('conference_organization_form');
             if($files and isset(
-                $files['organization'],
-                $files['organization']['newlogo']
-            )) {
+                    $files['organization'],
+                    $files['organization']['newlogo']
+                )) {
                 /** @var UploadedFile $file */
                 $file = $files['organization']['newlogo'];
                 $fileName = $organization->getId().'.'.$file->guessExtension();
                 // Move the file to the directory where brochures are stored
                 try {
                     $file->move(
-                        self::DIRECTORY_UPLOAD.'logos/',
+                        self::DIRECTORY_UPLOAD.'members/logos/',
                         $fileName
                     );
                 } catch (FileException $e) {
@@ -200,7 +222,6 @@ class ConferenceRegistrationController extends AbstractController
                 }
 
                 $organization->setLogo($fileName);
-
             }
 
             $em->flush();
