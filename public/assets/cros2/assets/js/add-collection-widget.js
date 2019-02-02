@@ -104,7 +104,7 @@ const validateRequired = function () {
     }).each(function() {
         jQuery(this).addClass('is-invalid');
         jQuery('html, body').animate({
-            scrollTop: jQuery(this).offset().top-400
+            scrollTop: jQuery(this).offset().top-200
         }, 1000);
         jQuery(this).focus();
         return false;

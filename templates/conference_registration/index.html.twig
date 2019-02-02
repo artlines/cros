@@ -171,7 +171,7 @@ id     name    inn kpp
 
     {# store the prototype on the data-prototype attribute #}
     <div class="modal fade" id="confirm-reg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
 
                 <div class="modal-header">
@@ -196,6 +196,32 @@ id     name    inn kpp
             </div>
         </div>
     </div>
+
+
+    <div class="modal fade" id="required-reg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Внимание!!!</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <p>Запоните все обязательные поля формы</p>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-danger cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15 btn" data-dismiss="modal">
+                            OK
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     {#<a href="#" data-href="/delete.php?id=23" data-toggle="modal" data-target="#confirm-delete">Delete record #23</a><br>#}
 
