@@ -555,4 +555,22 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getNewPhoto(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * @param mixed
+     * @return self
+     */
+    public function setNewPhoto( $Photo)
+    {
+        return $this;
+    }
+
 }

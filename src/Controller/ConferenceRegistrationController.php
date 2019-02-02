@@ -183,37 +183,23 @@ class ConferenceRegistrationController extends AbstractController
 
             $files = $request->files->get('conference_organization_form');
             if($files and isset(
-                    $files['organization'],
-                    $files['organization']['newlogo']
-                )) {
-
-
+                $files['organization'],
+                $files['organization']['newlogo']
+            )) {
                 /** @var UploadedFile $file */
                 $file = $files['organization']['newlogo'];
-//                $file = $organization->getLogo();
+                $fileName = $organization->getId().'.'.$file->guessExtension();
+                // Move the file to the directory where brochures are stored
+                try {
+                    $file->move(
+                        self::DIRECTORY_UPLOAD.'logos/',
+                        $fileName
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
 
-//                dd($tmp);
-//                $file = new UploadedFile($tmp['path'],$tmp['ori'],);
-//                move_uploaded_file()
-
-
-
-            $fileName = $organization->getId().'.'.$file->guessExtension();
-            // Move the file to the directory where brochures are stored
-            try {
-                $r =
-                $file->move(
-                    self::DIRECTORY_UPLOAD.'logos/',
-                    $fileName
-                );
-            } catch (FileException $e) {
-                // ... handle exception if something happens during file upload
-            }
-
-            // updates the 'brochure' property to store the PDF file name
-            // instead of its contents
-
-            $organization->setLogo($fileName);
+                $organization->setLogo($fileName);
 
             }
 
