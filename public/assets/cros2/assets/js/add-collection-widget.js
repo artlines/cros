@@ -201,7 +201,7 @@ const neighbourhoodRename =  function() {
     //
     // ;
 };
-
+var callback = null;
 
 jQuery(document).ready(function () {
 
@@ -213,21 +213,38 @@ jQuery(document).ready(function () {
         .change()
     ;
 
-//     jQuery('.remove-collection-widget').click(function (e) {
-//         console.log('modalConfirm');
-// //        jQuery(this).parent().parent().parent().remove();
-//         modalConfirm(function(confirm){
-//             console.log('confirm',confirm);
-//         })
-//     });
-
-    modalConfirm('.remove-collection-widget', function(confirm){
-        if(confirm) {
-            console.log('confirm', confirm);
-        }else{
-            console.log('no confirm', confirm);
-        }
+    jQuery('.remove-collection-widget').click(function (e) {
+//        console.log('modalConfirm');
+//        jQuery(this).parent().parent().parent().remove();
+        let t = this;
+        modalConfirm(function(e){
+            console.log('confirm1',e,t);
+        })
     });
+
+    jQuery('.remove-collection-widget2').click(function (e) {
+//        console.log('modalConfirm');
+//        jQuery(this).parent().parent().parent().remove();
+        modalConfirm(function(){
+            console.log('confirm2');
+        })
+    });
+
+    // modalConfirm('.remove-collection-widget', function(confirm){
+    //     if(confirm) {
+    //         console.log('confirm', confirm);
+    //     }else{
+    //         console.log('no confirm', confirm);
+    //     }
+    // });
+    //
+    // modalConfirm2('.remove-collection-widget2', function(confirm){
+    //     if(confirm) {
+    //         console.log('confirm2', confirm);
+    //     }else{
+    //         console.log('no confirm2', confirm);
+    //     }
+    // });
 
 
 
@@ -255,27 +272,43 @@ jQuery(document).ready(function () {
 
     jQuery('.validateRequired').on('click', validateRequired);
 
-});
 
-
-var modalConfirm = function(btn_id,callback){
-
-    jQuery(btn_id).on("click", function(){
-        jQuery("#confirm-modal").modal('show');
-    });
-
-    // jQuery("#confirm-modal").modal('show');
-
-    jQuery("#confirm-modal-btn-yes").on("click", function(){
-        callback(true);
+    jQuery("#confirm-modal-btn-yes").on("click", function(e){
+        if(callback) {
+            callback(e);
+            callback = null;
+        }
         jQuery("#confirm-modal").modal('hide');
     });
 
     jQuery("#confirm-modal-btn-no").on("click", function(){
-        callback(false);
+        callback = null;
         jQuery("#confirm-modal").modal('hide');
     });
+
+});
+
+
+var modalConfirm = function(_callback){
+
+    callback = _callback;
+    // jQuery(btn_id).on("click", function(){
+        jQuery("#confirm-modal").modal('show');
+    // });
+
+    // jQuery("#confirm-modal").modal('show');
+
 };
+
+
+
+
+var modalConfirm2 = function(btn_id,callback){
+
+    jQuery("#confirm-modal").modal('show');
+};
+
+
 // modalConfirm(function(confirm){
 //     if(confirm){
 //         //Acciones si el usuario confirma
