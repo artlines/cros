@@ -227,8 +227,16 @@ const updateItem = function (item) {
             ]
         });
     });
+    item.find('.representative').on('change',representative);
 
 };
+
+const representative = function (e) {
+    //console.log(this,e,jQuery(this).prop('checked'));
+    //jQuery(this).prop('checked', false);
+    jQuery('input:checkbox.representative').not(this).prop('checked', false);
+};
+
 jQuery(document).ready(function () {
 
     jQuery('.add-another-collection-widget').click(addWidget)
