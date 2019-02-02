@@ -184,7 +184,10 @@ class ConferenceRegistrationController extends AbstractController
                     } catch (FileException $e) {
                         // ... handle exception if something happens during file upload
                     }
-
+                    $password = $this->getRandomPassword();
+                    $user->setPassword(
+                        $passwordEncoder->encodePassword( $user, $password)
+                    );
                     $user->setPhoto($fileName);
                 }
 
