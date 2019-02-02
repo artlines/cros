@@ -2,11 +2,13 @@
 
 const addWidget = function (e) {
     var list = jQuery(jQuery(this).attr('data-list'));
+
+    console.log(list);
     var limit = list.attr('data-LimitUsersByOrg');
     // Try to find the counter of the list or use the length of the list
     var counter = list.data('widget-counter') | list.children().length;
     if( list.children().length>=limit){
-        console.log(list.children());
+        console.log('max children',list.children().length);
         return;
     }
     // grab the prototype template
@@ -19,17 +21,15 @@ const addWidget = function (e) {
     list.data('widget-counter', counter);
 
     // create a new list element and add it to the list
-    var newElem = jQuery(list.attr('data-widget-tags')).html(newWidget);
+    var newElem = jQuery(newWidget);
+    console.log('newWidget',newWidget,newElem);
     newElem.find('.conference-member').attr('data-num',counter);
-    console.log(list.attr('data-widget-tags'),jQuery(list.attr('data-widget-tags')),newElem,list);
 
     // Increase the counter
     counter++;
 
     // add remove button
-    newElem.find('.remove-collection-widget').click(function (e) {
-        jQuery(this).parent().parent().parent().parent().remove();
-    });
+    newElem.find('.remove-collection-widget').click(removeConferenceMember);
 
     newElem.find('.select-roomtype')
         .on('change', changeRoomType)
@@ -46,6 +46,7 @@ const addWidget = function (e) {
     // show end registration button
     jQuery('#end-red').show();
     jQuery('.select-neighbourhood').each(neighbourhood);
+
 
 
 };
@@ -202,6 +203,13 @@ const neighbourhoodRename =  function() {
     // ;
 };
 var callback = null;
+const removeConferenceMember = function (e) {
+    let t = this;
+    modalConfirm(function(e){
+        console.log('confirm1',e,t);
+        jQuery(t).parents('.conference-member').remove();
+    })
+};
 
 jQuery(document).ready(function () {
 
@@ -213,22 +221,8 @@ jQuery(document).ready(function () {
         .change()
     ;
 
-    jQuery('.remove-collection-widget').click(function (e) {
-//        console.log('modalConfirm');
-//        jQuery(this).parent().parent().parent().remove();
-        let t = this;
-        modalConfirm(function(e){
-            console.log('confirm1',e,t);
-        })
-    });
+    jQuery('.remove-collection-widget').click(removeConferenceMember);
 
-    jQuery('.remove-collection-widget2').click(function (e) {
-//        console.log('modalConfirm');
-//        jQuery(this).parent().parent().parent().remove();
-        modalConfirm(function(){
-            console.log('confirm2');
-        })
-    });
 
     // modalConfirm('.remove-collection-widget', function(confirm){
     //     if(confirm) {
