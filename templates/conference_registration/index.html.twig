@@ -20,10 +20,9 @@
     </div>
 {% for roomType in RoomTypes  %}
 <div id="roomType_{{ roomType.id }}">
-    Класс участия: <b>{{ roomType.participationClass.title }}</b><br />
-    Тип проживания: <b>{{ roomType.title }}</b><br />
-    Стоимость:  <b>{{ roomType.cost }}</b><br />
-    Общее количство мест: <b>{{ roomType.maxPlaces }}</b><br />
+    Класс участия: <b>{{ roomType.title }}</b><br />
+    Стоимость:  <b>{{ roomType.cost|number_format }}</b> ₽<br />
+    Количество свободных мест: <b>{{ roomType.maxPlaces }}</b><br />
     <h4>Описание:</h4>
     {{ roomType.description|raw }}
 </div>
@@ -69,7 +68,7 @@
         <div class="col-md-3">{{- form_row(form2.phone) -}}</div>
         <div class="col-md-3">{{- form_row(form2.email) -}}</div>
         <div class="col-md-3">{{- form_row(form2.post) -}}</div>
-        <div class="col-md-3">{{- form_row(form2.representative) -}}</div>
+        <div class="col-md-3" style="padding-top: 37px">{{- form_row(form2.representative) -}}</div>
     </div>
     <div class="row">
         {% set start %}{{ Conference.eventStart|date("Y-m-d") }}T12:00{% endset %}
@@ -79,7 +78,7 @@
         <div class="col-md-3">{{- form_row(formConferenceMembers.carNumber) -}}</div>
     </div>
     <div class="row">
-        <div class="col-md-3">{{- form_row(formConferenceMembers.RoomType) -}}</div>
+        <div class="col-md-6">{{- form_row(formConferenceMembers.RoomType) -}}</div>
         <div class="col-md-3">{{- form_row(formConferenceMembers.neighbourhood) -}}</div>
         <div class="col-md-3">
             <button
@@ -89,15 +88,6 @@
             ><i class="fa fa-trash"></i> Удалить
             </button>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-10"></div>
-        <div class="col-md-2"><button
-                    type="button"
-                    class="btn btn-danger remove-collection-widget cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15"
-            ><i class="fa fa-trash"></i> Удалить
-        </div>
-        <div class="col-md-3"></div>
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -248,6 +238,30 @@ id     name    inn kpp
         </div>
     </div>
 
+    <div class="modal fade" id="limit-reg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Внимание!!!</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <p>Вы не можете добавить больше участников</p>
+                    <p>Если Вам необходимо больше участников, свяжитесь с администрацией КРОС</p>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-danger cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15 btn" data-dismiss="modal">
+                            OK
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {#<a href="#" data-href="/delete.php?id=23" data-toggle="modal" data-target="#confirm-delete">Delete record #23</a><br>#}
 

@@ -137,6 +137,7 @@ class MemberFormType extends AbstractType
 //                        'style' => 'margin-top: 37px;'
                     ],
                     'required' => false,
+                    'help' => 'Главный участник, от компании'
                 ]
             )
 

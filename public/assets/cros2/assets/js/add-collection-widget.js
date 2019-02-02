@@ -7,8 +7,9 @@ const addWidget = function (e) {
     var limit = list.attr('data-LimitUsersByOrg');
     // Try to find the counter of the list or use the length of the list
     var counter = list.data('widget-counter') | list.children().length;
-    if( list.children().length>=limit){
-        console.log('max children',list.children().length);
+    if (list.children().length >= limit) {
+        console.log('max children', list.children().length);
+        jQuery("#limit-reg").modal('show');
         return;
     }
     // grab the prototype template
@@ -22,8 +23,8 @@ const addWidget = function (e) {
 
     // create a new list element and add it to the list
     var newElem = jQuery(newWidget);
-    console.log('newWidget',newWidget,newElem);
-    newElem.find('.conference-member').attr('data-num',counter);
+    console.log('newWidget', newWidget, newElem);
+    newElem.find('.conference-member').attr('data-num', counter);
 
     // Increase the counter
     counter++;
@@ -40,13 +41,18 @@ const addWidget = function (e) {
     newElem.find('.lastName').on('change', neighbourhoodRename);
 
     // append with animation
-    newElem.hide();
+//    newElem.hide();
     newElem.appendTo(list);
-    newElem.show('blind',{},500);
+//    newElem.show('blind', {}, 500);
+
+    jQuery('html, body').animate({
+        scrollTop: newElem.find('.lastName').offset().top-200
+    }, 1000);
+    newElem.find('.lastName').focus();
+
     // show end registration button
     jQuery('#end-red').show();
     jQuery('.select-neighbourhood').each(neighbourhood);
-
 
 
 };
