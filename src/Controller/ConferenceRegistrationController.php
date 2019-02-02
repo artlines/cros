@@ -82,6 +82,19 @@ class ConferenceRegistrationController extends AbstractController
     }
 
     /**
+     * @Route("/conference/registration-email-code")
+     */
+
+    public function validateEmailSend(Request $request){
+        $email = $request->get('email');
+
+        if($email) {
+            return new JsonResponse(['found'=>true]);
+        }
+        return new JsonResponse(['found'=>false]);
+    }
+
+    /**
      * @Route("/conference/registration/{hash}", name="conference_registration_hash")
      * @Route("/conference/registration", name="conference_registration")
      */

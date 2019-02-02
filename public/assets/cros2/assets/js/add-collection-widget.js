@@ -147,7 +147,7 @@ const validateCode = function (force=false) {
 const validateInnKpp = function () {
     let data = {};
     data.inn =
-    data.kpp = jQuery('.kpp').val();
+        data.kpp = jQuery('.kpp').val();
     data.conf_id= jQuery('.conf_id').val();
     console.log(data);
     jQuery.ajax({
@@ -212,7 +212,7 @@ const neighbourhoodRename =  function() {
     }
 
     jQuery.each(options,function (i,el) {
-       console.log('option',el);
+        console.log('option',el);
         jQuery(el)  .text(fio);
     });
 
@@ -259,16 +259,29 @@ const representative = function (e) {
 
     let t = this;
     if(!jQuery(t).prop('checked')){
-        console.log('MAIL SEND: confirm code');
         return;
     }
 
-    modalValidate(function(e){
-       // jQuery(t).parents('.representative-member').remove();
-        jQuery(t).prop('checked', true);
-        jQuery("#representative-modal").modal('hide');
-        jQuery('input:checkbox.representative').not(t).prop('checked', false);
+    let data = {
+        email: jQuery(t).parents('.conference-member').find('.email').val()
+    };
+
+    jQuery.ajax({
+        url: "/conference/registration-email-code",
+        data: data
+    }).done(function (data) {
+        if (data && data.found) {
+            modalValidate(function(e){
+                // jQuery(t).parents('.representative-member').remove();
+                jQuery(t).prop('checked', true);
+                jQuery("#representative-modal").modal('hide');
+                jQuery('input:checkbox.representative').not(t).prop('checked', false);
+            });
+        } else {
+            jQuery('#required-reg').modal('show');
+        }
     });
+
     return false;
 };
 

@@ -121,7 +121,7 @@ class MemberFormType extends AbstractType
                 [
                     'label' => 'E-Mail',
                     'attr' => array(
-                        'class' => 'cs-theme-color-gray-dark-v3',
+                        'class' => 'email cs-theme-color-gray-dark-v3',
                     ),
                     'required' => true,
                 ]
