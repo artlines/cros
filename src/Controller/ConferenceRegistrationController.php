@@ -174,9 +174,28 @@ class ConferenceRegistrationController extends AbstractController
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+
             /** @var ConferenceOrganization $ConferenceOrganization */
             $ConferenceOrganization = $form->getData();
+//            dd($ConferenceOrganization);
             $em->getConnection()->beginTransaction();
+/*
+            foreach ($ConferenceOrganization->getConferenceMembers() as $user_num => $conferenceMember ) {
+                $conferenceMember->setNeighbourhood(null);
+                $oldUser = $em->getRepository(User::class)
+                    ->findOneBy(['email' =>'esuzev@gmail.com' ]);
+                $conferenceMember->setUser($oldUser);
+                $conferenceMember->getUser()->setOrganization($ConferenceOrganization->getOrganization());
+                $conferenceMember->getUser()->setPassword('123');
+                $conferenceMember->setConference($ConferenceOrganization->getConference());
+            }
+
+            $em->persist($ConferenceOrganization);
+            $em->flush();*/
+
+
+
 //            dd($ConferenceOrganization);
             $organization = $ConferenceOrganization->getOrganization();
             $files = $request->files->get('conference_organization_form');
@@ -184,23 +203,27 @@ class ConferenceRegistrationController extends AbstractController
             //setup Conference for conferenceMembers
             foreach ($ConferenceOrganization->getConferenceMembers() as $user_num => $conferenceMember ) {
                 $user = $conferenceMember->getUser();
+                $conferenceMember->setNeighbourhood(null);
                 /** @var User $oldUser */
                 $oldUser = $em->getRepository(User::class)
                     ->findOneBy(['email' =>$user->getEmail() ]);
-                if( $oldUser ){
-                    $conferenceMember->setUser(null);
-                    $em->remove($user);
-                    dump('set Olf');
+                if( $oldUser ) {
                     $conferenceMember->setUser($oldUser);
-                    $user = $oldUser;
-                    $em->remove($oldUser);
                 }
                 $password = $this->getRandomPassword();
                 $user->setPassword(
                     $passwordEncoder->encodePassword( $user, $password)
                 );
+                $arUserPassword[] = [
+                    'id' => $user->getId(),
+                    'email' => $user->getEmail(),
+                    'password' => $password,
+                ];
 
                 $user->setOrganization($organization);
+
+//                $conferenceMember->setUser($user);
+//
                 // conference_organization_form[ConferenceMembers][0][user][newphoto]
                 if($files and isset(
                         $files['ConferenceMembers'],
@@ -222,36 +245,35 @@ class ConferenceRegistrationController extends AbstractController
                         // ... handle exception if something happens during file upload
                     }
                     $user->setPhoto($fileName);
-
-                    $arUserPassword[] = [
-                        'id' => $user->getId(),
-                        'password' => $password,
-                    ];
                 }
 
-                $em->persist($organization);
 
 
                 $conference = $ConferenceOrganization->getConference();
                 $conferenceMember->setConference($conference);
                 $conferenceMember->setConferenceOrganization($ConferenceOrganization);
-                $conferenceMember->setNeighbourhood(null);
-//                $em->flush();
-                $conferenceMember->setNeighbourhood(new ConferenceMember());
-                dump($conferenceMember);
+//                $conferenceMember->setNeighbourhood(null);
+////                $em->flush();
+//                $conferenceMember->setNeighbourhood(new ConferenceMember());
+//                $em->persist($conferenceMember);
             }
+//            $em->persist($organization);
+//
             $em->persist($ConferenceOrganization); // !!DUP
-            // TODO: get duplicate  Organization
-//            $em->persist($ConferenceOrganization->getOrganization());
-            dump($ConferenceOrganization);
-
-
-
-
+////            dd($ConferenceOrganization);
+//            // TODO: get duplicate  Organization
+////            $em->persist($ConferenceOrganization->getOrganization());
+//            dump($ConferenceOrganization);
+//            $em->flush();
+//            dump($conferenceMember);
+//
+//
+//
+//
             if($files and isset(
                     $files['organization'],
                     $files['organization']['newlogo']
-                )) {
+            )) {
                 /** @var UploadedFile $file */
                 $file = $files['organization']['newlogo'];
                 $fileName = $organization->getId().'.'.$file->guessExtension();
@@ -268,6 +290,7 @@ class ConferenceRegistrationController extends AbstractController
                 $organization->setLogo($fileName);
             }
             $ConferenceOrganization->setFinish(true);
+//            dump($ConferenceOrganization);
             $em->flush();
 
             $em->getConnection()->commit();
