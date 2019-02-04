@@ -366,7 +366,6 @@ dd('stop');
 
             $em->getConnection()->commit();
 
-            $mailer->setTemplateAlias(self::MAIL_SEND_REGISTERED);
             $arUsers = [];
             foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
                 $arUsers[] = [
@@ -377,8 +376,8 @@ dd('stop');
                     'phone' => $conferenceMember->getUser()->getPhone(),
                     'email' => $conferenceMember->getUser()->getEmail(),
                     'carNumber' => $conferenceMember->getCarNumber(),
-                    'roomType'  => $conferenceMember->getRoomType()->getTitle()
-                        .$conferenceMember->getRoomType()->getCost(),
+                    'roomType'  => $conferenceMember->getRoomType()->getTitle(),
+                    'cost' => $conferenceMember->getRoomType()->getCost(),
                     'arrival' => $conferenceMember->getArrival()->getTimestamp(),
                     'leaving' => $conferenceMember->getLeaving()->getTimestamp(),
                 ];
@@ -393,16 +392,16 @@ dd('stop');
                 'users' => $arUsers
             ];
 
-
+            $mailer->setTemplateAlias(self::MAIL_SEND_REGISTERED);
             foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
                 dump($params_organization);
-                dump( $mailer->send(
+                $mailer->send(
                     'КРОС. Регистрация завершена',
                     [
                         'organization' => $params_organization
                     ],
                     $conferenceMember->getUser()->getEmail()
-                ));
+                );
             }
             foreach ($arUserPassword as $item){
                 $mailer->setTemplateAlias(self::MAIL_SEND_PASSWORD );
