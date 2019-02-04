@@ -156,7 +156,7 @@ class RoomType
     }
     public function __toString()
     {
-        return $this->getTitle(). ' Мест: '. $this->getMaxPlaces() .' Цена: '. $this->getCost();
+        return $this->getTitle();
     }
 
     public function getDescription(): ?string

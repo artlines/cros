@@ -12,6 +12,7 @@ use App\Form\ConferenceOrganizationFormType;
 use App\Form\OrganizationFormType;
 use App\Repository\ConferenceMemberRepository;
 use App\Repository\ConferenceOrganizationRepository;
+use App\Service\Mailer;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -25,6 +26,9 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class ConferenceRegistrationController extends AbstractController
 {
     const DIRECTORY_UPLOAD = 'uploads/';
+    const MAIL_SEND_CODE   = 'cros.send.code';
+    const MAIL_SEND_REGISTERED   = 'cros.send.registered';
+    const MAIL_SEND_PASSWORD     = 'cros.send.password';
 
     private function getRandomPassword()
     {
@@ -97,6 +101,10 @@ class ConferenceRegistrationController extends AbstractController
     /**
      * @Route("/conference/registration-validate-code")
      */
+    public function generateCode($email){
+        $c = substr(md5($email),-4);
+        return substr(md5($c),-4) . $c;
+    }
 
     public function validateCode(Request $request){
         $code = $request->get('code');
@@ -115,10 +123,17 @@ class ConferenceRegistrationController extends AbstractController
      * @Route("/conference/registration-email-code")
      */
 
-    public function validateEmailSend(Request $request){
+    public function validateEmailSend(Request $request, Mailer $mailer){
         $email = $request->get('email');
 
         if($email and filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $mailer->setTemplateAlias(self::MAIL_SEND_CODE);
+            dd( $mailer->send(
+                'КРОС: Код подтверждения',
+                [
+                    'email' => $email,
+                    'code'  => $this->generateCode($email)
+                ],$email ) );
             return new JsonResponse(['found'=>true]);
         }
         return new JsonResponse(['found'=>false]);
@@ -128,8 +143,15 @@ class ConferenceRegistrationController extends AbstractController
      * @Route("/conference/registration/{hash}", name="conference_registration_hash")
      * @Route("/conference/registration", name="conference_registration")
      */
-    public function index(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    public function index(
+        Request $request,
+        UserPasswordEncoderInterface $passwordEncoder,
+        Mailer $mailer
+    )
     {
+//        $mailer->setClientAlias('cros.send.validation-ccde');
+//        $mailer->setClientAlias('cros.send.user');
+//        $mailer->setClientAlias('cros.send.registration');
         $hash = $request->get('hash');
         if( $hash ) {
             $ConferenceOrganization = $this->getDoctrine()
@@ -305,11 +327,64 @@ class ConferenceRegistrationController extends AbstractController
 
             $em->getConnection()->commit();
 
+            $mailer->setTemplateAlias(self::MAIL_SEND_REGISTERED);
+            $arUsers = [];
+            foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
+                $arUsers[] = [
+                    'firstName' => $conferenceMember->getUser()->getFirstName(),
+                    'middleName' => $conferenceMember->getUser()->getMiddleName(),
+                    'lastName' => $conferenceMember->getUser()->getLastName(),
+                    'post' => $conferenceMember->getUser()->getPost(),
+                    'phone' => $conferenceMember->getUser()->getPhone(),
+                    'email' => $conferenceMember->getUser()->getEmail(),
+                    'carNumber' => $conferenceMember->getCarNumber(),
+                    'roomType'  => $conferenceMember->getRoomType()->getTitle()
+                        .$conferenceMember->getRoomType()->getCost(),
+                    'arrival' => $conferenceMember->getArrival()->getTimestamp(),
+                    'leaving' => $conferenceMember->getLeaving()->getTimestamp(),
+                ];
+            }
+            $params_organization =  [
+                'organization' => [
+                    'name' => $ConferenceOrganization->getOrganization()->getName(),
+                    'inn' => $ConferenceOrganization->getOrganization()->getInn(),
+                    'kpp' => $ConferenceOrganization->getOrganization()->getKpp(),
+                    'requisites' => $ConferenceOrganization->getOrganization()->getRequisites(),
+                    'address' => $ConferenceOrganization->getOrganization()->getAddress(),
+                    'comment' => $ConferenceOrganization->getOrganization()->getComment(),
+                    'users' => $arUsers
+                ]
+            ];
+
+
+            foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
+                $mailer->send(
+                    'КРОС. Регистрация завершена',
+                    [
+                        'organization' => $params_organization
+                    ],
+                    $conferenceMember->getUser()->getEmail()
+                );
+            }
+            foreach ($arUserPassword as $item){
+                $mailer->setTemplateAlias(self::MAIL_SEND_PASSWORD );
+                $mailer->send(
+                    'КРОС. Пароль для доступа',
+                    [
+                        'email'    => $item['email'],
+                        'password' => $item['password'],
+                    ],
+                    $item['email']
+                );
+            }
+
+
 
             return $this->render('conference_registration/registration_success.html.twig', [
                 'ConferenceOrganization' => $ConferenceOrganization,
                 'UserPasswords' => $arUserPassword,
             ]);
+
         }
         $roomTypes = $em
             ->getRepository(RoomType::class)

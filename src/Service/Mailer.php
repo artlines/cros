@@ -17,6 +17,14 @@ class Mailer
     private $templateAlias;
 
     /**
+     * @param mixed $templateAlias
+     */
+    public function setTemplateAlias($templateAlias): void
+    {
+        $this->templateAlias = $templateAlias;
+    }
+
+    /**
      * Mailer constructor.
      */
     public function __construct()
