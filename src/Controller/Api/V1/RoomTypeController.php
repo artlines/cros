@@ -14,12 +14,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
  * @package App\Controller\Api\V1
  *
  * @Route("/api/v1/", name="api_v1__room_type__")
- * @IsGranted("ROLE_SETTLEMENT_MANAGER")
  */
 class RoomTypeController extends ApiController
 {
     /**
      * @Route("room_type", name="get_all", methods={"GET"})
+     * @IsGranted("ROLE_CMS_USER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -39,6 +39,7 @@ class RoomTypeController extends ApiController
 
     /**
      * @Route("room_type/new", methods={"POST"})
+     * @IsGranted("ROLE_SETTLEMENT_MANAGER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -75,6 +76,7 @@ class RoomTypeController extends ApiController
 
     /**
      * @Route("room_type/{id}", requirements={"id":"\d+"}, methods={"PUT"})
+     * @IsGranted("ROLE_SETTLEMENT_MANAGER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param $id
@@ -129,6 +131,7 @@ class RoomTypeController extends ApiController
 
     /**
      * @Route("room_type/{id}", requirements={"id":"\d+"}, methods={"DELETE"})
+     * @IsGranted("ROLE_SETTLEMENT_MANAGER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param $id
