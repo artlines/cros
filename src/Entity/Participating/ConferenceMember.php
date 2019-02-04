@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @package App\Entity\Participating
  *
  * @ORM\Table(schema="participating", name="conference_member")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\ConferenceMemberRepository")
  */
 class ConferenceMember
 {

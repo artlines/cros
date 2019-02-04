@@ -10,6 +10,7 @@ use App\Entity\Participating\Organization;
 use App\Entity\Participating\User;
 use App\Form\ConferenceOrganizationFormType;
 use App\Form\OrganizationFormType;
+use App\Repository\ConferenceMemberRepository;
 use App\Repository\ConferenceOrganizationRepository;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -61,6 +62,34 @@ class ConferenceRegistrationController extends AbstractController
         $co = $repository->findByInnKppIsFinish($inn, $kpp, $conf_id);
         if($co){
             return new JsonResponse(['found'=>$co->getOrganization()->getName()]);
+        }
+        return new JsonResponse(['found'=>false]);
+    }
+
+    /**
+     * @Route("/conference/registration-validate-email")
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+
+    public function validateEmail(Request $request) {
+/*
+ * Если есть дубли с текущей конференции - сообщать от дублировании
+ * и не давать завершать регистрацию. Проверку проводить асинхронно
+ * - сразу после ввода e-mail (onBlur).
+ */
+        $email = $request->get('email');
+        $conf_id = $request->get('conf_id');
+
+        $repository = $this
+            ->getDoctrine()
+            ->getRepository(ConferenceMember::class);
+        /** @var ConferenceOrganization $value */
+
+        /** @var ConferenceMemberRepository $repository */
+        //$co = $repository->findByInnKppIsFinish('4502013089', '450201001', 3);
+        $cm = $repository->findConferenceMemberByEmail($conf_id,$email);
+        if($cm){
+            return new JsonResponse(['found'=>$cm->getUser()->getId()]);
         }
         return new JsonResponse(['found'=>false]);
     }
@@ -148,22 +177,28 @@ class ConferenceRegistrationController extends AbstractController
             /** @var ConferenceOrganization $ConferenceOrganization */
             $ConferenceOrganization = $form->getData();
             $em->getConnection()->beginTransaction();
-            dd($ConferenceOrganization);
+//            dd($ConferenceOrganization);
             $organization = $ConferenceOrganization->getOrganization();
             $files = $request->files->get('conference_organization_form');
 
             //setup Conference for conferenceMembers
             foreach ($ConferenceOrganization->getConferenceMembers() as $user_num => $conferenceMember ) {
                 $user = $conferenceMember->getUser();
-                $conferenceMember->setUser(null);
                 /** @var User $oldUser */
                 $oldUser = $em->getRepository(User::class)
                     ->findOneBy(['email' =>$user->getEmail() ]);
                 if( $oldUser ){
+                    $conferenceMember->setUser(null);
                     $em->remove($user);
+                    dump('set Olf');
                     $conferenceMember->setUser($oldUser);
                     $user = $oldUser;
+                    $em->remove($oldUser);
                 }
+                $password = $this->getRandomPassword();
+                $user->setPassword(
+                    $passwordEncoder->encodePassword( $user, $password)
+                );
 
                 $user->setOrganization($organization);
                 // conference_organization_form[ConferenceMembers][0][user][newphoto]
@@ -186,10 +221,6 @@ class ConferenceRegistrationController extends AbstractController
                     } catch (FileException $e) {
                         // ... handle exception if something happens during file upload
                     }
-                    $password = $this->getRandomPassword();
-                    $user->setPassword(
-                        $passwordEncoder->encodePassword( $user, $password)
-                    );
                     $user->setPhoto($fileName);
 
                     $arUserPassword[] = [
@@ -205,12 +236,14 @@ class ConferenceRegistrationController extends AbstractController
                 $conferenceMember->setConference($conference);
                 $conferenceMember->setConferenceOrganization($ConferenceOrganization);
                 $conferenceMember->setNeighbourhood(null);
-                $em->persist($ConferenceOrganization); // !!DUP
-                $em->flush();
+//                $em->flush();
                 $conferenceMember->setNeighbourhood(new ConferenceMember());
+                dump($conferenceMember);
             }
+            $em->persist($ConferenceOrganization); // !!DUP
             // TODO: get duplicate  Organization
 //            $em->persist($ConferenceOrganization->getOrganization());
+            dump($ConferenceOrganization);
 
 
 

@@ -153,6 +153,55 @@ const validateCode = function (force=false) {
     });
 };
 
+const validateEmail = function () {
+    let t = this;
+
+    let data = {
+        email: jQuery(t)
+            .parents('.conference-member')
+            .find('.email')
+            .val(),
+        conf_id: jQuery('.conf_id')
+            .val()
+    };
+
+    jQuery.ajax({
+        url: "/conference/registration-validate-email",
+        data: data
+    }).done(function (data) {
+        let eml = jQuery(t)
+            .parents('.conference-member')
+            .find('.email');
+        let trg = eml.parent();
+        if( data && data.found){
+            if(!trg.find('.error').length) {
+                trg.append(
+                    jQuery('<span></span')
+                        .addClass('error invalid-feedback d-block')
+                );
+                console.log(trg);
+            }
+            console.log(trg);
+            let err = trg.find('.error');
+            eml.addClass('is-invalid');
+            err.html('<span class="form-error-message">Пользователь с такой почтой уже зарегистрирована</span>');
+            jQuery('html, body').animate({
+                scrollTop: err.offset().top-400
+            }, 1000);
+
+            console.log(trg);
+        } else {
+            if(trg.find('.error')) {
+                trg.find('.error').remove();
+                jQuery('.inn').removeClass('is-invalid');
+                jQuery('.kpp').removeClass('is-invalid');
+            }
+        }
+        // $('body').scrollTo('#target');
+        console.log(data.found);    });
+    return false;
+};
+
 const validateInnKpp = function () {
     let data = {};
     data.inn = jQuery('.inn').val();
@@ -256,7 +305,8 @@ const updateItem = function (item) {
         });
     });
     item.find('.representative').on('click',representative);
-
+    console.log('item.find(\'.email\')', item.find('.email'));
+    item.find('.email').on('change', validateEmail);
 };
 
 const representative = function (e) {
@@ -327,6 +377,7 @@ jQuery(document).ready(function () {
 
     jQuery('.inn').on('change', validateInnKpp);
     jQuery('.kpp').on('change', validateInnKpp);
+
 
     jQuery('#validation-code').on('change', validateCode);
 
