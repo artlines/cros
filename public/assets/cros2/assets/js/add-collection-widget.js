@@ -105,7 +105,11 @@ const neighbourhood = function() {
 const validateRequired = function () {
     var empty_flds = 0;
     let r = jQuery("[required]").filter(function() {
-        return !jQuery.trim(jQuery(this).val());
+        if( jQuery.trim(jQuery(this).val()) ){
+            jQuery(this).removeClass('is-invalid');
+            return false;
+        }
+        return true;
     }).each(function() {
         jQuery(this).addClass('is-invalid');
         jQuery('html, body').animate({
@@ -122,7 +126,7 @@ const validateRequired = function () {
         jQuery('#confirm-reg').modal('show');
 
     } else {
-        alert('TODO: Нет участников');
+        jQuery('#no-users-reg').modal('show');
     }
     return empty_flds;
 };
