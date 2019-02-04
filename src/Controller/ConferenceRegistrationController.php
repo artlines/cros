@@ -311,7 +311,20 @@ class ConferenceRegistrationController extends AbstractController
             ->getRepository(RoomType::class)
             ->findAllFreeForConference($Conference->getId());
 //dd($roomTypes);
+        $TotalFree = 0;
+        $TotalUsed = 0;
+        foreach ($roomTypes as list($RoomType, $used)){
+            /** @var RoomType $RoomType */
+            $TotalFree += max(0, $RoomType->getMaxPlaces()-$used);
+            $TotalUsed += $used;
+        }
 
+        if($TotalFree<1 or $TotalUsed>=$Conference->getLimitUsersGlobal() ){
+            return $this->render(
+                'conference_registration/completed.html.twig',
+                []
+            );
+        }
         return $this->render('conference_registration/index.html.twig', [
 //            'controller_name' => 'ConferenceRegistrationController',
             'form' => $form->createView(),

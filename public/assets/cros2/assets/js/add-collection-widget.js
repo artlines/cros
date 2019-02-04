@@ -296,17 +296,33 @@ const updateItem = function (item) {
     item.find('.middleName').on('change', neighbourhoodRename);
     item.find('.lastName').on('change', neighbourhoodRename);
 
-    item.find('.phone').each( function () {
-        new IMask( this, {
+    item.find('.phone').each(function () {
+        new IMask(this, {
             mask: [
-                { mask:  '{8}(000)000-00-00' },
-                { mask: '+{7}(000)000-00-00' },
+                {mask: '{8}(000)000-00-00'},
+                {mask: '+{7}(000)000-00-00'},
             ]
         });
     });
-    item.find('.representative').on('click',representative);
+    item.find('.representative').on('click', representative);
     console.log('item.find(\'.email\')', item.find('.email'));
     item.find('.email').on('change', validateEmail);
+    item.find('.select-roomtype').children().each(function () {
+        let v = jQuery(this).attr("value");
+        let look = jQuery('#select-proto')
+            .find('[value=' + v + ']');
+        if (look.length>0) {
+            jQuery(this).text(look.first().text());
+        }
+        else {
+        //    console.log(jQuery(this).parent());
+            jQuery(this).remove();
+        }
+    });
+//    let jQuery('').children()
+
+    // #select-proto
+    // .select-roomtype
 };
 
 const representative = function (e) {
