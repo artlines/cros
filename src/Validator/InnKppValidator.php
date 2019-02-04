@@ -3,7 +3,9 @@
 namespace App\Validator;
 
 
+use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\ConferenceOrganization;
+use App\Repository\ConferenceMemberRepository;
 use App\Repository\ConferenceOrganizationRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Validator\Constraint;
@@ -19,6 +21,11 @@ class InnKppValidator extends ConstraintValidator
         $this->registry = $registry;
     }
 
+    /**
+     * @param mixed $value
+     * @param Constraint $constraint
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
     public function validate($value, Constraint $constraint)
     {
 //        dump('InnKppValidator', $value, $constraint);
@@ -35,27 +42,32 @@ class InnKppValidator extends ConstraintValidator
             $conf_id = $value->getConference()->getId();
 
             /** @var ConferenceOrganizationRepository $repository */
-            //$co = $repository->findByInnKppIsFinish('4502013089', '450201001', 3);
+
             $co = $repository->findByInnKppIsFinish($inn, $kpp, $conf_id);
             if($co){
-//                dump('repos', $co);
                 $this->context->buildViolation(/*$constraint->message*/
                     'Организация \'{{ value }}\' уже зарегистрирована'
                 )
                     ->setParameter('{{ value }}', $co->getOrganization()->getName())
                     ->atPath('organization.inn')
-//            ->setParameter('organization.inn', $value)
-                    ->addViolation();
-            } else {
-                return;
-//                dump('repos', $co);
-                $this->context->buildViolation('Все ок, можем продолжать')
-                    ->setParameter('{{ value }}', $inn)
-                    ->atPath('organization.inn')
-//            ->setParameter('organization.inn', $value)
                     ->addViolation();
             }
+            foreach ( $value->getConferenceMembers() as $key => $conferenceMember ){
+                $email = $conferenceMember->getUser()->getEmail();
+                $repository = $em->getRepository(ConferenceMember::class);
+                /** @var ConferenceOrganization $value */
 
+                /** @var ConferenceMemberRepository $repository */
+                $cm = $repository->findConferenceMemberByEmail($conf_id,$email);
+                if ($cm) {
+
+                    $this->context
+                        ->buildViolation('Пользователь с такой почтой уже зарегистрирован' )
+                        ->atPath("ConferenceMembers[{$key}].user.email")
+                        ->addViolation();
+                }
+
+            }
         }
     }
 }
