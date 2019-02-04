@@ -98,14 +98,14 @@ class ConferenceRegistrationController extends AbstractController
         return new JsonResponse(['found'=>false]);
     }
 
-    /**
-     * @Route("/conference/registration-validate-code")
-     */
     public function generateCode($email){
         $c = substr(md5($email),-4);
         return substr(md5($c),-4) . $c;
     }
 
+    /**
+     * @Route("/conference/registration-validate-code")
+     */
     public function validateCode(Request $request){
         $code = $request->get('code');
 
@@ -128,12 +128,12 @@ class ConferenceRegistrationController extends AbstractController
 
         if($email and filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $mailer->setTemplateAlias(self::MAIL_SEND_CODE);
-            dd( $mailer->send(
+            $mailer->send(
                 'КРОС: Код подтверждения',
                 [
                     'email' => $email,
                     'code'  => $this->generateCode($email)
-                ],$email ) );
+                ],$email );
             return new JsonResponse(['found'=>true]);
         }
         return new JsonResponse(['found'=>false]);
@@ -358,13 +358,14 @@ class ConferenceRegistrationController extends AbstractController
 
 
             foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
-                $mailer->send(
+                dump($params_organization);
+                dump( $mailer->send(
                     'КРОС. Регистрация завершена',
                     [
                         'organization' => $params_organization
                     ],
                     $conferenceMember->getUser()->getEmail()
-                );
+                ));
             }
             foreach ($arUserPassword as $item){
                 $mailer->setTemplateAlias(self::MAIL_SEND_PASSWORD );
