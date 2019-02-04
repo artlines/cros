@@ -13,6 +13,8 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConferenceMemberFormType extends AbstractType
@@ -117,16 +119,30 @@ class ConferenceMemberFormType extends AbstractType
                     'required' => false,
                     'choices'  => [
                         "Нет" => '',
-//                        "Да"  => null,
+                        "Да0"  => 0,
+                        "Да1"  => 1,
+                        "Да2"  => 2,
+                        "Да3"  => 3,
+                        "Да4"  => 4,
+                        "Да5"  => 5,
+                        "Да6"  => 6,
+                        "Да7"  => 7,
+                        "Да8"  => 8,
+                        "Да9"  => 9,
+                        "Да10"  => 10,
                     ],
-                    'data' => 'Да' , // default
+                    'data' => 'Нет' , // default
                     'attr' => [
                         'class' => 'cs-theme-color-gray-dark-v3 select-neighbourhood',
                     ],
                     'help' => 'Выбор участика, для размещения в одном номере'
                 ]
-            )
-        ;
+            );
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            // ... adding the name field if needed
+
+//            dd($event);
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver)

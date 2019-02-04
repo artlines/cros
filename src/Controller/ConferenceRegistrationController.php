@@ -203,7 +203,11 @@ class ConferenceRegistrationController extends AbstractController
             //setup Conference for conferenceMembers
             foreach ($ConferenceOrganization->getConferenceMembers() as $user_num => $conferenceMember ) {
                 $user = $conferenceMember->getUser();
-                $conferenceMember->setNeighbourhood(null);
+                $conferenceMember->setNeighbourhood(
+                    ($conferenceMember->getNeighbourhood() !== null)
+                    ? $ConferenceOrganization->getConferenceMembers()->get($conferenceMember->getNeighbourhood())
+                    : null
+                );
                 /** @var User $oldUser */
                 $oldUser = $em->getRepository(User::class)
                     ->findOneBy(['email' =>$user->getEmail() ]);
