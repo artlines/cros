@@ -7,7 +7,7 @@ const addWidget = function (e) {
     var limit = list.attr('data-LimitUsersByOrg');
     // Try to find the counter of the list or use the length of the list
     var counter = list.data('widget-counter');
-    if (list.children().length >= 10) {
+    if (list.children().length >= limit) {
         console.log('max children', list.children().length);
         jQuery("#limit-reg").modal('show');
         return;
