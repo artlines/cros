@@ -140,16 +140,17 @@ class User implements UserInterface
     private $entityName = 'user';
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     *
+     * @ORM\Column(name="photo", type="string", length=255, nullable=true)
      */
-    private $foto;
+    private $photo;
 
     /**
      * User constructor.
      */
     public function __construct()
     {
-        $this->speakers         = new ArrayCollection();
         $this->representative   = false;
         $this->isActive         = true;
         $this->createdAt        = new \DateTime();
@@ -528,14 +529,23 @@ class User implements UserInterface
         $this->representative = $representative;
     }
 
-    public function getFoto(): ?string
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @return null|string
+     */
+    public function getPhoto(): ?string
     {
-        return $this->foto;
+        return $this->photo;
     }
 
-    public function setFoto(?string $foto): self
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param null|string $photo
+     * @return User
+     */
+    public function setPhoto(?string $photo): self
     {
-        $this->foto = $foto;
+        $this->photo = $photo;
 
         return $this;
     }
