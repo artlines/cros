@@ -234,7 +234,8 @@ class ConferenceRegistrationController extends AbstractController
 
                     /** @var UploadedFile $file */
                     $file = $files['ConferenceMembers'][$user_num]['user']['newphoto'];
-                    $fileName = $user->getId().'.'.$file->guessExtension();
+//                    $fileName = $user->getId().'.'.$file->guessExtension();
+                    $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
                     // Move the file to the directory where brochures are stored
                     try {
                         $file->move(
@@ -276,7 +277,8 @@ class ConferenceRegistrationController extends AbstractController
             )) {
                 /** @var UploadedFile $file */
                 $file = $files['organization']['newlogo'];
-                $fileName = $organization->getId().'.'.$file->guessExtension();
+//                $fileName = $organization->getId().'.'.$file->guessExtension();
+                $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
                 // Move the file to the directory where brochures are stored
                 try {
                     $file->move(
@@ -289,8 +291,12 @@ class ConferenceRegistrationController extends AbstractController
 
                 $organization->setLogo($fileName);
             }
-            $ConferenceOrganization->setFinish(true);
-//            dump($ConferenceOrganization);
+
+// TODO: enable finish
+
+//            $ConferenceOrganization->setFinish(true);
+            dump($ConferenceOrganization);
+            dump('UserPassword',$arUserPassword);
             $em->flush();
 
             $em->getConnection()->commit();
