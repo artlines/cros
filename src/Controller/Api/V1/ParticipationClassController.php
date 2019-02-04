@@ -11,12 +11,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
  * @package App\Controller\Api\V1
  *
  * @Route("/api/v1/")
- * @IsGranted("ROLE_SETTLEMENT_MANAGER")
  */
 class ParticipationClassController extends ApiController
 {
     /**
      * @Route("participation_class", methods={"GET"})
+     * @IsGranted("ROLE_CMS_USER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      *
@@ -40,6 +40,7 @@ class ParticipationClassController extends ApiController
 
     /**
      * @Route("participation_class/new", methods={"POST"})
+     * @IsGranted("ROLE_SETTLEMENT_MANAGER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      */
@@ -62,6 +63,7 @@ class ParticipationClassController extends ApiController
 
     /**
      * @Route("participation_class/{id}", requirements={"id":"\d+"}, methods={"PUT"})
+     * @IsGranted("ROLE_SETTLEMENT_MANAGER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param $id
@@ -90,6 +92,7 @@ class ParticipationClassController extends ApiController
 
     /**
      * @Route("participation_class/{id}", requirements={"id":"\d+"}, methods={"DELETE"})
+     * @IsGranted("ROLE_SETTLEMENT_MANAGER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param $id
