@@ -19,11 +19,13 @@
     <div id="roomType_">
         Класс участия не выбран
     </div>
-{% for roomType in RoomTypes  %}
+{% for item in RoomTypes  %}
+    {% set roomType=item[0] %}
+    {% set used=item[1] %}
 <div id="roomType_{{ roomType.id }}">
     Класс участия: <b>{{ roomType.title }}</b><br />
     Стоимость:  <b>{{ roomType.cost|number_format }}</b> ₽<br />
-    Количество свободных мест: <b>{{ roomType.maxPlaces }}</b><br />
+    Количество свободных мест: <b>{{ roomType.maxPlaces-used }}</b><br />
     <h4>Описание:</h4>
     {{ roomType.description|raw }}
 </div>

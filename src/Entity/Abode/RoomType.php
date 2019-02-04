@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @package App\Entity\Abode
  *
  * @ORM\Table(schema="abode", name="room_type")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\Abode\RoomTypeRepository")
  */
 class RoomType
 {

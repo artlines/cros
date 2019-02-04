@@ -309,8 +309,8 @@ class ConferenceRegistrationController extends AbstractController
         }
         $roomTypes = $em
             ->getRepository(RoomType::class)
-            ->findAll();
-
+            ->findAllFreeForConference($Conference->getId());
+//dd($roomTypes);
 
         return $this->render('conference_registration/index.html.twig', [
 //            'controller_name' => 'ConferenceRegistrationController',

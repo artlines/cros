@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Abode\RoomType;
 use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\User;
+use App\Repository\Abode\RoomTypeRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -80,8 +81,24 @@ class ConferenceMemberFormType extends AbstractType
                         'class' => 'cs-theme-color-gray-dark-v3 select-roomtype',
                     ],
                     'required' => true,
+//                    'choice_label' => function (RoomType $entity = null) {
+//                        return $entity->getTitle();
+//                    },
+//                    'query_builder' => function (RoomTypeRepository $conferenceRepository) {
+//                        return $conferenceRepository->findAllFreeForConferenceQueryBuilder(372)
+//                        // createQueryBuilder('c')
+////                            ->andWhere('c.registrationStart <= :registrationStart')
+////                            ->andWhere('c.registrationFinish >= :registrationFinish')
+////                            ->setParameters([
+////                                'registrationStart' => new \DateTime(),
+////                                'registrationFinish' => new \DateTime()
+////                            ])
+//                            ;
+//                    },
                 ]
             )
+
+
             ->add(
                 $builder->create(
                     'user',
