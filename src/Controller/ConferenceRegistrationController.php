@@ -164,6 +164,45 @@ class ConferenceRegistrationController extends AbstractController
             $form = $this->createForm(
                 ConferenceOrganizationFormType::class);
         }
+        $arUsers = [];
+        foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
+            $arUsers[] = [
+                'firstName' => $conferenceMember->getUser()->getFirstName(),
+                'middleName' => $conferenceMember->getUser()->getMiddleName(),
+                'lastName' => $conferenceMember->getUser()->getLastName(),
+                'post' => $conferenceMember->getUser()->getPost(),
+                'phone' => $conferenceMember->getUser()->getPhone(),
+                'email' => $conferenceMember->getUser()->getEmail(),
+                'carNumber' => $conferenceMember->getCarNumber(),
+                'roomType'  => $conferenceMember->getRoomType()->getTitle(),
+                'cost' => $conferenceMember->getRoomType()->getCost(),
+                'arrival' => $conferenceMember->getArrival()->getTimestamp(),
+                'leaving' => $conferenceMember->getLeaving()->getTimestamp(),
+            ];
+        }
+        $params_organization =  [
+            'name' => $ConferenceOrganization->getOrganization()->getName(),
+            'inn' => $ConferenceOrganization->getOrganization()->getInn(),
+            'kpp' => $ConferenceOrganization->getOrganization()->getKpp(),
+            'requisites' => $ConferenceOrganization->getOrganization()->getRequisites(),
+            'address' => $ConferenceOrganization->getOrganization()->getAddress(),
+            'comment' => $ConferenceOrganization->getOrganization()->getComment(),
+            'users' => $arUsers
+        ];
+
+        $mailer->setTemplateAlias(self::MAIL_SEND_REGISTERED);
+        foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
+            dump($params_organization);
+            dd( $mailer->send(
+                'КРОС. Регистрация завершена',
+                [
+                    'organization' => $params_organization
+                ],
+                $conferenceMember->getUser()->getEmail()
+            ));
+        }
+dd('stop');
+
 //        $form = $this->createForm(MyFrmType::class,null,['attr'=>['class'=>'row']]);
         $arUserPassword = [];
 //        $data = $request->get('conference_organization_form');
@@ -345,15 +384,13 @@ class ConferenceRegistrationController extends AbstractController
                 ];
             }
             $params_organization =  [
-                'organization' => [
-                    'name' => $ConferenceOrganization->getOrganization()->getName(),
-                    'inn' => $ConferenceOrganization->getOrganization()->getInn(),
-                    'kpp' => $ConferenceOrganization->getOrganization()->getKpp(),
-                    'requisites' => $ConferenceOrganization->getOrganization()->getRequisites(),
-                    'address' => $ConferenceOrganization->getOrganization()->getAddress(),
-                    'comment' => $ConferenceOrganization->getOrganization()->getComment(),
-                    'users' => $arUsers
-                ]
+                'name' => $ConferenceOrganization->getOrganization()->getName(),
+                'inn' => $ConferenceOrganization->getOrganization()->getInn(),
+                'kpp' => $ConferenceOrganization->getOrganization()->getKpp(),
+                'requisites' => $ConferenceOrganization->getOrganization()->getRequisites(),
+                'address' => $ConferenceOrganization->getOrganization()->getAddress(),
+                'comment' => $ConferenceOrganization->getOrganization()->getComment(),
+                'users' => $arUsers
             ];
 
 
