@@ -9,6 +9,7 @@ import {
     Grid,
     TextField,
     LinearProgress,
+    Typography,
 } from '@material-ui/core';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
@@ -28,6 +29,10 @@ class InviteForm extends React.Component {
                 name: '',
                 inn: '',
                 kpp: '',
+                mngr_first_name: '',
+                mngr_last_name: '',
+                mngr_email: '',
+                mngr_phone: '',
             },
             errors: {},
             submitting: false,
@@ -201,6 +206,70 @@ class InviteForm extends React.Component {
                                     onChange={this.handleChange('kpp')}
                                     error={!!errors.kpp}
                                     helperText={errors.kpp}
+                                    InputLabelProps={{shrink: true}}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Typography>Информация о менеджере</Typography>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    required
+                                    label={"Фамилия"}
+                                    value={values.mngr_last_name}
+                                    margin={"dense"}
+                                    fullWidth
+                                    variant={"outlined"}
+                                    name={'mngr_last_name'}
+                                    onChange={this.handleChange('mngr_last_name')}
+                                    error={!!errors.mngr_last_name}
+                                    helperText={errors.mngr_last_name}
+                                    InputLabelProps={{shrink: true}}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    required
+                                    label={"Имя"}
+                                    value={values.mngr_first_name}
+                                    margin={"dense"}
+                                    fullWidth
+                                    variant={"outlined"}
+                                    name={'mngr_first_name'}
+                                    onChange={this.handleChange('mngr_first_name')}
+                                    error={!!errors.mngr_first_name}
+                                    helperText={errors.mngr_first_name}
+                                    InputLabelProps={{shrink: true}}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    required
+                                    label={"Email"}
+                                    value={values.mngr_email}
+                                    type={`email`}
+                                    margin={"dense"}
+                                    fullWidth
+                                    variant={"outlined"}
+                                    name={'mngr_email'}
+                                    onChange={this.handleChange('mngr_email')}
+                                    error={!!errors.mngr_email}
+                                    helperText={errors.mngr_email}
+                                    InputLabelProps={{shrink: true}}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    required
+                                    label={"Телефон"}
+                                    value={values.mngr_phone}
+                                    margin={"dense"}
+                                    fullWidth
+                                    variant={"outlined"}
+                                    name={'mngr_phone'}
+                                    onChange={this.handleChange('mngr_phone')}
+                                    error={!!errors.mngr_phone}
+                                    helperText={errors.mngr_phone}
                                     InputLabelProps={{shrink: true}}
                                 />
                             </Grid>
