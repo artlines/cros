@@ -126,11 +126,15 @@ const validateRequired = function () {
         jQuery('#required-reg').modal('show');
         return false;
     }
-    if(jQuery('#members-fields-list').children().length){
-        jQuery('#confirm-reg').modal('show');
-
-    } else {
+    if(jQuery('#members-fields-list').children().length == 0){
         jQuery('#no-users-reg').modal('show');
+    } else if (jQuery('.representative:checked').length == 0) {
+        jQuery('#no-representative').modal('show');
+        jQuery('html, body').animate({
+            scrollTop: jQuery('.representative').offset().top-400
+        }, 1000);
+    } else {
+        jQuery('#confirm-reg').modal('show');
     }
     return empty_flds;
 };
@@ -193,7 +197,7 @@ const validateEmail = function () {
                 scrollTop: err.offset().top-400
             }, 1000);
 
-            console.log(trg);
+//            console.log(trg);
         } else {
             if(trg.find('.error')) {
                 trg.find('.error').remove();
@@ -202,7 +206,8 @@ const validateEmail = function () {
             }
         }
         // $('body').scrollTo('#target');
-        console.log(data.found);    });
+//        console.log(data.found);
+    });
     return false;
 };
 
@@ -308,6 +313,13 @@ const updateItem = function (item) {
             ]
         });
     });
+
+    // item.find('.email').each(function () {
+    //     new IMask(this, {
+    //         mask: /^\S*@?\S*$/
+    //     });
+    // });
+
     item.find('.representative').on('click', representative);
     console.log('item.find(\'.email\')', item.find('.email'));
     item.find('.email').on('change', validateEmail);
@@ -402,8 +414,21 @@ jQuery(document).ready(function () {
 
     jQuery('.select-neighbourhood').each(neighbourhood);
 
-    jQuery('.inn').on('change', validateInnKpp);
-    jQuery('.kpp').on('change', validateInnKpp);
+    jQuery('.inn')
+        .on('change', validateInnKpp)
+        .each(function () {
+            new IMask(this, {
+                mask: Number
+            });
+        });
+    jQuery('.kpp')
+        .on('change', validateInnKpp)
+        .each(function () {
+            new IMask(this, {
+                mask: Number
+            });
+        });
+
 
 
     jQuery('#validation-code').on('change', validateCode);
