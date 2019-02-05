@@ -438,7 +438,7 @@ class ConferenceRegistrationController extends AbstractController
 
 // TODO: enable finish
 
-//            $ConferenceOrganization->setFinish(true);
+            $ConferenceOrganization->setFinish(true);
             dump($ConferenceOrganization);
             dump('UserPassword',$arUserPassword);
             $em->flush();
