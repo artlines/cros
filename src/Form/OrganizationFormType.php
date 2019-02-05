@@ -45,9 +45,10 @@ class OrganizationFormType extends AbstractType
                 array(
                     'label' => 'Organization.Name.Label',
                     'attr' => array(
-                        'class' => 'cs-theme-color-gray-dark-v3',
+                        'class' => 'noedit cs-theme-color-gray-dark-v3',
                         'placeholder' => 'Organization.Name.PlaceHolder',
                     ),
+                    'disabled' => true,
                     'help' => 'Organization.Name.Help',
                     'required' => true,
                     'constraints' => [
@@ -102,9 +103,10 @@ class OrganizationFormType extends AbstractType
                 array(
                     'label' => 'Organization.Inn.Label',
                     'attr' => array(
-                        'class' => 'inn cs-theme-color-gray-dark-v3',
+                        'class' => 'noedit inn cs-theme-color-gray-dark-v3',
                         'placeholder' => 'Organization.Inn.PlaceHolder',
                     ),
+                    'disabled' => true,
                     'help' => 'Organization.Inn.Help',
                     'required' => true,
                 )
@@ -115,9 +117,10 @@ class OrganizationFormType extends AbstractType
                 array(
                     'label' => 'Organization.Kpp.Label',
                     'attr' => array(
-                        'class' => 'kpp cs-theme-color-gray-dark-v3',
+                        'class' => 'noedit kpp cs-theme-color-gray-dark-v3',
                         'placeholder' => 'Organization.Kpp.PlaceHolder',
                     ),
+                    'disabled' => true,
                     'help' => 'Organization.Kpp.Help',
                     'required' => true,
                 )

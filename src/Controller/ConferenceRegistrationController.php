@@ -222,6 +222,7 @@ class ConferenceRegistrationController extends AbstractController
 //        $mailer->setClientAlias('cros.send.user');
 //        $mailer->setClientAlias('cros.send.registration');
         $hash = $request->get('hash');
+        $ConferenceOrganization = new ConferenceOrganization();
         if( $hash ) {
             $ConferenceOrganization = $this->getDoctrine()
                 ->getRepository(ConferenceOrganization::class)
@@ -560,6 +561,7 @@ class ConferenceRegistrationController extends AbstractController
         return $this->render('conference_registration/index.html.twig', [
 //            'controller_name' => 'ConferenceRegistrationController',
             'form' => $form->createView(),
+            'ConferenceOrganization' => $ConferenceOrganization,
             'RoomTypes' => $roomTypes,
             'Conference' => $Conference,
             'LimitUsersByOrg' => $Conference->getLimitUsersByOrg(),

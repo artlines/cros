@@ -465,6 +465,9 @@ jQuery(document).ready(function () {
         blockUnload = false;
     });
 
+    if( !jQuery('.ConferenceOrganization').val()) {
+        jQuery('.noedit').attr('disabled',false);
+    }
 
 });
 var blockUnload = false;
