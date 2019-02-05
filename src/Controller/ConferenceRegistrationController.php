@@ -229,7 +229,9 @@ class ConferenceRegistrationController extends AbstractController
                 ->findOneBy(['inviteHash'=>$hash]);
             $form = $this->createForm(
                 ConferenceOrganizationFormType::class, $ConferenceOrganization);
-
+            if ( !$ConferenceOrganization) {
+                throw $this->createNotFoundException();
+            }
         } else {
             $form = $this->createForm(
                 ConferenceOrganizationFormType::class);

@@ -468,6 +468,10 @@ jQuery(document).ready(function () {
 
     if( !jQuery('.ConferenceOrganization').val()) {
         jQuery('.noedit').attr('disabled',false);
+    }else{
+        jQuery('.noedit').filter(function () {
+            return !this.value;
+        }).attr('disabled',false);
     }
 
 });
