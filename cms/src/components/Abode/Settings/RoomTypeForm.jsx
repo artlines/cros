@@ -3,10 +3,6 @@ import {connect} from 'react-redux';
 import PropTypes from "prop-types";
 import {
     Button,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
     Grid,
     TextField, MenuItem,
 } from '@material-ui/core';
@@ -14,7 +10,6 @@ import isEqual from 'lodash/isEqual';
 import API from '../../../libs/api';
 import ErrorMessage from "../../utils/ErrorMessage";
 import map from "lodash/map";
-import CKEditorField from "../../utils/CKEditorField";
 import ConfirmDialog from "../../utils/ConfirmDialog";
 import WysiwygField from "../../utils/WysiwygField";
 
