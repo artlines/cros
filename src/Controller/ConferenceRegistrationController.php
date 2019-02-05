@@ -222,7 +222,7 @@ class ConferenceRegistrationController extends AbstractController
 //        $mailer->setClientAlias('cros.send.user');
 //        $mailer->setClientAlias('cros.send.registration');
         $hash = $request->get('hash');
-        $ConferenceOrganization = new ConferenceOrganization();
+        //$ConferenceOrganization = new ConferenceOrganization();
         if( $hash ) {
             $ConferenceOrganization = $this->getDoctrine()
                 ->getRepository(ConferenceOrganization::class)
@@ -232,16 +232,16 @@ class ConferenceRegistrationController extends AbstractController
             if ( !$ConferenceOrganization) {
                 throw $this->createNotFoundException();
             }
+            if ($ConferenceOrganization->isFinish()) {
+                return  $this->render('conference_registration/registration_success.html.twig', [
+                    'ConferenceOrganization' => $ConferenceOrganization,
+                    'UserPasswords' => [],
+                    'ended' => 1,
+                ]);
+            }
         } else {
             $form = $this->createForm(
                 ConferenceOrganizationFormType::class);
-        }
-        if ($ConferenceOrganization->isFinish()) {
-            return  $this->render('conference_registration/registration_success.html.twig', [
-                'ConferenceOrganization' => $ConferenceOrganization,
-                'UserPasswords' => [],
-                'ended' => 1,
-            ]);
         }
 //        $arUsers = [];
 //        foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
@@ -570,7 +570,7 @@ class ConferenceRegistrationController extends AbstractController
         return $this->render('conference_registration/index.html.twig', [
 //            'controller_name' => 'ConferenceRegistrationController',
             'form' => $form->createView(),
-            'ConferenceOrganization' => $ConferenceOrganization,
+            'ConferenceOrganization' => $ConferenceOrganization ?? null,
             'RoomTypes' => $roomTypes,
             'Conference' => $Conference,
             'LimitUsersByOrg' => $Conference->getLimitUsersByOrg(),

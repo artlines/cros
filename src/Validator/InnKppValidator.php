@@ -60,9 +60,13 @@ class InnKppValidator extends ConstraintValidator
                 /** @var ConferenceMemberRepository $repository */
                 $cm = $repository->findConferenceMemberByEmail($conf_id,$email);
                 if ($cm) {
-
                     $this->context
                         ->buildViolation('Пользователь с такой почтой уже зарегистрирован' )
+                        ->atPath("ConferenceMembers[{$key}].user.email")
+                        ->addViolation();
+                } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL))  {
+                    $this->context
+                        ->buildViolation('Не верный формат почты' )
                         ->atPath("ConferenceMembers[{$key}].user.email")
                         ->addViolation();
                 }

@@ -50,10 +50,10 @@ const addWidget = function (e) {
 
 const changeRoomType = function() {
     //alert(  );
-    let id = this.value;
-    let roomTypeHtml = jQuery('#roomType_'+ id).html();
+    var id = this.value;
+    var roomTypeHtml = jQuery('#roomType_'+ id).html();
     console.log('#roomType_'+ id,roomTypeHtml);
-    let roomTypeInfo = jQuery(this).parents('.conference-member').find('.roomTypeInfo');
+    var roomTypeInfo = jQuery(this).parents('.conference-member').find('.roomTypeInfo');
     console.log(jQuery(this).parents('.conference-member'));
     roomTypeInfo.html(roomTypeHtml);
 
@@ -132,7 +132,8 @@ const validateRequired = function () {
     return empty_flds;
 };
 
-const validateCode = function (force=false) {
+const validateCode = function (force) {
+    force = typeof force !== 'undefined' ?  force : false;
     let data = {
         code: jQuery('#validation-code').val()
     };
@@ -177,7 +178,7 @@ const validateEmail = function () {
         if( data && data.found){
             if(!trg.find('.error').length) {
                 trg.append(
-                    jQuery('<span></span')
+                    jQuery('<span></span>')
                         .addClass('error invalid-feedback d-block')
                 );
                 console.log(trg);
@@ -185,7 +186,7 @@ const validateEmail = function () {
             console.log(trg);
             let err = trg.find('.error');
             eml.addClass('is-invalid');
-            err.html('<span class="form-error-message">Пользователь с такой почтой уже зарегистрирована</span>');
+            err.html('<span class="form-error-message">Пользователь с такой почтой уже зарегистрирован</span>');
             jQuery('html, body').animate({
                 scrollTop: err.offset().top-400
             }, 1000);
@@ -218,7 +219,7 @@ const validateInnKpp = function () {
         if( data && data.found){
             if(!trg.find('.error').length) {
                 trg.append(
-                    jQuery('<span></span')
+                    jQuery('<span></span>')
                         .addClass('error invalid-feedback d-block')
                 );
                 console.log(trg);
