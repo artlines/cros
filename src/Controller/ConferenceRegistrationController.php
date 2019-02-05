@@ -84,6 +84,9 @@ class ConferenceRegistrationController extends AbstractController
  */
         $email = $request->get('email');
         $conf_id = $request->get('conf_id');
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return new JsonResponse(['found'=>'email-invalid']);
+        }
 
         $repository = $this
             ->getDoctrine()

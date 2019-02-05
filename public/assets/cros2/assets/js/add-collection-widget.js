@@ -186,13 +186,18 @@ const validateEmail = function () {
             console.log(trg);
             let err = trg.find('.error');
             eml.addClass('is-invalid');
-            err.html('<span class="form-error-message">Пользователь с такой почтой уже зарегистрирован</span>');
+            if (data.found == 'email-invalid') {
+                err.html('<span class="form-error-message">Ошибка формата почты</span>');
+            }else {
+                err.html('<span class="form-error-message">Пользователь с такой почтой уже зарегистрирован</span>');
+            }
             jQuery('html, body').animate({
                 scrollTop: err.offset().top-400
             }, 1000);
 
 //            console.log(trg);
         } else {
+            eml.removeClass('is-invalid');
             if(trg.find('.error')) {
                 trg.find('.error').remove();
                 jQuery('.inn').removeClass('is-invalid');
@@ -505,6 +510,8 @@ var modalConfirm = function(_callback){
 var modalValidate = function(_callback){
     callback = _callback;
     jQuery("#representative-modal").modal('show');
+    jQuery("#validation-code").val('');
+    jQuery('#validation-code-error').hide();
 };
 
 
