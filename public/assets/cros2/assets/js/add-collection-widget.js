@@ -466,13 +466,20 @@ jQuery(document).ready(function () {
         blockUnload = false;
     });
 
-    if( !jQuery('.ConferenceOrganization').val()) {
+    if (!jQuery('.ConferenceOrganization').val()) {
         jQuery('.noedit').attr('disabled',false);
-    }else{
+    } else {
         jQuery('.noedit').filter(function () {
             return !this.value;
         }).attr('disabled',false);
     }
+
+    jQuery('input[type="file"]').on( 'change', function(e){
+        var fileName = e.target.files[0]. name;
+        var id = jQuery(this).attr('id');
+        jQuery(this).parent().find('label[for='+id+']').text(fileName).attr('style','overflow: hidden');
+        //alert('The file "' + fileName + '" has been selected.' );
+    });
 
 });
 var blockUnload = false;
