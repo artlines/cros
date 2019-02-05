@@ -27,7 +27,7 @@
                     <td width="500px" style="width: 500px; padding-right: 20px; max-width: 500px; word-wrap: break-word; font-size: 16px;" colspan="2">
                         <p>
 
-                            Ваша Компания <b>{{ data.organization.name|default('') }}</b> зарегистрировала следующих участников на конференцию российских операторов связи КРОС-2.0-18:<br><br>
+                            Ваша Компания <b>{{ data.organization.name|default('') }}</b> зарегистрировала следующих участников на конференцию российских операторов связи КРОС-2.0-19:<br><br>
                             {% set i = 1 %}
                             {% set fullprice = 0 %}
                             {% for user in data.organization.users %}
@@ -39,8 +39,16 @@
                         Номер автомобиля: {{ user.carNumber|default('') }}<br>
                         Класс участия: {{ user.roomType|default('') }}<br>
                         {% set fullprice = fullprice + user.cost %}
-                        Ранний заезд: {{ user.arrival }} {% if user.arrival|date("H:i") == '14:00' %}нет{% else %}{{ user.arrival|date("H:i") }}{% endif %}
-                        Поздний выезд: {{ user.leaving }} {% if user.leaving|date("H:i") == '12:00' %}нет{% else %}{{ user.leaving|date("H:i") }}{% endif %}
+                        {% if user.arrival == data.conference.eventStart.timestamp %}
+                            Ранний заезд: нет<br>
+                        {% else %}
+                            Ранний заезд: {{ user.arrival|date('d.m.Y H:i') }} <br>
+                        {% endif %}
+                        {% if user.leaving == data.conference.eventFinish.timestamp %}
+                            Поздний выезд: нет<br>
+                        {% else %}
+                            Поздний выезд: {{ user.leaving|date('d.m.Y H:i') }} <br>
+                        {% endif %}
 
                         {% endfor %}
                         <h4>Сумма: {{ fullprice }}р.</h4>

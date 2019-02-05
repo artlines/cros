@@ -140,6 +140,71 @@ class ConferenceRegistrationController extends AbstractController
     }
 
     /**
+     * @Route("/conference/registration-mail/{hash}")
+     */
+    public function mail_dev(
+        Request $request,
+        UserPasswordEncoderInterface $passwordEncoder,
+        Mailer $mailer
+    )
+    {
+        $hash = $request->get('hash');
+        if ($hash) {
+            /** @var ConferenceOrganization $ConferenceOrganization */
+            $ConferenceOrganization = $this->getDoctrine()
+                ->getRepository(ConferenceOrganization::class)
+                ->findOneBy(['inviteHash' => $hash]);
+            $arUsers = [];
+            foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
+                $arUsers[] = [
+                    'firstName' => $conferenceMember->getUser()->getFirstName(),
+                    'middleName' => $conferenceMember->getUser()->getMiddleName(),
+                    'lastName' => $conferenceMember->getUser()->getLastName(),
+                    'post' => $conferenceMember->getUser()->getPost(),
+                    'phone' => $conferenceMember->getUser()->getPhone(),
+                    'email' => $conferenceMember->getUser()->getEmail(),
+                    'carNumber' => $conferenceMember->getCarNumber(),
+                    'roomType' => $conferenceMember->getRoomType()->getTitle(),
+                    'cost' => $conferenceMember->getRoomType()->getCost(),
+                    'arrival' => $conferenceMember->getArrival()->getTimestamp(),
+                    'leaving' => $conferenceMember->getLeaving()->getTimestamp(),
+                ];
+            }
+            $params_organization = [
+                'name' => $ConferenceOrganization->getOrganization()->getName(),
+                'inn' => $ConferenceOrganization->getOrganization()->getInn(),
+                'kpp' => $ConferenceOrganization->getOrganization()->getKpp(),
+                'requisites' => $ConferenceOrganization->getOrganization()->getRequisites(),
+                'address' => $ConferenceOrganization->getOrganization()->getAddress(),
+                'comment' => $ConferenceOrganization->getOrganization()->getComment(),
+                'users' => $arUsers
+            ];
+
+            $mailer->setTemplateAlias(self::MAIL_SEND_REGISTERED);
+            foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
+//            die();
+                dump($params_organization);
+                return $this->render('conference_registration/mail_cros_send_reg.twig', [
+                    'data' => [
+                        'organization' => $params_organization,
+                        'conference' => $ConferenceOrganization->getConference(),
+                ],
+            ]);
+            dump($mailer->send(
+                'КРОС. Регистрация завершена',
+                [
+                    'organization' => $params_organization
+                ],
+                $conferenceMember->getUser()->getEmail()
+            ));
+
+            }
+        }
+        return new Response('OK');
+    }
+
+
+    /**
      * @Route("/conference/registration/{hash}", name="conference_registration_hash")
      * @Route("/conference/registration", name="conference_registration")
      */
