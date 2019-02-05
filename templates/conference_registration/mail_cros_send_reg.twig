@@ -39,12 +39,12 @@
                         Номер автомобиля: {{ user.carNumber|default('') }}<br>
                         Класс участия: {{ user.roomType|default('') }}<br>
                         {% set fullprice = fullprice + user.cost %}
-                        {% if user.arrival == data.conference.eventStart.timestamp %}
+                        {% if user.arrival == data.conference.eventStart %}
                             Ранний заезд: нет<br>
                         {% else %}
                             Ранний заезд: {{ user.arrival|date('d.m.Y H:i') }} <br>
                         {% endif %}
-                        {% if user.leaving == data.conference.eventFinish.timestamp %}
+                        {% if user.leaving == data.conference.eventFinish %}
                             Поздний выезд: нет<br>
                         {% else %}
                             Поздний выезд: {{ user.leaving|date('d.m.Y H:i') }} <br>

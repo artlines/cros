@@ -188,7 +188,10 @@ class ConferenceRegistrationController extends AbstractController
                 return $this->render('conference_registration/mail_cros_send_reg.twig', [
                     'data' => [
                         'organization' => $params_organization,
-                        'conference' => $ConferenceOrganization->getConference(),
+                        'conference' => [
+                            'eventStart' => $ConferenceOrganization->getConference()->getEventStart()->getTimestamp(),
+                            'eventFinish' => $ConferenceOrganization->getConference()->getEventFinish()->getTimestamp(),
+                        ]
                 ],
             ]);
             dump($mailer->send(
@@ -466,10 +469,20 @@ class ConferenceRegistrationController extends AbstractController
                         'КРОС. Регистрация завершена',
                         [
                             'organization' => $params_organization,
-                            'conference' => $ConferenceOrganization->getConference(),
+                            'conference' => [
+                                'eventStart' => $ConferenceOrganization->getConference()->getEventStart()->getTimestamp(),
+                                'eventFinish' => $ConferenceOrganization->getConference()->getEventFinish()->getTimestamp(),
+                            ]
                         ],
                         $conferenceMember->getUser()->getEmail(), null, self::MAIL_BCC
                     ));
+                    dump([
+                        'organization' => $params_organization,
+                        'conference' => [
+                            'eventStart' => $ConferenceOrganization->getConference()->getEventStart()->getTimestamp(),
+                            'eventFinish' => $ConferenceOrganization->getConference()->getEventFinish()->getTimestamp(),
+                        ]
+                    ]);
                 }
             }
             $mailer->setTemplateAlias(self::MAIL_SEND_PASSWORD );
