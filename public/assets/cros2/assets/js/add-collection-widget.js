@@ -326,7 +326,7 @@ const updateItem = function (item) {
 
     item.find('.datetimepicker').datetimepicker({
         locale: 'ru',
-        format: 'YYYY.MM.DD hh:mm',
+        format: 'YYYY.MM.DD HH:mm',
         sideBySide: true,
     });
 

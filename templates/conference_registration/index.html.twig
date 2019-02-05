@@ -12,6 +12,7 @@
     background-color: rgba(120, 210, 94, 0.47);
     display: none;
 }
+
 </style>
 
 <div class="roomTypes debug" style="display: none">
@@ -402,6 +403,39 @@ id     name    inn kpp
 {% endblock %}
 
 {% block stylesheets %}
+<style>
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url(/assets/fonts/glyphicons-halflings-regular.eot);
+    src: url(/assets/fonts/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype'), url(/assets/fonts/glyphicons-halflings-regular.woff) format('woff'), url(/assets/fonts/glyphicons-halflings-regular.ttf) format('truetype'), url(/assets/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg')
+}
+.glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.glyphicon-chevron-up:before {
+    content: "\e113"
+}
+
+.glyphicon-chevron-down:before {
+    content: "\e114"
+}
+.glyphicon-chevron-left:before {
+    content: "\e079";
+}
+.glyphicon-chevron-right:before {
+    content: "\e080";
+}
+</style>
 <link href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
 {% endblock %}
 
