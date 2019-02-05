@@ -460,26 +460,32 @@ class ConferenceRegistrationController extends AbstractController
 
             $mailer->setTemplateAlias(self::MAIL_SEND_REGISTERED);
             foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
-                dump($params_organization);
-                $mailer->send(
-                    'КРОС. Регистрация завершена',
-                    [
-                        'organization' => $params_organization
-                    ],
-                    $conferenceMember->getUser()->getEmail(),null, self::MAIL_BCC
-                );
+                if( $conferenceMember->getUser()->isRepresentative()) {
+                    dump($params_organization);
+                    dump($mailer->send(
+                        'КРОС. Регистрация завершена',
+                        [
+                            'organization' => $params_organization,
+                            'conference' => $ConferenceOrganization->getConference(),
+                        ],
+                        $conferenceMember->getUser()->getEmail(), null, self::MAIL_BCC
+                    ));
+                }
             }
+            $mailer->setTemplateAlias(self::MAIL_SEND_PASSWORD );
             foreach ($arUserPassword as $item){
-                $mailer->setTemplateAlias(self::MAIL_SEND_PASSWORD );
                 $mailer->send(
                     'КРОС. Пароль для доступа',
                     [
                         'email'    => $item['email'],
                         'password' => $item['password'],
+                        'organization' => $params_organization,
+                        'conference' => $ConferenceOrganization->getConference(),
                     ],
                     $item['email'] ,null, self::MAIL_BCC
                 );
             }
+//            representative
 
 
 
