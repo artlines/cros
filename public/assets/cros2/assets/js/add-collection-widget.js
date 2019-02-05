@@ -69,6 +69,10 @@ const changeRoomType = function() {
 const neighbourhood = function() {
     let selector = jQuery(this);
 //    console.log( jQuery('.conference-member'));
+    selector
+        .find('option[value]')
+        .filter(function(){return this.value})
+        .remove();
     jQuery.each( jQuery('.conference-member'), function(i,el){
         var fio = [
             jQuery(el).find('.lastName').val(),
