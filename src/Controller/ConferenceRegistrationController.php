@@ -489,13 +489,16 @@ class ConferenceRegistrationController extends AbstractController
             $mailer->setTemplateAlias(self::MAIL_SEND_PASSWORD );
 
             foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
-
+                dump($conferenceMember->getUser()->getEmail());
                 $item = false;
-                foreach ($arUserPassword as $item_look){
-                    if ($item['email']==$conferenceMember->getUser()->getEmail() ) {
-                        $item = $item_look;
+                foreach ($arUserPassword as $k => $item_look){
+                    dump($item_look);
+                    if ($item_look['email']==$conferenceMember->getUser()->getEmail() ) {
+                        $item = $arUserPassword[$k];
+                        dump('$arUserPassword', $item);
                     }
                 }
+                dump($arUserPassword,$item);
 
                 $user = [
                     'firstName' => $conferenceMember->getUser()->getFirstName(),
@@ -511,17 +514,20 @@ class ConferenceRegistrationController extends AbstractController
                     'leaving' => $conferenceMember->getLeaving()->getTimestamp(),
                 ];
 
-                $mailer->send(
+                dump($mailer->send(
                     'КРОС. Пароль для доступа',
                     [
                         'user'     => $user,
                         'email'    => $item['email'],
                         'password' => $item['password'],
                         'organization' => $params_organization,
-                        'conference' => $ConferenceOrganization->getConference(),
+                        'conference' => [
+                            'eventStart' => $ConferenceOrganization->getConference()->getEventStart()->getTimestamp(),
+                            'eventFinish' => $ConferenceOrganization->getConference()->getEventFinish()->getTimestamp(),
+                        ]
                     ],
-                    $item['email'] ,null, self::MAIL_BCC
-                );
+                    $conferenceMember->getUser()->getEmail() ,null, self::MAIL_BCC
+                ));
             }
 //            representative
 

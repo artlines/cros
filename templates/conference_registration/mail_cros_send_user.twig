@@ -28,15 +28,16 @@
                         Мы получили Вашу заявку на участие
                         в Конференции российских операторов связи
                         КРОС-2.0-18 от компании {{ data.organization.name|default('') }}.<br>
-
+                        <br>
                         <strong>Информация о регистрации:</strong><br>
+                        <br>
                         ФИО: {{ data.user.lastName }} {{ data.user.firstName }} {{ data.user.middleName|default('') }}<br>
                         Должность: {{ data.user.post|default('') }}<br>
                         Телефон: {{ data.user.phone|default('') }}<br>
                         E-mail: {{ data.user.email|default('') }}<br>
                         Номер автомобиля: {{ data.user.carNumber|default('') }}<br>
                         Класс участия: {{ data.user.roomType|default('') }}<br>
-                        {% set fullprice = fullprice + data.user.cost %}
+
                         {% if data.user.arrival == data.conference.eventStart %}
                             Ранний заезд: нет<br>
                         {% else %}
