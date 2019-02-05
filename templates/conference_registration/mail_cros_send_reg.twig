@@ -10,7 +10,7 @@
                     <td width="180px" style="width: 180px;">
                     </td>
                     <td style="padding: 10px 0;" colspan="2">
-                        <h1>{% block title %}{% endblock %}</h1>
+                        <h1>{{ data.title|default('') }}</h1>
                     </td>
                 </tr>
                 <tr>
