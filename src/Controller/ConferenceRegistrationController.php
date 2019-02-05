@@ -484,12 +484,37 @@ class ConferenceRegistrationController extends AbstractController
                         ]
                     ]);
                 }
+
             }
             $mailer->setTemplateAlias(self::MAIL_SEND_PASSWORD );
-            foreach ($arUserPassword as $item){
+
+            foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
+
+                $item = false;
+                foreach ($arUserPassword as $item_look){
+                    if ($item['email']==$conferenceMember->getUser()->getEmail() ) {
+                        $item = $item_look;
+                    }
+                }
+
+                $user = [
+                    'firstName' => $conferenceMember->getUser()->getFirstName(),
+                    'middleName' => $conferenceMember->getUser()->getMiddleName(),
+                    'lastName' => $conferenceMember->getUser()->getLastName(),
+                    'post' => $conferenceMember->getUser()->getPost(),
+                    'phone' => $conferenceMember->getUser()->getPhone(),
+                    'email' => $conferenceMember->getUser()->getEmail(),
+                    'carNumber' => $conferenceMember->getCarNumber(),
+                    'roomType'  => $conferenceMember->getRoomType()->getTitle(),
+                    'cost' => $conferenceMember->getRoomType()->getCost(),
+                    'arrival' => $conferenceMember->getArrival()->getTimestamp(),
+                    'leaving' => $conferenceMember->getLeaving()->getTimestamp(),
+                ];
+
                 $mailer->send(
                     'КРОС. Пароль для доступа',
                     [
+                        'user'     => $user,
                         'email'    => $item['email'],
                         'password' => $item['password'],
                         'organization' => $params_organization,
