@@ -29,13 +29,6 @@ const addWidget = function (e) {
     counter++;
     list.data('widget-counter', counter);
 
-    // add remove button
-    newElem.find('.remove-collection-widget').click(removeConferenceMember);
-
-    newElem.find('.select-roomtype')
-        .on('change', changeRoomType)
-        .change()
-    ;
     updateItem(newElem);
 
     // append with animation
@@ -341,6 +334,14 @@ const updateItem = function (item) {
         format: 'YYYY.MM.DD HH:mm',
         sideBySide: true,
     });
+
+    // add remove button
+    item.find('.remove-collection-widget').click(removeConferenceMember);
+
+    item.find('.select-roomtype')
+        .on('change', changeRoomType)
+        .change()
+    ;
 
 //    let jQuery('').children()
 
