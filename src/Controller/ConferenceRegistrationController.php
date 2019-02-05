@@ -236,6 +236,13 @@ class ConferenceRegistrationController extends AbstractController
             $form = $this->createForm(
                 ConferenceOrganizationFormType::class);
         }
+        if ($ConferenceOrganization->isFinish()) {
+            return  $this->render('conference_registration/registration_success.html.twig', [
+                'ConferenceOrganization' => $ConferenceOrganization,
+                'UserPasswords' => [],
+                'ended' => 1,
+            ]);
+        }
 //        $arUsers = [];
 //        foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
 //            $arUsers[] = [
