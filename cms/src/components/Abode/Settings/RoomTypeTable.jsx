@@ -19,6 +19,7 @@ import find from "lodash/find";
 import RoomTypeForm from "./RoomTypeForm";
 import ParticipationClass from "../../../containers/ParticipationClass";
 import FabButton from "../../utils/FabButton";
+import scrollToComponent from 'react-scroll-to-component';
 
 class RoomTypeTable extends React.Component {
     constructor(props) {
@@ -30,6 +31,7 @@ class RoomTypeTable extends React.Component {
                 initialValues: {},
             },
         };
+        this.formRef = null;
     }
 
     componentDidMount = () => {
@@ -44,6 +46,8 @@ class RoomTypeTable extends React.Component {
                 open: true,
                 initialValues: id ? find(items, {id}) : {},
             }
+        }, () => {
+            scrollToComponent(this.formRef)
         });
     };
     closeForm = () => this.setState({form: {...this.state.form, open: false, initialValues: {}}});
@@ -53,10 +57,7 @@ class RoomTypeTable extends React.Component {
         this.props.load();
     };
 
-    handleDescriptionSuccess = id => {
-        this.setState({[`expanded_${id}`]: false});
-        this.props.load();
-    };
+    handleCollapseEntered = () => scrollToComponent(this.formRef);
 
     render() {
         const { open, initialValues } = this.state.form;
@@ -110,8 +111,9 @@ class RoomTypeTable extends React.Component {
                     <Grid item xs={12}>
                         <Grid container justify={`center`}>
                             <Grid item xs={12} md={6}>
-                                <Collapse in={open} unmountOnExit={true}>
+                                <Collapse in={open} unmountOnExit={true} onEntered={this.handleCollapseEntered}>
                                     <RoomTypeForm
+                                        ref={section => this.formRef = section}
                                         initialValues={initialValues}
                                         onClose={this.closeForm}
                                         onSuccess={this.handleSuccess}
