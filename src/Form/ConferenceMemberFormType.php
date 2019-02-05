@@ -32,9 +32,9 @@ class ConferenceMemberFormType extends AbstractType
                 [
                     'label' => 'Номер автомобиля',
                     'attr' => array(
-                        'class' => 'cs-theme-color-gray-dark-v3',
+                        'class' => 'carNumber cs-theme-color-gray-dark-v3',
                         'placeholder' => 'А001АА 00',
-                        'pattern' => '[А-Яа-яA-Za-z]{1,1}[0-9]{3,3}[А-Яа-яA-Za-z]{2,2}[ ][0-9]{2,3}',
+//                        'pattern' => '[А-Яа-яA-Za-z]{1,1}[0-9]{3,3}[А-Яа-яA-Za-z]{2,2}[ ][0-9]{2,3}',
                     ),
                     'help' => 'Если Вы приедете на личном транспорте, укажите его госуУчастник рственный номер',
                     'required' => false,

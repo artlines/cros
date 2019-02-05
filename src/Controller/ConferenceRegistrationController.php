@@ -29,6 +29,7 @@ class ConferenceRegistrationController extends AbstractController
     const MAIL_SEND_CODE   = 'cros.send.code';
     const MAIL_SEND_REGISTERED   = 'cros.send.registered';
     const MAIL_SEND_PASSWORD     = 'cros.send.password';
+    const MAIL_BCC               = 'cros@nag.ru';
 
     private function getRandomPassword()
     {
@@ -465,7 +466,7 @@ class ConferenceRegistrationController extends AbstractController
                     [
                         'organization' => $params_organization
                     ],
-                    $conferenceMember->getUser()->getEmail()
+                    $conferenceMember->getUser()->getEmail(),null, self::MAIL_BCC
                 );
             }
             foreach ($arUserPassword as $item){
@@ -476,7 +477,7 @@ class ConferenceRegistrationController extends AbstractController
                         'email'    => $item['email'],
                         'password' => $item['password'],
                     ],
-                    $item['email']
+                    $item['email'] ,null, self::MAIL_BCC
                 );
             }
 
