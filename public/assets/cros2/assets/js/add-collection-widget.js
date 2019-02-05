@@ -342,6 +342,12 @@ const updateItem = function (item) {
         .on('change', changeRoomType)
         .change()
     ;
+    item.find('input[type="file"]').on( 'change', function(e){
+        var fileName = e.target.files[0]. name;
+        var id = jQuery(this).attr('id');
+        jQuery(this).parent().find('label[for='+id+']').text(fileName).attr('style','overflow: hidden');
+        //alert('The file "' + fileName + '" has been selected.' );
+    });
 
 //    let jQuery('').children()
 
