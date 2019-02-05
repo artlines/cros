@@ -323,6 +323,13 @@ const updateItem = function (item) {
             jQuery(this).remove();
         }
     });
+
+    item.find('.datetimepicker').datetimepicker({
+        locale: 'ru',
+        format: 'YYYY.MM.DD hh:mm',
+        sideBySide: true,
+    });
+
 //    let jQuery('').children()
 
     // #select-proto

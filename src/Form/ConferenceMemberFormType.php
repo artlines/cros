@@ -36,7 +36,7 @@ class ConferenceMemberFormType extends AbstractType
                         'placeholder' => 'А001АА 00',
                         'pattern' => '[А-Яа-яA-Za-z]{1,1}[0-9]{3,3}[А-Яа-яA-Za-z]{2,2}[ ][0-9]{2,3}',
                     ),
-                    'help' => 'Если Вы приедете на личном транспорте, укажите его государственный номер',
+                    'help' => 'Если Вы приедете на личном транспорте, укажите его госуУчастник рственный номер',
                     'required' => false,
                 ]
             )
@@ -47,11 +47,12 @@ class ConferenceMemberFormType extends AbstractType
                 [
                     'label' => 'Ранний заезд',
                     'widget' => 'single_text',
+                    'format' => 'yyyy.MM.dd hh:mm',
                     'attr' => [
                         'class' => 'form-control input-inline datetimepicker cs-theme-color-gray-dark-v3',
                         'data-provide' => 'datetimepicker',
-                        'html5' => false,
                     ],
+                    'html5' => false,
                     'help' => 'Укажите, если Вы приедете заранее',
                     'required' => false,
                 ]
@@ -63,12 +64,13 @@ class ConferenceMemberFormType extends AbstractType
                 [
                     'label' => 'Поздний выезд',
                     'widget' => 'single_text',
+//                    'format'=> 'format',
                     'attr' => [
-                        'type' => "text",
-                        'class' => 'form-control input-inline datetimepicker cs-theme-color-gray-dark-v3',
+//                        'type' => "text",
+                        'class' => 'datetime form-control input-inline datetimepicker cs-theme-color-gray-dark-v3',
                         'data-provide' => 'datetimepicker',
-                        'html5' => false,
                     ],
+                    'html5' => false,
                     'help' => 'Укажите, если Вы планируете задержаться',
                     'required' => false,
                 ]
@@ -119,17 +121,16 @@ class ConferenceMemberFormType extends AbstractType
                     'required' => false,
                     'choices'  => [
                         "Нет" => '',
-                        "Да0"  => 0,
-                        "Да1"  => 1,
-                        "Да2"  => 2,
-                        "Да3"  => 3,
-                        "Да4"  => 4,
-                        "Да5"  => 5,
-                        "Да6"  => 6,
-                        "Да7"  => 7,
-                        "Да8"  => 8,
-                        "Да9"  => 9,
-                        "Да10"  => 10,
+                        "Участник 1"  => 0,
+                        "Участник 2"  => 1,
+                        "Участник 3"  => 2,
+                        "Участник 4"  => 3,
+                        "Участник 5"  => 4,
+                        "Участник 6"  => 5,
+                        "Участник 7"  => 6,
+                        "Участник 8"  => 7,
+                        "Участник 9"  => 8,
+                        "Участник 10"  => 9,
                     ],
                     'data' => 'Нет' , // default
                     'attr' => [
