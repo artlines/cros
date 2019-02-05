@@ -51,9 +51,6 @@ class ConferenceOrganizationRepository extends EntityRepository
             ->addOrderBy('co.id', 'ASC')
             ->setParameters($parameters);
 
-        dump($data);
-        dump($query->getDQL());
-
         $queryC = clone $query;
 
         $result = [
