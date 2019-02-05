@@ -311,7 +311,7 @@ class ConferenceOrganizationController extends ApiController
 
         $data = $inviteData;
         $data['hash'] = $inviteHash;
-        $mailer->send('TEST', $data, $email, null, ['e.nachuychenko@nag.ru', 'cros@nag.ru']);
+        $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, ['e.nachuychenko@nag.ru', 'cros@nag.ru']);
 
         return $this->success();
     }
@@ -347,7 +347,7 @@ class ConferenceOrganizationController extends ApiController
             return $this->badRequest('Параметры для приглашения не заполнены.');
         }
         $data['hash'] = $conferenceOrganization->getInviteHash();
-        $mailer->send('TEST', $data, $email, null, ['e.nachuychenko@nag.ru', 'cros@nag.ru']);
+        $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, ['e.nachuychenko@nag.ru', 'cros@nag.ru']);
 
         return $this->success();
     }
