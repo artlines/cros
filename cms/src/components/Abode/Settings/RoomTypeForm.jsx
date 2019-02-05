@@ -16,6 +16,7 @@ import ErrorMessage from "../../utils/ErrorMessage";
 import map from "lodash/map";
 import CKEditorField from "../../utils/CKEditorField";
 import ConfirmDialog from "../../utils/ConfirmDialog";
+import WysiwygField from "../../utils/WysiwygField";
 
 const api = new API();
 
@@ -160,7 +161,7 @@ class RoomTypeForm extends React.Component {
                                 </TextField>
                             </Grid>
                             <Grid item xs={12}>
-                                <CKEditorField
+                                <WysiwygField
                                     required
                                     value={values.description}
                                     onChange={this.handleChange('description', true)}

@@ -9,9 +9,9 @@ import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import UploadAdapter from "../../libs/ckeditor-upload-adapter";
 
-class CKEditorField extends React.PureComponent {
+class WysiwygField extends React.PureComponent {
     componentDidMount() {
-        //console.log(ClassicEditor.builtinPlugins.map(plugin => plugin.pluginName));
+        console.log(ClassicEditor.builtinPlugins.map(plugin => plugin.pluginName));
     }
 
     render() {
@@ -40,7 +40,7 @@ class CKEditorField extends React.PureComponent {
     }
 }
 
-CKEditorField.propTypes = {
+WysiwygField.propTypes = {
     name:       PropTypes.string.isRequired,
     label:      PropTypes.string.isRequired,
     onChange:   PropTypes.func.isRequired,
@@ -51,4 +51,4 @@ CKEditorField.propTypes = {
     required:   PropTypes.bool,
 };
 
-export default CKEditorField;
+export default WysiwygField;
