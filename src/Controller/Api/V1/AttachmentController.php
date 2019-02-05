@@ -32,7 +32,7 @@ class AttachmentController extends AbstractController
     public function uploadPublicFile(Request $request, ContainerInterface $container, LoggerInterface $logger)
     {
         /** @var UploadedFile|null $file */
-        $file = $request->files->get('file', null);
+        $file = $request->files->get('upload', null);
 
         if (!$file) {
             return $this->error('Не передан файл.');
