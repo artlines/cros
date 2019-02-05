@@ -44,7 +44,7 @@ class ParticipationClassTable extends React.Component {
             }
         });
     };
-    closeForm = () => this.setState({form: {...this.state.form, open: false}});
+    closeForm = () => this.setState({form: {...this.state.form, open: false, initialValues: {}}});
 
     handleSuccess = () => {
         this.closeForm();

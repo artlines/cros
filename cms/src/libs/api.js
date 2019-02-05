@@ -12,6 +12,10 @@ export default class API {
         this.apiHost = `${this.host}/api/v${this.apiVersion}`;
     }
 
+    getApiHost = () => {
+        return this.apiHost;
+    };
+
     get = async (endPoint, data = {}) => {
         try {
             const response = await request
@@ -33,6 +37,13 @@ export default class API {
     put = (endPoint, data) => {
         return request
             .put(`${this.apiHost}/${endPoint}`)
+            .send(data)
+            .catch(this[errorHandler])
+    };
+
+    patch = (endPoint, data) => {
+        return request
+            .patch(`${this.apiHost}/${endPoint}`)
             .send(data)
             .catch(this[errorHandler])
     };

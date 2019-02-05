@@ -11,6 +11,7 @@ import {
     Grid,
     Typography,
     Paper,
+    Collapse,
 } from "@material-ui/core";
 import {Edit as EditIcon} from '@material-ui/icons';
 import map from "lodash/map";
@@ -45,10 +46,15 @@ class RoomTypeTable extends React.Component {
             }
         });
     };
-    closeForm = () => this.setState({form: {...this.state.form, open: false}});
+    closeForm = () => this.setState({form: {...this.state.form, open: false, initialValues: {}}});
 
     handleSuccess = () => {
         this.closeForm();
+        this.props.load();
+    };
+
+    handleDescriptionSuccess = id => {
+        this.setState({[`expanded_${id}`]: false});
         this.props.load();
     };
 
@@ -58,48 +64,63 @@ class RoomTypeTable extends React.Component {
 
         return (
             <React.Fragment>
-                <Grid container justify={`space-between`}>
-                    <Grid item>
-                        <Typography variant={`h4`} gutterBottom>Типы комнат</Typography>
+                <Grid container spacing={16}>
+                    <Grid item xs={12}>
+                        <Grid container justify={`space-between`}>
+                            <Grid item>
+                                <Typography variant={`h4`} gutterBottom>Типы комнат</Typography>
+                            </Grid>
+                            <Grid item>
+                                <FabButton title={`Добавить`} onClick={this.openForm}/>
+                            </Grid>
+                        </Grid>
                     </Grid>
-                    <Grid item>
-                        <FabButton title={`Добавить`} onClick={this.openForm}/>
+                    <Grid item xs={12}>
+                        <Paper>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Наименование</TableCell>
+                                        <TableCell>Стоимость</TableCell>
+                                        <TableCell>Кол-во мест</TableCell>
+                                        <TableCell>Класс участия</TableCell>
+                                        <TableCell align={`right`}>Действия</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {map(items, item =>
+                                        <React.Fragment key={item.id}>
+                                            <TableRow style={{borderTop: '1px solid #eee'}}>
+                                                <TableCell>{item.title}</TableCell>
+                                                <TableCell>{item.cost}</TableCell>
+                                                <TableCell>{item.max_places}</TableCell>
+                                                <TableCell><ParticipationClass id={item.participation_class_id}/></TableCell>
+                                                <TableCell align={`right`}>
+                                                    <Button onClick={() => this.openForm(item.id)}>
+                                                        <EditIcon/>
+                                                    </Button>
+                                                </TableCell>
+                                            </TableRow>
+                                        </React.Fragment>
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Grid container justify={`center`}>
+                            <Grid item xs={12} md={6}>
+                                <Collapse in={open} unmountOnExit={true}>
+                                    <RoomTypeForm
+                                        initialValues={initialValues}
+                                        onClose={this.closeForm}
+                                        onSuccess={this.handleSuccess}
+                                    />
+                                </Collapse>
+                            </Grid>
+                        </Grid>
                     </Grid>
                 </Grid>
-                <Paper>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Наименование</TableCell>
-                                <TableCell>Стоимость</TableCell>
-                                <TableCell>Кол-во мест</TableCell>
-                                <TableCell>Класс участия</TableCell>
-                                <TableCell align={`right`}>Действия</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {map(items, item =>
-                                <TableRow key={item.id}>
-                                    <TableCell>{item.title}</TableCell>
-                                    <TableCell>{item.cost}</TableCell>
-                                    <TableCell>{item.max_places}</TableCell>
-                                    <TableCell><ParticipationClass id={item.participation_class_id}/></TableCell>
-                                    <TableCell align={`right`}>
-                                        <Button onClick={() => this.openForm(item.id)}>
-                                            <EditIcon/>
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
-                </Paper>
-                <RoomTypeForm
-                    initialValues={initialValues}
-                    open={open}
-                    onClose={this.closeForm}
-                    onSuccess={this.handleSuccess}
-                />
             </React.Fragment>
         );
     }

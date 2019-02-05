@@ -27,8 +27,8 @@ class RoomTypeForm extends React.Component {
         this.state = {
             values: {
                 title: '',
-                description: '',
                 max_places: '',
+                description: '',
                 cost: '',
                 participation_class_id: '',
             },
@@ -53,11 +53,11 @@ class RoomTypeForm extends React.Component {
         }
     }
 
-    handleChange = (field, ckeditor = false) => (event, editor) => {
+    handleChange = (field) => (event) => {
         const { values, errors } = this.state;
         delete(errors[field]);
 
-        const value = ckeditor ? editor.getData() : event.target.value;
+        const value = event.editor ? event.editor.getData() : event.target.value;
 
         this.setState({
             values: {
@@ -110,155 +110,144 @@ class RoomTypeForm extends React.Component {
     handleErrorSubmit = (err) => this.setState({submitting: false, submitError: err.message});
 
     render() {
-        const { initialValues, open, participation_classes } = this.props;
+        const { initialValues, participation_classes } = this.props;
         const { values, errors, submitting, submitError } = this.state;
 
         const isUpdate = initialValues && initialValues.id;
 
         return (
-            <Dialog
-                open={open}
-                fullWidth={true}
-                maxWidth={"sm"}
-            >
-                <DialogTitle>{!initialValues ? 'Добавление' : 'Редактирование'} типа комнаты</DialogTitle>
-                <DialogContent>
-                    <form onSubmit={this.handleSubmit} id={"room_type-form"}>
-                        <Grid container spacing={16}>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    required
-                                    label={"Наименование"}
-                                    value={values.title}
-                                    margin={"dense"}
-                                    fullWidth
-                                    variant={"outlined"}
-                                    onChange={this.handleChange('title')}
-                                    error={!!errors.title}
-                                    helperText={errors.title}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    required
-                                    label={`Класс участия`}
-                                    value={values.participation_class_id}
-                                    margin={"dense"}
-                                    fullWidth
-                                    variant={"outlined"}
-                                    name={`participation_class_id`}
-                                    onChange={this.handleChange('participation_class_id')}
-                                    error={!!errors.participation_class_id}
-                                    helperText={errors.participation_class_id}
-                                    select={true}
-                                    InputLabelProps={{
-                                        shrink: true,
-                                    }}
-                                >
-                                    {map(participation_classes, pc =>
-                                        <MenuItem key={pc.id} value={pc.id}>{pc.title}</MenuItem>
-                                    )}
-                                </TextField>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <WysiwygField
-                                    required
-                                    value={values.description}
-                                    onChange={this.handleChange('description', true)}
-                                    name={`description`}
-                                    label={`Описание`}
-                                    error={!!errors.description}
-                                    helperText={errors.description}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    required
-                                    label={"Стоимость"}
-                                    type={"number"}
-                                    value={values.cost}
-                                    margin={"dense"}
-                                    fullWidth
-                                    variant={"outlined"}
-                                    name={'cost'}
-                                    onChange={this.handleChange('cost')}
-                                    error={!!errors.cost}
-                                    helperText={errors.cost}
-                                    InputLabelProps={{shrink: true}}
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    required
-                                    label={"Количество мест"}
-                                    type={"number"}
-                                    value={values.max_places}
-                                    margin={"dense"}
-                                    fullWidth
-                                    variant={"outlined"}
-                                    name={'max_places'}
-                                    onChange={this.handleChange('max_places')}
-                                    error={!!errors.max_places}
-                                    helperText={errors.max_places}
-                                    InputLabelProps={{shrink: true}}
-                                />
-                            </Grid>
+            <React.Fragment>
+                <form onSubmit={this.handleSubmit} id={"room_type-form"}>
+                    <Grid container spacing={16}>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                required
+                                label={"Наименование"}
+                                value={values.title}
+                                margin={"dense"}
+                                fullWidth
+                                variant={"outlined"}
+                                onChange={this.handleChange('title')}
+                                error={!!errors.title}
+                                helperText={errors.title}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
                         </Grid>
-                    </form>
-                    {submitError && <ErrorMessage description={submitError} extended={true}/>} {/*title={} description={} extended={}*/}
-                </DialogContent>
-                <DialogActions>
-                    <Grid container spacing={0} justify={`space-between`}>
-                        <Grid item>
-                            {isUpdate &&
-                            <ConfirmDialog
-                                onConfirm={() => this.handleDelete(isUpdate)}
-                                trigger={<Button
-                                    color={"secondary"}
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                required
+                                label={`Класс участия`}
+                                value={values.participation_class_id}
+                                margin={"dense"}
+                                fullWidth
+                                variant={"outlined"}
+                                name={`participation_class_id`}
+                                onChange={this.handleChange('participation_class_id')}
+                                error={!!errors.participation_class_id}
+                                helperText={errors.participation_class_id}
+                                select={true}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            >
+                                {map(participation_classes, pc =>
+                                    <MenuItem key={pc.id} value={pc.id}>{pc.title}</MenuItem>
+                                )}
+                            </TextField>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                required
+                                label={"Стоимость"}
+                                type={"number"}
+                                value={values.cost}
+                                margin={"dense"}
+                                fullWidth
+                                variant={"outlined"}
+                                name={'cost'}
+                                onChange={this.handleChange('cost')}
+                                error={!!errors.cost}
+                                helperText={errors.cost}
+                                InputLabelProps={{shrink: true}}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                required
+                                label={"Количество мест"}
+                                type={"number"}
+                                value={values.max_places}
+                                margin={"dense"}
+                                fullWidth
+                                variant={"outlined"}
+                                name={'max_places'}
+                                onChange={this.handleChange('max_places')}
+                                error={!!errors.max_places}
+                                helperText={errors.max_places}
+                                InputLabelProps={{shrink: true}}
+                            />
+                        </Grid>
+                        <Grid item xs={12} style={{textAlign: 'center'}}>
+                            <WysiwygField
+                                required
+                                name={`description`}
+                                label={`Описание`}
+                                value={values.description}
+                                onChange={this.handleChange('description')}
+                                error={!!errors.description}
+                                helperText={errors.description}
+                            />
+                        </Grid>
+                    </Grid>
+                </form>
+                {submitError && <ErrorMessage description={submitError} extended={true}/>} {/*title={} description={} extended={}*/}
+                <Grid container spacing={0} justify={`space-between`}>
+                    <Grid item>
+                        {isUpdate &&
+                        <ConfirmDialog
+                            onConfirm={() => this.handleDelete(isUpdate)}
+                            trigger={<Button
+                                color={"secondary"}
+                                disabled={submitting}
+                            >
+                                Удалить
+                            </Button>}
+                        />
+                        }
+                    </Grid>
+                    <Grid item>
+                        <Grid container spacing={8}>
+                            <Grid item>
+                                <Button
+                                    color={"primary"}
+                                    disabled={submitting}
+                                    onClick={this.handleCancel}
+                                >
+                                    Отмена
+                                </Button>
+                            </Grid>
+                            <Grid item>
+                                <Button
+                                    variant={"contained"}
+                                    color={"primary"}
+                                    form={"room_type-form"}
+                                    type={"submit"}
                                     disabled={submitting}
                                 >
-                                    Удалить
-                                </Button>}
-                            />
-                            }
-                        </Grid>
-                        <Grid item>
-                            <Grid container spacing={8}>
-                                <Grid item>
-                                    <Button
-                                        color={"primary"}
-                                        disabled={submitting}
-                                        onClick={this.handleCancel}
-                                    >
-                                        Отмена
-                                    </Button>
-                                </Grid>
-                                <Grid item>
-                                    <Button
-                                        variant={"contained"}
-                                        color={"primary"}
-                                        form={"room_type-form"}
-                                        type={"submit"}
-                                        disabled={submitting}
-                                    >
-                                        {!initialValues ? 'Добавить' : 'Сохранить'}
-                                    </Button>
-                                </Grid>
+                                    {!initialValues ? 'Добавить' : 'Сохранить'}
+                                </Button>
                             </Grid>
                         </Grid>
                     </Grid>
-                </DialogActions>
-            </Dialog>
+                </Grid>
+            </React.Fragment>
         );
     }
 }
 
 RoomTypeForm.propTypes = {
-    /**
-     * Is form open?
-     */
-    open: PropTypes.bool.isRequired,
-
     /**
      * Initial form values
      */

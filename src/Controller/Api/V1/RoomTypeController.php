@@ -140,11 +140,11 @@ class RoomTypeController extends ApiController
     public function delete($id)
     {
         /** @var RoomType $type */
-        if (!$type = $this->em->find(RoomType::class, $id)) {
+        if (!$roomType = $this->em->find(RoomType::class, $id)) {
             return $this->notFound('Room type not found.');
         }
 
-        if ($type->getRooms()->count()) {
+        if (count($roomType->getRooms())) {
             return $this->badRequest('У данного типа есть привязанные комнаты');
         }
 

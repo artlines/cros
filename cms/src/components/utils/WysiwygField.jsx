@@ -4,14 +4,22 @@ import {
     FormControl,
     FormHelperText,
     InputLabel,
+    Input,
 } from "@material-ui/core";
-import CKEditor from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import UploadAdapter from "../../libs/ckeditor-upload-adapter";
+//import 'ckeditor/ckeditor';
+import CKEditor from 'ckeditor4-react';
+import API from "../../libs/api";
+
+const api = new API();
 
 class WysiwygField extends React.PureComponent {
     componentDidMount() {
-        console.log(ClassicEditor.builtinPlugins.map(plugin => plugin.pluginName));
+        const { name } = this.props;
+
+        //CKEDITOR.replace(name, {
+            //filebrowserUploadUrl: `${api.getApiHost()}/attachment/upload_public`,
+            //stylesSet: [],
+        //});
     }
 
     render() {
@@ -20,16 +28,15 @@ class WysiwygField extends React.PureComponent {
         return (
             <React.Fragment>
                 <FormControl error={error} required={required}>
-                    <InputLabel htmlFor={name}>{label}</InputLabel>
-                    <div style={{ marginTop: 48 }}>
+                    <InputLabel htmlFor={name} required={required} shrink>{label}</InputLabel>
+                    {/*<Input disableUnderline multiline name={name} onChange={onChange} value={value}/>*/}
+                    <div style={{ marginTop: 20 }}>
                         <CKEditor
-                            editor={ ClassicEditor }
                             data={value}
-                            onInit={ editor => {
-                                editor.plugins.get("FileRepository").createUploadAdapter = loader => {
-                                    return new UploadAdapter(loader);
-                                };
-                            } }
+                            config={{
+                                filebrowserUploadUrl: `${api.getApiHost()}/attachment/upload_public`,
+                                baseFloatZIndex: 102000,
+                            }}
                             onChange={onChange}
                         />
                     </div>
