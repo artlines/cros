@@ -25,12 +25,14 @@
 {% for item in RoomTypes  %}
     {% set roomType=item[0] %}
     {% set used=item[1] %}
+    {% if roomType.maxPlaces-used > 0  %}
 <div id="roomType_{{ roomType.id }}">
     Класс участия: <b>{{ roomType.title }}</b><br />
     Стоимость:  <b>{{ roomType.cost|number_format }}</b> ₽<br />
     Количество свободных мест: <b>{{ roomType.maxPlaces-used }}</b><br />
     <h4>Описание:</h4>
     {{ roomType.description|raw }}
+    {% endif %}
 </div>
 {% endfor %}
 <select id="select-proto">
@@ -218,7 +220,8 @@ id     name    inn kpp
                 </div>
                 <div class="modal-body">
                     <p>На указанную почту пользователя выслан код подтверждения почты.</p>
-                    <p>Введите код из письма ( da981233 )</p>
+                    <p>Введите код из письма</p>
+                    {#( da981233 )#}
                     <div style="text-align: center">
                     <input id="validation-code"
                        style="font-size:30px; text-align: center; width:50%"
