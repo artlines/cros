@@ -6,27 +6,24 @@ use App\Entity\Abode\RoomType;
 use App\Entity\Conference;
 use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\ConferenceOrganization;
-use App\Entity\Participating\Organization;
 use App\Entity\Participating\User;
 use App\Form\ConferenceOrganizationFormType;
-use App\Form\OrganizationFormType;
 use App\Repository\ConferenceMemberRepository;
 use App\Repository\ConferenceOrganizationRepository;
 use App\Service\Mailer;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class ConferenceRegistrationController extends AbstractController
 {
-    const DIRECTORY_UPLOAD = 'uploads/';
-    const MAIL_SEND_CODE   = 'cros.send.code';
+
+    const DIRECTORY_UPLOAD       = 'uploads/';
+    const MAIL_SEND_CODE         = 'cros.send.code';
     const MAIL_SEND_REGISTERED   = 'cros.send.registered';
     const MAIL_SEND_PASSWORD     = 'cros.send.password';
     const MAIL_BCC               = 'cros@nag.ru';
@@ -145,75 +142,11 @@ class ConferenceRegistrationController extends AbstractController
         return new JsonResponse(['found'=>false]);
     }
 
-    /**
-     * @Route("/conference/registration-mail/{hash}")
-     */
-    public function mail_dev(
-        Request $request,
-        UserPasswordEncoderInterface $passwordEncoder,
-        Mailer $mailer
-    )
-    {
-        $hash = $request->get('hash');
-        if ($hash) {
-            /** @var ConferenceOrganization $ConferenceOrganization */
-            $ConferenceOrganization = $this->getDoctrine()
-                ->getRepository(ConferenceOrganization::class)
-                ->findOneBy(['inviteHash' => $hash]);
-            $arUsers = [];
-            foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
-                $arUsers[] = [
-                    'firstName' => $conferenceMember->getUser()->getFirstName(),
-                    'middleName' => $conferenceMember->getUser()->getMiddleName(),
-                    'lastName' => $conferenceMember->getUser()->getLastName(),
-                    'post' => $conferenceMember->getUser()->getPost(),
-                    'phone' => $conferenceMember->getUser()->getPhone(),
-                    'email' => $conferenceMember->getUser()->getEmail(),
-                    'carNumber' => $conferenceMember->getCarNumber(),
-                    'roomType' => $conferenceMember->getRoomType()->getTitle(),
-                    'cost' => $conferenceMember->getRoomType()->getCost(),
-                    'arrival' => $conferenceMember->getArrival()->getTimestamp(),
-                    'leaving' => $conferenceMember->getLeaving()->getTimestamp(),
-                ];
-            }
-            $params_organization = [
-                'name' => $ConferenceOrganization->getOrganization()->getName(),
-                'inn' => $ConferenceOrganization->getOrganization()->getInn(),
-                'kpp' => $ConferenceOrganization->getOrganization()->getKpp(),
-                'requisites' => $ConferenceOrganization->getOrganization()->getRequisites(),
-                'address' => $ConferenceOrganization->getOrganization()->getAddress(),
-                'comment' => $ConferenceOrganization->getOrganization()->getComment(),
-                'users' => $arUsers
-            ];
-            dump($params_organization);
-            $mailer->setTemplateAlias(self::MAIL_SEND_REGISTERED);
-            foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
-                return $this->render('conference_registration/mail_cros_send_reg.twig', [
-                    'data' => [
-                        'organization' => $params_organization,
-                        'conference' => [
-                            'eventStart' => $ConferenceOrganization->getConference()->getEventStart()->getTimestamp(),
-                            'eventFinish' => $ConferenceOrganization->getConference()->getEventFinish()->getTimestamp(),
-                        ]
-                ],
-            ]);
-            dump($mailer->send(
-                'КРОС. Регистрация завершена',
-                [
-                    'organization' => $params_organization
-                ],
-                $conferenceMember->getUser()->getEmail()
-            ));
-
-            }
-        }
-        return new Response('OK');
-    }
 
 
     /**
-     * @Route("/conference/registration/{hash}", name="conference_registration_hash")
-     * @Route("/conference/registration", name="conference_registration")
+     * @Route("/registration/{hash}", name="conference_registration_hash")
+     * @Route("/registration", name="conference_registration")
      */
     public function index(
         Request $request,
@@ -221,13 +154,7 @@ class ConferenceRegistrationController extends AbstractController
         Mailer $mailer
     )
     {
-//        $mailer->setClientAlias('cros.send.validation-ccde');
-//        $mailer->setClientAlias('cros.send.user');
-//        $mailer->setClientAlias('cros.send.registration');
         $hash = $request->get('hash');
-        //$ConferenceOrganization = new ConferenceOrganization();
-
-
         if( $hash ) {
             $ConferenceOrganization = $this->getDoctrine()
                 ->getRepository(ConferenceOrganization::class)
@@ -246,7 +173,7 @@ class ConferenceRegistrationController extends AbstractController
             }
             $Conference = $ConferenceOrganization->getConference();
         } else {
-
+            /** @var Conference $Conference */
             $Conference = $this->getDoctrine()->getRepository(Conference::class)
                 ->findOneBy(['year' => date("Y")]);
 
@@ -285,97 +212,20 @@ class ConferenceRegistrationController extends AbstractController
             );
         }
 
-
-//        $arUsers = [];
-//        foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
-//            $arUsers[] = [
-//                'firstName' => $conferenceMember->getUser()->getFirstName(),
-//                'middleName' => $conferenceMember->getUser()->getMiddleName(),
-//                'lastName' => $conferenceMember->getUser()->getLastName(),
-//                'post' => $conferenceMember->getUser()->getPost(),
-//                'phone' => $conferenceMember->getUser()->getPhone(),
-//                'email' => $conferenceMember->getUser()->getEmail(),
-//                'carNumber' => $conferenceMember->getCarNumber(),
-//                'roomType'  => $conferenceMember->getRoomType()->getTitle(),
-//                'cost' => $conferenceMember->getRoomType()->getCost(),
-//                'arrival' => $conferenceMember->getArrival()->getTimestamp(),
-//                'leaving' => $conferenceMember->getLeaving()->getTimestamp(),
-//            ];
-//        }
-//        $params_organization =  [
-//            'name' => $ConferenceOrganization->getOrganization()->getName(),
-//            'inn' => $ConferenceOrganization->getOrganization()->getInn(),
-//            'kpp' => $ConferenceOrganization->getOrganization()->getKpp(),
-//            'requisites' => $ConferenceOrganization->getOrganization()->getRequisites(),
-//            'address' => $ConferenceOrganization->getOrganization()->getAddress(),
-//            'comment' => $ConferenceOrganization->getOrganization()->getComment(),
-//            'users' => $arUsers
-//        ];
-//
-//        $mailer->setTemplateAlias(self::MAIL_SEND_REGISTERED);
-//        foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
-//            dump($params_organization);
-//            dd( $mailer->send(
-//                'КРОС. Регистрация завершена',
-//                [
-//                    'organization' => $params_organization
-//                ],
-//                $conferenceMember->getUser()->getEmail()
-//            ));
-//        }
-//dd('stop');
-
-//        $form = $this->createForm(MyFrmType::class,null,['attr'=>['class'=>'row']]);
         $arUserPassword = [];
-//        $data = $request->get('conference_organization_form');
-//        foreach ($data['ConferenceMembers'] as $key => $cm ){
-//            if( $cm['neighbourhood']=='' ){
-//                $data['ConferenceMembers'][$key]['neighbourhood'] = null;
-//            }
-//            //dd();
-//        }
-//        $request->request->set('conference_organization_form', $data);
-////            neighbourhood
+
         $form->handleRequest($request);
         /** @var ConferenceOrganization $ConferenceOrganization */
-//        $ConferenceOrganization = $form->getData();
-//        dump($ConferenceOrganization);
-//        /** @var Organization $check_org */
-//        $check_org = $this->getDoctrine()
-//            ->getRepository( ConferenceOrganization::class)
-//            ->findByInnKppIsFinish(
-//                $ConferenceOrganization->getOrganization()->getInn(),
-//                $ConferenceOrganization->getOrganization()->getKpp(),
-//                $ConferenceOrganization->getConference()->getId()
-//            );
 
         $em  = $this->getDoctrine()->getManager();
-
 
         if ($form->isSubmitted() && $form->isValid()) {
 
 
             /** @var ConferenceOrganization $ConferenceOrganization */
             $ConferenceOrganization = $form->getData();
-//            dd($ConferenceOrganization);
             $em->getConnection()->beginTransaction();
-/*
-            foreach ($ConferenceOrganization->getConferenceMembers() as $user_num => $conferenceMember ) {
-                $conferenceMember->setNeighbourhood(null);
-                $oldUser = $em->getRepository(User::class)
-                    ->findOneBy(['email' =>'esuzev@gmail.com' ]);
-                $conferenceMember->setUser($oldUser);
-                $conferenceMember->getUser()->setOrganization($ConferenceOrganization->getOrganization());
-                $conferenceMember->getUser()->setPassword('123');
-                $conferenceMember->setConference($ConferenceOrganization->getConference());
-            }
 
-            $em->persist($ConferenceOrganization);
-            $em->flush();*/
-
-
-
-//            dd($ConferenceOrganization);
             $organization = $ConferenceOrganization->getOrganization();
             $files = $request->files->get('conference_organization_form');
 
@@ -405,9 +255,6 @@ class ConferenceRegistrationController extends AbstractController
 
                 $user->setOrganization($organization);
 
-//                $conferenceMember->setUser($user);
-//
-                // conference_organization_form[ConferenceMembers][0][user][newphoto]
                 if($files and isset(
                         $files['ConferenceMembers'],
                         $files['ConferenceMembers'][$user_num],
@@ -436,24 +283,10 @@ class ConferenceRegistrationController extends AbstractController
                 $conference = $ConferenceOrganization->getConference();
                 $conferenceMember->setConference($conference);
                 $conferenceMember->setConferenceOrganization($ConferenceOrganization);
-//                $conferenceMember->setNeighbourhood(null);
-////                $em->flush();
-//                $conferenceMember->setNeighbourhood(new ConferenceMember());
-//                $em->persist($conferenceMember);
             }
-//            $em->persist($organization);
-//
+
             $em->persist($ConferenceOrganization); // !!DUP
-////            dd($ConferenceOrganization);
-//            // TODO: get duplicate  Organization
-////            $em->persist($ConferenceOrganization->getOrganization());
-//            dump($ConferenceOrganization);
-//            $em->flush();
-//            dump($conferenceMember);
-//
-//
-//
-//
+
             if($files and isset(
                     $files['organization'],
                     $files['organization']['newlogo']
@@ -578,9 +411,6 @@ class ConferenceRegistrationController extends AbstractController
                     $conferenceMember->getUser()->getEmail() ,null, $this->getBcc()
                 ));
             }
-//            representative
-
-
 
             return $this->render('conference_registration/registration_success.html.twig', [
                 'ConferenceOrganization' => $ConferenceOrganization,
@@ -590,7 +420,6 @@ class ConferenceRegistrationController extends AbstractController
         }
 
         return $this->render('conference_registration/index.html.twig', [
-//            'controller_name' => 'ConferenceRegistrationController',
             'form' => $form->createView(),
             'ConferenceOrganization' => $ConferenceOrganization ?? null,
             'RoomTypes' => $roomTypes,
