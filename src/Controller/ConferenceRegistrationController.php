@@ -241,7 +241,14 @@ class ConferenceRegistrationController extends AbstractController
                 $oldUser = $em->getRepository(User::class)
                     ->findOneBy(['email' =>$user->getEmail() ]);
                 if( $oldUser ) {
+                    $oldUser->setOrganization($user->getOrganization());
+                    $oldUser->setFirstName($user->getFirstName());
+                    $oldUser->setLastName($user->getLastName());
+                    $oldUser->setMiddleName($user->getMiddleName());
+                    $oldUser->setSex($user->getSex());
+                    $oldUser->setPost($user->getPost());
                     $conferenceMember->setUser($oldUser);
+                    $user = $oldUser;
                 }
                 $password = $this->getRandomPassword();
                 $user->setPassword(
