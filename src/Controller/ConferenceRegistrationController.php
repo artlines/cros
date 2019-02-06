@@ -247,6 +247,9 @@ class ConferenceRegistrationController extends AbstractController
                     $oldUser->setMiddleName($user->getMiddleName());
                     $oldUser->setSex($user->getSex());
                     $oldUser->setPost($user->getPost());
+                    $oldUser->setPhone($user->getPhone());
+                    $oldUser->setRepresentative($user->isRepresentative());
+
                     $conferenceMember->setUser($oldUser);
                     $user = $oldUser;
                 }
