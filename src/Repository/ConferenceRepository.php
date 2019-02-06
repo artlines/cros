@@ -43,4 +43,20 @@ class ConferenceRepository extends \Doctrine\ORM\EntityRepository
             return null;
         }
     }
+
+    public function findOpen()
+    {
+        return $this
+            ->createQueryBuilder('c')
+            ->andWhere('c.registrationStart <= :registrationStart')
+            ->andWhere('c.registrationFinish >= :registrationFinish')
+            ->setParameters([
+                'registrationStart' => new \DateTime(),
+                'registrationFinish' => new \DateTime()
+            ])
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 }

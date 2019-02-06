@@ -45,7 +45,9 @@ class ConferenceRegistrationController extends AbstractController
         // uniqid(), which is based on timestamps
         return md5(uniqid());
     }
-
+    private function getBcc(){
+        return $this->container->getParameter('cros_emails');
+    }
 
 
     /**
@@ -243,6 +245,23 @@ class ConferenceRegistrationController extends AbstractController
                 ]);
             }
         } else {
+
+            $conf = $this->getDoctrine()->getRepository(Conference::class)
+                ->findOneBy(['year' => date("Y")]);
+
+            // Получаем разрешенные даты регистрации
+            $reg_start = $conf->getRegistrationStart();
+            $reg_finish = $conf->getRegistrationFinish();
+
+            $now = date('Y-m-d H:i:s');
+
+            // Проверяем, открыта ли регистрация или пользователь регистрируется по ссылке менеджера
+            if (($reg_start->format('Y-m-d H:i:s') <= $now || $reg_finish->format('Y-m-d H:i:s') >= $now)) {
+
+                return $this->render('conference_registration/registration_closed.html.twig',
+                    ['conf'=>$conf]
+                );
+            }
             $form = $this->createForm(
                 ConferenceOrganizationFormType::class);
         }
@@ -487,7 +506,7 @@ class ConferenceRegistrationController extends AbstractController
                                 'eventFinish' => $ConferenceOrganization->getConference()->getEventFinish()->getTimestamp(),
                             ]
                         ],
-                        $conferenceMember->getUser()->getEmail(), null, self::MAIL_BCC
+                        $conferenceMember->getUser()->getEmail(), null, $this->getBcc()
                     ));
                     dump([
                         'organization' => $params_organization,
@@ -539,7 +558,7 @@ class ConferenceRegistrationController extends AbstractController
                             'eventFinish' => $ConferenceOrganization->getConference()->getEventFinish()->getTimestamp(),
                         ]
                     ],
-                    $conferenceMember->getUser()->getEmail() ,null, self::MAIL_BCC
+                    $conferenceMember->getUser()->getEmail() ,null, $this->getBcc()
                 ));
             }
 //            representative

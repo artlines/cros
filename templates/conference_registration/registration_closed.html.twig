@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Конференция Российских Операторов Связи{% endblock %}
+
+{% block header_title %}Регистрация{% endblock %}
+
+{% block body %}
+    <p>{% if conf.registrationstart.date|date('Y-m-d H:i:s') >= 'now'|date('Y-m-d H:i:s') %}Регистрация начнется {{ conf.registrationstart.date|date_modify("-2 hours")|date('d.m.Y H.i') }}(МСК)
+{% else %}Все места забронированы, но при снятии брони вовремя неоплаченых номеров, места могут освободиться и у Вас появится возможность зарегистрировать участников<br />
+    <div class="justify-content-center row" style="text-align:center"><a class="btn u-btn-yellow cs-color-white cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15" href="{{ path('info', {'alias': 'reminder'}) }}">Отправить заявку</a></div>
+{% endif %}</p>
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+
