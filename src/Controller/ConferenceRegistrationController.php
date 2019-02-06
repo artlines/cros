@@ -43,7 +43,7 @@ class ConferenceRegistrationController extends AbstractController
         return md5(uniqid());
     }
     private function getBcc(){
-        return $this->container->getParameter('cros_emails');
+        return getenv('CROS_MAIL_BCC');
     }
 
 
