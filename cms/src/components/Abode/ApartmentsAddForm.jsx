@@ -59,7 +59,7 @@ class ApartmentsAddForm extends React.Component {
          */
         if (!isEqual(prevProps.initialValues, initialValues) || (open === true && prevProps.open !== open)) {
             this.setState({
-                values: {...values, ...initialValues},
+                values: {...values, ...initialValues, room_types: {}},
                 submitError: false,
             })
         }
@@ -90,7 +90,7 @@ class ApartmentsAddForm extends React.Component {
 
     handleCancel = () => {
         this.props.onClose();
-        this.setState({values: {}, errors: {}});
+        this.setState({values: {}, errors: {}, submitError: false});
     };
 
     handleSubmit = event => {
@@ -291,6 +291,9 @@ class ApartmentsAddForm extends React.Component {
                                     error={!!errors.type}
                                     helperText={errors.type}
                                     select={true}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
                                 >
                                     {map(apartment_types, at =>
                                         <MenuItem key={at.id} value={at.id}>{at.title}</MenuItem>
@@ -310,7 +313,7 @@ class ApartmentsAddForm extends React.Component {
                                     <TextField
                                         required
                                         label={`Тип комнаты #${i+1}`}
-                                        value={values.room_types[i]}
+                                        value={values.room_types[i] || ''}
                                         margin={"dense"}
                                         fullWidth
                                         variant={"outlined"}
