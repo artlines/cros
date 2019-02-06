@@ -282,9 +282,8 @@ class ConferenceRegistrationController extends AbstractController
         }
 
         if($TotalFree<1 or $TotalUsed>=$Conference->getLimitUsersGlobal() ){
-            return $this->render(
-                'conference_registration/completed.html.twig',
-                []
+            return $this->render('conference_registration/registration_closed.html.twig',
+                ['conf'=>$Conference]
             );
         }
 
