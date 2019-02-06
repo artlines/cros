@@ -382,9 +382,7 @@ class ConferenceOrganization
 
     public function validate_inn_registered(ExecutionContextInterface $context, $payload)
     {
- //       dump('validate', $context,$payload);
         return;
-//        die();
         /** @var ConferenceOrganization $ConferenceOrganization */
         $ConferenceOrganization =  $context->getValue();
         $inn = $ConferenceOrganization->getOrganization()->getInn();
@@ -400,8 +398,6 @@ class ConferenceOrganization
 
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
-//        dd('loadValidatorMetadata', $metadata);
-//        die();
 //        $metadata->addConstraint(new Assert\Callback('validate'));
 //        $metadata->addPropertyConstraint('comments', new InnKpp());
         $metadata->addConstraint( new InnKpp());

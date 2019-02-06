@@ -185,11 +185,9 @@ class ConferenceRegistrationController extends AbstractController
                 'comment' => $ConferenceOrganization->getOrganization()->getComment(),
                 'users' => $arUsers
             ];
-
+            dump($params_organization);
             $mailer->setTemplateAlias(self::MAIL_SEND_REGISTERED);
             foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
-//            die();
-                dump($params_organization);
                 return $this->render('conference_registration/mail_cros_send_reg.twig', [
                     'data' => [
                         'organization' => $params_organization,
