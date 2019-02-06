@@ -132,7 +132,7 @@ class ConferenceRegistrationController extends AbstractController
         if($email and filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $mailer->setTemplateAlias(self::MAIL_SEND_CODE);
             $mailer->send(
-                'КРОС: Код подтверждения',
+                'КРОС 2.0-19: Код подтверждения',
                 [
                     'email' => $email,
                     'code'  => $this->generateCode($email)
@@ -348,7 +348,7 @@ class ConferenceRegistrationController extends AbstractController
                 if( $conferenceMember->getUser()->isRepresentative()) {
                     dump($params_organization);
                     dump($mailer->send(
-                        'КРОС. Регистрация завершена',
+                        'КРОС 2.0-19: Регистрация завершена',
                         [
                             'organization' => $params_organization,
                             'conference' => [
@@ -397,7 +397,7 @@ class ConferenceRegistrationController extends AbstractController
                 ];
 
                 dump($mailer->send(
-                    'КРОС. Пароль для доступа',
+                    'КРОС 2.0-19: Пароль для доступа',
                     [
                         'user'     => $user,
                         'email'    => $item['email'],
