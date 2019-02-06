@@ -136,7 +136,7 @@ class ConferenceMemberFormType extends AbstractType
                     'attr' => [
                         'class' => 'cs-theme-color-gray-dark-v3 select-neighbourhood',
                     ],
-                    'help' => 'Выбор участика, для размещения в одном номере'
+                    'help' => 'Выбор участника, для размещения в одном номере'
                 ]
             );
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
