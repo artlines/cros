@@ -117,6 +117,13 @@ class ConferenceOrganization
     private $invitedBy;
 
     /**
+     * @var array|null
+     *
+     * @ORM\Column(name="invite_data", type="array", nullable=true)
+     */
+    private $inviteData;
+
+    /**
      * ConferenceOrganization constructor.
      */
     public function __construct()
@@ -399,6 +406,22 @@ class ConferenceOrganization
 //        $metadata->addPropertyConstraint('comments', new InnKpp());
         $metadata->addConstraint( new InnKpp());
 
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getInviteData(): ?array
+    {
+        return $this->inviteData;
+    }
+
+    /**
+     * @param array|null $inviteData
+     */
+    public function setInviteData(?array $inviteData): void
+    {
+        $this->inviteData = $inviteData;
     }
 
 }

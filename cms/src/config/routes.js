@@ -97,17 +97,6 @@ export default [
         role: "ROLE_ADMINISTRATOR",
     },
     {
-        path: "/cms/test",
-        Component: Test,
-        exact: true,
-        title: "TEST",
-        menuItem: {
-            Icon: People,
-            title: "TEST",
-        },
-        role: "ROLE_ADMINISTRATOR",
-    },
-    {
         path: "*",
         Component: NotFound,
         title: "Страница не найдена",

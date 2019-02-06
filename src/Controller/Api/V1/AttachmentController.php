@@ -16,18 +16,10 @@ use Symfony\Component\Routing\Annotation\Route;
  * @package App\Controller\Api\V1
  *
  * @Route("/api/v1/", name="api_v1__comment__")
- * @IsGranted("ROLE_SETTLEMENT_MANAGER")
+ * @IsGranted("ROLE_CMS_USER")
  */
 class AttachmentController extends AbstractController
 {
-    /**
-     * @Route("attachment/upload_public", methods={"GET"})
-     */
-    public function uploadPublicFilePage()
-    {
-        return $this->render('upload_test.html.twig');
-    }
-
     /**
      * @Route("attachment/upload_public", methods={"POST"})
      *
@@ -40,7 +32,7 @@ class AttachmentController extends AbstractController
     public function uploadPublicFile(Request $request, ContainerInterface $container, LoggerInterface $logger)
     {
         /** @var UploadedFile|null $file */
-        $file = $request->files->get('file', null);
+        $file = $request->files->get('upload', null);
 
         if (!$file) {
             return $this->error('Не передан файл.');

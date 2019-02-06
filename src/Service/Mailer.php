@@ -45,12 +45,12 @@ class Mailer
      * @param string $subject
      * @param array $params
      * @param string $sendTo
-     * @param null|string $sendCc
-     * @param null|string $sendBcc
+     * @param null|string|array $sendCc
+     * @param null|string|array $sendBcc
      *
      * @return mixed
      */
-    public function send(string $subject, array $params, string $sendTo, ?string $sendCc = null, ?string $sendBcc = null)
+    public function send(string $subject, array $params, string $sendTo, $sendCc = null, $sendBcc = null)
     {
         $timestamp = time();
 

@@ -63,7 +63,7 @@ class RoomType
     /**
      * @var Room[]|ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="RoomType", mappedBy="type")
+     * @ORM\OneToMany(targetEntity="Room", mappedBy="type")
      */
     private $rooms;
 

@@ -140,7 +140,9 @@ class User implements UserInterface
     private $entityName = 'user';
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var string
+     *
+     * @ORM\Column(name="photo", type="string", length=255, nullable=true)
      */
     private $photo;
 
@@ -149,7 +151,6 @@ class User implements UserInterface
      */
     public function __construct()
     {
-        $this->speakers         = new ArrayCollection();
         $this->representative   = false;
         $this->isActive         = true;
         $this->createdAt        = new \DateTime();

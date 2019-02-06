@@ -23,12 +23,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
  * @package App\Controller\Api\V1
  *
  * @Route("/api/v1/", name="api_v1__conference_organization__")
- * @IsGranted("ROLE_SETTLEMENT_MANAGER")
  */
 class ConferenceOrganizationController extends ApiController
 {
     /**
      * @Route("conference_organization", methods={"GET"}, name="get_all")
+     * @IsGranted("ROLE_CMS_USER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -103,6 +103,7 @@ class ConferenceOrganizationController extends ApiController
 
     /**
      * @Route("conference_organization/new", methods={"POST"}, name="new")
+     * @IsGranted("ROLE_SETTLEMENT_MANAGER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      */
@@ -154,6 +155,7 @@ class ConferenceOrganizationController extends ApiController
 
     /**
      * @Route("conference_organization/{id}", requirements={"id":"\d+"}, methods={"PUT"}, name="update")
+     * @IsGranted("ROLE_SETTLEMENT_MANAGER")
      *
      * @param $id
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -199,6 +201,7 @@ class ConferenceOrganizationController extends ApiController
 
     /**
      * @Route("conference_organization/{id}", requirements={"id":"\d+"}, methods={"DELETE"}, name="delete")
+     * @IsGranted("ROLE_SETTLEMENT_MANAGER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param $id
@@ -228,10 +231,14 @@ class ConferenceOrganizationController extends ApiController
 
     /**
      * @Route("conference_organization/invite", methods={"POST"}, name="invite")
+     * @IsGranted("ROLE_SALES_MANAGER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param Mailer $mailer
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @throws \Exception
      */
-    public function invite()
+    public function invite(Mailer $mailer)
     {
         $year = date('Y');
 
@@ -240,8 +247,12 @@ class ConferenceOrganizationController extends ApiController
         $name = $this->requestData['name'] ?? null;
         $inn = $this->requestData['inn'] ?? null;
         $kpp = $this->requestData['kpp'] ?? null;
+        $mngr_first_name = $this->requestData['mngr_first_name'] ?? null;
+        $mngr_last_name = $this->requestData['mngr_last_name'] ?? null;
+        $mngr_phone = $this->requestData['mngr_phone'] ?? null;
+        $mngr_email = $this->requestData['mngr_email'] ?? null;
 
-        if (!$fio || !$email || !$name || !$inn) {
+        if (!$fio || !$email || !$name || !$inn || !$mngr_first_name || !$mngr_last_name || !$mngr_phone || !$mngr_email) {
             return $this->badRequest('Не переданы обязательные параметры.');
         }
 
@@ -277,6 +288,15 @@ class ConferenceOrganizationController extends ApiController
             $organization->setName($name);
         }
 
+        $inviteHash = sha1(random_bytes(10));
+        $inviteData = [
+            'mngr_first_name'   => $mngr_first_name,
+            'mngr_last_name'    => $mngr_last_name,
+            'mngr_phone'        => $mngr_phone,
+            'mngr_email'        => $mngr_email,
+            'fio'               => $fio,
+        ];
+
         $organization->setEmail($email);
         $this->em->persist($organization);
 
@@ -284,16 +304,22 @@ class ConferenceOrganizationController extends ApiController
         $conferenceOrganization->setConference($conference);
         $conferenceOrganization->setOrganization($organization);
         $conferenceOrganization->setInvitedBy($this->getUser());
-        $conferenceOrganization->setInviteHash(sha1(random_bytes(10)));
-
+        $conferenceOrganization->setInviteHash($inviteHash);
+        $conferenceOrganization->setInviteData($inviteData);
         $this->em->persist($conferenceOrganization);
         $this->em->flush();
+
+        $data = $inviteData;
+        $data['hash'] = $inviteHash;
+        $data['org_name'] = $name;
+        $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, ['e.nachuychenko@nag.ru', 'cros@nag.ru']);
 
         return $this->success();
     }
 
     /**
      * @Route("conference_organization/re_invite/{id}", requirements={"id":"\d+"}, methods={"GET"}, name="re_invite")
+     * @IsGranted("ROLE_SALES_MANAGER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param $id
@@ -317,11 +343,13 @@ class ConferenceOrganizationController extends ApiController
             return $this->badRequest('У организации не указан email.');
         }
 
-        $data = [
-            'title' => 'CROS2019',
-            'body'  => 'bodybody'
-        ];
-        $res = $mailer->send('TEST', $data, 'e.nachuychenko@nag.ru');
+        $data = $conferenceOrganization->getInviteData();
+        if (!$data) {
+            return $this->badRequest('Параметры для приглашения не заполнены.');
+        }
+        $data['hash'] = $conferenceOrganization->getInviteHash();
+        $data['org_name'] = $organization->getName();
+        $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, ['e.nachuychenko@nag.ru', 'cros@nag.ru']);
 
         return $this->success();
     }
