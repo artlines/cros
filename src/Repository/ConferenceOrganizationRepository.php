@@ -60,4 +60,24 @@ class ConferenceOrganizationRepository extends EntityRepository
 
         return $result;
     }
+
+
+    public function findByInnKppIsFinish($inn, $kpp, $conference_id)
+    {
+        return $this
+            ->createQueryBuilder('co')
+            ->leftJoin(Organization::class, 'o',"WITH",'co.organization=o.id')
+            ->where('o.inn = :inn')
+            ->andWhere('o.kpp = :kpp')
+            ->andWhere('co.finish = true')
+            ->andWhere('co.conference = :conference_id')
+            ->setParameters([
+                'inn' => $inn,
+                'kpp' => $kpp,
+                'conference_id' => $conference_id,
+            ])
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

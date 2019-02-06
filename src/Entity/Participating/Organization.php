@@ -7,6 +7,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * Organization
  *
@@ -187,6 +191,22 @@ class Organization
     public function setLogo(?string $logo)
     {
         $this->logo = $logo;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getNewLogo(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * @param mixed
+     */
+    public function setNewLogo( $logo)
+    {
+        return $this;
     }
 
     /**
@@ -484,5 +504,10 @@ class Organization
     public function getTypePerson()
     {
         return $this->typePerson;
+    }
+    public function __toString()
+    {
+        // TODO: Implement __toString() method.
+        return "".$this->getName();
     }
 }

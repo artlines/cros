@@ -168,6 +168,16 @@ class User implements UserInterface
     }
 
     /**
+     * @param int $id
+     * @return User
+     */
+    public function setId(int $id): User
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
      * Set firstName
      *
      * @param string $firstName
@@ -529,24 +539,39 @@ class User implements UserInterface
         $this->representative = $representative;
     }
 
-    /**
-     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
-     * @return null|string
-     */
+    public function __toString()
+    {
+        // TODO: Implement __toString() method.
+        return "user_show::".$this->getId();
+    }
+
     public function getPhoto(): ?string
     {
         return $this->photo;
     }
 
-    /**
-     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
-     * @param null|string $photo
-     * @return User
-     */
     public function setPhoto(?string $photo): self
     {
         $this->photo = $photo;
 
         return $this;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getNewPhoto(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * @param mixed
+     * @return self
+     */
+    public function setNewPhoto( $Photo)
+    {
+        return $this;
+    }
+
 }

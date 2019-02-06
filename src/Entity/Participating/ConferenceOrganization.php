@@ -4,8 +4,12 @@ namespace App\Entity\Participating;
 
 use App\Entity\Conference;
 use App\Entity\Participating\Organization;
+use App\Validator\InnKpp;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class ConferenceOrganization
@@ -28,7 +32,7 @@ class ConferenceOrganization
     /**
      * @var Organization
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Participating\Organization")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Participating\Organization",cascade={"persist"})
      * @ORM\JoinColumn(name="organization_id", referencedColumnName="id", nullable=false)
      */
     private $organization;
@@ -93,7 +97,7 @@ class ConferenceOrganization
     /**
      * @var ArrayCollection|ConferenceMember[]
      *
-     * @ORM\OneToMany(targetEntity="ConferenceMember", mappedBy="conferenceOrganization")
+     * @ORM\OneToMany(targetEntity="ConferenceMember", mappedBy="conferenceOrganization",cascade={"persist"})
      */
     private $conferenceMembers;
 
@@ -302,6 +306,7 @@ class ConferenceOrganization
     {
         if (!$this->conferenceMembers->contains($conferenceMember)) {
             $this->conferenceMembers->add($conferenceMember);
+            $conferenceMember->setConferenceOrganization($this);
         }
     }
 
@@ -312,6 +317,7 @@ class ConferenceOrganization
     public function removeConferenceMember(ConferenceMember $conferenceMember)
     {
         $this->conferenceMembers->removeElement($conferenceMember);
+        $conferenceMember->setConferenceOrganization($this);
     }
 
     /**
@@ -362,6 +368,42 @@ class ConferenceOrganization
         $this->invitedBy = $invitedBy;
     }
 
+    public function __toString(){
+	return 'ConferenceOrganization::'.$this->getId();
+    }
+
+    /**
+     * @Assert\Callback
+     * По совокупности ИНН/КПП проводить валидацию - вдруг такая организация уже зарегистрирована.
+     * Уведомлять пользователя о дубле и наименовании зарегистрированной организации.
+     * Валидацию проводить только по организациям, завершившим регистрацию
+     * (participating.conference_organization.is_finish по conference_id за текущий год).
+     */
+
+    public function validate_inn_registered(ExecutionContextInterface $context, $payload)
+    {
+        return;
+        /** @var ConferenceOrganization $ConferenceOrganization */
+        $ConferenceOrganization =  $context->getValue();
+        $inn = $ConferenceOrganization->getOrganization()->getInn();
+        $kpp = $ConferenceOrganization->getOrganization()->getKpp();
+
+        $context->buildViolation('validate_inn_registered :!'.$ConferenceOrganization->getOrganization()->getInn())
+            ->atPath('organization.inn')
+            ->addViolation();
+        $context->buildViolation('validate_inn_registered :!'.$ConferenceOrganization->getOrganization()->getInn())
+            ->atPath('organization.kpp')
+            ->addViolation();
+    }
+
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+//        $metadata->addConstraint(new Assert\Callback('validate'));
+//        $metadata->addPropertyConstraint('comments', new InnKpp());
+        $metadata->addConstraint( new InnKpp());
+
+    }
+
     /**
      * @return array|null
      */
@@ -377,4 +419,5 @@ class ConferenceOrganization
     {
         $this->inviteData = $inviteData;
     }
+
 }

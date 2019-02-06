@@ -25,7 +25,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class RegistrationController extends AbstractController
 {
     /**
-     * @Route("/registration", name="registration")
+     * @Route("/old/registration", name="registration")
      * @param Request $request
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
@@ -235,8 +235,8 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @Route("/registration2/{id}", name="registration-2")
-     * @Route("/registration2")
+     * @Route("/old/registration2/{id}", name="registration-2")
+     * @Route("/old/registration2")
      *
      * @param integer|null $id
      * @param Request $request
@@ -650,7 +650,7 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @Route("/registration3", name="registration-3")
+     * @Route("/old/registration3", name="registration-3")
      *
      * @return object
      */
@@ -676,7 +676,7 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @Route("/registration_finish", name="registration-finish")
+     * @Route("/old/registration_finish", name="registration-finish")
      */
     public function sendEmailsAndFinish(){
 

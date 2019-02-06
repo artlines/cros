@@ -1,0 +1,481 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Hello !{% endblock %}
+
+{% block body %}
+<style>
+    .debug:before{
+        content: "begin debug"
+    }
+.debug {
+    background-color: rgba(120, 210, 94, 0.47);
+    display: none;
+}
+.noedit{
+    display: none;
+
+}
+
+</style>
+
+<div class="roomTypes debug" style="display: none">
+    <input type="hidden" class="conf_id" value="{{ Conference.id }}"/>
+    <input type="hidden" class="ConferenceOrganization" value="{{ ConferenceOrganization|default('') }}"/>
+
+    <div id="roomType_">
+        Класс участия не выбран
+    </div>
+{% for item in RoomTypes  %}
+    {% set roomType=item[0] %}
+    {% set used=item[1] %}
+    {% if roomType.maxPlaces-used > 0  %}
+<div id="roomType_{{ roomType.id }}">
+    Класс участия: <b>{{ roomType.title }}</b><br />
+    Стоимость:  <b>{{ roomType.cost|number_format }}</b> ₽<br />
+    Количество свободных мест: <b>{{ roomType.maxPlaces-used }}</b><br />
+    <h4>Описание:</h4>
+    {{ roomType.description|raw }}
+    {% endif %}
+</div>
+{% endfor %}
+<select id="select-proto">
+    {% for item in RoomTypes  %}
+        {% set roomType=item[0] %}
+        {% set used=item[1] %}
+       {% if roomType.maxPlaces-used > 0  %}
+    <option value="{{ roomType.id }}">{{ roomType.title }} Мест: {{ roomType.maxPlaces-used }} Стоимость: {{ roomType.cost|number_format }} ₽</option>
+        {% endif %}
+    {% endfor %}
+</select>
+</div>
+
+    {#{{ dump(form) }}#}
+{{ form_start(form) }}
+    <div class="row debug">
+        <div class="col-md-12">{{- form_row(form.conference) -}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">{{- form_row(form.organization.name) -}}</div>
+        <div class="col-md-3">{{- form_row(form.organization.city) -}}</div>
+        <div class="col-md-3">{{- form_row(form.organization.newlogo) -}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">{{- form_row(form.organization.address) -}}</div>
+        <div class="col-md-3">{{- form_row(form.organization.inn) -}}</div>
+        <div class="col-md-3">{{- form_row(form.organization.kpp) -}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">{{- form_row(form.organization.requisites) -}}</div>
+        <div class="col-md-6">{{- form_row(form.notes,{'attr':{'rows':8}}) -}}</div>
+    </div>
+
+    {#{{ dump(form.organization.users) }}#}
+{% set formConferenceMembers=form.ConferenceMembers.vars.prototype %}
+{% set form2=formConferenceMembers.user %}
+{% set member_prototype %}
+<div class="conference-member"
+     style="padding-left: 10px; border-left: solid 5px #87d37b; margin:20px 0 20px"
+     >
+    <div class="row">
+        <div class="col-md-3">{{- form_row(form2.lastName) -}}</div>
+        <div class="col-md-3">{{- form_row(form2.firstName) -}}</div>
+        <div class="col-md-3">{{- form_row(form2.middleName) -}}</div>
+        <div class="col-md-3">{{- form_row(form2.sex) -}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">{{- form_row(form2.phone) -}}</div>
+        <div class="col-md-3">{{- form_row(form2.email) -}}</div>
+        <div class="col-md-3">{{- form_row(form2.post) -}}</div>
+        <div class="col-md-3" style="padding-top: 37px">{{- form_row(form2.representative) -}}</div>
+    </div>
+    <div class="row">
+        {% set start %}{{ Conference.eventStart|date("Y-m-d") }} 12:00{% endset %}
+        {% set end %}{{ Conference.eventFinish|date("Y-m-d") }} 12:00{% endset %}
+        <div class="col-md-3">{{- form_row(formConferenceMembers.arrival,{'value':start}) -}}</div>
+        <div class="col-md-3">{{- form_row(formConferenceMembers.leaving,{'value':end }) -}}</div>
+        <div class="col-md-3">{{- form_row(formConferenceMembers.carNumber) -}}</div>
+        <div class="col-md-3">{{- form_row(form2.newphoto) -}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">{{- form_row(formConferenceMembers.RoomType) -}}</div>
+        <div class="col-md-3">{{- form_row(formConferenceMembers.neighbourhood) -}}</div>
+        <div class="col-md-3">
+            <button
+                    style="margin-top: 30px; margin-left:30px"
+                    type="button"
+                    class="btn btn-danger remove-collection-widget cs-font-size-13 cs-px-10 cs-py-10 mb-0"
+            ><i class="fa fa-trash"></i> Удалить
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Информация о классе участия:</h3>
+            <div class="roomTypeInfo"></div>
+        </div>
+    </div>
+</div>
+{% endset %}
+
+<textarea cols="100" rows="8" class="debug">
+id     name    inn kpp
+25	Курьер Флюс	4502013089	450201001 [finish]
+13	НАГ	123	477
+18	Локал s	4401161027	440101001 [finish]
+
+</textarea>
+
+{#{% set form_trash %}#}
+    {#<h3>{{- form_row(form.organization.users) -}}</h3>#}
+{#{% endset %}#}
+    <div id="members-fields-list"
+         data-prototype="{{ member_prototype|e }}"
+         data-LimitUsersByOrg="{{ LimitUsersByOrg }}"
+         data-start="{{ Conference.eventStart|date("Y-m-d") }}"
+         data-end="{{ Conference.eventFinish|date("Y-m-d") }}"
+         data-widget-counter="{{ form.ConferenceMembers|length }}"
+         >
+
+{% set hide = 1 %}
+{% for item in form.ConferenceMembers %}
+{% set hide = 0 %}
+<div class="conference-member"
+    style="padding-left: 10px; border-left: solid 5px #87d37b; margin:20px 0 20px"
+    data-num="{{ loop.index0 }}"
+>
+    <div class="row">
+        <div class="col-md-3">{{- form_row(item.user.lastName) -}}</div>
+        <div class="col-md-3">{{- form_row(item.user.firstName) -}}</div>
+        <div class="col-md-3">{{- form_row(item.user.middleName) -}}</div>
+        <div class="col-md-3">{{- form_row(item.user.sex) -}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">{{- form_row(item.user.phone) -}}</div>
+        <div class="col-md-3">{{- form_row(item.user.email) -}}</div>
+        <div class="col-md-3">{{- form_row(item.user.post) -}}</div>
+        <div class="col-md-3" style="padding-top: 37px">{{- form_row(item.user.representative) -}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">{{- form_row(item.arrival) -}}</div>
+        <div class="col-md-3">{{- form_row(item.leaving) -}}</div>
+        <div class="col-md-3">{{- form_row(item.carNumber) -}}</div>
+        <div class="col-md-3">{{- form_row(item.user.newphoto) -}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">{{- form_row(item.RoomType) -}}</div>
+        <div class="col-md-3">{{- form_row(item.neighbourhood) -}}</div>
+        <div class="col-md-3">
+            <button
+                    style="margin-top: 30px; margin-left:30px"
+                    type="button"
+                    class="btn btn-danger remove-collection-widget cs-font-size-13 cs-px-10 cs-py-10 mb-0"
+            ><i class="fa fa-trash"></i> Удалить
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Информация о классе участия:</h3>
+            <div class="roomTypeInfo"></div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+</div>
+
+    {{ form_row(form._token) }}
+
+    {#<div class="row">#}
+        {#<div style="width: 100%; text-align: right;">#}
+            {#{{ form_row(form.save) }}#}
+        {#</div>#}
+    {#</div>#}
+    <!-- Modal -->
+    <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Подтвердите действие</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Удалить участника?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="confirm-modal-btn-no" class="btn btn-secondary">Нет</button>
+                    <button type="button" id="confirm-modal-btn-yes" class="btn btn-primary">Да, подтверждаю</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="representative-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Подтвердите действие</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>На указанную почту пользователя выслан код подтверждения почты.</p>
+                    <p>Введите код из письма</p>
+                    {#( da981233 )#}
+                    <div style="text-align: center">
+                    <input id="validation-code"
+                       style="font-size:30px; text-align: center; width:50%"
+                    />
+                        <p style="display: none" class="btn-danger" id="validation-code-error">Введен не верный код</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Нет</button>
+                    <button type="button" class="btn btn-primary">Да, подтверждаю</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {# store the prototype on the data-prototype attribute #}
+    <div class="modal fade" id="confirm-reg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Подтверждение завершения регистрации</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <p>После завершения регистрации внесение изменений будет возможно только через администрацию КРОС</p>
+                    <p>Вы действительно хотите завершить регистрацию?</p>
+                    <p class="debug-url"></p>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-default cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15 btn" data-dismiss="modal">
+                            Отмена
+                        </button>
+                    </div>
+                    {{ form_row(form.save) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="required-reg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Внимание!</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <p>Заполните все обязательные поля формы</p>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-danger cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15 btn" data-dismiss="modal">
+                            OK
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="representative-email" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Внимание!</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <p>Не указано, или указана не верно почта ответственного</p>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-danger cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15 btn" data-dismiss="modal">
+                            OK
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="limit-reg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Внимание!</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <p>Вы не можете добавить больше участников</p>
+                    <p>Если Вам необходимо больше участников, свяжитесь с администрацией КРОС</p>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-danger cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15 btn" data-dismiss="modal">
+                            OK
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="no-users-reg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Внимание!</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <p>Нужно добавить информацию, хотя бы об одном участнике</p>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-danger cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15 btn" data-dismiss="modal">
+                            OK
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="no-representative" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Внимание</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <p>Не указан представитель организации</p>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-danger cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15 btn" data-dismiss="modal">
+                            OK
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    {#<a href="#" data-href="/delete.php?id=23" data-toggle="modal" data-target="#confirm-delete">Delete record #23</a><br>#}
+
+
+    {#<button data-toggle="modal" data-target="#confirm-delete" type="submit" id="conference_organization_form_save" name="conference_organization_form[save]" class="reg-save u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15 btn">#}
+        {#Завершить регистрацию#}
+    {#</button>#}
+
+    <script>
+        // $('#confirm-delete').on('show.bs.modal', function(e) {
+        //     $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+        //     $('.debug-url').html('Delete URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
+        // });
+    </script>
+{% set form_trash %}
+    {{ form_row(form.ConferenceMembers) }}
+    {#<h3>{{- form_row(form.organization.users) -}}</h3>#}
+{% endset %}
+    {# ... #}
+    {{ form_end(form) }}
+    <button
+            type="button"
+            class="add-another-collection-widget btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15"
+            data-list="#members-fields-list"
+    >
+        Добавить участников</button>
+
+    {#<span id="end-red" style="{% if hide %}display: none{%  endif %}">#}
+        {#<button class="btn u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15 btn" data-toggle="modal" data-target="#confirm-reg">#}
+            {#Завершить регистрацию#}
+        {#</button>#}
+    {#</span>#}
+
+    <span class="validateRequired">
+        <button class="btn u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15 btn">
+            Завершить регистрацию
+        </button>
+    </span>
+
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url(/assets/fonts/glyphicons-halflings-regular.eot);
+    src: url(/assets/fonts/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype'), url(/assets/fonts/glyphicons-halflings-regular.woff) format('woff'), url(/assets/fonts/glyphicons-halflings-regular.ttf) format('truetype'), url(/assets/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg')
+}
+.glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.glyphicon-chevron-up:before {
+    content: "\e113"
+}
+
+.glyphicon-chevron-down:before {
+    content: "\e114"
+}
+.glyphicon-chevron-left:before {
+    content: "\e079";
+}
+.glyphicon-chevron-right:before {
+    content: "\e080";
+}
+</style>
+<link href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+{% endblock %}
+
+{% block javascripts %}
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script defer src="https://unpkg.com/imask"></script>
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+    <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+{% endblock %}

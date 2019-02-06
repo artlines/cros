@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @package App\Entity\Abode
  *
  * @ORM\Table(schema="abode", name="room_type")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\Abode\RoomTypeRepository")
  */
 class RoomType
 {
@@ -92,22 +92,6 @@ class RoomType
     }
 
     /**
-     * @return string|null
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string|null $description
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-    }
-
-    /**
      * @return int
      */
     public function getMaxPlaces()
@@ -169,5 +153,21 @@ class RoomType
     public function setRooms($rooms)
     {
         $this->rooms = $rooms;
+    }
+    public function __toString()
+    {
+        return $this->getTitle();
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $Description): self
+    {
+        $this->description = $Description;
+
+        return $this;
     }
 }

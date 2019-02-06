@@ -166,6 +166,112 @@
                 <source>Photo</source>
                 <target>Фото</target>
             </trans-unit>
+
+            <trans-unit id="42">
+                <source>Organization.Name.Label</source>
+                <target>Наименование организации</target>
+            </trans-unit>
+            <trans-unit id="43">
+                <source>Organization.Name.PlaceHolder</source>
+                <target>Наименование организации</target>
+            </trans-unit>
+            <trans-unit id="44">
+                <source>Organization.Name.Help</source>
+                <target>Ваш основной Торговый знак, будет использоваться на бейджах и визитках</target>
+            </trans-unit>
+            <trans-unit id="45">
+                <source>Organization.City.Label</source>
+                <target>Город</target>
+            </trans-unit>
+            <trans-unit id="46">
+                <source>Organization.City.PlaceHolder</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit id="47">
+                <source>Organization.City.Help</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit id="48">
+                <source>Organization.Address.Label</source>
+                <target>Адрес</target>
+            </trans-unit>
+            <trans-unit id="49">
+                <source>Organization.Address.PlaceHolder</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit id="50">
+                <source>Organization.Address.Help</source>
+                <target></target>
+            </trans-unit>
+
+            <trans-unit id="51">
+                <source>Organization.Inn.Label</source>
+                <target>ИНН</target>
+            </trans-unit>
+            <trans-unit id="52">
+                <source>Organization.Inn.PlaceHolder</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit id="53">
+                <source>Organization.Inn.Help</source>
+                <target></target>
+            </trans-unit>
+
+            <trans-unit id="54">
+                <source>Organization.Kpp.Label</source>
+                <target>КПП</target>
+            </trans-unit>
+            <trans-unit id="55">
+                <source>Organization.Kpp.PlaceHolder</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit id="56">
+                <source>Organization.Kpp.Help</source>
+                <target></target>
+            </trans-unit>
+
+            <trans-unit id="57">
+                <source>Organization.Requisites.Label</source>
+                <target>Реквизиты</target>
+            </trans-unit>
+            <trans-unit id="58">
+                <source>Organization.Requisites.PlaceHolder</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit id="59">
+                <source>Organization.Requisites.Help</source>
+                <target></target>
+            </trans-unit>
+
+            <trans-unit id="63">
+                <source>Organization.Member.Label</source>
+                <target>Участники</target>
+            </trans-unit>
+            <trans-unit id="64">
+                <source>Organization.Member.PlaceHolder</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit id="65">
+                <source>Organization.Member.Help</source>
+                <target></target>
+            </trans-unit>
+
+            <trans-unit id="66">
+                <source>Organization.Logo.Label</source>
+                <target>Логотип компании</target>
+            </trans-unit>
+            <trans-unit id="67">
+                <source>Organization.Logo.PlaceHolder</source>
+                <target></target>
+            </trans-unit>
+            <trans-unit id="68">
+                <source>Organization.Logo.Help</source>
+                <target></target>
+            </trans-unit>
+
+
+
+
         </body>
     </file>
 </xliff>

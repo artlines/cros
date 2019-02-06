@@ -81,4 +81,10 @@ class ParticipationClass
     {
         $this->roomTypes = $roomTypes;
     }
+
+    public function __toString()
+    {
+        // TODO: Implement __toString() method.
+        return $this->getTitle();
+    }
 }

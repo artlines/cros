@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Конференция Российских Операторов Связи{% endblock %}
+
+{% block header_title %}Регистрация{% endblock %}
+
+{% block body %}
+
+    <p><strong>Спасибо!</strong> Ваша заявка принята.</p>
+{% if ended is defined %}
+    <p> По указанной ссылке заявка была уже ранее принята.</p>
+{% else %}
+    <p> На указанный Вами e-mail отправлены учетные данные для авторизации в Личном кабинете.</p>
+{% endif %}
+
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+

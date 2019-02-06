@@ -265,5 +265,9 @@ class Conference
         return $this->limitUsersByOrg;
     }
 
+    public function __toString()
+    {
+        return 'Крос '.$this->getYear();
+    }
 
 }

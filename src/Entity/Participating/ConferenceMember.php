@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @package App\Entity\Participating
  *
  * @ORM\Table(schema="participating", name="conference_member")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\ConferenceMemberRepository")
  */
 class ConferenceMember
 {
@@ -29,7 +29,7 @@ class ConferenceMember
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Participating\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Participating\User",cascade={"persist"})
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false)
      */
     private $user;
@@ -37,7 +37,7 @@ class ConferenceMember
     /**
      * @var Conference
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Conference")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Conference",cascade={"persist"})
      * @ORM\JoinColumn(name="conference_id", referencedColumnName="id", nullable=false)
      */
     private $conference;
@@ -94,9 +94,9 @@ class ConferenceMember
     private $roomType;
 
     /**
-     * @var ConferenceMember|null
+     * @var mixed
      *
-     * @ORM\ManyToOne(targetEntity="ConferenceMember")
+     * @ORM\ManyToOne(targetEntity="ConferenceMember",cascade={"persist"})
      * @ORM\JoinColumn(name="neighbourhood_id", referencedColumnName="id", nullable=true)
      */
     private $neighbourhood;
@@ -262,9 +262,9 @@ class ConferenceMember
     }
 
     /**
-     * @param ConferenceMember|null $neighbourhood
+     * @param mixed $neighbourhood
      */
-    public function setNeighbourhood(?ConferenceMember $neighbourhood)
+    public function setNeighbourhood( $neighbourhood)
     {
         $this->neighbourhood = $neighbourhood;
     }
