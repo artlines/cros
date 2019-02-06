@@ -253,6 +253,7 @@ class ConferenceRegistrationController extends AbstractController
                     $conferenceMember->setUser($oldUser);
                     $user = $oldUser;
                 }
+                $user->setPhone(preg_replace('/[\D]/', '',$user->getPhone()));
                 $password = $this->getRandomPassword();
                 $user->setPassword(
                     $passwordEncoder->encodePassword( $user, $password)
