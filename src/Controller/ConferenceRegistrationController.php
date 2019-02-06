@@ -308,8 +308,6 @@ class ConferenceRegistrationController extends AbstractController
                 $organization->setLogo($fileName);
             }
 
-// TODO: enable finish
-
             $ConferenceOrganization->setFinish(true);
             $em->flush();
 
