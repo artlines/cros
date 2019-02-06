@@ -228,6 +228,8 @@ class ConferenceRegistrationController extends AbstractController
 //        $mailer->setClientAlias('cros.send.registration');
         $hash = $request->get('hash');
         //$ConferenceOrganization = new ConferenceOrganization();
+
+
         if( $hash ) {
             $ConferenceOrganization = $this->getDoctrine()
                 ->getRepository(ConferenceOrganization::class)
@@ -244,27 +246,49 @@ class ConferenceRegistrationController extends AbstractController
                     'ended' => 1,
                 ]);
             }
+            $Conference = $ConferenceOrganization->getConference();
         } else {
 
-            $conf = $this->getDoctrine()->getRepository(Conference::class)
+            $Conference = $this->getDoctrine()->getRepository(Conference::class)
                 ->findOneBy(['year' => date("Y")]);
 
             // Получаем разрешенные даты регистрации
-            $reg_start = $conf->getRegistrationStart();
-            $reg_finish = $conf->getRegistrationFinish();
+            $reg_start = $Conference->getRegistrationStart();
+            $reg_finish = $Conference->getRegistrationFinish();
 
             $now = date('Y-m-d H:i:s');
-
-            // Проверяем, открыта ли регистрация или пользователь регистрируется по ссылке менеджера
-            if (($reg_start->format('Y-m-d H:i:s') <= $now || $reg_finish->format('Y-m-d H:i:s') >= $now)) {
+            // Закрыта
+            if (!($reg_start->format('Y-m-d H:i:s') <= $now && $reg_finish->format('Y-m-d H:i:s') >= $now)) {
 
                 return $this->render('conference_registration/registration_closed.html.twig',
-                    ['conf'=>$conf]
+                    ['conf'=>$Conference]
                 );
             }
             $form = $this->createForm(
                 ConferenceOrganizationFormType::class);
         }
+
+        /** @var Conference $Conference */
+
+        $roomTypes = $this->getDoctrine()
+            ->getRepository(RoomType::class)
+            ->findAllFreeForConference($Conference->getId());
+        $TotalFree = 0;
+        $TotalUsed = 0;
+        foreach ($roomTypes as list($RoomType, $used)){
+            /** @var RoomType $RoomType */
+            $TotalFree += max(0, $RoomType->getMaxPlaces()-$used);
+            $TotalUsed += $used;
+        }
+
+        if($TotalFree<1 or $TotalUsed>=$Conference->getLimitUsersGlobal() ){
+            return $this->render(
+                'conference_registration/completed.html.twig',
+                []
+            );
+        }
+
+
 //        $arUsers = [];
 //        foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
 //            $arUsers[] = [
@@ -316,10 +340,6 @@ class ConferenceRegistrationController extends AbstractController
 //        $request->request->set('conference_organization_form', $data);
 ////            neighbourhood
         $form->handleRequest($request);
-        $Conference = $this->getDoctrine()
-            ->getRepository(Conference::class)
-            ->findOneBy(['year' => date("Y")]);
-        /** @var Conference $Conference */
         /** @var ConferenceOrganization $ConferenceOrganization */
 //        $ConferenceOrganization = $form->getData();
 //        dump($ConferenceOrganization);
@@ -571,24 +591,7 @@ class ConferenceRegistrationController extends AbstractController
             ]);
 
         }
-        $roomTypes = $em
-            ->getRepository(RoomType::class)
-            ->findAllFreeForConference($Conference->getId());
-//dd($roomTypes);
-        $TotalFree = 0;
-        $TotalUsed = 0;
-        foreach ($roomTypes as list($RoomType, $used)){
-            /** @var RoomType $RoomType */
-            $TotalFree += max(0, $RoomType->getMaxPlaces()-$used);
-            $TotalUsed += $used;
-        }
 
-        if($TotalFree<1 or $TotalUsed>=$Conference->getLimitUsersGlobal() ){
-            return $this->render(
-                'conference_registration/completed.html.twig',
-                []
-            );
-        }
         return $this->render('conference_registration/index.html.twig', [
 //            'controller_name' => 'ConferenceRegistrationController',
             'form' => $form->createView(),
