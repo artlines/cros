@@ -1322,8 +1322,12 @@ hr {
   padding-top: .25rem;
   padding-bottom: .25rem;
 }
-.u-header__logo-img {
-  width: 70%;
+.u-header__logo-img--original {
+  width: 128px;
+  margin: 10px;
+}
+.u-footer__logo-img {
+  width: 180px;
 }
 .navbar > .container {
   justify-content: normal;
