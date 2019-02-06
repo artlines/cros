@@ -251,11 +251,9 @@ hr {
 
 .dark-theme .nav-item .nav-link:hover, .dark-theme .nav-item.active .nav-link {
   color: #5c97bf !important;
-  ;
 }  
   
 /* ----- GLOBAL BUTTON ----- */
-}
 
 .btn {
   position: relative;
