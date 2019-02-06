@@ -48,7 +48,7 @@ class OrganizationFormType extends AbstractType
                         'class' => 'noedit cs-theme-color-gray-dark-v3',
                         'placeholder' => 'Organization.Name.PlaceHolder',
                     ),
-                    'disabled' => true,
+//                    'disabled' => true,
                     'help' => 'Organization.Name.Help',
                     'required' => true,
                     'constraints' => [
@@ -106,7 +106,7 @@ class OrganizationFormType extends AbstractType
                         'class' => 'noedit inn cs-theme-color-gray-dark-v3',
                         'placeholder' => 'Organization.Inn.PlaceHolder',
                     ),
-                    'disabled' => true,
+//                    'disabled' => true,
                     'help' => 'Organization.Inn.Help',
                     'required' => true,
                 )
@@ -120,7 +120,7 @@ class OrganizationFormType extends AbstractType
                         'class' => 'noedit kpp cs-theme-color-gray-dark-v3',
                         'placeholder' => 'Organization.Kpp.PlaceHolder',
                     ),
-                    'disabled' => true,
+//                    'disabled' => true,
                     'help' => 'Organization.Kpp.Help',
                     'required' => true,
                 )

@@ -53,6 +53,7 @@ class InnKppValidator extends ConstraintValidator
                     ->addViolation();
             }
             foreach ( $value->getConferenceMembers() as $key => $conferenceMember ){
+                if($conferenceMember->getId()>0) continue;
                 $email = $conferenceMember->getUser()->getEmail();
                 $repository = $em->getRepository(ConferenceMember::class);
                 /** @var ConferenceOrganization $value */

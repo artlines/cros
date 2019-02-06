@@ -382,6 +382,7 @@ const representative = function (e) {
             modalValidate(function(e){
                 // jQuery(t).parents('.representative-member').remove();
                 jQuery(t).prop('checked', true);
+                jQuery(t).parents('.conference-member').find('.email').attr('disabled',true);
                 jQuery("#representative-modal").modal('hide');
                 jQuery('input:checkbox.representative').not(t).prop('checked', false);
             });
@@ -479,12 +480,24 @@ jQuery(document).ready(function () {
     });
 
     if (!jQuery('.ConferenceOrganization').val()) {
-        jQuery('.noedit').attr('disabled',false);
+//        jQuery('.noedit').attr('disabled',false);
+        jQuery('.noedit').removeClass('noedit');
     } else {
         jQuery('.noedit').filter(function () {
+            jQuery(this)
+                .removeClass('noedit')
+                .attr('disabled',true);
             return !this.value;
         }).attr('disabled',false);
     }
+    jQuery('input:disabled').each(function(e){
+        var el = jQuery('<input type="hidden" name="" value="" />');
+        el.attr('name', jQuery(this).attr('name'));
+        el.attr('value', jQuery(this).attr('value'));
+        el.appendTo( jQuery(this).parent() );
+        console.log(jQuery(this).val());
+    });
+
 
     jQuery('input[type="file"]').on( 'change', function(e){
         var fileName = e.target.files[0]. name;
