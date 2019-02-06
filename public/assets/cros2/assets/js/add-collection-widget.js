@@ -382,7 +382,7 @@ const representative = function (e) {
             modalValidate(function(e){
                 // jQuery(t).parents('.representative-member').remove();
                 jQuery(t).prop('checked', true);
-                jQuery(t).parents('.conference-member').find('.email').attr('disabled',true);
+//                jQuery(t).parents('.conference-member').find('.email').attr('readonly',true);
                 jQuery("#representative-modal").modal('hide');
                 jQuery('input:checkbox.representative').not(t).prop('checked', false);
             });
