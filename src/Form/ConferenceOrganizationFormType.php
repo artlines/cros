@@ -86,7 +86,7 @@ class ConferenceOrganizationFormType extends AbstractType
 //                    'help' => 'Дополнительная информация',
                     'query_builder' => function (ConferenceRepository $conferenceRepository) {
                         return $conferenceRepository->createQueryBuilder('c')
-                            ->andWhere('c.year <= :year')
+                            ->andWhere('c.year = :year')
                             ->setParameters([
                                 'year' => date("Y"),
                             ]);
