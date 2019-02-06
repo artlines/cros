@@ -30,7 +30,7 @@ class ConferenceOrganizationFormType extends AbstractType
                     'label' => 'Комментарий',
                     'attr' => array(
                         'class' => 'cs-theme-color-gray-dark-v3',
-                        'placeholder' => 'Ваш коментарий...',
+                        'placeholder' => 'Ваш комментарий...',
                         'rows' => '4',
                     ),
                     'help' => 'Дополнительная информация',
