@@ -22,10 +22,6 @@ class ConferenceMemberFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-//            ->add('user')
-//            ->add('conference')
-//   !!!            ->add('conferenceOrganization')
-//            ->add('roomType')
             ->add(
                 'carNumber',
                 TextType::class,
@@ -85,20 +81,10 @@ class ConferenceMemberFormType extends AbstractType
                         'class' => 'cs-theme-color-gray-dark-v3 select-roomtype',
                     ],
                     'required' => true,
-//                    'choice_label' => function (RoomType $entity = null) {
-//                        return $entity->getTitle();
-//                    },
-//                    'query_builder' => function (RoomTypeRepository $conferenceRepository) {
-//                        return $conferenceRepository->findAllFreeForConferenceQueryBuilder(372)
-//                        // createQueryBuilder('c')
-////                            ->andWhere('c.registrationStart <= :registrationStart')
-////                            ->andWhere('c.registrationFinish >= :registrationFinish')
-////                            ->setParameters([
-////                                'registrationStart' => new \DateTime(),
-////                                'registrationFinish' => new \DateTime()
-////                            ])
-//                            ;
-//                    },
+                    'query_builder' => function (RoomTypeRepository $roomTypeRepository) {
+                        return $roomTypeRepository->createQueryBuilder('rt')
+                            ->orderBy('rt.title');
+                    }
                 ]
             )
 
