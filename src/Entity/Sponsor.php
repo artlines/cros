@@ -16,7 +16,7 @@ class Sponsor
     const TYPE__GOLD    = 2;
 
     protected static $mapTypeTitle = [
-        self::TYPE__SILVER  => 'Серебрянный',
+        self::TYPE__SILVER  => 'Серебряный',
         self::TYPE__GOLD    => 'Золотой',
     ];
 
