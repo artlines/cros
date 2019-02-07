@@ -352,17 +352,10 @@ const representative = function (e) {
     return false;
 };
 const fixErrorLabels = function () {
-//<span class="invalid-feedback d-block"><span class="d-block">
-//  <span class="form-error-icon badge badge-danger text-uppercase">Ошибка</span> <span class="form-error-message">Не достаточно свободных номеров</span>
-//</span></span>
-console.log(jQuery('.invalid-feedback'));
    jQuery('.invalid-feedback').each(function () {
        jQuery(this).parent().parent().find('input').first().after(jQuery(this));
        jQuery(this).parent().parent().find('select').first().after(jQuery(this));
-//       jQuery(this).remove();
    });
-
-
 };
 jQuery(document).ready(function () {
 
