@@ -351,7 +351,12 @@ const representative = function (e) {
     });
     return false;
 };
-
+const fixErrorLabels = function () {
+   jQuery('.invalid-feedback').each(function () {
+       jQuery(this).parent().parent().find('input').first().after(jQuery(this));
+       jQuery(this).parent().parent().find('select').first().after(jQuery(this));
+   });
+};
 jQuery(document).ready(function () {
 
     jQuery('.add-another-collection-widget').click(addWidget)
@@ -448,7 +453,9 @@ jQuery(document).ready(function () {
         //alert('The file "' + fileName + '" has been selected.' );
     });
     updateItemTitles();
+    fixErrorLabels();
 });
+
 var blockUnload = false;
 
 var modalConfirm = function(_callback){

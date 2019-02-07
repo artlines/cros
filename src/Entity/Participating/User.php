@@ -62,7 +62,7 @@ class User implements UserInterface
     /**
      * @var int
      *
-     * @ORM\Column(name="phone", type="decimal", precision=15, unique=true)
+     * @ORM\Column(name="phone", type="decimal", precision=15)
      */
     private $phone;
 
