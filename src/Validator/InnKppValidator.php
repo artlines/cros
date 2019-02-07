@@ -3,6 +3,7 @@
 namespace App\Validator;
 
 
+use App\Entity\Abode\RoomType;
 use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\ConferenceOrganization;
 use App\Repository\ConferenceMemberRepository;
@@ -52,7 +53,30 @@ class InnKppValidator extends ConstraintValidator
                     ->atPath('organization.inn')
                     ->addViolation();
             }
+
+            $roomTypes = $em
+                ->getRepository(RoomType::class)
+                ->findAllFreeForConference($conf_id);
+            /** @var RoomType $roomType */
+            $arFreeRooms = [];
+            foreach ($roomTypes as list($RoomType, $used, $rooms)){
+                /** @var RoomType $RoomType */
+                $arFreeRooms[$RoomType->getId()] = $RoomType->getMaxPlaces()*$rooms - $used;
+            }
             foreach ( $value->getConferenceMembers() as $key => $conferenceMember ){
+
+                $roomTypeId = $conferenceMember->getRoomType()->getId();
+                if (isset($arFreeRooms[$roomTypeId]) and $arFreeRooms[$roomTypeId]>0) {
+                    // вычитаем предполагаемое заселение.
+                    $arFreeRooms[$roomTypeId] -= 1;
+                } else {
+                    $this->context
+                        ->buildViolation('Не достаточно свободных номеров' )
+                        ->atPath("ConferenceMembers[{$key}].RoomType")
+                        ->addViolation();
+                }
+
+
                 if($conferenceMember->getId()>0) continue;
                 $email = $conferenceMember->getUser()->getEmail();
                 $repository = $em->getRepository(ConferenceMember::class);
@@ -71,7 +95,6 @@ class InnKppValidator extends ConstraintValidator
                         ->atPath("ConferenceMembers[{$key}].user.email")
                         ->addViolation();
                 }
-
             }
         }
     }
