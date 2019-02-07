@@ -6,6 +6,7 @@ use App\Entity\Conference;
 use App\Entity\Content\Faq;
 use App\Entity\Participating\Speaker;
 use App\Repository\ConferenceRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -13,13 +14,16 @@ class DefaultController extends AbstractController
 {
     /**
      * @Route("/", name="homepage")
+     * @param EntityManagerInterface $em
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function home()
+    public function home(EntityManagerInterface $em)
     {
-        $em = $this->getDoctrine()->getManager();
+        $conference = $em->getRepository(Conference::class)->findBy([], ['year' => 'DESC'], 1);
 
         /** @var Speaker[] $speakers */
-        $speakers = $em->getRepository('App:Participating\Speaker')->findBy(['publish' => true]);
+        $speakers = $em->getRepository('App:Participating\Speaker')
+            ->findBy(['conference' => $conference, 'publish' => true]);
 
         $speakers_rand = [];
         if (count($speakers) > 1) {
