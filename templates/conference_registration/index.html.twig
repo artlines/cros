@@ -19,36 +19,6 @@
 
 </style>
 
-<div class="roomTypes debug" style="display: none">
-    <input type="hidden" class="conf_id" value="{{ Conference.id }}"/>
-    <input type="hidden" class="ConferenceOrganization" value="{{ ConferenceOrganization|default('') }}"/>
-
-    <div id="roomType_">
-        Класс участия не выбран
-    </div>
-{% for item in RoomTypes  %}
-    {% set roomType=item[0] %}
-    {% set used=item[1] %}
-    {% if roomType.maxPlaces-used > 0  %}
-    <div id="roomType_{{ roomType.id }}">
-        Класс участия: <b>{{ roomType.title }}</b><br />
-        Стоимость:  <b>{{ roomType.cost|number_format }}</b> ₽<br />
-        Количество свободных мест: <b>{{ roomType.maxPlaces-used }}</b><br />
-        <h4>Описание:</h4>
-        {{ roomType.description|raw }}
-    </div>
-    {% endif %}
-{% endfor %}
-<select id="select-proto">
-    {% for item in RoomTypes  %}
-        {% set roomType=item[0] %}
-        {% set used=item[1] %}
-       {% if roomType.maxPlaces-used > 0  %}
-    <option value="{{ roomType.id }}">{{ roomType.title }} Мест: {{ roomType.maxPlaces-used }} Стоимость: {{ roomType.cost|number_format }} ₽</option>
-        {% endif %}
-    {% endfor %}
-</select>
-</div>
 
     {#{{ dump(form) }}#}
 {{ form_start(form) }}
@@ -77,6 +47,7 @@
 <div class="conference-member"
      style="padding-left: 10px; border-left: solid 5px #87d37b; margin:20px 0 20px"
      >
+    <h4 class="title">Участник </h4>
     <div class="row">
         <div class="col-md-3">{{- form_row(form2.lastName) -}}</div>
         <div class="col-md-3">{{- form_row(form2.firstName) -}}</div>
@@ -90,10 +61,8 @@
         <div class="col-md-3" style="padding-top: 37px">{{- form_row(form2.representative) -}}</div>
     </div>
     <div class="row">
-        {% set start %}{{ Conference.eventStart|date("Y-m-d") }} 12:00{% endset %}
-        {% set end %}{{ Conference.eventFinish|date("Y-m-d") }} 12:00{% endset %}
-        <div class="col-md-3">{{- form_row(formConferenceMembers.arrival,{'value':start}) -}}</div>
-        <div class="col-md-3">{{- form_row(formConferenceMembers.leaving,{'value':end }) -}}</div>
+        <div class="col-md-3">{{- form_row(formConferenceMembers.arrival,{'value':Conference.eventStart|date("Y-m-d H:i")}) -}}</div>
+        <div class="col-md-3">{{- form_row(formConferenceMembers.leaving,{'value':Conference.eventFinish|date("Y-m-d H:i") }) -}}</div>
         <div class="col-md-3">{{- form_row(formConferenceMembers.carNumber) -}}</div>
         <div class="col-md-3">{{- form_row(form2.newphoto) -}}</div>
     </div>
@@ -144,6 +113,7 @@ id     name    inn kpp
     style="padding-left: 10px; border-left: solid 5px #87d37b; margin:20px 0 20px"
     data-num="{{ loop.index0 }}"
 >
+    <h4 class="title">Участник </h4>
     <div class="row">
         <div class="col-md-3">{{- form_row(item.user.lastName) -}}</div>
         <div class="col-md-3">{{- form_row(item.user.firstName) -}}</div>
@@ -394,25 +364,13 @@ id     name    inn kpp
 
 
 
-    {#<a href="#" data-href="/delete.php?id=23" data-toggle="modal" data-target="#confirm-delete">Delete record #23</a><br>#}
-
-
-    {#<button data-toggle="modal" data-target="#confirm-delete" type="submit" id="conference_organization_form_save" name="conference_organization_form[save]" class="reg-save u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15 btn">#}
-        {#Завершить регистрацию#}
-    {#</button>#}
-
-    <script>
-        // $('#confirm-delete').on('show.bs.modal', function(e) {
-        //     $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
-        //     $('.debug-url').html('Delete URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
-        // });
-    </script>
 {% set form_trash %}
     {{ form_row(form.ConferenceMembers) }}
     {#<h3>{{- form_row(form.organization.users) -}}</h3>#}
 {% endset %}
     {# ... #}
     {{ form_end(form) }}
+
     <button
             type="button"
             class="add-another-collection-widget btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15"
@@ -420,17 +378,45 @@ id     name    inn kpp
     >
         Добавить участников</button>
 
-    {#<span id="end-red" style="{% if hide %}display: none{%  endif %}">#}
-        {#<button class="btn u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15 btn" data-toggle="modal" data-target="#confirm-reg">#}
-            {#Завершить регистрацию#}
-        {#</button>#}
-    {#</span>#}
 
     <span class="validateRequired">
         <button class="btn u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15 btn">
             Завершить регистрацию
         </button>
     </span>
+
+    <div class="roomTypes debug" style="display: none">
+        <input type="hidden" class="conf_id" value="{{ Conference.id }}"/>
+        <input type="hidden" class="ConferenceOrganization" value="{{ ConferenceOrganization|default('') }}"/>
+
+        <div id="roomType_">
+            Класс участия не выбран
+        </div>
+        {% for item in RoomTypes  %}
+            {% set roomType=item[0] %}
+            {% set used=item[1] %}
+            {% set rooms=item[2] %}
+            {% if roomType.maxPlaces*rooms-used > 0  %}
+                <div id="roomType_{{ roomType.id }}">
+                    Класс участия: <b>{{ roomType.title }}</b><br />
+                    Стоимость:  <b>{{ roomType.cost|number_format }}</b> ₽<br />
+                    Количество свободных мест: <b>{{ roomType.maxPlaces*rooms-used }}</b><br />
+                    <h4>Описание:</h4>
+                    {{ roomType.description|raw }}
+                </div>
+            {% endif %}
+        {% endfor %}
+        <select id="select-proto">
+            {% for item in RoomTypes  %}
+                {% set roomType=item[0] %}
+                {% set used=item[1] %}
+                {% set rooms=item[2] %}
+                {% if roomType.maxPlaces*rooms-used > 0  %}
+                    <option value="{{ roomType.id }}">{{ roomType.title }} Мест: {{ roomType.maxPlaces*rooms-used }} Стоимость: {{ roomType.cost|number_format }} ₽</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
 
 {% endblock %}
 

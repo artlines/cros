@@ -200,9 +200,9 @@ class ConferenceRegistrationController extends AbstractController
             ->findAllFreeForConference($Conference->getId());
         $TotalFree = 0;
         $TotalUsed = 0;
-        foreach ($roomTypes as list($RoomType, $used)){
+        foreach ($roomTypes as list($RoomType, $used, $rooms)){
             /** @var RoomType $RoomType */
-            $TotalFree += max(0, $RoomType->getMaxPlaces()-$used);
+            $TotalFree += max(0, $RoomType->getMaxPlaces()*$rooms - $used);
             $TotalUsed += $used;
         }
 
@@ -241,8 +241,19 @@ class ConferenceRegistrationController extends AbstractController
                 $oldUser = $em->getRepository(User::class)
                     ->findOneBy(['email' =>$user->getEmail() ]);
                 if( $oldUser ) {
+                    $oldUser->setOrganization($user->getOrganization());
+                    $oldUser->setFirstName($user->getFirstName());
+                    $oldUser->setLastName($user->getLastName());
+                    $oldUser->setMiddleName($user->getMiddleName());
+                    $oldUser->setSex($user->getSex());
+                    $oldUser->setPost($user->getPost());
+                    $oldUser->setPhone($user->getPhone());
+                    $oldUser->setRepresentative($user->isRepresentative());
+
                     $conferenceMember->setUser($oldUser);
+                    $user = $oldUser;
                 }
+                $user->setPhone(preg_replace('/[\D]/', '',$user->getPhone()));
                 $password = $this->getRandomPassword();
                 $user->setPassword(
                     $passwordEncoder->encodePassword( $user, $password)
@@ -308,11 +319,7 @@ class ConferenceRegistrationController extends AbstractController
                 $organization->setLogo($fileName);
             }
 
-// TODO: enable finish
-
             $ConferenceOrganization->setFinish(true);
-            dump($ConferenceOrganization);
-            dump('UserPassword',$arUserPassword);
             $em->flush();
 
             $em->getConnection()->commit();
@@ -346,8 +353,7 @@ class ConferenceRegistrationController extends AbstractController
             $mailer->setTemplateAlias(self::MAIL_SEND_REGISTERED);
             foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
                 if( $conferenceMember->getUser()->isRepresentative()) {
-                    dump($params_organization);
-                    dump($mailer->send(
+                    $mailer->send(
                         'КРОС 2.0-19: Регистрация завершена',
                         [
                             'organization' => $params_organization,
@@ -357,30 +363,19 @@ class ConferenceRegistrationController extends AbstractController
                             ]
                         ],
                         $conferenceMember->getUser()->getEmail(), null, $this->getBcc()
-                    ));
-                    dump([
-                        'organization' => $params_organization,
-                        'conference' => [
-                            'eventStart' => $ConferenceOrganization->getConference()->getEventStart()->getTimestamp(),
-                            'eventFinish' => $ConferenceOrganization->getConference()->getEventFinish()->getTimestamp(),
-                        ]
-                    ]);
+                    );
                 }
 
             }
             $mailer->setTemplateAlias(self::MAIL_SEND_PASSWORD );
 
             foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
-                dump($conferenceMember->getUser()->getEmail());
                 $item = false;
                 foreach ($arUserPassword as $k => $item_look){
-                    dump($item_look);
                     if ($item_look['email']==$conferenceMember->getUser()->getEmail() ) {
                         $item = $arUserPassword[$k];
-                        dump('$arUserPassword', $item);
                     }
                 }
-                dump($arUserPassword,$item);
 
                 $user = [
                     'firstName' => $conferenceMember->getUser()->getFirstName(),
@@ -396,7 +391,7 @@ class ConferenceRegistrationController extends AbstractController
                     'leaving' => $conferenceMember->getLeaving()->getTimestamp(),
                 ];
 
-                dump($mailer->send(
+                $mailer->send(
                     'КРОС 2.0-19: Пароль для доступа',
                     [
                         'user'     => $user,
@@ -409,7 +404,7 @@ class ConferenceRegistrationController extends AbstractController
                         ]
                     ],
                     $conferenceMember->getUser()->getEmail() ,null, $this->getBcc()
-                ));
+                );
             }
 
             return $this->render('conference_registration/registration_success.html.twig', [

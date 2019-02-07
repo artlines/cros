@@ -86,11 +86,9 @@ class ConferenceOrganizationFormType extends AbstractType
 //                    'help' => 'Дополнительная информация',
                     'query_builder' => function (ConferenceRepository $conferenceRepository) {
                         return $conferenceRepository->createQueryBuilder('c')
-                            ->andWhere('c.registrationStart <= :registrationStart')
-                            ->andWhere('c.registrationFinish >= :registrationFinish')
+                            ->andWhere('c.year = :year')
                             ->setParameters([
-                                'registrationStart' => new \DateTime(),
-                                'registrationFinish' => new \DateTime()
+                                'year' => date("Y"),
                             ]);
                     },
 //                    'choice_label' => 'id',
