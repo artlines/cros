@@ -2,6 +2,7 @@
 
 namespace App\Entity\Participating;
 
+use App\Entity\Conference;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -86,6 +87,14 @@ class Speaker
      * @ORM\Column(name="organization", type="string", nullable=false)
      */
     private $organization;
+
+    /**
+     * @var Conference
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Conference", inversedBy="speakers")
+     * @ORM\JoinColumn(name="conference_id", referencedColumnName="id", nullable=false)
+     */
+    private $conference;
 
     /**
      * Get id
@@ -279,5 +288,21 @@ class Speaker
     public function setOrganization($organization)
     {
         $this->organization = $organization;
+    }
+
+    /**
+     * @return Conference
+     */
+    public function getConference()
+    {
+        return $this->conference;
+    }
+
+    /**
+     * @param Conference $conference
+     */
+    public function setConference(Conference $conference): void
+    {
+        $this->conference = $conference;
     }
 }
