@@ -359,10 +359,10 @@ class ConferenceRegistrationController extends AbstractController
                     $comment->setUser($conferenceMember->getUser());
                     // NOT DO $comment->setContent($ConferenceOrganization->getNotes());
                     $content = $request->request->get('conference_organization_form')['notes'];
+                    $comment->setContent($content);
                     if ($content) {
-                        $comment->setContent($content);
+                        $em->persist($comment);
                     }
-                    $em->persist($comment);
                     $mailer->send(
                         'КРОС 2019: Регистрация завершена',
                         [
