@@ -61,10 +61,8 @@
         <div class="col-md-3" style="padding-top: 37px">{{- form_row(form2.representative) -}}</div>
     </div>
     <div class="row">
-        {% set start %}{{ Conference.eventStart|date("Y-m-d") }} 12:00{% endset %}
-        {% set end %}{{ Conference.eventFinish|date("Y-m-d") }} 12:00{% endset %}
-        <div class="col-md-3">{{- form_row(formConferenceMembers.arrival,{'value':start}) -}}</div>
-        <div class="col-md-3">{{- form_row(formConferenceMembers.leaving,{'value':end }) -}}</div>
+        <div class="col-md-3">{{- form_row(formConferenceMembers.arrival,{'value':Conference.eventStart|date("Y-m-d H:i")}) -}}</div>
+        <div class="col-md-3">{{- form_row(formConferenceMembers.leaving,{'value':Conference.eventFinish|date("Y-m-d H:i") }) -}}</div>
         <div class="col-md-3">{{- form_row(formConferenceMembers.carNumber) -}}</div>
         <div class="col-md-3">{{- form_row(form2.newphoto) -}}</div>
     </div>

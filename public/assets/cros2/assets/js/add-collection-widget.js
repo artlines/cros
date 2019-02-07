@@ -279,8 +279,8 @@ const removeConferenceMember = function (e) {
     let t = this;
     modalConfirm(function(e){
         jQuery(t).parents('.conference-member').remove();
+        updateItemTitles();
     });
-    updateItemTitles();
 };
 
 const updateItemTitles = function (){
