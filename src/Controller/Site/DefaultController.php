@@ -19,7 +19,7 @@ class DefaultController extends AbstractController
      */
     public function home(EntityManagerInterface $em)
     {
-        $conference = $em->getRepository(Conference::class)->findBy([], ['year' => 'DESC'], 1);
+        $conference = $em->getRepository(Conference::class)->findBy([], ['year' => 'DESC'], 1)[0];
 
         /** @var Speaker[] $speakers */
         $speakers = $em->getRepository('App:Participating\Speaker')
