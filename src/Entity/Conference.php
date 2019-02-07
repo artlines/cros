@@ -88,11 +88,19 @@ class Conference
     private $speakers;
 
     /**
+     * @var Sponsor[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Sponsor", mappedBy="conference")
+     */
+    private $sponsors;
+
+    /**
      * Conference constructor.
      */
     public function __construct()
     {
         $this->speakers = new ArrayCollection();
+        $this->sponsors = new ArrayCollection();
     }
 
     /**
@@ -300,5 +308,21 @@ class Conference
     public function setSpeakers($speakers): void
     {
         $this->speakers = $speakers;
+    }
+
+    /**
+     * @return Sponsor[]|ArrayCollection
+     */
+    public function getSponsors()
+    {
+        return $this->sponsors;
+    }
+
+    /**
+     * @param Sponsor[]|ArrayCollection $sponsors
+     */
+    public function setSponsors($sponsors): void
+    {
+        $this->sponsors = $sponsors;
     }
 }
