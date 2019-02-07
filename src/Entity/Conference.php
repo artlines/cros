@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Content\Info;
+use App\Entity\Participating\Speaker;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -78,6 +79,21 @@ class Conference
      * @ORM\Column(name="limit_users_by_org", type="integer", nullable=true)
      */
     private $limitUsersByOrg;
+
+    /**
+     * @var Speaker[]|ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Participating\Speaker", mappedBy="conference")
+     */
+    private $speakers;
+
+    /**
+     * Conference constructor.
+     */
+    public function __construct()
+    {
+        $this->speakers = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -270,4 +286,19 @@ class Conference
         return 'Крос '.$this->getYear();
     }
 
+    /**
+     * @return Speaker[]|ArrayCollection
+     */
+    public function getSpeakers()
+    {
+        return $this->speakers;
+    }
+
+    /**
+     * @param Speaker[]|ArrayCollection $speakers
+     */
+    public function setSpeakers($speakers): void
+    {
+        $this->speakers = $speakers;
+    }
 }
