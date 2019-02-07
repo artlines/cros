@@ -25,7 +25,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 class RegistrationController extends AbstractController
 {
     /**
-     * @Route("/old/registration", name="registration")
+     * @Route("/old/registration", name="registration_old")
      * @param Request $request
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response

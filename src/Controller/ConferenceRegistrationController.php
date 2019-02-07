@@ -146,7 +146,7 @@ class ConferenceRegistrationController extends AbstractController
 
     /**
      * @Route("/registration/{hash}", name="conference_registration_hash")
-     * @Route("/registration", name="conference_registration")
+     * @Route("/registration", name="registration")
      */
     public function index(
         Request $request,
