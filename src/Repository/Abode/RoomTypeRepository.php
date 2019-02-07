@@ -9,6 +9,7 @@
 namespace App\Repository\Abode;
 
 
+use App\Entity\Abode\Room;
 use App\Entity\Conference;
 use App\Entity\Participating\ConferenceMember;
 use Doctrine\ORM\EntityRepository;
@@ -25,11 +26,19 @@ class RoomTypeRepository  extends EntityRepository
                 "WITH",
                 'cm.conference=:conference_id AND cm.roomType=rt.id'
             )
-            ->addSelect('count(rt.id)')
+            ->leftJoin(
+                Room::class,
+                'r',
+                "WITH",
+                'r.type=rt.id'
+            )
+            ->addSelect('count(DISTINCT cm.id)')
+            ->addSelect('count(DISTINCT r.id)')
             ->addGroupBy('rt.id')
             ->setParameters([
                 'conference_id' => $conference_id,
             ])
+            ->orderBy('rt.title')
             ->getQuery()
             ->getResult();
     }

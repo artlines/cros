@@ -200,9 +200,9 @@ class ConferenceRegistrationController extends AbstractController
             ->findAllFreeForConference($Conference->getId());
         $TotalFree = 0;
         $TotalUsed = 0;
-        foreach ($roomTypes as list($RoomType, $used)){
+        foreach ($roomTypes as list($RoomType, $used, $rooms)){
             /** @var RoomType $RoomType */
-            $TotalFree += max(0, $RoomType->getMaxPlaces()-$used);
+            $TotalFree += max(0, $RoomType->getMaxPlaces()*$rooms - $used);
             $TotalUsed += $used;
         }
 
