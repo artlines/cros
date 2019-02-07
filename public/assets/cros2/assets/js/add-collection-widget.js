@@ -60,7 +60,6 @@ const changeRoomType = function() {
 
 const neighbourhood = function() {
     let selector = jQuery(this);
-//    console.log( jQuery('.conference-member'));
     selector
         .find('option[value]')
         .filter(function(){return this.value})
@@ -74,7 +73,6 @@ const neighbourhood = function() {
         if(fio === "") {
             fio = 'Участник ' + (1+i);
         }
-//        console.log(fio);
         // look options exist
         let options = selector.find('option[value='+i+']');
         let self_num = selector.parents('.conference-member')
@@ -86,16 +84,9 @@ const neighbourhood = function() {
                     .attr("value", i)
                     .text(fio)
             );
-        }else{
-//            console.log(options);
         }
     });
 
-
-    // newOptions.map( (key,value) => {
-    //     selector.append($("<option></option>")
-    //     .attr("value", value).text(key));
-    // })
 };
 
 const validateRequired = function () {
@@ -261,19 +252,8 @@ const neighbourhoodRename =  function() {
     jQuery.each(options,function (i,el) {
         jQuery(el)  .text(fio);
     });
-
-
-    // jQuery.each( jQuery('.conference-member'), function(i,el){
-    //
-    //     selector.append(
-    //         jQuery("<option></option>")
-    //             .attr("value", 'value')
-    //             .text(fio)
-    //     );
-    // });
-    //
-    // ;
 };
+
 var callback = null;
 const removeConferenceMember = function (e) {
     let t = this;
@@ -303,12 +283,6 @@ const updateItem = function (item) {
             ]
         });
     });
-
-    // item.find('.email').each(function () {
-    //     new IMask(this, {
-    //         mask: /^\S*@?\S*$/
-    //     });
-    // });
 
     item.find('.representative').on('click', representative);
 
@@ -346,15 +320,9 @@ const updateItem = function (item) {
         //alert('The file "' + fileName + '" has been selected.' );
     });
 
-//    let jQuery('').children()
-
-    // #select-proto
-    // .select-roomtype
 };
 
 const representative = function (e) {
-    //console.log(this,e,jQuery(this).prop('checked'));
-    //jQuery(this).prop('checked', false);
 
     let t = this;
     if(!jQuery(t).prop('checked')){
@@ -396,22 +364,6 @@ jQuery(document).ready(function () {
 
     jQuery('.remove-collection-widget').click(removeConferenceMember);
 
-
-    // modalConfirm('.remove-collection-widget', function(confirm){
-    //     if(confirm) {
-    //         console.log('confirm', confirm);
-    //     }else{
-    //         console.log('no confirm', confirm);
-    //     }
-    // });
-    //
-    // modalConfirm2('.remove-collection-widget2', function(confirm){
-    //     if(confirm) {
-    //         console.log('confirm2', confirm);
-    //     }else{
-    //         console.log('no confirm2', confirm);
-    //     }
-    // });
 
     jQuery.each( jQuery('.conference-member'), function(i,el){
         updateItem(jQuery(el));
@@ -502,11 +454,7 @@ var blockUnload = false;
 var modalConfirm = function(_callback){
 
     callback = _callback;
-    // jQuery(btn_id).on("click", function(){
     jQuery("#confirm-modal").modal('show');
-    // });
-
-    // jQuery("#confirm-modal").modal('show');
 
 };
 
@@ -518,20 +466,3 @@ var modalValidate = function(_callback){
 };
 
 
-
-
-var modalConfirm2 = function(btn_id,callback){
-
-    jQuery("#confirm-modal").modal('show');
-};
-
-
-// modalConfirm(function(confirm){
-//     if(confirm){
-//         //Acciones si el usuario confirma
-//         $("#result").html("CONFIRMADO");
-//     }else{
-//         //Acciones si el usuario no confirma
-//         $("#result").html("NO CONFIRMADO");
-//     }
-// });
