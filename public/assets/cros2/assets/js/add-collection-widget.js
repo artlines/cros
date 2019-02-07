@@ -351,7 +351,18 @@ const representative = function (e) {
     });
     return false;
 };
+const fixErrorLabels = function () {
+//<span class="invalid-feedback d-block"><span class="d-block">
+//  <span class="form-error-icon badge badge-danger text-uppercase">Ошибка</span> <span class="form-error-message">Не достаточно свободных номеров</span>
+//</span></span>
 
+   jQuery('.invalid-feedback').each(function () {
+       jQuery(this).appendTo(jQuery(this).parent().parent());
+       console.log(jQuery(this),jQuery(this).parent());
+   });
+
+
+};
 jQuery(document).ready(function () {
 
     jQuery('.add-another-collection-widget').click(addWidget)
@@ -448,7 +459,9 @@ jQuery(document).ready(function () {
         //alert('The file "' + fileName + '" has been selected.' );
     });
     updateItemTitles();
+    fixErrorLabels();
 });
+
 var blockUnload = false;
 
 var modalConfirm = function(_callback){
