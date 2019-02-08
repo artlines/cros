@@ -88,7 +88,52 @@ const neighbourhood = function() {
     });
 
 };
+function fio(cm){
+    return [
+        jQuery(cm).find('.lastName').val(),
+        jQuery(cm).find('.firstName').val(),
+        jQuery(cm).find('.middleName').val()
+    ].join(' ').trim();
 
+}
+const  validateNeighbourhoodRoomType = function(){
+
+    return jQuery('.conference-member')
+        .filter(function(){return jQuery(this).find('.select-neighbourhood').val()!==''})
+        .filter(function(e){
+            var n_num = jQuery(this).find('.select-neighbourhood').val();
+            var n_roomType = jQuery('[data-num='+n_num+']')
+                .find('.select-roomtype').val();
+            var m_roomType = jQuery(this)
+                .find('.select-roomtype').val();
+//                return 'Класс участия для совместного проживания отличается'
+            return ( n_roomType != m_roomType);
+        })
+        .map(function(e){
+            var n_num = jQuery(this).find('.select-neighbourhood').val();
+            var n = jQuery('[data-num='+n_num+']');
+
+            return 'Класс участия '+fio(this)+' отличается от '+fio(n);
+        })
+        .get()
+        .join('<br/>')
+        ;
+
+//        .filter(function(i){ return i})
+//        .filter(function(){return jQuery(this).value})
+
+
+    // .select-roomtype
+    // .select-neighbourhood
+    //.data-num
+    return 'errovalidateNeighbourhoodRoomType'
+
+};
+// за комнату
+// за одно место в двухместном номере
+//
+// прятать neighbourhood()
+// нет -> ''
 const validateRequired = function () {
     var empty_flds = 0;
     let r = jQuery("[required]").filter(function() {
@@ -117,6 +162,13 @@ const validateRequired = function () {
             scrollTop: jQuery('.representative').offset().top-400
         }, 1000);
     } else {
+        // check user type with neighbourhood
+        var err;
+        if( err = validateNeighbourhoodRoomType()) {}
+        jQuery('#confirm-reg-warning')
+            .show()
+            .html(err)
+            ;
         jQuery('#confirm-reg').modal('show');
     }
     return empty_flds;
