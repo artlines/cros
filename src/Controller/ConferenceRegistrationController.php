@@ -364,7 +364,7 @@ class ConferenceRegistrationController extends AbstractController
                         $em->persist($comment);
                     }
                     $mailer->send(
-                        'КРОС 2019: Регистрация завершена',
+                        'КРОС 2019: ' . $ConferenceOrganization->getOrganization()->getName(),
                         [
                             'organization' => $params_organization,
                             'conference' => [
