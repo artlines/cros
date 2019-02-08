@@ -401,9 +401,15 @@ id     name    inn kpp
             {% set used=item[1] %}
             {% set rooms=item[2] %}
             {% if roomType.maxPlaces*rooms-used > 0  %}
-                <div id="roomType_{{ roomType.id }}">
+                <div id="roomType_{{ roomType.id }}" data-rooms="{{ roomType.maxPlaces }}">
                     Класс участия: <b>{{ roomType.title }}</b><br />
-                    Стоимость:  <b>{{ roomType.cost|number_format }}</b> ₽<br />
+                    Стоимость:  <b>{{ roomType.cost|number_format }}</b> ₽
+                    {% if roomType.maxPlaces == 1 %}
+                        за комнату
+                    {% elseif roomType.maxPlaces == 2 %}
+                        за одно место в двухместном номере
+                    {% endif %}
+                    <br />
                     Количество свободных мест: <b>{{ roomType.maxPlaces*rooms-used }}</b><br />
                     <h4>Описание:</h4>
                     {{ roomType.description|raw }}

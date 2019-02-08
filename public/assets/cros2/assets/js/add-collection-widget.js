@@ -55,7 +55,12 @@ const changeRoomType = function() {
     var roomTypeHtml = jQuery('#roomType_'+ id).html();
     var roomTypeInfo = jQuery(this).parents('.conference-member').find('.roomTypeInfo');
     roomTypeInfo.html(roomTypeHtml);
-
+    var nh = jQuery(this).parents('.conference-member').find('.select-neighbourhood').parents('.form-group');
+    if (jQuery('#roomType_'+ id).data('rooms')>1 ){
+        nh.show();
+    } else {
+        nh.hide();
+    }
 };
 
 const neighbourhood = function() {
@@ -98,7 +103,7 @@ function fio(cm){
 }
 const  validateNeighbourhoodRoomType = function(){
 
-    return jQuery('.conference-member')
+    var result = jQuery('.conference-member')
         .filter(function(){return jQuery(this).find('.select-neighbourhood').val()!==''})
         .filter(function(e){
             var n_num = jQuery(this).find('.select-neighbourhood').val();
@@ -107,17 +112,20 @@ const  validateNeighbourhoodRoomType = function(){
             var m_roomType = jQuery(this)
                 .find('.select-roomtype').val();
 //                return 'Класс участия для совместного проживания отличается'
+            console.log('n_roomType',n_roomType,m_roomType);
             return ( n_roomType != m_roomType);
         })
         .map(function(e){
             var n_num = jQuery(this).find('.select-neighbourhood').val();
             var n = jQuery('[data-num='+n_num+']');
-
-            return 'Класс участия '+fio(this)+' отличается от '+fio(n);
+            return ' - '+fio(this)+' и '+fio(n);
         })
         .get()
-        .join('<br/>')
         ;
+console.log('result',result, result.length>0);
+    return (result.length>0)
+        ? result
+        : false;
 
 //        .filter(function(i){ return i})
 //        .filter(function(){return jQuery(this).value})
@@ -129,11 +137,12 @@ const  validateNeighbourhoodRoomType = function(){
     return 'errovalidateNeighbourhoodRoomType'
 
 };
+
 // за комнату
 // за одно место в двухместном номере
 //
 // прятать neighbourhood()
-// нет -> ''
+
 const validateRequired = function () {
     var empty_flds = 0;
     let r = jQuery("[required]").filter(function() {
@@ -154,21 +163,31 @@ const validateRequired = function () {
         jQuery('#required-reg').modal('show');
         return false;
     }
-    if(jQuery('#members-fields-list').children().length == 0){
+    if(jQuery('#members-fields-list').children().length === 0){
         jQuery('#no-users-reg').modal('show');
-    } else if (jQuery('.representative:checked').length == 0) {
+    } else if (jQuery('.representative:checked').length === 0) {
         jQuery('#no-representative').modal('show');
         jQuery('html, body').animate({
             scrollTop: jQuery('.representative').offset().top-400
         }, 1000);
     } else {
         // check user type with neighbourhood
-        var err;
-        if( err = validateNeighbourhoodRoomType()) {}
-        jQuery('#confirm-reg-warning')
-            .show()
-            .html(err)
+        var errNH;
+        if( errNH = validateNeighbourhoodRoomType()) {
+            console.log('errNH',errNH, errNH.join('<br />') );
+            jQuery('#confirm-reg-warning')
+                .show()
+                .html(
+                    'Вы выбрали совместное проживание для:<br />' +
+                    errNH.join('<br />') + '<br />' +
+
+                    'Но их классы участия различаются. <br />' +
+                    'Если вы действительно хотите поселить данные участников вместе, просьба указать идентичные классы участия.'
+                )
             ;
+        } else {
+            jQuery('#confirm-reg-warning').hide();
+        }
         jQuery('#confirm-reg').modal('show');
     }
     return empty_flds;
