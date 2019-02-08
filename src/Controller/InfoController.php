@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Conference;
 use App\Entity\Sponsor;
 use App\Entity\Content\Info;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -27,16 +28,24 @@ class InfoController extends AbstractController
      * @param $alias
      * @param Request $request
      * @param \Swift_Mailer $mailer
+     * @param EntityManagerInterface $em
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function info($alias, Request $request, \Swift_Mailer $mailer)
+    public function info($alias, Request $request, \Swift_Mailer $mailer, EntityManagerInterface $em)
 	{
         /* SPONSOR */
         if ($alias == 'sponsors') {
-            $goldenSponsors = $this->getDoctrine()->getRepository('App:Sponsor')
-                ->findBy(['active' => true, 'type' => Sponsor::TYPE__GOLD]);
-            $silverSponsors = $this->getDoctrine()->getRepository('App:Sponsor')
-                ->findBy(['active' => true, 'type' => Sponsor::TYPE__SILVER]);
+            /** @var Conference $conference */
+            $conference = $em->getRepository(Conference::class)->findBy([], ['year' => 'DESC'], 1)[0];
+
+            if (!$conference->getSponsors()->count()) {
+                return $this->redirectToRoute('info', ['alias' => 'become-sponsor']);
+            }
+
+            $goldenSponsors = $em->getRepository('App:Sponsor')
+                ->findBy(['active' => true, 'type' => Sponsor::TYPE__GOLD, 'conference' => $conference]);
+            $silverSponsors = $em->getRepository('App:Sponsor')
+                ->findBy(['active' => true, 'type' => Sponsor::TYPE__SILVER, 'conference' => $conference]);
 
             return $this->render('frontend/info/show-sponsor.html.twig', [
                 'golden' => $goldenSponsors,
@@ -47,7 +56,7 @@ class InfoController extends AbstractController
 		/* ORGANIZE */
 		if ($alias == 'organize') {
 		    /** @var Conference $conference */
-			$conference = $this->getDoctrine()->getRepository('App:Conference')
+			$conference = $em->getRepository('App:Conference')
 					->findOneBy(array('year' => date("Y")));
 
 			$dates = [
@@ -159,7 +168,7 @@ class InfoController extends AbstractController
 
             $choices = array(
                 'Золотой партнер' => 'Золотой партнер',
-                'Серебрянный партнер' => 'Серебрянный партнер',
+                'Серебряный партнер' => 'Серебряный партнер',
             );
 
 			$defaultData = array(
@@ -276,14 +285,14 @@ class InfoController extends AbstractController
         $info = null;
     	if (in_array($alias, ['place', 'result', 'terms', 'transfer', 'targets'])) {
     	    /** @var Conference $conference */
-			$conference = $this->getDoctrine()->getRepository('App:Conference')
+			$conference = $em->getRepository('App:Conference')
                 ->findOneBy(['year' => date("Y")]);
 			/** @var Info $info */
-			$info = $this->getDoctrine()->getRepository('App:Content\Info')
+			$info = $em->getRepository('App:Content\Info')
                 ->findOneBy(['conference' => $conference, 'alias' => $alias]);
 		} else {
             /** @var Info $info */
-			$info = $this->getDoctrine()->getRepository('App:Content\Info')->findOneBy(['alias' => $alias]);
+			$info = $em->getRepository('App:Content\Info')->findOneBy(['alias' => $alias]);
 		}
         
         if ($info) {
