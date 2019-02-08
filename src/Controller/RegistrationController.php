@@ -614,14 +614,14 @@ class RegistrationController extends AbstractController
                         }
                     }
                 }
-               /* $event = new Logs();
-                $event->setEntity('user');
-                $event->setEvent('Зарегистрирован новый участник');
-                $event->setElementId($user->getId());
-                $event->setReaded(0);
+                /* $event = new Logs();
+                 $event->setEntity('user');
+                 $event->setEvent('Зарегистрирован новый участник');
+                 $event->setElementId($user->getId());
+                 $event->setReaded(0);
 
-                $em->persist($event);
-                $em->flush();*/
+                 $em->persist($event);
+                 $em->flush();*/
 
                 $result = array(
                     'status' => 'success',

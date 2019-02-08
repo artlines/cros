@@ -200,7 +200,9 @@ id     name    inn kpp
                     <input id="validation-code"
                        style="font-size:30px; text-align: center; width:50%"
                     />
-                        <p style="display: none" class="btn-danger" id="validation-code-error">Введен не верный код</p>
+                        <div style="display: none" class="alert alert-danger" role="alert" id="validation-code-error">
+                            Введен не верный код
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -225,6 +227,8 @@ id     name    inn kpp
                 <div class="modal-body">
                     <p>После завершения регистрации внесение изменений будет возможно только через администрацию КРОС</p>
                     <p>Вы действительно хотите завершить регистрацию?</p>
+                    <div class="alert alert-warning" role="alert" id="confirm-reg-warning" style="display:none">
+                    </div>
                     <p class="debug-url"></p>
                 </div>
 
@@ -397,9 +401,15 @@ id     name    inn kpp
             {% set used=item[1] %}
             {% set rooms=item[2] %}
             {% if roomType.maxPlaces*rooms-used > 0  %}
-                <div id="roomType_{{ roomType.id }}">
+                <div id="roomType_{{ roomType.id }}" data-rooms="{{ roomType.maxPlaces }}">
                     Класс участия: <b>{{ roomType.title }}</b><br />
-                    Стоимость:  <b>{{ roomType.cost|number_format }}</b> ₽<br />
+                    Стоимость:  <b>{{ roomType.cost|number_format }}</b> ₽
+                    {% if roomType.maxPlaces == 1 %}
+                        за комнату
+                    {% elseif roomType.maxPlaces == 2 %}
+                        за одно место в двухместном номере
+                    {% endif %}
+                    <br />
                     Количество свободных мест: <b>{{ roomType.maxPlaces*rooms-used }}</b><br />
                     <h4>Описание:</h4>
                     {{ roomType.description|raw }}
