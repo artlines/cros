@@ -15,6 +15,7 @@ import {
 import {Edit as EditIcon} from '@material-ui/icons';
 import map from "lodash/map";
 import find from "lodash/find";
+import sortBy from "lodash/sortBy";
 import ApartmentTypeForm from "./ApartmentTypeForm";
 import FabButton from "../../utils/FabButton";
 
@@ -76,7 +77,7 @@ class ApartmentTypeTable extends React.Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {map(items, item =>
+                            {map(sortBy(items, 'title'), item =>
                                 <TableRow key={item.id}>
                                     <TableCell>{item.title}</TableCell>
                                     <TableCell>{item.code}</TableCell>

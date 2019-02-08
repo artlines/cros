@@ -14,6 +14,7 @@ import {
     TableBody,
     TableRow,
     TableCell,
+    Typography,
 } from '@material-ui/core';
 import {withStyles} from '@material-ui/core/styles';
 import {
@@ -27,6 +28,7 @@ import ConfirmDialog from "../utils/ConfirmDialog";
 import FabButton from '../utils/FabButton';
 import LinearProgress from '../utils/LinearProgress';
 import API from '../../libs/api';
+import RoomType from "../../containers/RoomType";
 
 const styles = () =>
     ({
@@ -124,7 +126,7 @@ class MembersModal extends React.Component {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>ФИО</TableCell>
-                                    <TableCell>Должность</TableCell>
+                                    <TableCell className={classes.noWrap}>Класс участия</TableCell>
                                     <TableCell>Контакты</TableCell>
                                     <TableCell>Проживание</TableCell>
                                     <TableCell align={'right'}>Действия</TableCell>
@@ -135,9 +137,10 @@ class MembersModal extends React.Component {
                                     <TableRow key={item.id}>
                                         <TableCell>
                                             {item.last_name} {item.first_name} {item.middle_name}
+                                            <Typography variant={`caption`}>{item.post}</Typography>
                                         </TableCell>
-                                        <TableCell>
-                                            {item.post}
+                                        <TableCell className={classes.noWrap}>
+                                            <RoomType id={item.room_type_id}/>
                                         </TableCell>
                                         <TableCell>
                                             <div className={classes.noWrap}><b>Телефон:</b> {item.phone}</div>
@@ -201,6 +204,7 @@ MembersModal.propTypes = {
                 room_num: PropTypes.number,
                 approved: PropTypes.bool,
             }),
+            room_type_id:   PropTypes.number.isRequired,
         }),
     ),
 

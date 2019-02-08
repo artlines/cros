@@ -16,6 +16,9 @@ export const ABODE = {
 
     REQUEST_APARTMENTS: "ABODE_REQUEST_APARTMENTS",
     RECEIVE_APARTMENTS: "ABODE_RECEIVE_APARTMENTS",
+
+    REQUEST_SUMMARY_INFORMATION: "ABODE_REQUEST_SUMMARY_INFORMATION",
+    RECEIVE_SUMMARY_INFORMATION: "ABODE_RECEIVE_SUMMARY_INFORMATION",
 };
 
 const _initialObjectState = {
@@ -46,6 +49,9 @@ const initialState = {
         ..._initialObjectState
     },
     apartment: {
+        ..._initialObjectState
+    },
+    summary_information: {
         ..._initialObjectState
     },
 };
@@ -150,24 +156,42 @@ export default (state = initialState, action) => {
                 ...payload,
             },
         };
-    case ABODE.REQUEST_ROOM_TYPE:
-        return {
-            ...state,
-            room_type: {
-                ...state.room_type,
-                isFetching: true,
-                error: false,
-            },
-        };
-    case ABODE.RECEIVE_ROOM_TYPE:
-        return {
-            ...state,
-            room_type: {
-                ...state.room_type,
-                isFetching: false,
-                ...payload,
-            },
-        };
+        case ABODE.REQUEST_ROOM_TYPE:
+            return {
+                ...state,
+                room_type: {
+                    ...state.room_type,
+                    isFetching: true,
+                    error: false,
+                },
+            };
+        case ABODE.RECEIVE_ROOM_TYPE:
+            return {
+                ...state,
+                room_type: {
+                    ...state.room_type,
+                    isFetching: false,
+                    ...payload,
+                },
+            };
+        case ABODE.REQUEST_SUMMARY_INFORMATION:
+            return {
+                ...state,
+                summary_information: {
+                    ...state.summary_information,
+                    isFetching: true,
+                    error: false,
+                },
+            };
+        case ABODE.RECEIVE_SUMMARY_INFORMATION:
+            return {
+                ...state,
+                summary_information: {
+                    ...state.summary_information,
+                    isFetching: false,
+                    ...payload,
+                },
+            };
     default:
         return state;
     }

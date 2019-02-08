@@ -19,6 +19,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import find from "lodash/find";
 import map from "lodash/map";
+import sortBy from "lodash/sortBy";
 import ConfirmDialog from "../utils/ConfirmDialog";
 
 class HousingCard extends React.PureComponent {
@@ -57,7 +58,7 @@ class HousingCard extends React.PureComponent {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {map(abode_info, item =>
+                            {map(sortBy(abode_info, 'room_type_id'), item =>
                                 <TableRow key={item.room_type_id}>
                                     <TableCell>{find(room_types.items, {id: item.room_type_id}).title}</TableCell>
                                     <TableCell align={`right`}>{item.busy} / {item.total}</TableCell>

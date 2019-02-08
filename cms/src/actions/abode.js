@@ -53,4 +53,12 @@ export default {
         };
     },
 
+    fetchSummaryInformation: () => {
+        return dispatch => {
+            dispatch({ type: ABODE.REQUEST_SUMMARY_INFORMATION });
+            request.get(`room_type/summary_information`)
+                .then(payload => dispatch({ type: ABODE.RECEIVE_SUMMARY_INFORMATION, payload }));
+        };
+    },
+
 };

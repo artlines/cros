@@ -10,8 +10,8 @@ namespace App\Repository;
  */
 class ConferenceRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findWithInfo(){
-
+    public function findWithInfo()
+    {
         $query = $this->getEntityManager()
             ->createQuery(
                 'SELECT itc, i, c FROM App:Conference c

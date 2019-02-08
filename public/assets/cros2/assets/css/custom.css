@@ -189,12 +189,13 @@ label.required:after
 }
 
 .google-sign-in__container {
-    text-align: center;
+    display: flex;
 }
 .google-sign-in__container img {
-    height: 50px;
+    height: 34px;
 }
 .google-sign-in__btn {
-    background: inherit !important;
+    background: none !important;
+    margin-left: 5px;
     padding: 0 !important;
 }

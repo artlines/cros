@@ -5,7 +5,7 @@ namespace App\Controller\Admin;
 use App\Old\Entity\Conference;
 use App\Old\Entity\Organization;
 use App\Old\Entity\OrganizationStatus;
-use App\Repository\FlatRepository;
+use App\Repository\ConferenceRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\Statement;
 use Doctrine\ORM\EntityManagerInterface;
@@ -58,14 +58,12 @@ class DefaultController extends AbstractController
      *
      * @Route("/admin/history", name="admin-history")
      * @Route("/admin")
+     * @param EntityManagerInterface $em
+     * @return Response
      */
-    public function index()
+    public function index(EntityManagerInterface $em)
     {
-        /** @var ConferenceRepository $ConferenceRepository */
-        $ConferenceRepository = $this->getDoctrine()->getRepository('App:Conference');
-
-        /** @var Conference $history */
-        $history = $ConferenceRepository->findWithInfo();
+        $history = $em->getRepository('App:Conference')->findBy([], ['year' => 'DESC']);
 
         return $this->render('admin/history.html.twig', [
             'history' => $history,
