@@ -34,11 +34,12 @@ const addWidget = function (e) {
 //    newElem.hide();
     newElem.appendTo(list);
 //    newElem.show('blind', {}, 500);
-
-    jQuery('html, body').animate({
-        scrollTop: newElem.find('.lastName').offset().top-200
-    }, 1000);
-    newElem.find('.lastName').focus();
+    if (counter>1) {
+        jQuery('html, body').animate({
+            scrollTop: newElem.find('.lastName').offset().top - 200
+        }, 1000);
+        newElem.find('.lastName').focus();
+    }
 
     // show end registration button
     jQuery('#end-red').show();
