@@ -13,6 +13,7 @@ use App\Form\ConferenceOrganizationFormType;
 use App\Repository\ConferenceMemberRepository;
 use App\Repository\ConferenceOrganizationRepository;
 use App\Service\Mailer;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -443,15 +444,16 @@ class ConferenceRegistrationController extends AbstractController
      *
      * @return object
      */
-    public function stepThree(){
+    public function stepThree(Request $request){
         /** @var User $user */
         $organization =  $this->getUser()->getOrganization();
-//        $user
-//        dump($user);
-
         $Conference = $this->getDoctrine()->getRepository(Conference::class)
             ->findOneBy(['year' => date("Y")]);
         if ($organization and $Conference){
+            $CommentForm = $this->createForm(
+                CommentFormType::class
+            );
+
             $conferenceOrganization = $this->getDoctrine()
                 ->getRepository(ConferenceOrganization::class)
                 ->findOneBy([
@@ -459,9 +461,25 @@ class ConferenceRegistrationController extends AbstractController
                     'conference' => $Conference,
                 ]);
 
-            $CommentForm = $this->createForm(
-                CommentFormType::class
-            );
+            $CommentForm->handleRequest($request);
+
+            if ($CommentForm->isSubmitted() && $CommentForm->isValid()) {
+
+                /** @var Comment $Comment */
+                $Comment = $CommentForm->getData();
+                $Comment
+                    ->setUser($this->getUser())
+                    ->setConferenceOrganization($conferenceOrganization)
+                    ;
+                /** @var EntityManager $em */
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($Comment);
+                $em->flush();
+            }else{
+                dump($CommentForm);
+            }
+
+
             return $this->render('conference_registration/show.html.twig', [
                 'ConferenceOrganization' => $conferenceOrganization,
                 'form' => $CommentForm->createView(),
