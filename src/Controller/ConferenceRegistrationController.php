@@ -359,15 +359,6 @@ class ConferenceRegistrationController extends AbstractController
                     $comment->setUser($conferenceMember->getUser());
                     // NOT DO $comment->setContent($ConferenceOrganization->getNotes());
                     $content = $request->get('conference_organization_form')['notes'];
-                    if ($content) {
-                        $comment->setContent($content);
-                    }
-                    $em->persist($comment);
-                    $comment = new Comment();
-                    $comment->setConferenceOrganization($ConferenceOrganization);
-                    $comment->setUser($conferenceMember->getUser());
-                    // NOT DO $comment->setContent($ConferenceOrganization->getNotes());
-                    $content = $request->request->get('conference_organization_form')['notes'];
                     $comment->setContent($content);
                     if ($content) {
                         $em->persist($comment);
