@@ -25,7 +25,9 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{% if is_granted('ROLE_ADMIN') %}{{ path('admin-history') }}{% else %}{{ path('admin-table') }}{% endif %}">КРОС</a> <a class="navbar-brand" href="{{ path('members') }}">на сайт</a>
+            <a class="navbar-brand" href="{% if is_granted('ROLE_ADMIN') %}{{ path('admin-history') }}{% else %}{{ path('admin-table') }}{% endif %}">КРОС</a>
+            <a class="navbar-brand" href="/cms">Новая CMS</a>
+            <a class="navbar-brand" href="{{ path('homepage') }}">на сайт</a>
         </div>
         <ul class="nav navbar-top-links navbar-right">
             {#<li class="dropdown">#}
@@ -49,7 +51,7 @@
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
-                    {% if is_granted('ROLE_ADMIN') %}
+                    {% if is_granted('ROLE_ADMINISTRATOR') %}
                     <li>
                         <a href="{{ path('admin-history') }}"><i class="fa fa-dashboard fa-fw"></i> Архив</a>
                     </li>
@@ -92,7 +94,7 @@
                         <a href="{{ path('admin-table', {'year':'now'|date('Y')}) }}"><i class="fa fa-table fa-fw"></i> Сводная таблица</a>
                         <a href="{{ path('admin-table2', {'year':'now'|date('Y')}) }}"><i class="fa fa-table fa-fw"></i>CSV</a>
                     </li>
-                    {% if is_granted('ROLE_ADMIN') %}
+                    {% if is_granted('ROLE_ADMINISTRATOR') %}
                     <li>
                         <a href="{{ path('downloads') }}"><i class="fa fa-download fa-fw"></i> Загрузки</a>
                     </li>
@@ -100,7 +102,7 @@
                         <a href="{{ path('admin-lectures') }}"><i class="fa fa-paragraph fa-fw"></i> Расписание докладов</a>
                     </li>
                     {% endif %}
-                    {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    {% if is_granted('ROLE_ADMINISTRATOR') %}
                         <li>
                             <a href="{{ path('admin-registered') }}"><i class="fa fa-list-alt fa-fw"></i>Пользователи</a>
                         </li>

@@ -30,12 +30,12 @@
                                         </div>
                                         <div class="timeline-body">
                                             <p>
-                                                {% if conf.finish.date < "now"|date("Y-m-d H:i:s") %}
-                                                    {% if conf.finish.date|date("Y") < "now"|date("Y") %}В архиве
+                                                {% if conf.eventfinish.date < "now"|date("Y-m-d H:i:s") %}
+                                                    {% if conf.eventfinish.date|date("Y") < "now"|date("Y") %}В архиве
                                                     {% else %}Мероприятие завершено {{ conf.finish.date|date("d.m.Y") }}
                                                     {% endif %}
-                                                {% elseif conf.start.date < "now"|date("Y-m-d H:i:s") %}Идет мероприятие, завершится {{ conf.finish.date|date("d.m.Y") }}
-                                                {% elseif conf.registrationfinish.date < "now"|date("Y-m-d H:i:s") %}Регистрация завершена, мероприятие начнется {{ conf.start.date|date("d.m.Y") }}
+                                                {% elseif conf.eventstart.date < "now"|date("Y-m-d H:i:s") %}Идет мероприятие, завершится {{ conf.finish.date|date("d.m.Y") }}
+                                                {% elseif conf.registrationfinish.date < "now"|date("Y-m-d H:i:s") %}Регистрация завершена, мероприятие начнется {{ conf.eventstart.date|date("d.m.Y") }}
                                                 {% elseif conf.registrationstart.date < "now"|date("Y-m-d H:i:s") %}Открыта регистрация до {{ conf.registrationfinish.date|date("d.m.Y") }}
                                                 {% else %}Регистрация начнется {{ conf.registrationstart.date|date("d.m.Y") }}
                                                 {% endif %}
@@ -46,8 +46,7 @@
                                                     <i class="fa fa-gear"></i> <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu" role="menu">
-                                                    {% for infolist in conf.infotoconfs %}
-                                                        {% set info = infolist.info %}
+                                                    {% for info in conf.info %}
                                                         {% if info.alias == "targets" %}
                                                             <li><a href="{{ path('admin-text-edit', {'id': info.id}) }}"><i class="fa fa-check-circle-o fa-fw"></i> {{ info.title }}</a>
                                                             </li>
