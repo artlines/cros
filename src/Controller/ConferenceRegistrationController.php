@@ -450,16 +450,19 @@ class ConferenceRegistrationController extends AbstractController
         $Conference = $this->getDoctrine()->getRepository(Conference::class)
             ->findOneBy(['year' => date("Y")]);
         if ($organization and $Conference){
-            $CommentForm = $this->createForm(
-                CommentFormType::class
-            );
-
             $conferenceOrganization = $this->getDoctrine()
                 ->getRepository(ConferenceOrganization::class)
                 ->findOneBy([
                     'organization' => $organization,
                     'conference' => $Conference,
                 ]);
+            if(!$conferenceOrganization){
+                throw $this->createNotFoundException();
+            }
+
+            $CommentForm = $this->createForm(
+                CommentFormType::class
+            );
 
             $CommentForm->handleRequest($request);
 
@@ -475,8 +478,7 @@ class ConferenceRegistrationController extends AbstractController
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($Comment);
                 $em->flush();
-            }else{
-                dump($CommentForm);
+                return $this->redirectToRoute('registration_show');
             }
 
 
