@@ -20,6 +20,7 @@ import RoomTypeForm from "./RoomTypeForm";
 import ParticipationClass from "../../../containers/ParticipationClass";
 import FabButton from "../../utils/FabButton";
 import scrollToComponent from 'react-scroll-to-component';
+import sortBy from "lodash/sortBy";
 
 class RoomTypeTable extends React.Component {
     constructor(props) {
@@ -89,7 +90,7 @@ class RoomTypeTable extends React.Component {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {map(items, item =>
+                                    {map(sortBy(items, 'title'), item =>
                                         <React.Fragment key={item.id}>
                                             <TableRow style={{borderTop: '1px solid #eee'}}>
                                                 <TableCell>{item.title}</TableCell>

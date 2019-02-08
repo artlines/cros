@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {
     Grid,
     Typography,
+    Divider,
 } from "@material-ui/core";
 import map from "lodash/map";
 import AddButton from '../../components/utils/FabButton';
@@ -12,6 +13,7 @@ import find from 'lodash/find';
 import abode from '../../actions/abode';
 import API from '../../libs/api';
 import LinearProgress from "../../components/utils/LinearProgress";
+import SummaryInformation from "../../components/Abode/SummaryInformation";
 
 const api = new API();
 
@@ -40,6 +42,7 @@ class Abode extends React.Component {
             this.setState({housing: res.items, isFetching: false})
         });
         this.props.fetchRoomTypes();
+        this.props.fetchSummaryInformation();
     };
 
     handleCloseHousingForm = () => this.setState({form: {...this.state.form, open: false}});
@@ -75,6 +78,7 @@ class Abode extends React.Component {
 
     render() {
         const { housing, error, isFetching, form: { open, initialValues } } = this.state;
+        const { summary_information } = this.props;
 
         return (
             <div>
@@ -106,17 +110,25 @@ class Abode extends React.Component {
                             <Typography variant={`subtitle1`}>Нет данных</Typography>
                         </Grid>
                     }
+                    <Divider/>
+                    <Grid item xs={12}>
+                        <SummaryInformation {...summary_information}/>
+                    </Grid>
                 </Grid>
             </div>
         );
     }
 }
 
-const mapDispatchToProps = dispatch =>
+const mapStateToProps = state =>
     ({
-        fetchRoomTypes: () => {
-            dispatch(abode.fetchRoomTypes());
-        },
+        summary_information: state.abode.summary_information,
     });
 
-export default connect(null, mapDispatchToProps)(Abode);
+const mapDispatchToProps = dispatch =>
+    ({
+        fetchRoomTypes: () => dispatch(abode.fetchRoomTypes()),
+        fetchSummaryInformation: () => dispatch(abode.fetchSummaryInformation()),
+    });
+
+export default connect(mapStateToProps, mapDispatchToProps)(Abode);

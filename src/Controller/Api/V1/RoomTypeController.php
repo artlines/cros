@@ -6,6 +6,7 @@ use App\Entity\Abode\Place;
 use App\Entity\Abode\Room;
 use App\Entity\Abode\RoomType;
 use App\Entity\Participating\ParticipationClass;
+use App\Repository\Abode\RoomTypeRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
@@ -152,6 +153,20 @@ class RoomTypeController extends ApiController
         $this->em->flush();
 
         return $this->success();
+    }
+
+    /**
+     * @Route("room_type/summary_information", methods={"GET"})
+     * @IsGranted("ROLE_SETTLEMENT_MANAGER")
+     */
+    public function getSummaryInformation()
+    {
+        /** @var RoomTypeRepository $roomTypeRepo */
+        $roomTypeRepo = $this->em->getRepository(RoomType::class);
+
+        $items = $roomTypeRepo->getSummaryInformation();
+
+        return $this->success(['items' => $items]);
     }
 
     /**

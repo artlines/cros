@@ -17,6 +17,7 @@ import map from "lodash/map";
 import ParticipationClassForm from "./ParticipationClassForm";
 import find from "lodash/find";
 import FabButton from "../../utils/FabButton";
+import sortBy from "lodash/sortBy";
 
 class ParticipationClassTable extends React.Component {
     constructor(props) {
@@ -74,7 +75,7 @@ class ParticipationClassTable extends React.Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {map(items, item =>
+                            {map(sortBy(items, 'title'), item =>
                                 <TableRow key={item.id}>
                                     <TableCell>{item.title}</TableCell>
                                     <TableCell align={`right`}>
