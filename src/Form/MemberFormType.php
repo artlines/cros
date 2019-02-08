@@ -80,7 +80,7 @@ class MemberFormType extends AbstractType
                 TextType::class,
                 [
                     'label' => 'Должность',
-                    'required' => false,
+                    'required' => true,
                     'attr' => array(
                         'class' => 'cs-theme-color-gray-dark-v3',
                     ),
@@ -149,7 +149,7 @@ class MemberFormType extends AbstractType
 //                        'style' => 'margin-top: 37px;'
                     ],
                     'required' => false,
-                    'help' => 'Главный участник, от компании'
+                    'help' => 'Контактное лицо по организационным вопросам'
                 ]
             )
 
