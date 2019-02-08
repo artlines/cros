@@ -195,6 +195,7 @@ label.required:after
     height: 34px;
 }
 .google-sign-in__btn {
+    background: none !important;
     margin-left: 5px;
     padding: 0 !important;
 }
