@@ -5,8 +5,11 @@ import {
     Typography,
     IconButton,
     Toolbar,
+    Tooltip,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import ReplyIcon from "@material-ui/icons/Reply";
 import { withTheme } from "@material-ui/core/styles";
 
 class Header extends React.PureComponent {
@@ -22,6 +25,23 @@ class Header extends React.PureComponent {
                     <Typography variant={`h6`} noWrap color={`inherit`} style={{ marginLeft: theme.spacing.unit * 2 }}>
                         {title}
                     </Typography>
+                    <div style={{flexGrow: 1}}/>
+                    <div>
+                        <Tooltip title={`В старую CMS`}>
+                            <a href={`/admin`}>
+                                <IconButton>
+                                    <ReplyIcon/>
+                                </IconButton>
+                            </a>
+                        </Tooltip>
+                        <Tooltip title={`На сайт`}>
+                            <a href={`/`}>
+                                <IconButton>
+                                    <ExitToAppIcon/>
+                                </IconButton>
+                            </a>
+                        </Tooltip>
+                    </div>
                 </Toolbar>
             </AppBar>
         );
