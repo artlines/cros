@@ -8,6 +8,7 @@ use App\Entity\Participating\Comment;
 use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\ConferenceOrganization;
 use App\Entity\Participating\User;
+use App\Form\CommentFormType;
 use App\Form\ConferenceOrganizationFormType;
 use App\Repository\ConferenceMemberRepository;
 use App\Repository\ConferenceOrganizationRepository;
@@ -457,17 +458,18 @@ class ConferenceRegistrationController extends AbstractController
                     'organization' => $organization,
                     'conference' => $Conference,
                 ]);
+
+            $CommentForm = $this->createForm(
+                CommentFormType::class
+            );
             return $this->render('conference_registration/show.html.twig', [
                 'ConferenceOrganization' => $conferenceOrganization,
+                'form' => $CommentForm->createView(),
             ]);
-    }
+        } else {
+            throw $this->createNotFoundException();
 
-        return $this->render('frontend/registration/step_three.html.twig', array(
-
-            'org' => $org,
-            'users' => $users,
-            'useryet' => $uc,
-        ));
+        }
     }
 
 }

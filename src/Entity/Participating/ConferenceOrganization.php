@@ -84,6 +84,7 @@ class ConferenceOrganization
      * @var ArrayCollection|Comment[]
      *
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="conferenceOrganization", cascade={"remove"})
+     * @ORM\OrderBy({"createdAt"="DESC"})
      */
     private $comments;
 

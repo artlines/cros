@@ -4,5 +4,60 @@
 {% block title %}Hello !{% endblock %}
 
 {% block body %}
-    {{ dump(ConferenceOrganization) }}
+<div class="container">
+    <table class="table">
+        <tbody>
+        <tr>
+            <th scope="row">Название</th>
+            <td>{{- ConferenceOrganization.organization.name -}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Город</th>
+            <td>{{- ConferenceOrganization.organization.city -}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Адрес</th>
+            <td>{{- ConferenceOrganization.organization.address -}}</td>
+        </tr>
+        <tr>
+            <th scope="row">ИНН</th>
+            <td>{{- ConferenceOrganization.organization.inn -}}</td>
+        </tr>
+        <tr>
+            <th scope="row">КПП</th>
+            <td>{{- ConferenceOrganization.organization.kpp -}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Реквизиты</th>
+            <td>{{- ConferenceOrganization.organization.requisites|nl2br -}}</td>
+        </tr>
+        </tbody>
+    </table>
+<h3>Комментарии</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Коментарий</th>
+            <th scope="col">Автор</th>
+            <th scope="col">Дата</th>
+        </tr>
+    </thead>
+{% for comment in ConferenceOrganization.comments %}
+    <tbody>
+        <tr>
+            <th>#{{ loop.index }}</th>
+            <td>{{ comment.content }}</td>
+            <td>{{ comment.user.lastName }} {{ comment.user.firstName }} {{ comment.user.middleName }}</td>
+            <td>{{ comment.createdAt|date('Y.m.d H:i') }}</td>
+        </tr>
+    </tbody>
+{% endfor %}
+</table>
+    {{ form_start(form) }}
+    {{ form_row(form.content) }}
+    {{ form_row(form.save) }}
+    {{ form_end(form) }}
+</div>
+
 {% endblock %}
