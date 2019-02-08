@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Conference;
 use App\Entity\Participating\Organization;
-use App\Entity\Participating\User;
 use App\Validation\DataValidation;
 use App\Validation\Country;
 use Symfony\Component\BrowserKit\Cookie;
@@ -615,14 +614,14 @@ class RegistrationController extends AbstractController
                         }
                     }
                 }
-               /* $event = new Logs();
-                $event->setEntity('user');
-                $event->setEvent('Зарегистрирован новый участник');
-                $event->setElementId($user->getId());
-                $event->setReaded(0);
+                /* $event = new Logs();
+                 $event->setEntity('user');
+                 $event->setEvent('Зарегистрирован новый участник');
+                 $event->setElementId($user->getId());
+                 $event->setReaded(0);
 
-                $em->persist($event);
-                $em->flush();*/
+                 $em->persist($event);
+                 $em->flush();*/
 
                 $result = array(
                     'status' => 'success',
@@ -659,15 +658,12 @@ class RegistrationController extends AbstractController
         $org = $this->getUser();
 
         $users = $this->getDoctrine()
-//            ->getRepository('App:User')
-            ->getRepository(User::class)
-//            ->findBy(array('organizationId' => $org->getId(), 'isActive' => true));
-            ->findAll();
+            ->getRepository('App:User')
+            ->findBy(array('organizationId' => $org->getId(), 'isActive' => true));
 
         /** @var User $users_yet */
         $users_yet = $this->getDoctrine()
-//            ->getRepository('App:User')
-            ->getRepository(User::class)
+            ->getRepository('App:User')
             ->findAll();
         $uc = count($users_yet);
 
