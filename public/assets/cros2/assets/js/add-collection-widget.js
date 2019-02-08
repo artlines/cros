@@ -3,7 +3,6 @@
 const addWidget = function (e) {
     var list = jQuery(jQuery(this).attr('data-list'));
 
-    console.log(list);
     var limit = list.attr('data-LimitUsersByOrg');
     // Try to find the counter of the list or use the length of the list
     var counter = list.data('widget-counter');
@@ -420,7 +419,7 @@ const fixErrorLabels = function () {
 jQuery(document).ready(function () {
 
     jQuery('.add-another-collection-widget').click(addWidget)
-    // .click()
+    .click()
     ;
     jQuery('.select-roomtype')
         .on('change', changeRoomType)

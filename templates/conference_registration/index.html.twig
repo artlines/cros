@@ -422,7 +422,7 @@ id     name    inn kpp
                 {% set used=item[1] %}
                 {% set rooms=item[2] %}
                 {% if roomType.maxPlaces*rooms-used > 0  %}
-                    <option value="{{ roomType.id }}">{{ roomType.title }} Мест: {{ roomType.maxPlaces*rooms-used }} Стоимость: {{ roomType.cost|number_format }} ₽</option>
+                    <option value="{{ roomType.id }}">{{ roomType.title }} / Стоимость: {{ roomType.cost|number_format }} ₽</option>
                 {% endif %}
             {% endfor %}
         </select>
