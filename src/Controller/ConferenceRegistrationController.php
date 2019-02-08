@@ -364,7 +364,7 @@ class ConferenceRegistrationController extends AbstractController
                         $em->persist($comment);
                     }
                     $mailer->send(
-                        'КРОС 2019: Регистрация завершена',
+                        'КРОС 2019: ' . $ConferenceOrganization->getOrganization()->getName(),
                         [
                             'organization' => $params_organization,
                             'conference' => [
@@ -435,5 +435,40 @@ class ConferenceRegistrationController extends AbstractController
             'Users'   => 0, // TODD: get real users value
         ]);
     }
+
+
+    /**
+     * @Route("/registration-show", name="registration_show")
+     *
+     * @return object
+     */
+    public function stepThree(){
+        /** @var User $user */
+        $organization =  $this->getUser()->getOrganization();
+//        $user
+//        dump($user);
+
+        $Conference = $this->getDoctrine()->getRepository(Conference::class)
+            ->findOneBy(['year' => date("Y")]);
+        if ($organization and $Conference){
+            $conferenceOrganization = $this->getDoctrine()
+                ->getRepository(ConferenceOrganization::class)
+                ->findOneBy([
+                    'organization' => $organization,
+                    'conference' => $Conference,
+                ]);
+            return $this->render('conference_registration/show.html.twig', [
+                'ConferenceOrganization' => $conferenceOrganization,
+            ]);
+    }
+
+        return $this->render('frontend/registration/step_three.html.twig', array(
+
+            'org' => $org,
+            'users' => $users,
+            'useryet' => $uc,
+        ));
+    }
+
 }
 
