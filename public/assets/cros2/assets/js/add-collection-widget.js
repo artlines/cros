@@ -114,7 +114,6 @@ const  validateNeighbourhoodRoomType = function(){
             var m_roomType = jQuery(this)
                 .find('.select-roomtype').val();
 //                return 'Класс участия для совместного проживания отличается'
-            console.log('n_roomType',n_roomType,m_roomType);
             return ( n_roomType != m_roomType);
         })
         .map(function(e){
@@ -124,20 +123,9 @@ const  validateNeighbourhoodRoomType = function(){
         })
         .get()
         ;
-console.log('result',result, result.length>0);
     return (result.length>0)
         ? result
         : false;
-
-//        .filter(function(i){ return i})
-//        .filter(function(){return jQuery(this).value})
-
-
-    // .select-roomtype
-    // .select-neighbourhood
-    //.data-num
-    return 'errovalidateNeighbourhoodRoomType'
-
 };
 
 // за комнату
@@ -176,7 +164,6 @@ const validateRequired = function () {
         // check user type with neighbourhood
         var errNH;
         if( errNH = validateNeighbourhoodRoomType()) {
-            console.log('errNH',errNH, errNH.join('<br />') );
             jQuery('#confirm-reg-warning')
                 .show()
                 .html(
