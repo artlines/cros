@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Abode\RoomType;
 use App\Entity\Conference;
+use App\Entity\Participating\Comment;
 use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\ConferenceOrganization;
 use App\Entity\Participating\User;
@@ -353,6 +354,15 @@ class ConferenceRegistrationController extends AbstractController
             $mailer->setTemplateAlias(self::MAIL_SEND_REGISTERED);
             foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
                 if( $conferenceMember->getUser()->isRepresentative()) {
+                    $comment = new Comment();
+                    $comment->setConferenceOrganization($ConferenceOrganization);
+                    $comment->setUser($conferenceMember->getUser());
+                    // NOT DO $comment->setContent($ConferenceOrganization->getNotes());
+                    $content = $request->get('conference_organization_form')['notes'];
+                    $comment->setContent($content);
+                    if ($content) {
+                        $em->persist($comment);
+                    }
                     $mailer->send(
                         'КРОС 2019: Регистрация завершена',
                         [
@@ -406,6 +416,7 @@ class ConferenceRegistrationController extends AbstractController
                     $conferenceMember->getUser()->getEmail() ,null, $this->getBcc()
                 );
             }
+            $em->flush();
 
             return $this->render('conference_registration/registration_success.html.twig', [
                 'ConferenceOrganization' => $ConferenceOrganization,
