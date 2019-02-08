@@ -16,7 +16,7 @@ class Sponsor
     const TYPE__GOLD    = 2;
 
     protected static $mapTypeTitle = [
-        self::TYPE__SILVER  => 'Серебрянный',
+        self::TYPE__SILVER  => 'Серебряный',
         self::TYPE__GOLD    => 'Золотой',
     ];
 
@@ -91,6 +91,14 @@ class Sponsor
      * @ORM\Column(name="priority", type="integer")
      */
     private $priority;
+
+    /**
+     * @var Conference
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Conference", inversedBy="sponsors")
+     * @ORM\JoinColumn(name="conference_id", referencedColumnName="id", nullable=false)
+     */
+    private $conference;
 
     /**
      * Get id
@@ -313,5 +321,21 @@ class Sponsor
     public function setPhone($phone)
     {
         $this->phone = $phone;
+    }
+
+    /**
+     * @return Conference
+     */
+    public function getConference()
+    {
+        return $this->conference;
+    }
+
+    /**
+     * @param Conference $conference
+     */
+    public function setConference(Conference $conference): void
+    {
+        $this->conference = $conference;
     }
 }
