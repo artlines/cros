@@ -59,6 +59,8 @@ const changeRoomType = function() {
     if (jQuery('#roomType_'+ id).data('rooms')>1 ){
         nh.show();
     } else {
+        // reset selected neighbourhood
+        jQuery(this).parents('.conference-member').find('.select-neighbourhood').val('');
         nh.hide();
     }
 };

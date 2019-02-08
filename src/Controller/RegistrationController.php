@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Conference;
 use App\Entity\Participating\Organization;
+use App\Entity\Participating\User;
 use App\Validation\DataValidation;
 use App\Validation\Country;
 use Symfony\Component\BrowserKit\Cookie;
@@ -658,12 +659,15 @@ class RegistrationController extends AbstractController
         $org = $this->getUser();
 
         $users = $this->getDoctrine()
-            ->getRepository('App:User')
-            ->findBy(array('organizationId' => $org->getId(), 'isActive' => true));
+//            ->getRepository('App:User')
+            ->getRepository(User::class)
+//            ->findBy(array('organizationId' => $org->getId(), 'isActive' => true));
+            ->findAll();
 
         /** @var User $users_yet */
         $users_yet = $this->getDoctrine()
-            ->getRepository('App:User')
+//            ->getRepository('App:User')
+            ->getRepository(User::class)
             ->findAll();
         $uc = count($users_yet);
 
