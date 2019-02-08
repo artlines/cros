@@ -254,6 +254,18 @@ class ConferenceMemberController extends ApiController
             return $this->notFound('Conference member not found.');
         }
 
+        /**
+         * Check for neighbourhood
+         * @var ConferenceMember[] $neighbourhoods
+         */
+        $neighbourhoods = $this->em->getRepository(ConferenceMember::class)
+            ->findBy(['neighbourhood' => $conferenceMember]);
+
+        foreach ($neighbourhoods as $neighbourhood) {
+            $neighbourhood->setNeighbourhood(null);
+            $this->em->persist($neighbourhood);
+        }
+
         $this->em->remove($conferenceMember);
         $this->em->flush();
 
