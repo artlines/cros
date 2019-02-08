@@ -134,10 +134,12 @@ class Comment
 
     /**
      * @param User $user
+     * @return Comment
      */
     public function setUser(User $user)
     {
         $this->user = $user;
+        return $this;
     }
 
     /**
@@ -150,9 +152,11 @@ class Comment
 
     /**
      * @param ConferenceOrganization $conferenceOrganization
+     * @return Comment
      */
-    public function setConferenceOrganization(ConferenceOrganization $conferenceOrganization)
+    public function setConferenceOrganization(ConferenceOrganization $conferenceOrganization): self
     {
         $this->conferenceOrganization = $conferenceOrganization;
+        return $this;
     }
 }

@@ -16,7 +16,7 @@ class CommentFormType extends AbstractType
     {
         $builder
             ->add('content',TextareaType::class,[
-                'label' => 'Новый коментарий',
+                'label' => 'Новый комментарий',
                 'attr' => [
                     'class' => 'cs-theme-color-gray-dark-v3',
                     'placeholder' => 'Ваш комментарий...',
@@ -28,7 +28,7 @@ class CommentFormType extends AbstractType
 //            ->add('user')
 //            ->add('conferenceOrganization')
             ->add('save', SubmitType::class, [
-                'label' => 'Оставить коментарий',
+                'label' => 'Оставить комментарий',
                 'attr' => [
                     'class' => 'u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15'
                 ]
