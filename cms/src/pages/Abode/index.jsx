@@ -42,7 +42,6 @@ class Abode extends React.Component {
             this.setState({housing: res.items, isFetching: false})
         });
         this.props.fetchRoomTypes();
-        this.props.fetchSummaryInformation();
     };
 
     handleCloseHousingForm = () => this.setState({form: {...this.state.form, open: false}});
@@ -110,10 +109,6 @@ class Abode extends React.Component {
                             <Typography variant={`subtitle1`}>Нет данных</Typography>
                         </Grid>
                     }
-                    <Divider/>
-                    <Grid item xs={12}>
-                        <SummaryInformation {...summary_information}/>
-                    </Grid>
                 </Grid>
             </div>
         );
@@ -128,7 +123,6 @@ const mapStateToProps = state =>
 const mapDispatchToProps = dispatch =>
     ({
         fetchRoomTypes: () => dispatch(abode.fetchRoomTypes()),
-        fetchSummaryInformation: () => dispatch(abode.fetchSummaryInformation()),
     });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Abode);

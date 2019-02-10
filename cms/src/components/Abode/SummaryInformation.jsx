@@ -15,12 +15,18 @@ class SummaryInformation extends React.PureComponent {
     render() {
         const { items } = this.props;
 
+        const sumBusy = reduce(items, (sum, item) => sum + item.busy, 0);
+        const sumPopulated = reduce(items, (sum, item) => sum + item.populated, 0);
+        const sumTotal = reduce(items, (sum, item) => sum + item.total, 0);
+        const sumFree = sumTotal - sumBusy;
+
         return (
             <React.Fragment>
                 <Table>
                     <TableHead>
                         <TableRow>
                             <TableCell>Тип комнаты</TableCell>
+                            <TableCell>Свободно</TableCell>
                             <TableCell>Занято</TableCell>
                             <TableCell>Заселено</TableCell>
                             <TableCell>Всего</TableCell>
@@ -30,6 +36,7 @@ class SummaryInformation extends React.PureComponent {
                         {map(items, item =>
                             <TableRow key={item.room_type_id}>
                                 <TableCell><RoomType id={item.room_type_id}/></TableCell>
+                                <TableCell>{item.total - item.busy}</TableCell>
                                 <TableCell>{item.busy}</TableCell>
                                 <TableCell>{item.populated}</TableCell>
                                 <TableCell>{item.total}</TableCell>
@@ -38,9 +45,10 @@ class SummaryInformation extends React.PureComponent {
                         {items.length > 0 &&
                             <TableRow key={`summary`}>
                                 <TableCell><b>Итого</b></TableCell>
-                                <TableCell>{reduce(items, (sum, item) => sum + item.busy, 0)}</TableCell>
-                                <TableCell>{reduce(items, (sum, item) => sum + item.populated, 0)}</TableCell>
-                                <TableCell>{reduce(items, (sum, item) => sum + item.total, 0)}</TableCell>
+                                <TableCell>{sumFree}</TableCell>
+                                <TableCell>{sumBusy}</TableCell>
+                                <TableCell>{sumPopulated}</TableCell>
+                                <TableCell>{sumTotal}</TableCell>
                             </TableRow>
                         }
                     </TableBody>
