@@ -29,6 +29,7 @@ class ConferenceRegistrationController extends AbstractController
     const MAIL_SEND_CODE         = 'cros.send.code';
     const MAIL_SEND_REGISTERED   = 'cros.send.registered';
     const MAIL_SEND_PASSWORD     = 'cros.send.password';
+    const MAIL_SEND_COMMENT      = 'cros.send.comment';
     const MAIL_BCC               = 'cros@nag.ru';
 
     private function getRandomPassword()
@@ -444,7 +445,7 @@ class ConferenceRegistrationController extends AbstractController
      *
      * @return object
      */
-    public function stepThree(Request $request){
+    public function stepThree(Request $request, Mailer $mailer){
         /** @var User $user */
         $organization =  $this->getUser()->getOrganization();
         $Conference = $this->getDoctrine()->getRepository(Conference::class)
@@ -469,15 +470,26 @@ class ConferenceRegistrationController extends AbstractController
             if ($CommentForm->isSubmitted() && $CommentForm->isValid()) {
 
                 /** @var Comment $Comment */
-                $Comment = $CommentForm->getData();
-                $Comment
+                $comment = $CommentForm->getData();
+                $comment
                     ->setUser($this->getUser())
                     ->setConferenceOrganization($conferenceOrganization)
                     ;
                 /** @var EntityManager $em */
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($Comment);
+                $em->persist($comment);
                 $em->flush();
+                // send mail
+                $mailer->setTemplateAlias(self::MAIL_SEND_COMMENT);
+                $mailer->send(
+                    'КРОС 2019: ' . $conferenceOrganization->getOrganization()->getName(),
+                    [
+                        'organization' => $organization,
+                        'comment'      => $comment,
+                    ],
+                    $this->getBcc()
+//                    $this->getUser()->getEmail(), null, $this->getBcc()
+                );
                 return $this->redirectToRoute('registration_show');
             }
 
