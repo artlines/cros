@@ -16,7 +16,7 @@ class PriceController extends AbstractController
      */
     public function price(EntityManagerInterface $em)
     {
-        $roomTypes = $em->getRepository(RoomType::class)->findAll();
+        $roomTypes = $em->getRepository(RoomType::class)->findBy([], ['title' => 'ASC']);
 
         return $this->render('site/price.html.twig', [
             'roomTypes' => $roomTypes
