@@ -18,8 +18,6 @@ class PriceController extends AbstractController
     {
         $roomTypes = $em->getRepository(RoomType::class)->findAll();
 
-        dump($roomTypes);
-
         return $this->render('site/price.html.twig', [
             'roomTypes' => $roomTypes
         ]);
