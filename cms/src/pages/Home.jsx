@@ -17,7 +17,6 @@ class Home extends React.Component {
 
     componentDidMount() {
         this.props.fetchSummaryInformation();
-        this.props.fetchRoomTypes();
         this.updateInterval = setInterval(() => {
             this.props.fetchSummaryInformation();
         }, 60000);
@@ -54,7 +53,6 @@ const mapStateToProps = state =>
 const mapDispatchToProps = dispatch =>
     ({
         fetchSummaryInformation: () => dispatch(abode.fetchSummaryInformation()),
-        fetchRoomTypes: () => dispatch(abode.fetchRoomTypes()),
     });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
