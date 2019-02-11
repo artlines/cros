@@ -30,82 +30,60 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
             ->getOneOrNullResult();
     }
 
-    /**
-     * Search users
-     *
-     * @param array $data
-     * @return array
-     */
     public function searchBy(array $data = [])
-    {
-        $limit = 10;
-        $offset = null;
-        $parameters = [];
-        $qb = $this->createQueryBuilder('m');
-
-        $query = $qb->select('m');
-
-        /** Check for search string */
-        if (isset($data['search'])) {
-            $val = $data['search'];
-            $query->andWhere(
-                $qb->expr()->orX(
-                    "m.fist_name LIKE '%$val%'",
-                    "m.last_name LIKE '%$val%'",
-                    "m.email LIKE '%$val%'"
-                )
-            );
-        }
-
-        /** Check for role filter */
-        if (isset($data['role'])) {
-            $query->andWhere('m.roles LIKE "%:role%"');
-            $parameters['role'] = $data['role'];
-        }
-
-        /** Check for limit and offset */
-        if (isset($data['@limit'])) {
-            $limit = (int) $data['@limit'];
-        }
-        if (isset($data['@offset'])) {
-            $offset = (int) $data['@offset'];
-        }
-
-        $queryC = clone $query;
-
-        $result = [
-            $query->setMaxResults($limit)->setFirstResult($offset)->getQuery()->getResult(),
-            count($queryC->getQuery()->getArrayResult()),
-        ];
-
-        return $result;
-    }
-
-    /**
-     *
-     */
-    public function searchBySQL(array $data = [])
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $stmt = $conn->prepare("
+        $query = "
+            FROM participating.member m
+              LEFT JOIN participating.organization o ON m.organization_id = o.id
+            WHERE true
+        ";
+
+        /** Check for search param */
+        if (isset($data['search'])) {
+            $val = strtolower($data['search']);
+            $query .= " AND CONCAT_WS(' ', m.last_name, m.first_name, m.middle_name, m.email, o.name) LIKE '%$val%'";
+        }
+
+        /** Check for role */
+        if (isset($data['role'])) {
+            $query .= " AND m.roles LIKE '%{$data['role']}%'";
+        }
+
+        $sql = "
             SELECT
-              rt.id AS room_type_id,
-              rt.title AS room_type_title,
-              COUNT(DISTINCT cm.id) AS busy,
-              COUNT(DISTINCT p.id) AS populated,
-              COUNT(DISTINCT r.id)*rt.max_places AS total
-            FROM abode.room_type rt
-              LEFT JOIN abode.room r ON rt.id = r.type_id
-              LEFT JOIN participating.conference_member cm ON rt.id = cm.room_type_id
-              LEFT JOIN abode.place p ON cm.id = p.conference_member_id
-            GROUP BY rt.id
-        ");
+                m.id,
+                m.first_name,
+                m.last_name,
+                m.middle_name,
+                m.email,
+                m.post,
+                m.roles,
+                m.sex,
+                m.phone,
+                m.is_active,
+                m.representative,
+                m.post,
+                m.created_at,
+                o.name as organization_name
+        " . $query;
+        $sqlC = "SELECT COUNT(m.id) " . $query;
 
+        /** limit and offset */
+        $limit = intval($data['@limit'] ?? 10);
+        $offset = intval($data['@offset'] ?? 0);
+        $sql .= " LIMIT $limit OFFSET $offset";
+
+        $stmt = $conn->prepare($sql);
         $stmt->execute();
-        $result = $stmt->fetchAll();
+        $items = $stmt->fetchAll();
 
-        return $result;
+        $stmt = $conn->prepare($sqlC);
+        $stmt->execute();
+        $count = $stmt->fetchColumn();
+
+        return [$items, $count];
     }
 
     /**

@@ -14,12 +14,12 @@ use Symfony\Component\Security\Core\Role\RoleHierarchyInterface;
  * Class UsersController
  * @package App\Controller\Api\V1
  *
- * @Route("/api/v1/users", name="api_v1__users_")
+ * @Route("/api/v1", name="api_v1__users_")
  */
 class UsersController extends ApiController
 {
     /**
-     * @Route("/me", name="me", methods={"GET"})
+     * @Route("/users/me", name="me", methods={"GET"})
      * @IsGranted("ROLE_CMS_USER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
@@ -49,7 +49,7 @@ class UsersController extends ApiController
     }
 
     /**
-     * @Route("/managers", name="managers", methods={"GET"})
+     * @Route("/users/managers", name="managers", methods={"GET"})
      * @IsGranted("ROLE_CMS_USER")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
@@ -91,16 +91,7 @@ class UsersController extends ApiController
 
         /** @var User[] $users */
         list($users, $totalCount) = $userRepo->searchBy($this->requestData);
-    }
 
-    /**
-     * @Route("/users/new", methods={"POST"})
-     * @IsGranted("ROLE_ADMINISTRATOR")
-     */
-    public function new()
-    {
-        foreach (['first_name', 'last_name', ''])
-
-
+        return $this->success(['items' => $users, 'total_count' => $totalCount]);
     }
 }
