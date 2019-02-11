@@ -131,13 +131,6 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/price", name="price")
-     */
-    public function price()
-    {
-        return $this->render('frontend/price/show.html.twig');
-    }
-    /**
      * @Route("/privacy", name="privacy")
      */
     public function privacy()
