@@ -7,6 +7,7 @@ use App\Entity\Conference;
 use App\Entity\Participating\Comment;
 use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\ConferenceOrganization;
+use App\Entity\Participating\Organization;
 use App\Entity\Participating\User;
 use App\Form\CommentFormType;
 use App\Form\ConferenceOrganizationFormType;
@@ -447,6 +448,7 @@ class ConferenceRegistrationController extends AbstractController
      */
     public function stepThree(Request $request, Mailer $mailer){
         /** @var User $user */
+        /** @var Organization $organization */
         $organization =  $this->getUser()->getOrganization();
         $Conference = $this->getDoctrine()->getRepository(Conference::class)
             ->findOneBy(['year' => date("Y")]);
@@ -471,6 +473,7 @@ class ConferenceRegistrationController extends AbstractController
 
                 /** @var Comment $Comment */
                 $comment = $CommentForm->getData();
+                /** @var Comment $comment  */
                 $comment
                     ->setUser($this->getUser())
                     ->setConferenceOrganization($conferenceOrganization)
@@ -481,15 +484,21 @@ class ConferenceRegistrationController extends AbstractController
                 $em->flush();
                 // send mail
                 $mailer->setTemplateAlias(self::MAIL_SEND_COMMENT);
-                $mailer->send(
-                    'КРОС 2019: ' . $conferenceOrganization->getOrganization()->getName(),
+                dd($mailer->send(
+                    'КРОС 2019: ' . $organization->getName(),
                     [
-                        'organization' => $organization,
-                        'comment'      => $comment,
+                        'organization' => $organization->getName(),
+                        'comment'      => $comment->getContent(),
+                        'user'         => [
+                            'firstName'  => $comment->getUser()->getFirstName(),
+                            'middleName' => $comment->getUser()->getMiddleName(),
+                            'lastName'   => $comment->getUser()->getLastName(),
+                        ]
                     ],
                     $this->getBcc()
 //                    $this->getUser()->getEmail(), null, $this->getBcc()
-                );
+                ));
+
                 return $this->redirectToRoute('registration_show');
             }
 
