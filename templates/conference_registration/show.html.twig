@@ -28,6 +28,7 @@
         </tr>
         </tbody>
     </table>
+    <h3>Информация об участниках</h3>
 <div class="accordion" id="accordion" role="tablist">
 {% for member in ConferenceOrganization.conferenceMembers %}
             <div class="card cs-mb-10">
@@ -36,7 +37,7 @@
                         <a class="collapse-header-link" data-toggle="collapse" data-target="#collapse_{{ member.id }}"
                            aria-expanded="true" aria-controls="collapse_{{ member.id }}" href="#collapse_{{ member.id }}">
                             {#<p>{{ answer.question|raw }}</p>#}
-                            Участник {{ loop.index }}
+                            Участник {{ loop.index }}: {{ member.user.lastName }} {{ member.user.firstName }} {{ member.user.middleName }}
                         </a>
                     </h5>
                 </div>
@@ -86,7 +87,7 @@
                             </tr>
                             <tr>
                                 <th scope="row">Номер автомобиля</th>
-                                <td>{{- member.carNumber -}}</td>
+                                <td>{{- member.carNumber|default('Нет') -}}</td>
                             </tr>
                             <tr>
                                 <th scope="row">Класс участия</th>
