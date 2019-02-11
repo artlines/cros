@@ -111,7 +111,7 @@
     <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Коментарий</th>
+            <th scope="col">Вопрос</th>
             <th scope="col">Автор</th>
             <th scope="col">Дата</th>
         </tr>
@@ -119,7 +119,7 @@
 {% for comment in comments %}
     <tbody>
         <tr>
-            <th>#{{ loop.index }}</th>
+            <th>#</th>
             <td>{{ comment.content }}</td>
             <td>{{ comment.user.lastName }} {{ comment.user.firstName }} {{ comment.user.middleName }}</td>
             <td>{{ comment.createdAt|date('Y.m.d H:i') }}</td>
