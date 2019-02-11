@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Conference;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -29,6 +30,91 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
             ->getOneOrNullResult();
     }
 
+    /**
+     * Search users
+     *
+     * @param array $data
+     * @return array
+     */
+    public function searchBy(array $data = [])
+    {
+        $limit = 10;
+        $offset = null;
+        $parameters = [];
+        $qb = $this->createQueryBuilder('m');
+
+        $query = $qb->select('m');
+
+        /** Check for search string */
+        if (isset($data['search'])) {
+            $val = $data['search'];
+            $query->andWhere(
+                $qb->expr()->orX(
+                    "m.fist_name LIKE '%$val%'",
+                    "m.last_name LIKE '%$val%'",
+                    "m.email LIKE '%$val%'"
+                )
+            );
+        }
+
+        /** Check for role filter */
+        if (isset($data['role'])) {
+            $query->andWhere('m.roles LIKE "%:role%"');
+            $parameters['role'] = $data['role'];
+        }
+
+        /** Check for limit and offset */
+        if (isset($data['@limit'])) {
+            $limit = (int) $data['@limit'];
+        }
+        if (isset($data['@offset'])) {
+            $offset = (int) $data['@offset'];
+        }
+
+        $queryC = clone $query;
+
+        $result = [
+            $query->setMaxResults($limit)->setFirstResult($offset)->getQuery()->getResult(),
+            count($queryC->getQuery()->getArrayResult()),
+        ];
+
+        return $result;
+    }
+
+    /**
+     *
+     */
+    public function searchBySQL(array $data = [])
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $stmt = $conn->prepare("
+            SELECT
+              rt.id AS room_type_id,
+              rt.title AS room_type_title,
+              COUNT(DISTINCT cm.id) AS busy,
+              COUNT(DISTINCT p.id) AS populated,
+              COUNT(DISTINCT r.id)*rt.max_places AS total
+            FROM abode.room_type rt
+              LEFT JOIN abode.room r ON rt.id = r.type_id
+              LEFT JOIN participating.conference_member cm ON rt.id = cm.room_type_id
+              LEFT JOIN abode.place p ON cm.id = p.conference_member_id
+            GROUP BY rt.id
+        ");
+
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        return $result;
+    }
+
+    /**
+     * @deprecated Used on symfony 3
+     *
+     * @param array $users
+     * @param int $ap
+     * @return mixed|null
+     */
     public function findAllByUsers($users = array(), $ap = 0)
     {
         $ids_array = array();
@@ -55,6 +141,13 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
 
     }
 
+    /**
+     * @deprecated Used on symfony 3
+     *
+     * @param $conf_id
+     * @param $year
+     * @return mixed|null
+     */
     public function findManagers($conf_id, $year)
     {
         $query = $this->getEntityManager()
@@ -70,32 +163,9 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
         }
     }
 
-    /** Find by gender
-     * @param string $gender
-     * @return object|null
-     */
-    public function findGender($gender = 'female')
-    {
-        if ($gender == 'female') {
-            $query = $this->getEntityManager()
-                ->createQuery('
-                    SELECT u, utocs, o, uta, a FROM App:User u
-                    JOIN u.utocs utocs
-                    JOIN u.organization o
-                    LEFT JOIN u.utoas uta
-                    LEFT JOIN uta.apartament a
-                    WHERE u.female = 1
-                    ORDER BY a.id
-                ');
-            try {
-                return $query->getResult();
-            } catch (\Doctrine\ORM\NoResultException $e) {
-                return null;
-            }
-        }
-    }
-
     /**
+     * @deprecated Used on symfony 3
+     *
      * Finder for speakers
      * @param string $find
      * @return object|null
@@ -117,6 +187,8 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
     }
 
     /**
+     * @deprecated Used on symfony 3
+     *
      * Search user
      * @param string $string
      * @return object|null
@@ -156,6 +228,8 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
     }
 
     /**
+     * @deprecated Used on symfony 3
+     *
      * Search user
      * @param string $string
      * @param int $offset
