@@ -46,6 +46,7 @@ class RoomTypeRepository  extends EntityRepository
         $stmt = $conn->prepare("
             SELECT
               rt.id AS room_type_id,
+              rt.title AS room_type_title,
               COUNT(DISTINCT cm.id) AS busy,
               COUNT(DISTINCT p.id) AS populated,
               COUNT(DISTINCT r.id)*rt.max_places AS total
