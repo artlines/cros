@@ -14,12 +14,21 @@ export default {
         };
     },
 
-    fetchUsers: () => {
+    fetchManagers: () => {
 
         return dispatch => {
-            dispatch({ type: SYSTEM.REQUEST_MANAGERS });
+            dispatch({ type: SYSTEM.REQUEST_USERS });
             request.get(`users/managers`)
-                .then(payload => dispatch({ type: SYSTEM.RECEIVE_MANAGERS, payload }));
+                .then(payload => dispatch({ type: SYSTEM.RECEIVE_USERS, payload }));
+        };
+    },
+
+    fetchUsers: (query = {}) => {
+
+        return dispatch => {
+            dispatch({ type: SYSTEM.REQUEST_USERS });
+            request.get(`users`, query)
+                .then(payload => dispatch({ type: SYSTEM.RECEIVE_USERS, payload }));
         };
     },
 

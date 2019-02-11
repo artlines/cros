@@ -1,8 +1,9 @@
 export const SYSTEM = {
     REQUEST_ME: "SYSTEM_REQUEST_ME",
     RECEIVE_ME: "SYSTEM_RECEIVE_ME",
-    REQUEST_MANAGERS: "SYSTEM_REQUEST_MANAGERS",
-    RECEIVE_MANAGERS: "SYSTEM_RECEIVE_MANAGERS",
+
+    REQUEST_USERS: "SYSTEM_REQUEST_USERS",
+    RECEIVE_USERS: "SYSTEM_RECEIVE_USERS",
 };
 
 const initialState = {
@@ -38,7 +39,7 @@ export default (state = initialState, action) => {
                 ...payload,
             }
         };
-    case SYSTEM.REQUEST_MANAGERS:
+    case SYSTEM.REQUEST_USERS:
         return {
             ...state,
             users: {
@@ -46,7 +47,7 @@ export default (state = initialState, action) => {
                 isFetching: true,
             }
         };
-    case SYSTEM.RECEIVE_MANAGERS:
+    case SYSTEM.RECEIVE_USERS:
         return {
             ...state,
             users: {

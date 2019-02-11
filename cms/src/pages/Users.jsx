@@ -1,10 +1,7 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import participating from '../actions/participating';
-import abode from '../actions/abode';
 import system from '../actions/system';
-import OrganizationTable from '../components/Organization/Table';
 import {
     TextField,
     Grid,
@@ -14,11 +11,11 @@ import isEqual from 'lodash/isEqual';
 import isNumber from 'lodash/isNumber';
 import find from "lodash/find";
 import map from "lodash/map";
-import OrganizationForm from '../components/Organization/Form';
+import UserForm from '../components/User/Form';
+import UserTable from '../components/User/Table';
 import FabButton from '../components/utils/FabButton';
-import MultiSelectField from "../components/utils/MultiSelectField";
 
-class Organizations extends React.Component {
+class Users extends React.Component {
     constructor(props) {
         super(props);
 
@@ -34,22 +31,21 @@ class Organizations extends React.Component {
     }
 
     componentDidMount() {
-        this.props.fetchRoomTypes();
-        this.props.fetchManagers();
+        this.props.fetchUsers();
     }
 
     componentDidUpdate(prevProps, prevState, prevContext) {
         const { query } = this.state;
-        const { fetchOrganizations } = this.props;
+        const { fetchUsers } = this.props;
 
         if (!isEqual(prevState.query, query)) {
-            fetchOrganizations(query);
+            fetchUsers(query);
         }
     }
 
     update = (page, rowsPerPage, force = false) => {
         const { query } = this.state;
-        const { fetchOrganizations } = this.props;
+        const { fetchUsers } = this.props;
         let newQuery = {...query};
 
         rowsPerPage && (newQuery['@limit'] = rowsPerPage);
@@ -58,7 +54,7 @@ class Organizations extends React.Component {
         if (!force) {
             this.setState({query: newQuery});
         } else {
-            fetchOrganizations(newQuery);
+            fetchUsers(newQuery);
         }
     };
 
@@ -93,12 +89,12 @@ class Organizations extends React.Component {
     closeForm = () => this.setState({form: {...this.state.form, open: false}});
 
     render() {
-        const { fetchMembers, fetchComments, fetchInvoices, managers, organizations } = this.props;
-        const { form } = this.state; //s
+        const { users } = this.props;
+        const { form } = this.state;
 
         return (
             <React.Fragment>
-                <OrganizationForm
+                <UserForm
                     open={form.open}
                     initialValues={form.initialValues}
                     onClose={this.closeForm}
@@ -113,27 +109,15 @@ class Organizations extends React.Component {
                         />
                     </Grid>
                     <Grid item xs={4}>
-                        <MultiSelectField
-                            options={map(managers, i => ({ value: i.id, label: `${i.first_name} ${i.last_name}` }))}
-                            onChange={this.handleFilterChange(`invited_by[]`)}
-                            isSearchable
-                            isMulti
-                            placeholder={`Начните вводить имя`}
-                        />
-                    </Grid>
-                    <Grid item xs={4}>
                         <Grid container justify={`flex-end`}>
                             <Grid item>
-                                <FabButton title={`Добавить организацию`} onClick={this.openForm}/>
+                                <FabButton title={`Добавить пользователя`} onClick={this.openForm}/>
                             </Grid>
                         </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                        <OrganizationTable
-                            {...organizations}
-                            loadComments={fetchComments}
-                            loadInvoices={fetchInvoices}
-                            loadMembers={fetchMembers}
+                        <UserTable
+                            {...users}
                             update={this.update}
                             onEdit={this.openForm}
                         />
@@ -144,26 +128,17 @@ class Organizations extends React.Component {
     }
 }
 
-Organizations.propTypes = {
-    organizations: PropTypes.shape({
+Users.propTypes = {
+    users: PropTypes.shape({
         isFetching: PropTypes.bool.isRequired,
         total_count: PropTypes.number.isRequired,
         items: PropTypes.arrayOf(
             PropTypes.shape({
                 id:                 PropTypes.number.isRequired,
-                name:               PropTypes.string.isRequired,
-                inn:                PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-                kpp:                PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-                city:               PropTypes.string,
-                address:            PropTypes.string,
-                requisites:         PropTypes.string,
-                total_members:      PropTypes.number.isRequired,
-                in_room_members:    PropTypes.number.isRequired,
-                comments_count:     PropTypes.number.isRequired,
-                invoices:           PropTypes.array.isRequired,
-                invoices_count:     PropTypes.number.isRequired,
-                invoices_payed:     PropTypes.bool.isRequired,
-                invited_by:         PropTypes.oneOfType([null, PropTypes.string]),
+                first_name:         PropTypes.string.isRequired,
+                last_name:          PropTypes.string.isRequired,
+                middle_name:        PropTypes.string,
+
             }),
         ),
     }),
@@ -171,26 +146,12 @@ Organizations.propTypes = {
 
 const mapStateToProps = state =>
     ({
-        managers: state.system.users.items,
-        organizations: state.participating.conference_organization,
+        users: state.system.users,
     });
 
 const mapDispatchToProps = dispatch =>
     ({
-        fetchOrganizations: (data = {}) => {
-            dispatch(participating.fetchConferenceOrganizations(data))
-        },
-        fetchComments: (data = {}) => {
-            dispatch(participating.fetchComments(data))
-        },
-        fetchInvoices: (data = {}) => {
-            dispatch(participating.fetchInvoices(data))
-        },
-        fetchMembers: (data = {}) => {
-            dispatch(participating.fetchMembers(data))
-        },
-        fetchRoomTypes: () => dispatch(abode.fetchRoomTypes()),
-        fetchManagers: () => dispatch(system.fetchManagers()),
+        fetchUsers: () => dispatch(system.fetchUsers()),
     });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Organizations);
+export default connect(mapStateToProps, mapDispatchToProps)(Users);
