@@ -503,10 +503,17 @@ class ConferenceRegistrationController extends AbstractController
 
                 return $this->redirectToRoute('registration_show');
             }
-
+            $comments = $this->getDoctrine()
+                ->getRepository(Comment::class)
+                ->findBy([
+                    'conferenceOrganization'=>$conferenceOrganization,
+                    'isPrivate' => false,
+                ] ,['createdAt' =>'DESC'])
+            ;
 
             return $this->render('conference_registration/show.html.twig', [
                 'ConferenceOrganization' => $conferenceOrganization,
+                'comments' => $comments,
                 'form' => $CommentForm->createView(),
             ]);
         } else {
