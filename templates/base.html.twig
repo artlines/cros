@@ -143,9 +143,9 @@
                         </div>
                         <!-- End Navigation --><!-- User menu -->
                         <div class="d-none align-items-center d-lg-flex">
-                            {% if is_granted('ROLE_ORG') %}
+                            {% if is_granted('ROLE_USER') %}
                                 <div class="login-v1">
-                                    <a href="{{ path('registration-3') }}" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+                                    <a href="{{ path('registration_show') }}" class="cs-py-5 cs-font-size-11 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
                                         &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;ЛИЧНЫЙ КАБИНЕТ&nbsp;
                                     </a>
                                 </div>
