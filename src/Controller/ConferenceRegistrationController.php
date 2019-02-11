@@ -7,6 +7,7 @@ use App\Entity\Conference;
 use App\Entity\Participating\Comment;
 use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\ConferenceOrganization;
+use App\Entity\Participating\Organization;
 use App\Entity\Participating\User;
 use App\Form\CommentFormType;
 use App\Form\ConferenceOrganizationFormType;
@@ -29,6 +30,7 @@ class ConferenceRegistrationController extends AbstractController
     const MAIL_SEND_CODE         = 'cros.send.code';
     const MAIL_SEND_REGISTERED   = 'cros.send.registered';
     const MAIL_SEND_PASSWORD     = 'cros.send.password';
+    const MAIL_SEND_COMMENT      = 'cros.send.comment';
     const MAIL_BCC               = 'cros@nag.ru';
 
     private function getRandomPassword()
@@ -444,8 +446,9 @@ class ConferenceRegistrationController extends AbstractController
      *
      * @return object
      */
-    public function stepThree(Request $request){
+    public function stepThree(Request $request, Mailer $mailer){
         /** @var User $user */
+        /** @var Organization $organization */
         $organization =  $this->getUser()->getOrganization();
         $Conference = $this->getDoctrine()->getRepository(Conference::class)
             ->findOneBy(['year' => date("Y")]);
@@ -469,15 +472,35 @@ class ConferenceRegistrationController extends AbstractController
             if ($CommentForm->isSubmitted() && $CommentForm->isValid()) {
 
                 /** @var Comment $Comment */
-                $Comment = $CommentForm->getData();
-                $Comment
+                $comment = $CommentForm->getData();
+                /** @var Comment $comment  */
+                $comment
                     ->setUser($this->getUser())
                     ->setConferenceOrganization($conferenceOrganization)
                     ;
                 /** @var EntityManager $em */
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($Comment);
+                $em->persist($comment);
                 $em->flush();
+                // send mail
+                $mailer->setTemplateAlias(self::MAIL_SEND_COMMENT);
+                $mailer->send(
+                    'КРОС 2019: ' . $organization->getName(),
+                    [
+                        'organization' => [
+                            'name' => $organization->getName()
+                            ],
+                        'comment'      => $comment->getContent(),
+                        'user'         => [
+                            'firstName'  => $comment->getUser()->getFirstName(),
+                            'middleName' => $comment->getUser()->getMiddleName(),
+                            'lastName'   => $comment->getUser()->getLastName(),
+                        ]
+                    ],
+                    $this->getBcc()
+//                    $this->getUser()->getEmail(), null, $this->getBcc()
+                );
+
                 return $this->redirectToRoute('registration_show');
             }
 

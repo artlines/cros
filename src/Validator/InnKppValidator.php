@@ -63,6 +63,7 @@ class InnKppValidator extends ConstraintValidator
                 /** @var RoomType $RoomType */
                 $arFreeRooms[$RoomType->getId()] = $RoomType->getMaxPlaces()*$rooms - $used;
             }
+            $usedEmail = [];
             foreach ( $value->getConferenceMembers() as $key => $conferenceMember ){
 
                 $roomTypeId = $conferenceMember->getRoomType()->getId();
@@ -94,6 +95,14 @@ class InnKppValidator extends ConstraintValidator
                         ->buildViolation('Не верный формат почты' )
                         ->atPath("ConferenceMembers[{$key}].user.email")
                         ->addViolation();
+                } elseif (isset($usedEmail[$email])) {
+                    $this->context
+                        ->buildViolation('Одинаковая почта у участников ' )
+                        ->atPath("ConferenceMembers[{$key}].user.email")
+                        ->addViolation();
+                } else {
+                    // Пометить почту как используемую
+                    $usedEmail[$email] = $email;
                 }
             }
         }
