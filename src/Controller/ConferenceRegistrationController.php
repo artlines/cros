@@ -487,7 +487,9 @@ class ConferenceRegistrationController extends AbstractController
                 dd($mailer->send(
                     'КРОС 2019: ' . $organization->getName(),
                     [
-                        'organization' => $organization->getName(),
+                        'organization' => [
+                            'name' => $organization->getName()
+                            ],
                         'comment'      => $comment->getContent(),
                         'user'         => [
                             'firstName'  => $comment->getUser()->getFirstName(),
