@@ -419,9 +419,16 @@ const fixErrorLabels = function () {
 };
 jQuery(document).ready(function () {
 
-    jQuery('.add-another-collection-widget').click(addWidget)
-    .click()
+    jQuery('.add-another-collection-widget')
+        .click(addWidget)
     ;
+
+    if( jQuery('.conference-member').length == 0 ){
+        // Если нет участников добавлять одного
+        jQuery('.add-another-collection-widget')
+            .click();
+    }
+
     jQuery('.select-roomtype')
         .on('change', changeRoomType)
         .change()
