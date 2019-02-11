@@ -484,7 +484,7 @@ class ConferenceRegistrationController extends AbstractController
                 $em->flush();
                 // send mail
                 $mailer->setTemplateAlias(self::MAIL_SEND_COMMENT);
-                dd($mailer->send(
+                $mailer->send(
                     'КРОС 2019: ' . $organization->getName(),
                     [
                         'organization' => [
@@ -499,7 +499,7 @@ class ConferenceRegistrationController extends AbstractController
                     ],
                     $this->getBcc()
 //                    $this->getUser()->getEmail(), null, $this->getBcc()
-                ));
+                );
 
                 return $this->redirectToRoute('registration_show');
             }
