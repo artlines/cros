@@ -97,7 +97,7 @@ class InnKppValidator extends ConstraintValidator
                         ->addViolation();
                 } elseif (isset($usedEmail[$email])) {
                     $this->context
-                        ->buildViolation('Одинаковая почта у участников ' )
+                        ->buildViolation('Почтовый ящик должен быть уникальным у каждого участника' )
                         ->atPath("ConferenceMembers[{$key}].user.email")
                         ->addViolation();
                 } else {
