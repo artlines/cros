@@ -29,7 +29,7 @@ class CommentFormType extends AbstractType
 //            ->add('user')
 //            ->add('conferenceOrganization')
             ->add('save', SubmitType::class, [
-                'label' => 'Оставить комментарий',
+                'label' => 'Отправить',
                 'attr' => [
                     'class' => 'u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15'
                 ]
