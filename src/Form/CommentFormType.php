@@ -16,12 +16,13 @@ class CommentFormType extends AbstractType
     {
         $builder
             ->add('content',TextareaType::class,[
-                'label' => 'Новый комментарий',
+                'label' => 'Задать вопрос',
                 'attr' => [
                     'class' => 'cs-theme-color-gray-dark-v3',
-                    'placeholder' => 'Ваш комментарий...',
+                    'placeholder' => 'Ваш вопрос организатору...',
                     'rows' => '8',
-                ]
+                ],
+//                'required' => false,
             ])
 //            ->add('isPrivate')
 //            ->add('createdAt')

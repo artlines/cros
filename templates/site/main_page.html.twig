@@ -130,9 +130,9 @@
         </div>
         {% endif %}
 
-        {% if is_granted('ROLE_ORG') %}
+        {% if is_granted('ROLE_USER') %}
             <div class="container text-right login-main">
-                <a href="{{ path('registration-3') }}" class="cs-py-5 cs-font-size-11 cs-z-index-2 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+                <a href="{{ path('registration_show') }}" class="cs-py-5 cs-font-size-11 cs-z-index-2 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
                     &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;ЛИЧНЫЙ КАБИНЕТ&nbsp;
                 </a>
             </div>

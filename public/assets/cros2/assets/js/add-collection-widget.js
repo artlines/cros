@@ -490,6 +490,12 @@ jQuery(document).ready(function () {
     jQuery('input').on('change',function (e) {
         blockUnload = true;
     });
+    jQuery('textarea').on('change',function (e) {
+        blockUnload = true;
+    });
+    jQuery('select').on('change',function (e) {
+        blockUnload = true;
+    });
     jQuery('#conference_organization_form_save').on('click',function (e) {
         blockUnload = false;
     });

@@ -5,35 +5,108 @@
 
 {% block body %}
 <div class="container">
+    <h3>Информация о регистрации</h3>
     <table class="table">
         <tbody>
         <tr>
             <th scope="row">Название</th>
             <td>{{- ConferenceOrganization.organization.name -}}</td>
-        </tr>
-        <tr>
             <th scope="row">Город</th>
             <td>{{- ConferenceOrganization.organization.city -}}</td>
         </tr>
         <tr>
-            <th scope="row">Адрес</th>
-            <td>{{- ConferenceOrganization.organization.address -}}</td>
-        </tr>
-        <tr>
             <th scope="row">ИНН</th>
             <td>{{- ConferenceOrganization.organization.inn -}}</td>
-        </tr>
-        <tr>
             <th scope="row">КПП</th>
             <td>{{- ConferenceOrganization.organization.kpp -}}</td>
         </tr>
         <tr>
+            <th scope="row">Адрес</th>
+            <td>{{- ConferenceOrganization.organization.address -}}</td>
             <th scope="row">Реквизиты</th>
             <td>{{- ConferenceOrganization.organization.requisites|nl2br -}}</td>
         </tr>
         </tbody>
     </table>
-<h3>Комментарии</h3>
+    <h3>Информация об участниках</h3>
+<div class="accordion" id="accordion" role="tablist">
+{% for member in ConferenceOrganization.conferenceMembers %}
+            <div class="card cs-mb-10">
+                <div class="card-header" role="tab" id="heading_{{ member.id }}">
+                    <h5 class="mb-0">
+                        <a class="collapse-header-link" data-toggle="collapse" data-target="#collapse_{{ member.id }}"
+                           aria-expanded="true" aria-controls="collapse_{{ member.id }}" href="#collapse_{{ member.id }}">
+                            {#<p>{{ answer.question|raw }}</p>#}
+                            Участник {{ loop.index }}: {{ member.user.lastName }} {{ member.user.firstName }} {{ member.user.middleName }}
+                        </a>
+                    </h5>
+                </div>
+                <div id="collapse_{{ member.id }}" class="collapse" aria-labelledby="heading_{{ member.id }}" data-parent="#accordion">
+                    <div class="card-body">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <th scope="row">ФИО</th>
+                                <td>{{ member.user.lastName }} {{ member.user.firstName }} {{ member.user.middleName }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Должность</th>
+                                <td>{{- member.user.post -}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Пол</th>
+                                <td>{% if member.user.sex==1 %}Мужской{% elseif member.user.sex==2 %}Женский{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Представитель</th>
+                                <td>{% if member.user.representative==1 %}Да{% else %}Нет{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Почта</th>
+                                <td>{{- member.user.email -}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Телефон</th>
+                                <td>{{- member.user.phone -}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Ранний заезд</th>
+                                {% if member.arrival == ConferenceOrganization.conference.eventStart %}
+                                    <td>Нет</td>
+                                {% else %}
+                                <td>{{- member.arrival|date('d.m.Y H:i') -}}</td>
+                                {% endif %}
+                            </tr>
+                            <tr>
+                                <th scope="row">Поздний выезд</th>
+                                {% if member.leaving == ConferenceOrganization.conference.eventFinish %}
+                                    <td>Нет</td>
+                                {% else %}
+                                    <td>{{- member.leaving|date('d.m.Y H:i') -}}</td>
+                                {% endif %}
+                            </tr>
+                            <tr>
+                                <th scope="row">Номер автомобиля</th>
+                                <td>{{- member.carNumber|default('Нет') -}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Класс участия</th>
+                                <td>{{- member.roomType.title -}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Стоимость</th>
+                                <td>{{ member.roomType.cost|number_format(2,'.',' ') }} ₽</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+{% endfor %}
+</div>
+
+
+<h3>Вопрос организатору</h3>
 <table class="table">
     <thead>
         <tr>
