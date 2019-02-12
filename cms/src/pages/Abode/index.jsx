@@ -10,10 +10,10 @@ import AddButton from '../../components/utils/FabButton';
 import HousingCard from "../../components/Abode/HousingCard";
 import HousingForm from "../../components/Abode/HousingForm";
 import find from 'lodash/find';
+import sortBy from 'lodash/sortBy';
 import abode from '../../actions/abode';
 import API from '../../libs/api';
 import LinearProgress from "../../components/utils/LinearProgress";
-import SummaryInformation from "../../components/Abode/SummaryInformation";
 
 const api = new API();
 
@@ -77,7 +77,6 @@ class Abode extends React.Component {
 
     render() {
         const { housing, error, isFetching, form: { open, initialValues } } = this.state;
-        const { summary_information } = this.props;
 
         return (
             <div>
@@ -99,7 +98,7 @@ class Abode extends React.Component {
                             </Grid>
                         </Grid>
                     </Grid>
-                    {map(housing, h =>
+                    {map(sortBy(housing, 'title'), h =>
                         <Grid key={h.id} item xs={12} sm={6} lg={4}>
                             <HousingCard housing={h} onEdit={this.openEditForm} onDelete={this.deleteItem}/>
                         </Grid>
@@ -115,14 +114,9 @@ class Abode extends React.Component {
     }
 }
 
-const mapStateToProps = state =>
-    ({
-        summary_information: state.abode.summary_information,
-    });
-
 const mapDispatchToProps = dispatch =>
     ({
         fetchRoomTypes: () => dispatch(abode.fetchRoomTypes()),
     });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Abode);
+export default connect(null, mapDispatchToProps)(Abode);
