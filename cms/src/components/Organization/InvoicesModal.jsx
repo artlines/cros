@@ -178,7 +178,7 @@ InvoicesModal.propTypes = {
             id:     PropTypes.number.isRequired,
             number: PropTypes.number.isRequired,
             amount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-            date:   PropTypes.number.isRequired,
+            date:   PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
             status: PropTypes.number.isRequired,
         }),
     ),

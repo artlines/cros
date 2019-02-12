@@ -6,14 +6,16 @@ import {
     TableBody,
     TableRow,
     TableCell,
-    Button,
+    IconButton,
     TablePagination,
     Grid,
+    Typography,
 } from '@material-ui/core';
 import { green, red } from '@material-ui/core/colors';
 import map from 'lodash/map';
 import LinearProgress from '../utils/LinearProgress';
 import {Edit as EditIcon} from "@material-ui/icons";
+import UserRole from "../../containers/UserRole";
 
 class UserTable extends React.Component {
 
@@ -66,8 +68,9 @@ class UserTable extends React.Component {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>ID</TableCell>
-                                    <TableCell>Наименование</TableCell>
-                                    <TableCell>Реквизиты</TableCell>
+                                    <TableCell>ФИО</TableCell>
+                                    <TableCell>Роль</TableCell>
+                                    <TableCell>Включен/Активен</TableCell>
                                     <TableCell> </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -78,19 +81,18 @@ class UserTable extends React.Component {
                                             {item.id}
                                         </TableCell>
                                         <TableCell>
-                                            {item.name}
-                                            {item.invited_by &&
-                                                <div style={{fontSize: 10, color: '#a4a4a4'}}>
-                                                    {item.invited_by}
-                                                </div>
-                                            }
+                                            {item.last_name} {item.first_name} {item.middle_name}
+                                            <Typography variant={`caption`}>{item.organization_name}</Typography>
+                                            {item.post && <Typography variant={`caption`}>{item.post}</Typography>}
                                         </TableCell>
                                         <TableCell>
-                                            <div style={{whiteSpace: 'nowrap'}}><b>ИНН:</b> {item.inn}</div>
-                                            <div style={{whiteSpace: 'nowrap'}}><b>КПП:</b> {item.kpp}</div>
+                                            <UserRole role={item.roles}/>
                                         </TableCell>
                                         <TableCell>
-                                            <Button onClick={() => onEdit(item.id)}><EditIcon/></Button>
+                                            {item.is_active ? `da` : `net`}
+                                        </TableCell>
+                                        <TableCell>
+                                            <IconButton onClick={() => onEdit(item.id)}><EditIcon/></IconButton>
                                         </TableCell>
                                     </TableRow>
                                 )}
@@ -115,6 +117,24 @@ class UserTable extends React.Component {
 }
 
 UserTable.propTypes = {
+    users: PropTypes.shape({
+        isFetching: PropTypes.bool.isRequired,
+        total_count: PropTypes.number.isRequired,
+        items: PropTypes.arrayOf(
+            PropTypes.shape({
+                id:                 PropTypes.number.isRequired,
+                first_name:         PropTypes.string.isRequired,
+                last_name:          PropTypes.string.isRequired,
+                roles:              PropTypes.string.isRequired,
+                organization_name:  PropTypes.string.isRequired,
+                is_active:          PropTypes.bool.isRequired,
+                middle_name:        PropTypes.string,
+                post:               PropTypes.string,
+
+            }),
+        ),
+    }),
+
     update: PropTypes.func.isRequired,
     onEdit: PropTypes.func.isRequired,
 };

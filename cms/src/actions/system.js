@@ -17,9 +17,9 @@ export default {
     fetchManagers: () => {
 
         return dispatch => {
-            dispatch({ type: SYSTEM.REQUEST_USERS });
+            dispatch({ type: SYSTEM.REQUEST_MANAGERS });
             request.get(`users/managers`)
-                .then(payload => dispatch({ type: SYSTEM.RECEIVE_USERS, payload }));
+                .then(payload => dispatch({ type: SYSTEM.RECEIVE_MANAGERS, payload }));
         };
     },
 
@@ -29,6 +29,15 @@ export default {
             dispatch({ type: SYSTEM.REQUEST_USERS });
             request.get(`users`, query)
                 .then(payload => dispatch({ type: SYSTEM.RECEIVE_USERS, payload }));
+        };
+    },
+
+    fetchRoles: () => {
+
+        return dispatch => {
+            dispatch({ type: SYSTEM.REQUEST_ROLES });
+            request.get(`users/roles`)
+                .then(payload => dispatch({ type: SYSTEM.RECEIVE_ROLES, payload }));
         };
     },
 

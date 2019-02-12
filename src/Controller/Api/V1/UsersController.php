@@ -68,7 +68,7 @@ class UsersController extends ApiController
             ];
         }
 
-        return $this->success(['items' => $items]);
+        return $this->success(['items' => $items, 'total_count' => count($items)]);
     }
 
     /**
@@ -93,5 +93,27 @@ class UsersController extends ApiController
         list($users, $totalCount) = $userRepo->searchBy($this->requestData);
 
         return $this->success(['items' => $users, 'total_count' => $totalCount]);
+    }
+
+    /**
+     * @Route("/users/roles", methods={"GET"})
+     * @IsGranted("ROLE_ADMINISTRATOR")
+     */
+    public function getRoles()
+    {
+        $roles = [
+            "ROLE_USER"                 => "Участник",
+            "ROLE_SALES_MANAGER"        => "Менеджер",
+            "ROLE_SETTLEMENT_MANAGER"   => "Менеджер по расселению",
+            "ROLE_CONTENT_MANAGER"      => "Контент-менеджер",
+            "ROLE_ADMINISTRATOR"        => "Администратор",
+        ];
+
+        $items = [];
+        foreach ($roles as $key => $title) {
+            $items[] = ['key' => $key, 'title' => $title];
+        }
+
+        return $this->success(['items' => $items]);
     }
 }

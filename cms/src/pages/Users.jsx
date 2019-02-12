@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import system from '../actions/system';
 import {
@@ -31,7 +30,7 @@ class Users extends React.Component {
     }
 
     componentDidMount() {
-        this.props.fetchUsers();
+        this.props.fetchRoles();
     }
 
     componentDidUpdate(prevProps, prevState, prevContext) {
@@ -77,7 +76,7 @@ class Users extends React.Component {
     };
 
     openForm = (id) => {
-        const { items } = this.props.organizations;
+        const { items } = this.props.users;
         this.setState({
             form: {
                 ...this.state.form,
@@ -101,10 +100,10 @@ class Users extends React.Component {
                     onSuccess={() => this.update(null, null, true)}
                 />
                 <Grid container spacing={16}>
-                    <Grid item xs={4}>
+                    <Grid item xs={8}>
                         <TextField
                             fullWidth
-                            helperText={`Поиск по наименованию организации и ИНН`}
+                            helperText={`Поиск по ФИО, email и наименованию организации`}
                             onChange={this.handleFilterChange(`search`)}
                         />
                     </Grid>
@@ -117,7 +116,7 @@ class Users extends React.Component {
                     </Grid>
                     <Grid item xs={12}>
                         <UserTable
-                            {...users}
+                            users={users}
                             update={this.update}
                             onEdit={this.openForm}
                         />
@@ -128,22 +127,6 @@ class Users extends React.Component {
     }
 }
 
-Users.propTypes = {
-    users: PropTypes.shape({
-        isFetching: PropTypes.bool.isRequired,
-        total_count: PropTypes.number.isRequired,
-        items: PropTypes.arrayOf(
-            PropTypes.shape({
-                id:                 PropTypes.number.isRequired,
-                first_name:         PropTypes.string.isRequired,
-                last_name:          PropTypes.string.isRequired,
-                middle_name:        PropTypes.string,
-
-            }),
-        ),
-    }),
-};
-
 const mapStateToProps = state =>
     ({
         users: state.system.users,
@@ -151,7 +134,8 @@ const mapStateToProps = state =>
 
 const mapDispatchToProps = dispatch =>
     ({
-        fetchUsers: () => dispatch(system.fetchUsers()),
+        fetchUsers: (query) => dispatch(system.fetchUsers(query)),
+        fetchRoles: () => dispatch(system.fetchRoles()),
     });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Users);

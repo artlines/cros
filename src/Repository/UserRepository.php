@@ -43,12 +43,12 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
         /** Check for search param */
         if (isset($data['search'])) {
             $val = strtolower($data['search']);
-            $query .= " AND CONCAT_WS(' ', m.last_name, m.first_name, m.middle_name, m.email, o.name) LIKE '%$val%'";
+            $query .= " AND CONCAT_WS(' ', m.last_name, m.first_name, m.middle_name, m.email, o.name) ILIKE '%$val%'";
         }
 
         /** Check for role */
         if (isset($data['role'])) {
-            $query .= " AND m.roles LIKE '%{$data['role']}%'";
+            $query .= " AND m.roles ILIKE '%{$data['role']}%'";
         }
 
         $sql = "
@@ -69,6 +69,8 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
                 o.name as organization_name
         " . $query;
         $sqlC = "SELECT COUNT(m.id) " . $query;
+
+        $sql .= " ORDER BY id ASC";
 
         /** limit and offset */
         $limit = intval($data['@limit'] ?? 10);

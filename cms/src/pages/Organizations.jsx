@@ -94,7 +94,7 @@ class Organizations extends React.Component {
 
     render() {
         const { fetchMembers, fetchComments, fetchInvoices, managers, organizations } = this.props;
-        const { form } = this.state; //s
+        const { form } = this.state;
 
         return (
             <React.Fragment>
@@ -163,7 +163,7 @@ Organizations.propTypes = {
                 invoices:           PropTypes.array.isRequired,
                 invoices_count:     PropTypes.number.isRequired,
                 invoices_payed:     PropTypes.bool.isRequired,
-                invited_by:         PropTypes.oneOfType([null, PropTypes.string]),
+                invited_by:         PropTypes.string,
             }),
         ),
     }),
@@ -171,7 +171,7 @@ Organizations.propTypes = {
 
 const mapStateToProps = state =>
     ({
-        managers: state.system.users.items,
+        managers: state.system.managers.items,
         organizations: state.participating.conference_organization,
     });
 
