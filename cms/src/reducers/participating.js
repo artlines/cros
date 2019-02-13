@@ -10,6 +10,9 @@ export const PARTICIPATING = {
 
     REQUEST_CONFERENCE_ORGANIZATIONS: "PARTICIPATING_REQUEST_CONFERENCE_ORGANIZATIONS",
     RECEIVE_CONFERENCE_ORGANIZATIONS: "PARTICIPATING_RECEIVE_CONFERENCE_ORGANIZATIONS",
+
+    REQUEST_ORGANIZATION_DIRECTORY: "PARTICIPATING_REQUEST_ORGANIZATION_DIRECTORY",
+    RECEIVE_ORGANIZATION_DIRECTORY: "PARTICIPATING_RECEIVE_ORGANIZATION_DIRECTORY",
 };
 
 const _initialObjectState = {
@@ -28,6 +31,7 @@ const initialState = {
     conference_organization: {..._initialObjectState},
     invoice: {..._initialObjectState},
     member: {..._initialObjectState},
+    organization_directory: {..._initialObjectState},
 };
 
 export default (state = initialState, action) => {
@@ -88,23 +92,41 @@ export default (state = initialState, action) => {
             }
         };
 
-    case PARTICIPATING.REQUEST_INVOICES:
-        return {
-            ...state,
-            invoice: {
-                ...state.invoice,
-                isFetching: true,
-            }
-        };
-    case PARTICIPATING.RECEIVE_INVOICES:
-        return {
-            ...state,
-            invoice: {
-                ...state.invoice,
-                isFetching: false,
-                ...payload,
-            }
-        };
+        case PARTICIPATING.REQUEST_INVOICES:
+            return {
+                ...state,
+                invoice: {
+                    ...state.invoice,
+                    isFetching: true,
+                }
+            };
+        case PARTICIPATING.RECEIVE_INVOICES:
+            return {
+                ...state,
+                invoice: {
+                    ...state.invoice,
+                    isFetching: false,
+                    ...payload,
+                }
+            };
+
+        case PARTICIPATING.REQUEST_ORGANIZATION_DIRECTORY:
+            return {
+                ...state,
+                organization_directory: {
+                    ...state.organization_directory,
+                    isFetching: true,
+                }
+            };
+        case PARTICIPATING.RECEIVE_ORGANIZATION_DIRECTORY:
+            return {
+                ...state,
+                organization_directory: {
+                    ...state.organization_directory,
+                    isFetching: false,
+                    ...payload,
+                }
+            };
     default:
         return state;
     }

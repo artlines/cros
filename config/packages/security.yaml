@@ -50,9 +50,9 @@ security:
         - { path: ^/api, roles: ROLE_CMS_USER }
 
         # require ROLE_ADMIN for /admin*
-        #- { path: ^/admin/table, roles: ROLE_MANAGER }
-        #- { path: ^/admin/org, roles: ROLE_MANAGER }
-        #- { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin/table, roles: ROLE_ADMINISTRATOR }
+        - { path: ^/admin/org, roles: ROLE_ADMINISTRATOR }
+        - { path: ^/admin, roles: ROLE_ADMINISTRATOR }
         - { path: ^/profile, roles: ROLE_ORG }
         - { path: ^/registration2, roles: ROLE_ORG}
         - { path: ^/registration3, roles: ROLE_ORG}

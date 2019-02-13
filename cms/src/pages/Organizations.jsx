@@ -16,7 +16,7 @@ import find from "lodash/find";
 import map from "lodash/map";
 import OrganizationForm from '../components/Organization/Form';
 import FabButton from '../components/utils/FabButton';
-import MultiSelectField from "../components/utils/MultiSelectField";
+import SuggestingSelectField from "../components/utils/SuggestingSelectField";
 
 class Organizations extends React.Component {
     constructor(props) {
@@ -94,7 +94,7 @@ class Organizations extends React.Component {
 
     render() {
         const { fetchMembers, fetchComments, fetchInvoices, managers, organizations } = this.props;
-        const { form } = this.state; //s
+        const { form } = this.state;
 
         return (
             <React.Fragment>
@@ -108,17 +108,21 @@ class Organizations extends React.Component {
                     <Grid item xs={4}>
                         <TextField
                             fullWidth
+                            label={`Поиск`}
                             helperText={`Поиск по наименованию организации и ИНН`}
                             onChange={this.handleFilterChange(`search`)}
+                            InputLabelProps={{shrink: true}}
                         />
                     </Grid>
                     <Grid item xs={4}>
-                        <MultiSelectField
+                        <SuggestingSelectField
                             options={map(managers, i => ({ value: i.id, label: `${i.first_name} ${i.last_name}` }))}
                             onChange={this.handleFilterChange(`invited_by[]`)}
                             isSearchable
                             isMulti
                             placeholder={`Начните вводить имя`}
+                            label={`Менеджер`}
+                            fullWidth
                         />
                     </Grid>
                     <Grid item xs={4}>
@@ -163,7 +167,7 @@ Organizations.propTypes = {
                 invoices:           PropTypes.array.isRequired,
                 invoices_count:     PropTypes.number.isRequired,
                 invoices_payed:     PropTypes.bool.isRequired,
-                invited_by:         PropTypes.oneOfType([null, PropTypes.string]),
+                invited_by:         PropTypes.string,
             }),
         ),
     }),
@@ -171,7 +175,7 @@ Organizations.propTypes = {
 
 const mapStateToProps = state =>
     ({
-        managers: state.system.users.items,
+        managers: state.system.managers.items,
         organizations: state.participating.conference_organization,
     });
 
@@ -190,7 +194,7 @@ const mapDispatchToProps = dispatch =>
             dispatch(participating.fetchMembers(data))
         },
         fetchRoomTypes: () => dispatch(abode.fetchRoomTypes()),
-        fetchManagers: () => dispatch(system.fetchUsers()),
+        fetchManagers: () => dispatch(system.fetchManagers()),
     });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Organizations);

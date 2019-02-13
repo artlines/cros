@@ -5,7 +5,7 @@ import AbodeResettlement from "../pages/Abode/Resettlement";
 import AbodeHousing from "../pages/Abode/Housing";
 import Organizations from "../pages/Organizations";
 import Invite from "../pages/Invite";
-import Test from "../pages/Test";
+import Users from "../pages/Users";
 import NotFound from "../pages/NotFound";
 import {
     PeopleOutlined as People,
@@ -87,7 +87,7 @@ export default [
     },
     {
         path: "/cms/users",
-        Component: Home,
+        Component: Users,
         exact: true,
         title: "Пользователи",
         menuItem: {

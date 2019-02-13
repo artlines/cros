@@ -14,12 +14,30 @@ export default {
         };
     },
 
-    fetchUsers: () => {
+    fetchManagers: () => {
 
         return dispatch => {
             dispatch({ type: SYSTEM.REQUEST_MANAGERS });
             request.get(`users/managers`)
                 .then(payload => dispatch({ type: SYSTEM.RECEIVE_MANAGERS, payload }));
+        };
+    },
+
+    fetchUsers: (query = {}) => {
+
+        return dispatch => {
+            dispatch({ type: SYSTEM.REQUEST_USERS });
+            request.get(`users`, query)
+                .then(payload => dispatch({ type: SYSTEM.RECEIVE_USERS, payload }));
+        };
+    },
+
+    fetchRoles: () => {
+
+        return dispatch => {
+            dispatch({ type: SYSTEM.REQUEST_ROLES });
+            request.get(`users/roles`)
+                .then(payload => dispatch({ type: SYSTEM.RECEIVE_ROLES, payload }));
         };
     },
 

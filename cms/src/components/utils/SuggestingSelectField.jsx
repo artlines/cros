@@ -5,8 +5,7 @@ import {
     TextField,
     MenuItem,
     Chip,
-    Paper,
-
+    Paper, FormControl, InputLabel, Grid,
 } from "@material-ui/core";
 import {
     Cancel as CancelIcon,
@@ -14,6 +13,7 @@ import {
 import { withStyles } from "@material-ui/core/styles";
 import { emphasize } from "@material-ui/core/styles/colorManipulator";
 import classNames from "classnames";
+import find from 'lodash/find';
 
 const styles = theme => ({
     root: {
@@ -23,6 +23,7 @@ const styles = theme => ({
     input: {
         display: "flex",
         padding: 0,
+        marginTop: 12,
     },
     valueContainer: {
         display: "flex",
@@ -32,7 +33,8 @@ const styles = theme => ({
         overflow: "hidden",
     },
     chip: {
-        margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
+        margin: `5px 2px`,
+        height: 26,
     },
     chipFocused: {
         backgroundColor: emphasize(
@@ -53,7 +55,7 @@ const styles = theme => ({
     },
     paper: {
         position: "absolute",
-        zIndex: 1,
+        zIndex: 1400,
         marginTop: theme.spacing.unit,
         left: 0,
         right: 0,
@@ -126,9 +128,13 @@ function Placeholder(props) {
 }
 
 function SingleValue(props) {
+    const { options, data: value } = props;
+
+    const data = find(options, {value});
+
     return (
         <Typography className={props.selectProps.classes.singleValue} {...props.innerProps}>
-            {props.children}
+            {data.label}
         </Typography>
     );
 }
@@ -170,9 +176,9 @@ const components = {
     ValueContainer,
 };
 
-class MultiSelectField extends React.PureComponent {
+class SuggestingSelectField extends React.PureComponent {
     render() {
-        const { classes, theme, ...props } = this.props;
+        const { classes, theme, fullWidth, required, label, ...props } = this.props;
 
         const selectStyles = {
             input: base => ({
@@ -185,15 +191,19 @@ class MultiSelectField extends React.PureComponent {
         };
 
         return (
-            <Select
-                classes={classes}
-                styles={selectStyles}
-                components={components}
-                noOptionsMessage={() => `Нет результатов`}
-                {...props}
-            />
+            <FormControl fullWidth={fullWidth} required={required}>
+                <InputLabel shrink>{label}</InputLabel>
+                <Select
+                    style={{marginTop: 20}}
+                    classes={classes}
+                    styles={selectStyles}
+                    components={components}
+                    noOptionsMessage={() => `Нет результатов`}
+                    {...props}
+                />
+            </FormControl>
         );
     }
 }
 
-export default withStyles(styles, {withTheme: true})(MultiSelectField);
+export default withStyles(styles, {withTheme: true})(SuggestingSelectField);
