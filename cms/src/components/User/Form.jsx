@@ -28,15 +28,17 @@ class UserForm extends React.Component {
 
         this.state = {
             values: {
-                email:              '',
                 first_name:         '',
                 last_name:          '',
                 middle_name:        '',
+                sex:                1,
+                email:              '',
                 phone:              '',
-                role:               'ROLE_USER',
                 organization_id:    0,
-                is_active:          true,
                 post:               '',
+                representative:     false,
+                is_active:          true,
+                role:               'ROLE_USER',
             },
             errors: {},
             submitting: false,
@@ -145,7 +147,6 @@ class UserForm extends React.Component {
         const { values, errors, submitting, submitError } = this.state;
 
         const isUpdate = initialValues && initialValues.id;
-        console.log(values);
 
         return (
             <Dialog
@@ -205,6 +206,25 @@ class UserForm extends React.Component {
                             <Grid item xs={12} sm={6}>
                                 <TextField
                                     required
+                                    label={"Пол"}
+                                    value={values.sex}
+                                    margin={"dense"}
+                                    fullWidth
+                                    variant={"outlined"}
+                                    name={'sex'}
+                                    onChange={this.handleChange('sex')}
+                                    error={!!errors.sex}
+                                    helperText={errors.sex}
+                                    select={true}
+                                    InputLabelProps={{shrink: true}}
+                                >
+                                    <MenuItem value={1}>Мужской</MenuItem>
+                                    <MenuItem value={2}>Женский</MenuItem>
+                                </TextField>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    required
                                     label={"Email"}
                                     value={values.email}
                                     margin={"dense"}
@@ -217,20 +237,23 @@ class UserForm extends React.Component {
                                     InputLabelProps={{shrink: true}}
                                 />
                             </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    required
+                                    label={"Телефон"}
+                                    value={values.phone}
+                                    margin={"dense"}
+                                    type={`number`}
+                                    fullWidth
+                                    variant={"outlined"}
+                                    name={'phone'}
+                                    onChange={this.handleChange('phone')}
+                                    error={!!errors.phone}
+                                    helperText={errors.phone}
+                                    InputLabelProps={{shrink: true}}
+                                />
+                            </Grid>
                             <Grid item xs={12}>
-                                {/*<TextField*/}
-                                    {/*required*/}
-                                    {/*label={"Организация"}*/}
-                                    {/*fullWidth*/}
-                                    {/*value={values.organization_id}*/}
-                                    {/*margin={"dense"}*/}
-                                    {/*variant={"outlined"}*/}
-                                    {/*name={'organization_id'}*/}
-                                    {/*onChange={this.handleChange('organization_id')}*/}
-                                    {/*error={!!errors.organization_id}*/}
-                                    {/*helperText={errors.organization_id}*/}
-                                    {/*InputLabelProps={{shrink: true}}*/}
-                                {/*/>*/}
                                 <SuggestingSelectField
                                     options={map(organizations, i => ({ value: i.id, label: i.name }))}
                                     onChange={this.handleChange(`organization_id`)}
@@ -240,21 +263,6 @@ class UserForm extends React.Component {
                                     required
                                     label={"Организация"}
                                     fullWidth
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    required
-                                    label={"Телефон"}
-                                    value={values.phone}
-                                    margin={"dense"}
-                                    fullWidth
-                                    variant={"outlined"}
-                                    name={'phone'}
-                                    onChange={this.handleChange('phone')}
-                                    error={!!errors.phone}
-                                    helperText={errors.phone}
-                                    InputLabelProps={{shrink: true}}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -274,6 +282,20 @@ class UserForm extends React.Component {
                             <Grid item xs={12} sm={6}>
                                 <FormControl>
                                     <FormControlLabel
+                                        label={"Представитель организации"}
+                                        control={
+                                            <Switch
+                                                checked={values.representative}
+                                                onChange={this.handleChange('representative')}
+                                            />
+                                        }
+                                    />
+                                    <FormHelperText>Для возможности управления данными организации</FormHelperText>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <FormControl>
+                                    <FormControlLabel
                                         label={"Активен?"}
                                         control={
                                             <Switch
@@ -288,7 +310,7 @@ class UserForm extends React.Component {
                             <Grid item xs={12} sm={6}>
                                 <TextField
                                     required
-                                    label={"Роль"}
+                                    label={"Роль в системе"}
                                     value={values.role}
                                     margin={"dense"}
                                     fullWidth

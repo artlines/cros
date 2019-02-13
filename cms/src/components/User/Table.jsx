@@ -14,7 +14,11 @@ import {
 import { green, red } from '@material-ui/core/colors';
 import map from 'lodash/map';
 import LinearProgress from '../utils/LinearProgress';
-import {Edit as EditIcon} from "@material-ui/icons";
+import {
+    Edit as EditIcon,
+    Check as CheckIcon,
+    Close as CloseIcon,
+} from "@material-ui/icons";
 import UserRole from "../../containers/UserRole";
 
 class UserTable extends React.Component {
@@ -89,7 +93,10 @@ class UserTable extends React.Component {
                                             <UserRole role={item.role}/>
                                         </TableCell>
                                         <TableCell>
-                                            {item.is_active ? `da` : `net`}
+                                            {item.is_active
+                                                ? <CheckIcon style={{color: green[700]}}/>
+                                                : <CloseIcon style={{color: red[700]}}/>
+                                            }
                                         </TableCell>
                                         <TableCell>
                                             <IconButton onClick={() => onEdit(item.id)}><EditIcon/></IconButton>
@@ -129,10 +136,11 @@ UserTable.propTypes = {
                 role:               PropTypes.string.isRequired,
                 organization_name:  PropTypes.string.isRequired,
                 is_active:          PropTypes.bool.isRequired,
+                representative:     PropTypes.bool.isRequired,
                 middle_name:        PropTypes.string,
                 post:               PropTypes.string,
-                phone:               PropTypes.string,
-
+                phone:              PropTypes.string,
+                sex:                PropTypes.number,
             }),
         ),
     }),
