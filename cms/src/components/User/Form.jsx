@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import {connect} from 'react-redux';
 import {
     Button,
     Dialog,
@@ -9,12 +10,15 @@ import {
     Grid,
     TextField,
     LinearProgress,
+    MenuItem, FormControl, FormControlLabel, Switch, FormHelperText, InputLabel,
 } from '@material-ui/core';
 import isEqual from 'lodash/isEqual';
 import isEmpty from 'lodash/isEmpty';
 import API from '../../libs/api';
 import ErrorMessage from "../utils/ErrorMessage";
 import ConfirmDialog from "../utils/ConfirmDialog";
+import map from 'lodash/map';
+import SuggestingSelectField from "../utils/SuggestingSelectField";
 
 const api = new API();
 
@@ -24,7 +28,15 @@ class UserForm extends React.Component {
 
         this.state = {
             values: {
-                // TODO: write props
+                email:              '',
+                first_name:         '',
+                last_name:          '',
+                middle_name:        '',
+                phone:              '',
+                role:               'ROLE_USER',
+                organization_id:    0,
+                is_active:          true,
+                post:               '',
             },
             errors: {},
             submitting: false,
@@ -59,7 +71,20 @@ class UserForm extends React.Component {
 
     handleChange = (field, index = null) => event => {
         const { values, errors } = this.state;
-        const { name, value } = event.target;
+
+        let value;
+        if (field === 'organization_id') {
+            value = event.value;
+        } else {
+            switch (event.target.type) {
+                case 'checkbox':
+                    value = event.target.checked;
+                    break;
+                default:
+                    value = event.target.value;
+                    break;
+            }
+        }
 
         const update = index !== null ? { [field]: {...values[field], [index]: value }} : { [field]: value };
 
@@ -116,10 +141,11 @@ class UserForm extends React.Component {
     handleErrorSubmit = (err) => this.setState({submitting: false, submitError: err.message});
 
     render() {
-        const { initialValues, open } = this.props;
+        const { initialValues, open, roles, organizations } = this.props;
         const { values, errors, submitting, submitError } = this.state;
 
         const isUpdate = initialValues && initialValues.id;
+        console.log(values);
 
         return (
             <Dialog
@@ -132,51 +158,152 @@ class UserForm extends React.Component {
                 <DialogContent>
                     <form onSubmit={this.handleSubmit} id={"user-form"}>
                         <Grid container spacing={16}>
-                            <Grid item xs={12}>
+                            <Grid item xs={12} sm={6}>
                                 <TextField
                                     required
-                                    label={"Наименование"}
-                                    value={values.name}
+                                    label={"Имя"}
+                                    value={values.first_name}
                                     margin={"dense"}
                                     fullWidth
                                     variant={"outlined"}
-                                    name={'name'}
-                                    onChange={this.handleChange('name')}
-                                    error={!!errors.name}
-                                    helperText={errors.name}
+                                    name={'first_name'}
+                                    onChange={this.handleChange('first_name')}
+                                    error={!!errors.first_name}
+                                    helperText={errors.first_name}
                                     InputLabelProps={{shrink: true}}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField
                                     required
-                                    label={"ИНН"}
-                                    type={"number"}
-                                    value={values.inn}
+                                    label={"Фамилия"}
+                                    value={values.last_name}
                                     margin={"dense"}
                                     fullWidth
                                     variant={"outlined"}
-                                    name={'inn'}
-                                    onChange={this.handleChange('inn')}
-                                    error={!!errors.inn}
-                                    helperText={errors.inn}
+                                    name={'last_name'}
+                                    onChange={this.handleChange('last_name')}
+                                    error={!!errors.last_name}
+                                    helperText={errors.last_name}
+                                    InputLabelProps={{shrink: true}}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    label={"Отчество"}
+                                    value={values.middle_name}
+                                    margin={"dense"}
+                                    fullWidth
+                                    variant={"outlined"}
+                                    name={'middle_name'}
+                                    onChange={this.handleChange('middle_name')}
+                                    error={!!errors.middle_name}
+                                    helperText={errors.middle_name}
+                                    InputLabelProps={{shrink: true}}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    required
+                                    label={"Email"}
+                                    value={values.email}
+                                    margin={"dense"}
+                                    fullWidth
+                                    variant={"outlined"}
+                                    name={'email'}
+                                    onChange={this.handleChange('email')}
+                                    error={!!errors.email}
+                                    helperText={errors.email}
                                     InputLabelProps={{shrink: true}}
                                 />
                             </Grid>
                             <Grid item xs={12}>
+                                {/*<TextField*/}
+                                    {/*required*/}
+                                    {/*label={"Организация"}*/}
+                                    {/*fullWidth*/}
+                                    {/*value={values.organization_id}*/}
+                                    {/*margin={"dense"}*/}
+                                    {/*variant={"outlined"}*/}
+                                    {/*name={'organization_id'}*/}
+                                    {/*onChange={this.handleChange('organization_id')}*/}
+                                    {/*error={!!errors.organization_id}*/}
+                                    {/*helperText={errors.organization_id}*/}
+                                    {/*InputLabelProps={{shrink: true}}*/}
+                                {/*/>*/}
+                                <SuggestingSelectField
+                                    options={map(organizations, i => ({ value: i.id, label: i.name }))}
+                                    onChange={this.handleChange(`organization_id`)}
+                                    isSearchable
+                                    placeholder={`Начните вводить имя`}
+                                    value={[values.organization_id]}
+                                    required
+                                    label={"Организация"}
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
                                 <TextField
                                     required
-                                    label={"Город"}
-                                    value={values.city}
+                                    label={"Телефон"}
+                                    value={values.phone}
                                     margin={"dense"}
                                     fullWidth
                                     variant={"outlined"}
-                                    name={'city'}
-                                    onChange={this.handleChange('city')}
-                                    error={!!errors.city}
-                                    helperText={errors.city}
+                                    name={'phone'}
+                                    onChange={this.handleChange('phone')}
+                                    error={!!errors.phone}
+                                    helperText={errors.phone}
                                     InputLabelProps={{shrink: true}}
                                 />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    label={"Должность"}
+                                    value={values.post}
+                                    margin={"dense"}
+                                    fullWidth
+                                    variant={"outlined"}
+                                    name={'post'}
+                                    onChange={this.handleChange('post')}
+                                    error={!!errors.post}
+                                    helperText={errors.post}
+                                    InputLabelProps={{shrink: true}}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <FormControl>
+                                    <FormControlLabel
+                                        label={"Активен?"}
+                                        control={
+                                            <Switch
+                                                checked={values.is_active}
+                                                onChange={this.handleChange('is_active')}
+                                            />
+                                        }
+                                    />
+                                    <FormHelperText>Включение/Отключение пользователя</FormHelperText>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField
+                                    required
+                                    label={"Роль"}
+                                    value={values.role}
+                                    margin={"dense"}
+                                    fullWidth
+                                    variant={"outlined"}
+                                    name={'role'}
+                                    onChange={this.handleChange('role')}
+                                    error={!!errors.role}
+                                    helperText={errors.role}
+                                    InputLabelProps={{shrink: true}}
+                                    select={true}
+                                >
+                                    {map(roles, role =>
+                                        <MenuItem key={role.key} value={role.key}>{role.title}</MenuItem>
+                                    )}
+                                </TextField>
                             </Grid>
                         </Grid>
                     </form>
@@ -185,7 +312,7 @@ class UserForm extends React.Component {
                 <DialogActions>
                     <Grid container spacing={0} justify={`space-between`}>
                         <Grid item>
-                            {isUpdate &&
+                            {false && isUpdate &&
                             <ConfirmDialog
                                 onConfirm={() => this.handleDelete(isUpdate)}
                                 trigger={<Button
@@ -250,4 +377,10 @@ UserForm.propTypes = {
     onSuccess: PropTypes.func.isRequired,
 };
 
-export default UserForm;
+const mapStateToProps = state =>
+    ({
+        roles: state.system.roles.items,
+        organizations: state.participating.organization_directory.items,
+    });
+
+export default connect(mapStateToProps)(UserForm);

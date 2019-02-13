@@ -59,13 +59,14 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
                 m.middle_name,
                 m.email,
                 m.post,
-                m.roles,
+                regexp_replace(m.roles, '\W+', '', 'g') AS role,
                 m.sex,
                 m.phone,
                 m.is_active,
                 m.representative,
                 m.post,
                 m.created_at,
+                o.id as organization_id,
                 o.name as organization_name
         " . $query;
         $sqlC = "SELECT COUNT(m.id) " . $query;

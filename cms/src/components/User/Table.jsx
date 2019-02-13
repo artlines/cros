@@ -86,7 +86,7 @@ class UserTable extends React.Component {
                                             {item.post && <Typography variant={`caption`}>{item.post}</Typography>}
                                         </TableCell>
                                         <TableCell>
-                                            <UserRole role={item.roles}/>
+                                            <UserRole role={item.role}/>
                                         </TableCell>
                                         <TableCell>
                                             {item.is_active ? `da` : `net`}
@@ -123,13 +123,15 @@ UserTable.propTypes = {
         items: PropTypes.arrayOf(
             PropTypes.shape({
                 id:                 PropTypes.number.isRequired,
+                email:              PropTypes.string.isRequired,
                 first_name:         PropTypes.string.isRequired,
                 last_name:          PropTypes.string.isRequired,
-                roles:              PropTypes.string.isRequired,
+                role:               PropTypes.string.isRequired,
                 organization_name:  PropTypes.string.isRequired,
                 is_active:          PropTypes.bool.isRequired,
                 middle_name:        PropTypes.string,
                 post:               PropTypes.string,
+                phone:               PropTypes.string,
 
             }),
         ),

@@ -1,6 +1,7 @@
 import React from "react";
 import {connect} from 'react-redux';
 import system from '../actions/system';
+import participating from '../actions/participating';
 import {
     TextField,
     Grid,
@@ -31,6 +32,7 @@ class Users extends React.Component {
 
     componentDidMount() {
         this.props.fetchRoles();
+        this.props.fetchOrganizationDirectory();
     }
 
     componentDidUpdate(prevProps, prevState, prevContext) {
@@ -136,6 +138,7 @@ const mapDispatchToProps = dispatch =>
     ({
         fetchUsers: (query) => dispatch(system.fetchUsers(query)),
         fetchRoles: () => dispatch(system.fetchRoles()),
+        fetchOrganizationDirectory: () => dispatch(participating.fetchOrganizationDirectory()),
     });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Users);
