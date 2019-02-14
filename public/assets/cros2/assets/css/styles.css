@@ -562,11 +562,25 @@ hr {
 }
 
 @media (min-width: 768px) {
+  .cs-font-size-20--md {
+    font-size: 1.42857rem!important;
+  }
   .cs-font-size-40--md {
     font-size: 2.85714rem!important;
   }
-
   .cs-font-size-60--md {
+    font-size: 4.28571rem!important;
+  }
+}
+
+@media (min-width: 1198px) {
+  .cs-font-size-20--xl {
+    font-size: 1.42857rem!important;
+  }
+  .cs-font-size-40--xl {
+    font-size: 2.85714rem!important;
+  }
+  .cs-font-size-60--xl {
     font-size: 4.28571rem!important;
   }
 }
@@ -903,6 +917,9 @@ hr {
 @media (min-width: 992px) {
   .cs-mb-0--lg {
     margin-bottom: 0!important;
+  }
+  .cs-mb-10--lg {
+    margin-bottom: 0.71429rem!important;
   }
 
   .cs-mx-15--lg {
