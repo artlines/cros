@@ -9,6 +9,7 @@ import {
     Button,
 } from '@material-ui/core';
 import map from "lodash/map";
+import sortBy from "lodash/sortBy";
 import filter from "lodash/filter";
 import ApartmentType from '../../containers/ApartmentType';
 import RoomType from '../../containers/RoomType';
@@ -41,7 +42,7 @@ class ApartmentsTable extends React.PureComponent {
                                 <TableCell>{item.floor}</TableCell>
                                 <TableCell><ApartmentType id={item.type}/></TableCell>
                                 <TableCell>
-                                    {map(_rooms, (_r, i) =>
+                                    {map(sortBy(_rooms, 'id'), (_r, i) =>
                                         <div key={i}>
                                             #{Number(i) + 1}: <RoomType id={_r.type}/> ({_r.places.length}/{_r.max_places})
                                         </div>

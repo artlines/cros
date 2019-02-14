@@ -5,8 +5,15 @@ const request = new API();
 
 export default {
 
-    fetchConferenceOrganizations: (data = {}) => {
+    fetchOrganizationDirectory: () => {
+        return dispatch => {
+            dispatch({ type: PARTICIPATING.REQUEST_ORGANIZATION_DIRECTORY });
+            request.get(`organization_directory`)
+                .then(payload => dispatch({ type: PARTICIPATING.RECEIVE_ORGANIZATION_DIRECTORY, payload }));
+        };
+    },
 
+    fetchConferenceOrganizations: (data = {}) => {
         return dispatch => {
             dispatch({ type: PARTICIPATING.REQUEST_CONFERENCE_ORGANIZATIONS });
             request.get(`conference_organization`, data)

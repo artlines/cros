@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Conference;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -29,6 +30,72 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
             ->getOneOrNullResult();
     }
 
+    public function searchBy(array $data = [])
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $query = "
+            FROM participating.member m
+              LEFT JOIN participating.organization o ON m.organization_id = o.id
+            WHERE true
+        ";
+
+        /** Check for search param */
+        if (isset($data['search'])) {
+            $val = strtolower($data['search']);
+            $query .= " AND CONCAT_WS(' ', m.last_name, m.first_name, m.middle_name, m.email, o.name) ILIKE '%$val%'";
+        }
+
+        /** Check for role */
+        if (isset($data['role'])) {
+            $query .= " AND m.roles ILIKE '%{$data['role']}%'";
+        }
+
+        $sql = "
+            SELECT
+                m.id,
+                m.first_name,
+                m.last_name,
+                m.middle_name,
+                m.email,
+                m.post,
+                regexp_replace(m.roles, '\W+', '', 'g') AS role,
+                m.sex,
+                m.phone,
+                m.is_active,
+                m.representative,
+                m.post,
+                m.created_at,
+                o.id as organization_id,
+                o.name as organization_name
+        " . $query;
+        $sqlC = "SELECT COUNT(m.id) " . $query;
+
+        $sql .= " ORDER BY id ASC";
+
+        /** limit and offset */
+        $limit = intval($data['@limit'] ?? 10);
+        $offset = intval($data['@offset'] ?? 0);
+        $sql .= " LIMIT $limit OFFSET $offset";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $items = $stmt->fetchAll();
+
+        $stmt = $conn->prepare($sqlC);
+        $stmt->execute();
+        $count = $stmt->fetchColumn();
+
+        return [$items, $count];
+    }
+
+    /**
+     * @deprecated Used on symfony 3
+     *
+     * @param array $users
+     * @param int $ap
+     * @return mixed|null
+     */
     public function findAllByUsers($users = array(), $ap = 0)
     {
         $ids_array = array();
@@ -55,6 +122,13 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
 
     }
 
+    /**
+     * @deprecated Used on symfony 3
+     *
+     * @param $conf_id
+     * @param $year
+     * @return mixed|null
+     */
     public function findManagers($conf_id, $year)
     {
         $query = $this->getEntityManager()
@@ -70,32 +144,9 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
         }
     }
 
-    /** Find by gender
-     * @param string $gender
-     * @return object|null
-     */
-    public function findGender($gender = 'female')
-    {
-        if ($gender == 'female') {
-            $query = $this->getEntityManager()
-                ->createQuery('
-                    SELECT u, utocs, o, uta, a FROM App:User u
-                    JOIN u.utocs utocs
-                    JOIN u.organization o
-                    LEFT JOIN u.utoas uta
-                    LEFT JOIN uta.apartament a
-                    WHERE u.female = 1
-                    ORDER BY a.id
-                ');
-            try {
-                return $query->getResult();
-            } catch (\Doctrine\ORM\NoResultException $e) {
-                return null;
-            }
-        }
-    }
-
     /**
+     * @deprecated Used on symfony 3
+     *
      * Finder for speakers
      * @param string $find
      * @return object|null
@@ -117,6 +168,8 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
     }
 
     /**
+     * @deprecated Used on symfony 3
+     *
      * Search user
      * @param string $string
      * @return object|null
@@ -156,6 +209,8 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
     }
 
     /**
+     * @deprecated Used on symfony 3
+     *
      * Search user
      * @param string $string
      * @param int $offset
