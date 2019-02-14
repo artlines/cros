@@ -8,11 +8,11 @@
 {% endif %}
 
 {% if text %}
-	<div class="{% if mainPage %}cs-font-size-23 text-right{% else %}cs-font-size-18 text-right text-md-center{% endif %} text-uppercase">{{ text }}</div>
+	<div class="{% if mainPage %}cs-font-size-23 text-center text-md-right{% else %}cs-font-size-18 text-right text-md-center{% endif %} text-uppercase">{{ text }}</div>
 {% endif %}
 <!-- Countdown v4 -->
 {% if countdown_date %}
-	<div class="js-countdown{% if mainPage %} text-right text-uppercase{% else %} text-right d-flex justify-content-between{% endif %} u-countdown-v4"
+	<div class="js-countdown{% if mainPage %} text-center text-md-right text-uppercase{% else %} text-right d-flex justify-content-between{% endif %} u-countdown-v4"
 		 data-end-date="{{ countdown_date|date("Y/m/d H:i:s") }}"
 		 data-month-format="%m"
 		 data-days-format="%D"
