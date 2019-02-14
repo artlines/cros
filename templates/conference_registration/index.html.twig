@@ -375,6 +375,30 @@ id     name    inn kpp
     {# ... #}
     {{ form_end(form) }}
 
+    <div class="modal fade" id="schemeInfo" tabindex="-1" role="dialog" aria-labelledby="schemeInfoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 1200px">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Схема размещения</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+
+                <div class="modal-body">
+                    <p><img style="max-width: 100%;" src="{{ asset('assets/images/scheme.png') }}"></p>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-danger cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15 btn" data-dismiss="modal">
+                            OK
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <button
             type="button"
             class="add-another-collection-widget btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15"
@@ -388,6 +412,13 @@ id     name    inn kpp
             Завершить регистрацию
         </button>
     </span>
+
+    {#<button#}
+            {#data-toggle="modal" data-target="#schemeInfo"#}
+            {#type="button"#}
+            {#class="btn btn-u-sea cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15"#}
+    {#>#}
+        {#Схема размещения</button>#}
 
     <div class="roomTypes debug" style="display: none">
         <input type="hidden" class="conf_id" value="{{ Conference.id }}"/>
@@ -413,6 +444,10 @@ id     name    inn kpp
                     Количество свободных мест: <b>{{ roomType.maxPlaces*rooms-used }}</b><br />
                     <h4>Описание:</h4>
                     {{ roomType.description|raw }}
+                    <a href="#"
+                            data-toggle="modal" data-target="#schemeInfo"
+                    >
+                        Схема размещения</a>
                 </div>
             {% endif %}
         {% endfor %}
