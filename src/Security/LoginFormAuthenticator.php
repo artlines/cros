@@ -102,7 +102,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             throw new InvalidCsrfTokenException();
         }
 
-        $user = $this->em->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
+        $user = $this->em->getRepository(User::class)->findOneBy([
+            'email'     => $credentials['email'],
+            'isActive'  => true,
+        ]);
         if (!$user) {
             throw new CustomUserMessageAuthenticationException('Неверный логин или пароль');
         }

@@ -88,7 +88,10 @@ class GoogleAuthenticator extends SocialAuthenticator
 
         /** @var User|null $user */
         $user = $this->em->getRepository(User::class)
-            ->findOneBy(['email' => mb_strtolower($googleUser->getEmail())]);
+            ->findOneBy([
+                'email'     => mb_strtolower($googleUser->getEmail()),
+                'isActive'  => true,
+            ]);
 
         return $user;
     }
