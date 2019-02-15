@@ -585,6 +585,27 @@ hr {
   }
 }
 
+@media (min-width: 1398px) {
+  .cs-font-size-20--xxl {
+    font-size: 1.42857rem!important;
+  }
+  .cs-font-size-23--xxl {
+    font-size: 1.64286rem!important;
+  }
+  .cs-font-size-27--xxl {
+    font-size: 1.92857rem!important;
+  }
+  .cs-font-size-40--xxl {
+    font-size: 2.85714rem!important;
+  }
+  .cs-font-size-60--xxl {
+    font-size: 4.28571rem!important;
+  }
+  .cs-font-size-80--xxl {
+    font-size: 5.71429rem!important;
+  }
+}
+
 .cs-font-weight-600 {
   font-weight: 600;
 }
