@@ -912,6 +912,9 @@ hr {
   .cs-mb-70--md {
     margin-bottom: 5rem!important;
   }
+  .cs-mb-100--md {
+    margin-bottom: 7.14286rem!important;
+  }
 }
 
 @media (min-width: 992px) {
@@ -920,6 +923,9 @@ hr {
   }
   .cs-mb-10--lg {
     margin-bottom: 0.71429rem!important;
+  }
+  .cs-mb-20--lg {
+    margin-bottom: 1.42857rem!important;
   }
 
   .cs-mx-15--lg {

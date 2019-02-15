@@ -123,51 +123,12 @@
     </header>
     <!-- Section Content -->
     <section id="home"
-             class="cs-bg-img-hero cs-pos-rel u-bg-overlay cs-bg-darkblue-opacity-0_5--after"
+             class="cs-bg-img-hero cs-pos-rel"
              style="min-height: 410px;" {# background-image: url({{ asset('assets/cros2/img/cros_main_1920.jpg') }}); #}
     >
-        <style>
-            .home_video__block {
-                width: 100%;
-                min-height: 100vh;
-            }
-            .home_video__container {
-                position: relative;
-                min-height: 100vh;
-            }
-            .home_video__container video {
-                width: 100%;
-                object-fit: cover;
-                margin-bottom: -7px;
-                min-height: 100vh;
-            }
-            .home_content__block {
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                top: 0;
-                left: 0;
-            }
-            .home_content__marked-text {
-                color: #82a6e1;
-            }
-            .home_content__info_container {
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                margin-top: -30px;
-            }
-            .home_content__info_container hr {
-                margin: 0;
-                border-top-color: #82a6e1;
-                width: 100%;
-            }
-
-        </style>
         <div class="home_video__block">
             <div class="home_video__container cs-bg-secondary_block">
-                <video autoplay loop {#poster="/assets/cros2/img/cros_main_1920.jpg"#}>
+                <video autoplay="autoplay" loop="loop" {#poster="/assets/cros2/img/cros_main_1920.jpg"#}>
                     <source src="https://cros.nag.ru/uploads/cros-2019/bg_video.mp4" type="video/mp4">
                 </video>
             </div>
@@ -196,20 +157,20 @@
             {% endif %}
             <!-- cs-max-width-750  -->
             <div class="container u-bg-overlay__inner cs-color-white mb-0 home_content__info_container">
-                <div class="row cs-mb-0 d-flex flex-column flex-md-row justify-content-around align-items-center h-100">
+                <div class="row cs-mb-0 d-flex flex-column flex-md-row justify-content-around align-items-center h-100 cs-mb-100--md">
                     <div class="col-md-6 text-left d-flex flex-column align-items-baseline">
                         <div class="d-flex flex-column align-items-baseline">
                             <div class="cs-font-size-40 cs-font-size-40--md cs-font-size-60--xl cs-font-weight-700 cs-line-height-1">КРОС-2019</div>
-                            <div class="cs-font-size-20 cs-font-size-20--xl cs-font-weight-700 cs-line-height-1">22-24 мая</div>
-                            <div class="cs-mb-10">
+                            <div class="cs-font-size-20 cs-font-size-20--xl cs-font-weight-700 cs-line-height-1 cs-mb-10 cs-mb-20--lg">22-24 мая</div>
+                            <div class="cs-mb-20">
                                 <a class="btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-12 cs-color-white cs-color-white--hover cs-bg-2019 cs-bg-2019--hover cs-brd-none rounded-0 cs-px-20 cs-py-15 mb-0 cs-mt-15" href="{{ path('registration') }}">Регистрация</a>
-                                <a class="btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-12 cs-color-white cs-color-white--hover cs-bg-2019 cs-bg-2019--hover cs-brd-none rounded-0 cs-px-20 cs-py-15 mb-0 cs-mt-15" href="#">Смотреть видео</a>
+                                {#<a class="btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-12 cs-color-white cs-color-white--hover cs-bg-2019 cs-bg-2019--hover cs-brd-none rounded-0 cs-px-20 cs-py-15 mb-0 cs-mt-15" href="#">Смотреть видео</a>#}
                             </div>
-                            <div class="cs-font-size-default cs-font-size-20--xl cs-font-weight-700 cs-line-height-1 cs-mb-10">г. Сочи, Красная Поляна, отель "Поляна 1389"</div>
-                            <div class="cs-font-size-20 cs-font-size-20--md cs-font-size-40--xl cs-font-weight-700 cs-line-height-1 cs-mb-5 cs-mb-10--lg"><span class="home_content__marked-text">3</span> дня/<span class="home_content__marked-text">800+</span> участников</div>
-                            <div class="cs-font-size-20 cs-font-size-20--md cs-font-size-40--xl cs-font-weight-700 cs-line-height-1 cs-mb-5 cs-mb-10--lg"><span class="home_content__marked-text">30+</span> докладчиков</div>
-                            <hr/>
-                            <div class="cs-font-size-default cs-font-size-20--xl cs-font-weight-700 cs-line-height-1 cs-mb-10">Трансформируйся для побед</div>
+                            <div class="cs-font-size-default cs-font-size-20--xl cs-font-weight-700 cs-line-height-1 cs-mb-20">г. Сочи, Красная Поляна, отель "Поляна 1389"</div>
+                            <div class="cs-font-size-20 cs-font-size-20--md cs-font-size-40--xl cs-font-weight-700 cs-line-height-1 cs-mb-10"><span class="home_content__marked-text">3</span> дня/<span class="home_content__marked-text">800+</span> участников</div>
+                            <div class="cs-font-size-20 cs-font-size-20--md cs-font-size-40--xl cs-font-weight-700 cs-line-height-1 cs-mb-20"><span class="home_content__marked-text">30+</span> докладчиков</div>
+                            <hr class="cs-mb-20"/>
+                            <div class="cs-font-size-default cs-font-size-20--xl cs-font-weight-700 cs-line-height-1">Трансформируйся для побед</div>
                             {#<p class="cs-font-size-20 mb-0 cs-color-white">#}
                                 {#<a href="https://www.youtube.com/embed/k5w08rgdPeY?rel=0&controls=0&showinfo=0&autoplay=1" class="js-fancybox nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>#}
                             {#</p>#}
