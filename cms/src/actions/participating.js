@@ -13,6 +13,14 @@ export default {
         };
     },
 
+    fetchConferences: () => {
+        return dispatch => {
+            dispatch({ type: PARTICIPATING.REQUEST_CONFERENCE });
+            request.get(`conference`)
+                .then(payload => dispatch({ type: PARTICIPATING.RECEIVE_CONFERENCE, payload }));
+        };
+    },
+
     fetchConferenceOrganizations: (data = {}) => {
         return dispatch => {
             dispatch({ type: PARTICIPATING.REQUEST_CONFERENCE_ORGANIZATIONS });

@@ -28,12 +28,12 @@ class ConferenceController extends ApiController
             $items[] = [
                 'id'                => $conference->getId(),
                 'year'              => $conference->getYear(),
-                'reg_start'         => $conference->getRegistrationStart()->getTimestamp(),
-                'reg_finish'        => $conference->getRegistrationFinish()->getTimestamp(),
-                'event_start'       => $conference->getEventStart()->getTimestamp(),
-                'event_finish'      => $conference->getEventFinish()->getTimestamp(),
-                'user_limit_global' => $conference->getLimitUsersGlobal(),
-                'user_limit_by_org' => $conference->getLimitUsersByOrg(),
+                'reg_start'         => $conference->getRegistrationStart()->format('Y-m-d\TH:i'),
+                'reg_finish'        => $conference->getRegistrationFinish()->format('Y-m-d\TH:i'),
+                'event_start'       => $conference->getEventStart()->format('Y-m-d\TH:i'),
+                'event_finish'      => $conference->getEventFinish()->format('Y-m-d\TH:i'),
+                'users_limit_global' => $conference->getLimitUsersGlobal(),
+                'users_limit_by_org' => $conference->getLimitUsersByOrg(),
             ];
         }
 
@@ -50,10 +50,10 @@ class ConferenceController extends ApiController
         $reg_finish = $this->requestData['reg_finish'] ?? null;
         $event_start = $this->requestData['event_start'] ?? null;
         $event_finish = $this->requestData['event_finish'] ?? null;
-        $user_limit_global = $this->requestData['user_limit_global'] ?? null;
-        $user_limit_by_org = $this->requestData['user_limit_by_org'] ?? null;
+        $users_limit_global = $this->requestData['users_limit_global'] ?? null;
+        $users_limit_by_org = $this->requestData['users_limit_by_org'] ?? null;
 
-        if (!$year || !$reg_start || !$reg_finish || !$event_start || !$event_finish || !$user_limit_global || !$user_limit_by_org) {
+        if (!$year || !$reg_start || !$reg_finish || !$event_start || !$event_finish || !$users_limit_global || !$users_limit_by_org) {
             return $this->badRequest('Не указаны обязательные параметры.');
         }
 
@@ -64,12 +64,12 @@ class ConferenceController extends ApiController
         $conference = new Conference();
 
         $conference->setYear($year);
-        $conference->setRegistrationStart($reg_start);
-        $conference->setRegistrationFinish($reg_finish);
-        $conference->setEventStart($event_start);
-        $conference->setEventFinish($event_finish);
-        $conference->setLimitUsersGlobal($user_limit_global);
-        $conference->setLimitUsersByOrg($user_limit_by_org);
+        $conference->setRegistrationStart(new \DateTime($reg_start));
+        $conference->setRegistrationFinish(new \DateTime($reg_finish));
+        $conference->setEventStart(new \DateTime($event_start));
+        $conference->setEventFinish(new \DateTime($event_finish));
+        $conference->setLimitUsersGlobal($users_limit_global);
+        $conference->setLimitUsersByOrg($users_limit_by_org);
 
         $this->em->persist($conference);
         $this->em->flush();
@@ -89,10 +89,10 @@ class ConferenceController extends ApiController
         $reg_finish = $this->requestData['reg_finish'] ?? null;
         $event_start = $this->requestData['event_start'] ?? null;
         $event_finish = $this->requestData['event_finish'] ?? null;
-        $user_limit_global = $this->requestData['user_limit_global'] ?? null;
-        $user_limit_by_org = $this->requestData['user_limit_by_org'] ?? null;
+        $users_limit_global = $this->requestData['users_limit_global'] ?? null;
+        $users_limit_by_org = $this->requestData['users_limit_by_org'] ?? null;
 
-        if (!$year || !$reg_start || !$reg_finish || !$event_start || !$event_finish || !$user_limit_global || !$user_limit_by_org) {
+        if (!$year || !$reg_start || !$reg_finish || !$event_start || !$event_finish || !$users_limit_global || !$users_limit_by_org) {
             return $this->badRequest('Не указаны обязательные параметры.');
         }
 
@@ -106,12 +106,12 @@ class ConferenceController extends ApiController
         }
 
         $conference->setYear($year);
-        $conference->setRegistrationStart($reg_start);
-        $conference->setRegistrationFinish($reg_finish);
-        $conference->setEventStart($event_start);
-        $conference->setEventFinish($event_finish);
-        $conference->setLimitUsersGlobal($user_limit_global);
-        $conference->setLimitUsersByOrg($user_limit_by_org);
+        $conference->setRegistrationStart(new \DateTime($reg_start));
+        $conference->setRegistrationFinish(new \DateTime($reg_finish));
+        $conference->setEventStart(new \DateTime($event_start));
+        $conference->setEventFinish(new \DateTime($event_finish));
+        $conference->setLimitUsersGlobal($users_limit_global);
+        $conference->setLimitUsersByOrg($users_limit_by_org);
 
         $this->em->persist($conference);
         $this->em->flush();

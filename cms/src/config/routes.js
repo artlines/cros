@@ -6,6 +6,7 @@ import AbodeHousing from "../pages/Abode/Housing";
 import Organizations from "../pages/Organizations";
 import Invite from "../pages/Invite";
 import Users from "../pages/Users";
+import Conferences from "../pages/Conferences";
 import NotFound from "../pages/NotFound";
 import {
     PeopleOutlined as People,
@@ -13,7 +14,8 @@ import {
     GroupAddOutlined as GroupAdd,
     LocationCityOutlined as LocationCity,
     DashboardOutlined as Dashboard,
-    SettingsApplicationsTwoTone as SettingsApplications,
+    SettingsApplicationsOutlined as SettingsApplications,
+    EventSeatOutlined as EventSeat,
 } from "@material-ui/icons";
 
 export default [
@@ -93,6 +95,17 @@ export default [
         menuItem: {
             Icon: People,
             title: "Пользователи",
+        },
+        role: "ROLE_ADMINISTRATOR",
+    },
+    {
+        path: "/cms/conferences",
+        Component: Conferences,
+        exact: true,
+        title: "Конференции",
+        menuItem: {
+            Icon: EventSeat,
+            title: "Конференции",
         },
         role: "ROLE_ADMINISTRATOR",
     },
