@@ -8,6 +8,9 @@ export const PARTICIPATING = {
     REQUEST_INVOICES: "PARTICIPATING_REQUEST_INVOICES",
     RECEIVE_INVOICES: "PARTICIPATING_RECEIVE_INVOICES",
 
+    REQUEST_CONFERENCE: "PARTICIPATING_REQUEST_CONFERENCE",
+    RECEIVE_CONFERENCE: "PARTICIPATING_RECEIVE_CONFERENCE",
+
     REQUEST_CONFERENCE_ORGANIZATIONS: "PARTICIPATING_REQUEST_CONFERENCE_ORGANIZATIONS",
     RECEIVE_CONFERENCE_ORGANIZATIONS: "PARTICIPATING_RECEIVE_CONFERENCE_ORGANIZATIONS",
 
@@ -32,6 +35,7 @@ const initialState = {
     invoice: {..._initialObjectState},
     member: {..._initialObjectState},
     organization_directory: {..._initialObjectState},
+    conference: {..._initialObjectState},
 };
 
 export default (state = initialState, action) => {
@@ -56,23 +60,41 @@ export default (state = initialState, action) => {
             }
         };
 
-    case PARTICIPATING.REQUEST_CONFERENCE_ORGANIZATIONS:
-        return {
-            ...state,
-            conference_organization: {
-                ...state.conference_organization,
-                isFetching: true,
-            }
-        };
-    case PARTICIPATING.RECEIVE_CONFERENCE_ORGANIZATIONS:
-        return {
-            ...state,
-            conference_organization: {
-                ...state.conference_organization,
-                isFetching: false,
-                ...payload,
-            }
-        };
+        case PARTICIPATING.REQUEST_CONFERENCE:
+            return {
+                ...state,
+                conference: {
+                    ...state.conference,
+                    isFetching: true,
+                }
+            };
+        case PARTICIPATING.RECEIVE_CONFERENCE:
+            return {
+                ...state,
+                conference: {
+                    ...state.conference,
+                    isFetching: false,
+                    ...payload,
+                }
+            };
+
+        case PARTICIPATING.REQUEST_CONFERENCE_ORGANIZATIONS:
+            return {
+                ...state,
+                conference_organization: {
+                    ...state.conference_organization,
+                    isFetching: true,
+                }
+            };
+        case PARTICIPATING.RECEIVE_CONFERENCE_ORGANIZATIONS:
+            return {
+                ...state,
+                conference_organization: {
+                    ...state.conference_organization,
+                    isFetching: false,
+                    ...payload,
+                }
+            };
 
     case PARTICIPATING.REQUEST_MEMBERS:
         return {
