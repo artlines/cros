@@ -562,11 +562,25 @@ hr {
 }
 
 @media (min-width: 768px) {
+  .cs-font-size-20--md {
+    font-size: 1.42857rem!important;
+  }
   .cs-font-size-40--md {
     font-size: 2.85714rem!important;
   }
-
   .cs-font-size-60--md {
+    font-size: 4.28571rem!important;
+  }
+}
+
+@media (min-width: 1198px) {
+  .cs-font-size-20--xl {
+    font-size: 1.42857rem!important;
+  }
+  .cs-font-size-40--xl {
+    font-size: 2.85714rem!important;
+  }
+  .cs-font-size-60--xl {
     font-size: 4.28571rem!important;
   }
 }
@@ -898,11 +912,20 @@ hr {
   .cs-mb-70--md {
     margin-bottom: 5rem!important;
   }
+  .cs-mb-100--md {
+    margin-bottom: 7.14286rem!important;
+  }
 }
 
 @media (min-width: 992px) {
   .cs-mb-0--lg {
     margin-bottom: 0!important;
+  }
+  .cs-mb-10--lg {
+    margin-bottom: 0.71429rem!important;
+  }
+  .cs-mb-20--lg {
+    margin-bottom: 1.42857rem!important;
   }
 
   .cs-mx-15--lg {
@@ -979,6 +1002,11 @@ hr {
   .cs-px-20 {
     padding-left: 1.42857rem!important;
     padding-right: 1.42857rem!important;
+  }
+
+  .cs-px-15 {
+    padding-left: 1.07143rem!important;
+    padding-right: 1.07143rem!important;
   }
 
   .cs-px-30 {

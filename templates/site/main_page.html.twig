@@ -22,11 +22,11 @@
     <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/megamenu.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/lightbox.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/cros2/assets/cros/slick-slider/slick.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/bases.css?t=2019021101') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/bases.css?t=20190214') }}">
     <!-- CSS Template -->
-    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/styles.css?t=2019021101') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/styles.css?t=2019021501') }}">
     <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/light-blue.css?t=2019021101') }}">
-    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/custom.css?t=2019021101') }}">
+    <link rel="stylesheet" href="{{ asset('assets/cros2/assets/css/custom.css?t=2019021501') }}">
     <meta name="theme-color" content="#6ca0dc">
     <link rel="icon" sizes="192x192" href="{{ asset('temp/cros-logo_192px.png') }}">
 </head>
@@ -122,80 +122,95 @@
         </div>
     </header>
     <!-- Section Content -->
-    <section id="home" class="cs-bg-img-hero cs-pos-rel u-bg-overlay cs-bg-darkblue-opacity-0_5--after cs-pt-100" style="background-image: url({{ asset('assets/cros2/img/cros_main_1920.jpg') }});">
-
-        {% if not app.user %}
-        <div class="container text-right login-main cs-pos-rel">
-            {{ render(path('login')) }}
-        </div>
-        {% endif %}
-
-        {% if is_granted('ROLE_USER') %}
-            <div class="container text-right login-main">
-                <a href="{{ path('registration_show') }}" class="cs-py-5 cs-font-size-11 cs-z-index-2 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
-                    &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;ЛИЧНЫЙ КАБИНЕТ&nbsp;
-                </a>
-            </div>
-        {% endif %}
-        {% if is_granted('ROLE_CMS_USER') %}
-            <div class="container text-right login-main">
-                <a href="/cms" class="cs-py-5 cs-font-size-11 cs-z-index-2 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
-                    &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;CMS&nbsp;
-                </a>
-            </div>
-        {% endif %}
-        <!-- cs-max-width-750  -->
-        <div class="container u-bg-overlay__inner cs-color-white mb-0 cs-pt-40">
-            {{ render(controller('App\\Controller\\Site\\DefaultController:countdown', { mainPage: true })) }}
-            <div class="row cs-mb-0 cs-mt-100">
-                <div class="col-md-6  text-left">
-                    <p class="cs-font-size-20 mb-0 cs-color-white">
-                        <!--
-                        <a href="{{ asset('uploads/files/promo_cros_2018.mp4') }}" class="js-fancybox nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
-
-                        <!--
-                        <a id="cros-video" href="#" class="nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
-                        -->
-
-                        <a href="https://www.youtube.com/embed/k5w08rgdPeY?rel=0&controls=0&showinfo=0&autoplay=1" class="js-fancybox nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
-
-                        <!--
-                        <a href="https://www.youtube.com/embed/XEfDYMngJeE?autoplay=1" class="js-fancybox nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>
-                        -->
-                    </p>
-                </div>
-                <div class="col-md-6">
-                    <p class="cs-font-size-27 mb-0 cs-color-white text-right">nag.ru представляет</p>
-                    <h1 class="text-right text-uppercase h2 cs-font-weight-700 cs-font-size-40 cs-font-size-60--md cs-color-white">
-                        КРОС-2019
-                    </h1>
-                    <p class="cs-font-size-27 cs-mb-30 cs-mb-70--md cs-color-white text-right">22-24 мая 2019</p>
-                </div>
+    <section id="home"
+             class="cs-bg-img-hero cs-pos-rel"
+             style="min-height: 410px;" {# background-image: url({{ asset('assets/cros2/img/cros_main_1920.jpg') }}); #}
+    >
+        <div class="home_video__block">
+            <div class="home_video__container cs-bg-secondary_block">
+                <video autoplay="autoplay" loop="loop" {#poster="/assets/cros2/img/cros_main_1920.jpg"#}>
+                    <source src="/uploads/cros-2019/bg_video.mp4" type="video/mp4">
+                </video>
             </div>
         </div>
-        <div class="container u-bg-overlay__inner cs-bottom-minus-70 px-0">
-            <div class="row u-shadow-v23 cs-theme-bg-blue-dark-v2 mx-0 cs-bg-img-layer" style="background-image: url({{ asset('assets/cros2/img/white_lg_layer.png') }});">
-                <div class="col-md-12 d-flex cs-min-height-30vh cs-theme-color-gray-dark-v1 cs-py-80 cs-py-20--md cs-px-50">
-                    <div class="w-100">
-                        <!-- fix for wide monitor  -->
-                        <h2 class="h2-white text-uppercase cs-font-weight-700 cs-font-size-23 cs-letter-spacing-0  cs-color-white cs-mb-10 text-center">Конференция российских
-                            операторов связи
-                        </h2>
-                        <p class="cs-pt-20 cs-font-size-14 mb-0 cs-color-white text-center">Крупнейшее отраслевое мероприятие для специалистов и руководителей
-                            телекоммуникационной отрасли. Проводится с 2006 года. В программе - доклады и круглые столы, выставка новинок оборудования
-                            и решений для отрасли телекоммуникаций от компании “НАГ”, развлекательные мероприятия и много неформального общения.
-                        </p>
-                        <div class="text-center">
-                            <a class="btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 cs-py-18 mb-0 cs-mt-15" href="{{ path('registration') }}">Участвовать в КРОС-2019</a>
-                            <a class="btn btn-lg text-uppercase u-btn-yellow cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 cs-py-18 mb-0 cs-mt-15" href="{{ path('info', {'alias': 'targets'}) }}">Узнать больше о КРОС</a>
+
+        <div class="home_content__block cs-pt-100">
+            {% if not app.user %}
+                <div class="container text-right login-main cs-pos-rel">
+                    {{ render(path('login')) }}
+                </div>
+            {% endif %}
+
+            {% if is_granted('ROLE_USER') %}
+                <div class="container text-right login-main">
+                    <a href="{{ path('registration_show') }}" class="cs-py-5 cs-font-size-11 cs-z-index-2 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+                        &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;ЛИЧНЫЙ КАБИНЕТ&nbsp;
+                    </a>
+                </div>
+            {% endif %}
+            {% if is_granted('ROLE_CMS_USER') %}
+                <div class="container text-right login-main">
+                    <a href="/cms" class="cs-py-5 cs-font-size-11 cs-z-index-2 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+                        &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;CMS&nbsp;
+                    </a>
+                </div>
+            {% endif %}
+            <!-- cs-max-width-750  -->
+            <div class="container u-bg-overlay__inner cs-color-white mb-0 home_content__info_container">
+                <div class="row cs-mb-0 d-flex flex-column flex-md-row justify-content-around align-items-center h-100 cs-mb-100--md">
+                    <div class="col-md-6 text-left d-flex flex-column align-items-baseline">
+                        <div class="d-flex flex-column align-items-baseline">
+                            <div class="cs-font-size-40 cs-font-size-40--md cs-font-size-60--xl cs-font-weight-700 cs-line-height-1">КРОС-2019</div>
+                            <div class="cs-font-size-20 cs-font-size-20--xl cs-font-weight-700 cs-line-height-1 cs-mb-10 cs-mb-20--lg">22-24 мая</div>
+                            <div class="cs-mb-20">
+                                <a class="btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-12 cs-color-white cs-color-white--hover cs-bg-2019 cs-bg-2019--hover cs-brd-none rounded-0 cs-px-20 cs-py-15 mb-0 cs-mt-15" href="{{ path('registration') }}">Регистрация</a>
+                                {#<a class="btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-12 cs-color-white cs-color-white--hover cs-bg-2019 cs-bg-2019--hover cs-brd-none rounded-0 cs-px-20 cs-py-15 mb-0 cs-mt-15" href="#">Смотреть видео</a>#}
+                            </div>
+                            <div class="cs-font-size-default cs-font-size-20--xl cs-font-weight-700 cs-line-height-1 cs-mb-20">г. Сочи, Красная Поляна, отель "Поляна 1389"</div>
+                            <div class="cs-font-size-20 cs-font-size-20--md cs-font-size-40--xl cs-font-weight-700 cs-line-height-1 cs-mb-10"><span class="home_content__marked-text">3</span> дня/<span class="home_content__marked-text">800+</span> участников</div>
+                            <div class="cs-font-size-20 cs-font-size-20--md cs-font-size-40--xl cs-font-weight-700 cs-line-height-1 cs-mb-20"><span class="home_content__marked-text">30+</span> докладчиков</div>
+                            <hr class="cs-mb-20"/>
+                            <div class="cs-font-size-default cs-font-size-20--xl cs-font-weight-700 cs-line-height-1">Трансформируйся для побед</div>
+                            {#<p class="cs-font-size-20 mb-0 cs-color-white">#}
+                                {#<a href="https://www.youtube.com/embed/k5w08rgdPeY?rel=0&controls=0&showinfo=0&autoplay=1" class="js-fancybox nav-link"><i class="fa fa-play-circle cs-font-size-60 cs-valign-middle cs-mr-20"></i>Смотреть видео</a>#}
+                            {#</p>#}
                         </div>
+                    </div>
+                    <div class="col-md-6">
+                        {{ render(controller('App\\Controller\\Site\\DefaultController:countdown', { mainPage: true })) }}
+                        {#<p class="cs-font-size-27 mb-0 cs-color-white text-right">nag.ru представляет</p>#}
+                        {#<h1 class="text-right text-uppercase h2 cs-font-weight-700 cs-font-size-40 cs-font-size-60--md cs-color-white">#}
+                        {#КРОС-2019#}
+                        {#</h1>#}
+                        {#<p class="cs-font-size-27 cs-mb-30 cs-mb-70--md cs-color-white text-right">22-24 мая 2019</p>#}
                     </div>
                 </div>
             </div>
         </div>
+
+        {#<div class="container u-bg-overlay__inner cs-bottom-minus-70 px-0">#}
+            {#<div class="row u-shadow-v23 cs-theme-bg-blue-dark-v2 mx-0 cs-bg-img-layer" style="background-image: url({{ asset('assets/cros2/img/white_lg_layer.png') }});">#}
+                {#<div class="col-md-12 d-flex cs-min-height-30vh cs-theme-color-gray-dark-v1 cs-py-80 cs-py-20--md cs-px-50">#}
+                    {#<div class="w-100">#}
+                        {#<!-- fix for wide monitor  -->#}
+                        {#<h2 class="h2-white text-uppercase cs-font-weight-700 cs-font-size-23 cs-letter-spacing-0  cs-color-white cs-mb-10 text-center">Конференция российских#}
+                            {#операторов связи#}
+                        {#</h2>#}
+                        {#<p class="cs-pt-20 cs-font-size-14 mb-0 cs-color-white text-center">Крупнейшее отраслевое мероприятие для специалистов и руководителей#}
+                            {#телекоммуникационной отрасли. Проводится с 2006 года. В программе - доклады и круглые столы, выставка новинок оборудования#}
+                            {#и решений для отрасли телекоммуникаций от компании “НАГ”, развлекательные мероприятия и много неформального общения.#}
+                        {#</p>#}
+                        {#<div class="text-center">#}
+                            {#<a class="btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 cs-py-18 mb-0 cs-mt-15" href="{{ path('registration') }}">Участвовать в КРОС-2019</a>#}
+                            {#<a class="btn btn-lg text-uppercase u-btn-yellow cs-font-weight-700 cs-font-size-11 cs-color-white cs-color-white--hover cs-bg-primary--hover cs-brd-none rounded-0 cs-px-20 cs-py-18 mb-0 cs-mt-15" href="{{ path('info', {'alias': 'targets'}) }}">Узнать больше о КРОС</a>#}
+                        {#</div>#}
+                    {#</div>#}
+                {#</div>#}
+            {#</div>#}
+        {#</div>#}
     </section>
     <!-- End Section Content -->
-    <section id="about" class="cs-pt-150 cs-pb-10 cs-mb-100 cs-bg-secondary_block">
+    <section id="about" class="cs-pt-100 cs-pb-10 cs-mb-100 cs-bg-secondary_block">
         <div class="container">
             <div class="text-center cs-mb-70">
                 <h2 class="text-uppercase cs-line-height-1 cs-font-weight-700 cs-font-size-23 cs-letter-spacing-0  cs-mb-30 cs-color-header">КРОС - это люди</h2>

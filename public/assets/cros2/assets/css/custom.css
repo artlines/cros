@@ -130,7 +130,7 @@ input.cs-p-text-white--checked[type="radio"]:checked + * p {
 }
 
 .cursor-pointer {
-    cursor: pointer
+    cursor: pointer;
 }
 
 @media screen and (max-width: 576px) {
@@ -198,4 +198,48 @@ label.required:after
     background: none !important;
     margin-left: 5px;
     padding: 0 !important;
+}
+
+.cs-bg-2019 {
+    background-color: #09c386!important;
+}
+.cs-bg-2019--hover:hover {
+    background-color: #82a6e1!important;
+}
+
+.home_video__block {
+    width: 100%;
+    min-height: 100vh;
+}
+.home_video__container {
+    position: relative;
+    min-height: 100vh;
+}
+.home_video__container video {
+    width: 100%;
+    object-fit: cover;
+    margin-bottom: -7px;
+    min-height: 100vh;
+}
+.home_content__block {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+.home_content__marked-text {
+    color: #82a6e1;
+}
+.home_content__info_container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: -30px;
+}
+.home_content__info_container hr {
+    margin: 0;
+    border-top-color: #82a6e1;
+    width: 100%;
 }
