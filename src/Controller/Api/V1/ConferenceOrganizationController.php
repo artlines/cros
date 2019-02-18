@@ -15,6 +15,7 @@ use App\Entity\Participating\Invoice;
 use App\Entity\Participating\Organization;
 use App\Repository\ConferenceOrganizationRepository;
 use App\Service\Mailer;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
@@ -235,10 +236,11 @@ class ConferenceOrganizationController extends ApiController
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param Mailer $mailer
+     * @param LoggerInterface $logger
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @throws \Exception
      */
-    public function invite(Mailer $mailer)
+    public function invite(Mailer $mailer, LoggerInterface $logger)
     {
         $year = date('Y');
 
@@ -246,7 +248,7 @@ class ConferenceOrganizationController extends ApiController
         $email = $this->requestData['email'] ?? null;
         $name = $this->requestData['name'] ?? null;
         $inn = $this->requestData['inn'] ?? null;
-        $kpp = $this->requestData['kpp'] ?? null;
+        $kpp = (isset($this->requestData['kpp']) && $this->requestData['kpp'] !== '') ? $this->requestData['kpp'] : null;
         $mngr_first_name = $this->requestData['mngr_first_name'] ?? null;
         $mngr_last_name = $this->requestData['mngr_last_name'] ?? null;
         $mngr_phone = $this->requestData['mngr_phone'] ?? null;
@@ -263,8 +265,15 @@ class ConferenceOrganizationController extends ApiController
             return $this->notFound("Conference with year $year not found.");
         }
 
+        $logger->info('[Invite Organization]', ['inn' => $inn, 'kpp' => $kpp]);
+
         /** @var Organization $organization */
         if ($organization = $this->em->getRepository(Organization::class)->findOneBy(['inn' => $inn, 'kpp' => $kpp])) {
+            $logger->info('[Invite Organization] Found Organization', [
+                'id'    => $organization->getId(),
+                'name'  => $organization->getName()
+            ]);
+
             /**
              * Check that organization already invited or registered
              * @var ConferenceOrganization $conferenceOrganization
@@ -273,6 +282,11 @@ class ConferenceOrganizationController extends ApiController
                 ->findOneBy(['conference' => $conference, 'organization' => $organization]);
 
             if ($conferenceOrganization) {
+                $logger->info('[Invite Organization] Found ConferenceOrganization', [
+                    'id'        => $conferenceOrganization->getId(),
+                    'is_finish' => $conferenceOrganization->isFinish() ? 'true' : 'false'
+                ]);
+
                 if ($conferenceOrganization->isFinish()) {
                     return $this->badRequest('Организация уже зарегистрирована.');
                 } elseif ($employee = $conferenceOrganization->getInvitedBy()) {
@@ -282,6 +296,8 @@ class ConferenceOrganizationController extends ApiController
                 }
             }
         } else {
+            $logger->info('[Invite Organization] Not found Organization, create new');
+
             $organization = new Organization();
             $organization->setInn($inn);
             $organization->setKpp($kpp);
