@@ -11,7 +11,7 @@ class ConferenceOrganizationRepository extends EntityRepository
 {
     public function searchBy(Conference $conference, array $data = [])
     {
-        $limit = 10;
+        $limit = 100;
         $offset = null;
         $parameters = [];
         $qb = $this->createQueryBuilder('co');
