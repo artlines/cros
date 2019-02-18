@@ -16,14 +16,18 @@ class Home extends React.Component {
     }
 
     componentDidMount() {
-        this.props.fetchSummaryInformation();
-        this.updateInterval = setInterval(() => {
+        const { roles } = this.props;
+
+        if (roles.includes('ROLE_SETTLEMENT_MANAGER')) {
             this.props.fetchSummaryInformation();
-        }, 60000);
+            this.updateInterval = setInterval(() => {
+                this.props.fetchSummaryInformation();
+            }, 60000);
+        }
     }
 
     componentWillUnmount() {
-        this.updateInterval = null;
+        this.updateInterval && clearInterval(this.updateInterval);
     }
 
     render() {
