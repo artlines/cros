@@ -8,6 +8,7 @@ import {
     TableCell,
     IconButton,
     Grid,
+    Paper,
 } from '@material-ui/core';
 import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
@@ -30,36 +31,38 @@ class ConferenceTable extends React.PureComponent {
                         <LinearProgress show={isFetching}/>
                     </Grid>
                     <Grid item xs={12}>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Год</TableCell>
-                                    <TableCell>Начало регистрации</TableCell>
-                                    <TableCell>Окончание регистрации</TableCell>
-                                    <TableCell>Начало мероприятия</TableCell>
-                                    <TableCell>Окончание мероприятия</TableCell>
-                                    <TableCell>Лимит участников на конференцию</TableCell>
-                                    <TableCell>Лимит участников на организацию</TableCell>
-                                    <TableCell> </TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {map(sortBy(items, 'year'), item =>
-                                    <TableRow key={item.id}>
-                                        <TableCell>{item.year}</TableCell>
-                                        <TableCell><DateTime withTime value={item.reg_start}/></TableCell>
-                                        <TableCell><DateTime withTime value={item.reg_finish}/></TableCell>
-                                        <TableCell><DateTime withTime value={item.event_start}/></TableCell>
-                                        <TableCell><DateTime withTime value={item.event_finish}/></TableCell>
-                                        <TableCell>{item.users_limit_global || 'не указан'}</TableCell>
-                                        <TableCell>{item.users_limit_by_org || 'не указан'}</TableCell>
-                                        <TableCell>
-                                            <IconButton onClick={() => onEdit(item.id)}><EditIcon/></IconButton>
-                                        </TableCell>
+                        <Paper>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Год</TableCell>
+                                        <TableCell>Начало регистрации</TableCell>
+                                        <TableCell>Окончание регистрации</TableCell>
+                                        <TableCell>Начало мероприятия</TableCell>
+                                        <TableCell>Окончание мероприятия</TableCell>
+                                        <TableCell>Лимит участников на конференцию</TableCell>
+                                        <TableCell>Лимит участников на организацию</TableCell>
+                                        <TableCell> </TableCell>
                                     </TableRow>
-                                )}
-                            </TableBody>
-                        </Table>
+                                </TableHead>
+                                <TableBody>
+                                    {map(sortBy(items, 'year').reverse(), item =>
+                                        <TableRow key={item.id}>
+                                            <TableCell>{item.year}</TableCell>
+                                            <TableCell><DateTime withTime value={item.reg_start}/></TableCell>
+                                            <TableCell><DateTime withTime value={item.reg_finish}/></TableCell>
+                                            <TableCell><DateTime withTime value={item.event_start}/></TableCell>
+                                            <TableCell><DateTime withTime value={item.event_finish}/></TableCell>
+                                            <TableCell>{item.users_limit_global || 'не указан'}</TableCell>
+                                            <TableCell>{item.users_limit_by_org || 'не указан'}</TableCell>
+                                            <TableCell>
+                                                <IconButton onClick={() => onEdit(item.id)}><EditIcon/></IconButton>
+                                            </TableCell>
+                                        </TableRow>
+                                    )}
+                                </TableBody>
+                            </Table>
+                        </Paper>
                     </Grid>
                 </Grid>
             </React.Fragment>

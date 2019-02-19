@@ -109,7 +109,7 @@ class Organizations extends React.Component {
                         <TextField
                             fullWidth
                             label={`Поиск`}
-                            helperText={`Поиск по наименованию организации и ИНН`}
+                            helperText={`Поиск по наименованию организации, ИНН или ФИО сотрудника`}
                             onChange={this.handleFilterChange(`search`)}
                             InputLabelProps={{shrink: true}}
                         />

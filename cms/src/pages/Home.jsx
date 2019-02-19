@@ -5,7 +5,7 @@ import {
     Typography,
     Grid,
 } from "@material-ui/core";
-import SummaryInformation from "../components/Abode/SummaryInformation";
+import RoomsSummaryInformation from "../components/Abode/RoomsSummaryInformation";
 import abode from "../actions/abode";
 
 class Home extends React.Component {
@@ -19,27 +19,27 @@ class Home extends React.Component {
         const { roles } = this.props;
 
         if (roles.includes('ROLE_SETTLEMENT_MANAGER')) {
-            this.props.fetchSummaryInformation();
+            this.props.fetchRoomsSummaryInformation();
             this.updateInterval = setInterval(() => {
-                this.props.fetchSummaryInformation();
+                this.props.fetchRoomsSummaryInformation();
             }, 60000);
         }
     }
 
     componentWillUnmount() {
-        this.updateInterval && clearInterval(this.updateInterval);
+        clearInterval(this.updateInterval);
     }
 
     render() {
-        const { roles, summary_information } = this.props;
+        const { roles, rooms_summary_information } = this.props;
 
         return (
             <Grid container spacing={16}>
                 {roles.includes('ROLE_SETTLEMENT_MANAGER') &&
                 <Grid item xs={12}>
-                    <Typography gutterBottom variant={`h5`}>Сводная информация</Typography>
+                    <Typography gutterBottom variant={`h5`}>Сводная информация по комнатам</Typography>
                     <Paper>
-                        <SummaryInformation {...summary_information}/>
+                        <RoomsSummaryInformation {...rooms_summary_information}/>
                     </Paper>
                 </Grid>
                 }
@@ -50,13 +50,13 @@ class Home extends React.Component {
 
 const mapStateToProps = state =>
     ({
-        summary_information: state.abode.summary_information,
+        rooms_summary_information: state.abode.rooms_summary_information,
         roles: state.system.user.roles,
     });
 
 const mapDispatchToProps = dispatch =>
     ({
-        fetchSummaryInformation: () => dispatch(abode.fetchSummaryInformation()),
+        fetchRoomsSummaryInformation: () => dispatch(abode.fetchRoomsSummaryInformation()),
     });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
