@@ -54,7 +54,7 @@ class HousingController extends ApiController
 
         $items = [];
         foreach ($housings as $housing) {
-            $items[] = $this->getResponseItem($housing, true);
+            $items[] = $this->getResponseItem($housing);
         }
 
         return $this->success(['items' => $items, 'total_count' => count($items)]);
@@ -65,10 +65,13 @@ class HousingController extends ApiController
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param $id
+     * @param AbodeManager $am
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function getOne($id)
+    public function getOne($id, AbodeManager $am)
     {
+        $this->am = $am;
+
         try {
             /** @var Housing $housing */
             $housing = $this->findEntity($id);
@@ -175,10 +178,9 @@ class HousingController extends ApiController
     /**
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param Housing $housing
-     * @param bool $withInfo
      * @return array
      */
-    private function getResponseItem(Housing $housing, $withInfo = false)
+    private function getResponseItem(Housing $housing)
     {
         $_abode_info = [];
 
@@ -190,9 +192,7 @@ class HousingController extends ApiController
             'abode_info'    => $_abode_info,
         ];
 
-        if ($withInfo) {
-            $item['abode_info'] = $this->am->calculateAbodeInfoByHousing($housing);
-        }
+        $item['abode_info'] = $this->am->calculateAbodeInfoByHousing($housing);
 
         return $item;
     }
