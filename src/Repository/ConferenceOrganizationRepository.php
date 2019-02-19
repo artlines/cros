@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Conference;
+use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\Organization;
+use App\Entity\Participating\User;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
 
@@ -18,7 +20,9 @@ class ConferenceOrganizationRepository extends EntityRepository
 
         $dql = $qb
             ->select('co')
-            ->leftJoin(Organization::class, 'o', Expr\Join::WITH, 'co.organization = o');
+            ->leftJoin(Organization::class, 'o', Expr\Join::WITH, 'co.organization = o')
+            ->leftJoin(ConferenceMember::class, 'cm', Expr\Join::WITH, 'cm.conferenceOrganization = co')
+            ->leftJoin(User::class, 'u', Expr\Join::WITH, 'cm.user = u');
 
         $dql->andWhere('co.conference = :conference');
         $parameters['conference'] = $conference;
@@ -28,8 +32,11 @@ class ConferenceOrganizationRepository extends EntityRepository
             $val = $data['search'];
             $dql->andWhere(
                 $qb->expr()->orX(
-                    "o.name LIKE '%$val%'",
-                    "o.inn LIKE '%$val%'"
+                    "lower(o.name) LIKE lower('%$val%')",
+                    "o.inn LIKE lower('%$val%')",
+                    "lower(u.lastName) LIKE lower('%$val%')",
+                    "lower(u.firstName) LIKE lower('%$val%')",
+                    "lower(u.middleName) LIKE lower('%$val%')"
                 )
             );
         }
