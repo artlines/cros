@@ -8,7 +8,7 @@ function PhoneNumberField(props) {
         <MaskedInput
             {...other}
             ref={ref => inputRef(ref ? ref.inputElement : null)}
-            mask={["8", "(", "9", /\d/, /\d/, ")", " ", /\d/, /\d/, /\d/, "-", /\d/, /\d/, /\d/, /\d/]}
+            mask={["8", " ", "(", /\d/, /\d/, /\d/, ")", " ", /\d/, /\d/, /\d/, "-", /\d/, /\d/, "-", /\d/, /\d/]} //s
             placeholderChar={"\u2000"}
             showMask
         />

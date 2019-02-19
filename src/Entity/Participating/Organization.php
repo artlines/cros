@@ -15,7 +15,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Organization
  *
  * @ORM\Entity(repositoryClass="App\Repository\OrganizationRepository")
- * @ORM\Table(schema="participating", name="organization")
+ * @ORM\Table(
+ *     schema="participating",
+ *     name="organization",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="organization_idx", columns={"kpp", "inn"})}
+ * )
  */
 class Organization
 {

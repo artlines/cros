@@ -95,7 +95,7 @@ class ConferenceMemberController extends ApiController
         $last_name = $this->requestData['last_name'] ?? null;
         $middle_name = $this->requestData['middle_name'] ?? null;
         $post = $this->requestData['post'] ?? null;
-        $phone = $this->requestData['phone'] ?? null;
+        $phone = isset($this->requestData['phone']) ? preg_replace('/[^0-9]/', '', $this->requestData['phone']) : null;
         $email = $this->requestData['email'] ?? null;
         $sex = $this->requestData['sex'] ?? null;
         $car_number = $this->requestData['car_number'] ?? null;
@@ -174,7 +174,7 @@ class ConferenceMemberController extends ApiController
         $last_name = $this->requestData['last_name'] ?? null;
         $middle_name = $this->requestData['middle_name'] ?? null;
         $post = $this->requestData['post'] ?? null;
-        $phone = $this->requestData['phone'] ?? null;
+        $phone = isset($this->requestData['phone']) ? preg_replace('/[^0-9]/', '', $this->requestData['phone']) : null;
         $email = $this->requestData['email'] ?? null;
         $sex = $this->requestData['sex'] ?? null;
         $car_number = $this->requestData['car_number'] ?? null;

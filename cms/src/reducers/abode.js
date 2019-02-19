@@ -17,8 +17,11 @@ export const ABODE = {
     REQUEST_APARTMENTS: "ABODE_REQUEST_APARTMENTS",
     RECEIVE_APARTMENTS: "ABODE_RECEIVE_APARTMENTS",
 
-    REQUEST_SUMMARY_INFORMATION: "ABODE_REQUEST_SUMMARY_INFORMATION",
-    RECEIVE_SUMMARY_INFORMATION: "ABODE_RECEIVE_SUMMARY_INFORMATION",
+    REQUEST_ROOMS_SUMMARY_INFORMATION: "ABODE_REQUEST_ROOMS_SUMMARY_INFORMATION",
+    RECEIVE_ROOMS_SUMMARY_INFORMATION: "ABODE_RECEIVE_ROOMS_SUMMARY_INFORMATION",
+
+    REQUEST_APARTMENTS_SUMMARY_INFORMATION: "ABODE_REQUEST_APARTMENTS_SUMMARY_INFORMATION",
+    RECEIVE_APARTMENTS_SUMMARY_INFORMATION: "ABODE_RECEIVE_APARTMENTS_SUMMARY_INFORMATION",
 };
 
 const _initialObjectState = {
@@ -51,7 +54,10 @@ const initialState = {
     apartment: {
         ..._initialObjectState
     },
-    summary_information: {
+    rooms_summary_information: {
+        ..._initialObjectState
+    },
+    apartments_summary_information: {
         ..._initialObjectState
     },
 };
@@ -174,20 +180,38 @@ export default (state = initialState, action) => {
                     ...payload,
                 },
             };
-        case ABODE.REQUEST_SUMMARY_INFORMATION:
+        case ABODE.REQUEST_ROOMS_SUMMARY_INFORMATION:
             return {
                 ...state,
-                summary_information: {
-                    ...state.summary_information,
+                rooms_summary_information: {
+                    ...state.rooms_summary_information,
                     isFetching: true,
                     error: false,
                 },
             };
-        case ABODE.RECEIVE_SUMMARY_INFORMATION:
+        case ABODE.RECEIVE_ROOMS_SUMMARY_INFORMATION:
             return {
                 ...state,
-                summary_information: {
-                    ...state.summary_information,
+                rooms_summary_information: {
+                    ...state.rooms_summary_information,
+                    isFetching: false,
+                    ...payload,
+                },
+            };
+        case ABODE.REQUEST_APARTMENTS_SUMMARY_INFORMATION:
+            return {
+                ...state,
+                apartments_summary_information: {
+                    ...state.apartments_summary_information,
+                    isFetching: true,
+                    error: false,
+                },
+            };
+        case ABODE.RECEIVE_APARTMENTS_SUMMARY_INFORMATION:
+            return {
+                ...state,
+                apartments_summary_information: {
+                    ...state.apartments_summary_information,
                     isFetching: false,
                     ...payload,
                 },

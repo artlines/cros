@@ -100,6 +100,18 @@ class Resettlement extends React.Component {
         return result;
     };
 
+    getMembers = () => {
+        const { members } = this.props;
+        const { filter } = this.state;
+        let result = members.items;
+
+        if (filter.apartment.room_type) {
+            result = f(result, i => i.room_type_id === filter.apartment.room_type)
+        }
+
+        return result;
+    };
+
     holdPlace = (room_id, conference_member_id) => {
         api.post(`place/new`, {room_id, conference_member_id})
             .then(this.update)
@@ -186,7 +198,7 @@ class Resettlement extends React.Component {
                         style={{ position: 'fixed', right: 0, width: '100%' }}
                     >
                         <MembersListTarget
-                            members={members.items}
+                            members={this.getMembers()}
                             MemberComponent={MemberInfoSource}
                             memberComponentProps={{
                                 holdPlace:      this.holdPlace,
@@ -207,33 +219,6 @@ const mapStateToProps = state =>
         ...state.resettlement,
         room_types: state.abode.room_type.items,
         isFetching: state.resettlement.apartments.isFetching || state.resettlement.members.isFetching,
-        // members: {
-        //     isFetching: false,
-        //     count: 0,
-        //     items: [
-        //         { id: 1, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ фывфывфывфывфывфывфывфывфывфывфывфывфыв', room_type_id: 1, neighbourhood: 'Фамилия Имя Отчество фывфывфывфывфывфыв' },
-        //         { id: 2, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
-        //         { id: 3, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
-        //         { id: 4, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 1, neighbourhood: 'Фамилия Имя Отчество' },
-        //         { id: 5, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 1, neighbourhood: 'Фамилия Имя Отчество' },
-        //         { id: 6, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
-        //         { id: 7, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
-        //         { id: 9, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 1, neighbourhood: 'Фамилия Имя Отчество' },
-        //         { id: 8, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
-        //         { id: 11, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
-        //         { id: 22, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 1 },
-        //         { id: 33, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2, neighbourhood: 'Фамилия Имя Отчество' },
-        //         { id: 44, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 1 },
-        //         { id: 43, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2, neighbourhood: 'Фамилия Имя Отчество' },
-        //         { id: 12, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 1 },
-        //         { id: 13, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
-        //         { id: 14, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 1, neighbourhood: 'Фамилия Имя Отчество' },
-        //         { id: 15, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2 },
-        //         { id: 66, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 1 },
-        //         { id: 17, first_name: 'Иван', last_name: 'Петров', org_name: 'ИП ЫЫ', room_type_id: 2, neighbourhood: 'Фамилия Имя Отчество' },
-        //     ],
-        // },
-
     });
 
 const mapDispatchToProps = (dispatch, ownProps) =>

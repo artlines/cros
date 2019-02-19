@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: alf1kk
- * Date: 21.01.19
- * Time: 11:05
- */
 
 namespace App\Controller\Api\V1;
 
@@ -16,6 +10,7 @@ use App\Entity\Participating\Organization;
 use App\Repository\ConferenceOrganizationRepository;
 use App\Service\Mailer;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
@@ -237,11 +232,14 @@ class ConferenceOrganizationController extends ApiController
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param Mailer $mailer
      * @param LoggerInterface $logger
+     * @param ParameterBagInterface $parameterBag
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      * @throws \Exception
      */
-    public function invite(Mailer $mailer, LoggerInterface $logger)
+    public function invite(Mailer $mailer, LoggerInterface $logger, ParameterBagInterface $parameterBag)
     {
+        $bcc_emails = $parameterBag->has('invite_bcc_emails') ? $parameterBag->get('invite_bcc_emails') : null;
+
         $year = date('Y');
 
         $fio = $this->requestData['fio'] ?? null;
@@ -328,7 +326,7 @@ class ConferenceOrganizationController extends ApiController
         $data = $inviteData;
         $data['hash'] = $inviteHash;
         $data['org_name'] = $name;
-        $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, ['e.nachuychenko@nag.ru', 'cros@nag.ru']);
+        $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, $bcc_emails);
 
         return $this->success();
     }
@@ -340,10 +338,13 @@ class ConferenceOrganizationController extends ApiController
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param $id
      * @param Mailer $mailer
+     * @param ParameterBagInterface $parameterBag
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function reInvite($id, Mailer $mailer)
+    public function reInvite($id, Mailer $mailer, ParameterBagInterface $parameterBag)
     {
+        $bcc_emails = $parameterBag->has('invite_bcc_emails') ? $parameterBag->get('invite_bcc_emails') : null;
+
         /** @var ConferenceOrganization $conferenceOrganization */
         if (!$conferenceOrganization = $this->em->find(ConferenceOrganization::class, $id)) {
             return $this->notFound('Conference organization not found.');
@@ -365,7 +366,7 @@ class ConferenceOrganizationController extends ApiController
         }
         $data['hash'] = $conferenceOrganization->getInviteHash();
         $data['org_name'] = $organization->getName();
-        $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, ['e.nachuychenko@nag.ru', 'cros@nag.ru']);
+        $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, $bcc_emails);
 
         return $this->success();
     }

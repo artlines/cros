@@ -10,9 +10,8 @@ import {
 import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 import reduce from 'lodash/reduce';
-import RoomType from "../../containers/RoomType";
 
-class SummaryInformation extends React.PureComponent {
+class RoomsSummaryInformation extends React.PureComponent {
     render() {
         const { items } = this.props;
 
@@ -59,7 +58,7 @@ class SummaryInformation extends React.PureComponent {
     }
 }
 
-SummaryInformation.propTypes = {
+RoomsSummaryInformation.propTypes = {
     items: PropTypes.arrayOf(
         PropTypes.shape({
             room_type_id:       PropTypes.number.isRequired,
@@ -71,4 +70,4 @@ SummaryInformation.propTypes = {
     ),
 };
 
-export default SummaryInformation;
+export default RoomsSummaryInformation;

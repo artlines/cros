@@ -242,7 +242,6 @@ class MemberForm extends React.Component {
                                     label={"Телефон"}
                                     value={values.phone}
                                     margin={"dense"}
-                                    type={`number`}
                                     fullWidth
                                     variant={"outlined"}
                                     name={'phone'}
@@ -250,9 +249,9 @@ class MemberForm extends React.Component {
                                     error={!!errors.phone}
                                     helperText={errors.phone}
                                     InputLabelProps={{shrink: true}}
-                                    // InputProps={{
-                                    //     inputComponent: PhoneNumberField,
-                                    // }}
+                                    InputProps={{
+                                        inputComponent: PhoneNumberField,
+                                    }}
                                 />
                             </Grid>
 
