@@ -48,12 +48,16 @@ class RoomTypeRepository  extends EntityRepository
               rt.id AS room_type_id,
               rt.title AS room_type_title,
               COUNT(DISTINCT cm.id) AS busy,
-              COUNT(DISTINCT p.id) AS populated,
-              COUNT(DISTINCT r.id)*rt.max_places AS total
+              COUNT(DISTINCT p_cm.id) AS populated,
+              COUNT(DISTINCT r.id)*rt.max_places AS total,
+              COUNT(DISTINCT r.id) FILTER (
+                WHERE p_r.id IS NULL
+              ) as free_rooms
             FROM abode.room_type rt
-              LEFT JOIN abode.room r ON rt.id = r.type_id
+              INNER JOIN abode.room r ON rt.id = r.type_id
               LEFT JOIN participating.conference_member cm ON rt.id = cm.room_type_id
-              LEFT JOIN abode.place p ON cm.id = p.conference_member_id
+              LEFT JOIN abode.place p_cm ON cm.id = p_cm.conference_member_id
+              LEFT JOIN abode.place p_r ON r.id = p_r.room_id
             GROUP BY rt.id
         ");
 
