@@ -60,8 +60,10 @@ class ConferenceOrganizationRepository extends EntityRepository
 
         $queryC = clone $query;
 
+        $query = $query->addGroupBy('co.id')->setMaxResults($limit)->setFirstResult($offset);
+
         $result = [
-            $query->setMaxResults($limit)->setFirstResult($offset)->getQuery()->getResult(),
+            $query->getQuery()->getResult(),
             count($queryC->getQuery()->getArrayResult()),
         ];
 
