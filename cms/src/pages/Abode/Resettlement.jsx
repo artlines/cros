@@ -5,20 +5,20 @@ import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import {
     Grid,
+    Divider,
     Typography,
     TextField,
     MenuItem,
     FormControl,
     FormControlLabel,
     Switch,
-    List,
-    TablePagination,
 } from '@material-ui/core';
 import map from 'lodash/map';
 import f from 'lodash/filter';
 import find from 'lodash/find';
 import some from 'lodash/some';
 import every from 'lodash/every';
+import isEqual from 'lodash/isEqual';
 import ApartmentBlock from '../../components/Abode/Settlement/ApartmentBlock';
 import MemberInfoSource from "../../containers/DragDrop/MemberInfoSource";
 import RoomBlockTarget from "../../containers/DragDrop/RoomBlockTarget";
@@ -27,7 +27,6 @@ import abode from "../../actions/abode";
 import resettlement from "../../actions/resettlement";
 import LinearProgress from "../../components/utils/LinearProgress";
 import API from '../../libs/api';
-import MemberInfoChip from "../../components/Abode/Settlement/MemberInfoChip";
 import MemberInfoListItem from "../../components/Abode/Settlement/MemberInfoListItem";
 
 const api = new API();
@@ -43,6 +42,7 @@ class Resettlement extends React.Component {
                     only_not_full: false,
                 },
             },
+            available_room_types: [],
         };
     }
 
@@ -52,9 +52,18 @@ class Resettlement extends React.Component {
         this.update();
     }
 
+    componentDidUpdate(prevProps, prevState, prevContext) {
+        const { housing } = this.props;
+
+        if (!isEqual(housing, prevProps.housing) && !housing.isFetching) {
+            this.setState({available_room_types: map(housing.abode_info, i => i.room_type_id)});
+        }
+    }
+
     update = () => {
         this.props.fetchApartments();
         this.props.fetchNotSettledMembers();
+        this.props.fetchHousing();
     };
 
     handleFilterChange = (object, field) => event => {
@@ -112,6 +121,19 @@ class Resettlement extends React.Component {
         return result;
     };
 
+    getAbodeInfo = () => {
+        const { housing } = this.props;
+        const { filter: { apartment } } = this.state;
+        const info = find(housing.abode_info, {room_type_id: apartment.room_type});
+
+        return (info &&
+            <React.Fragment>
+                <Typography>Свободно / Занято / Всего</Typography>
+                <Typography>{info.total - info.busy} / {info.busy} / {info.total}</Typography>
+            </React.Fragment>
+        );
+    };
+
     holdPlace = (room_id, conference_member_id) => {
         api.post(`place/new`, {room_id, conference_member_id})
             .then(this.update)
@@ -129,8 +151,10 @@ class Resettlement extends React.Component {
     };
 
     render() {
-        const { members, room_types, isFetching } = this.props;
-        const { filter: {apartment} } = this.state;
+        const { housing, room_types, isFetching } = this.props;
+        const { filter: { apartment }, available_room_types } = this.state;
+
+        console.log(apartment.room_type);
 
         return (
             <React.Fragment>
@@ -138,7 +162,7 @@ class Resettlement extends React.Component {
                 <br/>
                 <Grid container spacing={16}>
                     <Grid item xs={8} sm={8} lg={9}>
-                        <Typography gutterBottom variant={`h5`}>Номера</Typography>
+                        <Typography gutterBottom variant={`h5`}>{housing.title}</Typography>
                         <Grid container spacing={16} alignItems={`center`}>
                             <Grid item xs={12} sm={6} lg={4}>
                                 <TextField
@@ -153,7 +177,7 @@ class Resettlement extends React.Component {
                                     select={true}
                                 >
                                     <MenuItem key={`all`} value={0}>{`Все`}</MenuItem>
-                                    {map(room_types, rt =>
+                                    {map(f(room_types, rt => available_room_types.includes(rt.id)), rt =>
                                         <MenuItem key={rt.id} value={rt.id}>{rt.title}</MenuItem>
                                     )}
                                 </TextField>
@@ -171,7 +195,13 @@ class Resettlement extends React.Component {
                                     />
                                 </FormControl>
                             </Grid>
+                            {apartment.room_type !== 0 &&
+                                <Grid item xs={12} sm={6} lg={4}>
+                                    {this.getAbodeInfo()}
+                                </Grid>
+                            }
                         </Grid>
+                        <br/>
                         <Grid container spacing={16}>
                             {map(this.getApartments(), apart =>
                                 <Grid key={apart.id} item xs={12} sm={6} md={4} xl={3}>
@@ -217,8 +247,11 @@ class Resettlement extends React.Component {
 const mapStateToProps = state =>
     ({
         ...state.resettlement,
+        housing: state.abode.housing.item,
         room_types: state.abode.room_type.items,
-        isFetching: state.resettlement.apartments.isFetching || state.resettlement.members.isFetching,
+        isFetching: state.resettlement.apartments.isFetching
+            || state.resettlement.members.isFetching
+            || state.abode.housing.item.isFetching,
     });
 
 const mapDispatchToProps = (dispatch, ownProps) =>
@@ -230,6 +263,11 @@ const mapDispatchToProps = (dispatch, ownProps) =>
         fetchApartments: () => {
             const id = Number(ownProps.match.params.id);
             dispatch(resettlement.fetchApartments(id));
+        },
+
+        fetchHousing: () => {
+            const id = Number(ownProps.match.params.id);
+            dispatch(abode.fetchHousing(id));
         },
     });
 
