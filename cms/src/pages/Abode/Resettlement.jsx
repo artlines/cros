@@ -154,8 +154,6 @@ class Resettlement extends React.Component {
         const { housing, room_types, isFetching } = this.props;
         const { filter: { apartment }, available_room_types } = this.state;
 
-        console.log(apartment.room_type);
-
         return (
             <React.Fragment>
                 <LinearProgress show={isFetching}/>

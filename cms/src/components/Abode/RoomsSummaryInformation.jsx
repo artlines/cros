@@ -15,6 +15,7 @@ class RoomsSummaryInformation extends React.PureComponent {
     render() {
         const { items } = this.props;
 
+        const sumFreeRooms = reduce(items, (sum, item) => sum + item.free_rooms, 0);
         const sumBusy = reduce(items, (sum, item) => sum + item.busy, 0);
         const sumPopulated = reduce(items, (sum, item) => sum + item.populated, 0);
         const sumTotal = reduce(items, (sum, item) => sum + item.total, 0);
@@ -26,6 +27,7 @@ class RoomsSummaryInformation extends React.PureComponent {
                     <TableHead>
                         <TableRow>
                             <TableCell>Тип комнаты</TableCell>
+                            <TableCell>Свободно комнат</TableCell>
                             <TableCell>Свободно</TableCell>
                             <TableCell>Занято</TableCell>
                             <TableCell>Заселено</TableCell>
@@ -36,6 +38,7 @@ class RoomsSummaryInformation extends React.PureComponent {
                         {map(sortBy(items, 'room_type_title'), item =>
                             <TableRow key={item.room_type_id}>
                                 <TableCell>{item.room_type_title}</TableCell>
+                                <TableCell>{item.free_rooms}</TableCell>
                                 <TableCell>{item.total - item.busy}</TableCell>
                                 <TableCell>{item.busy}</TableCell>
                                 <TableCell>{item.populated}</TableCell>
@@ -45,6 +48,7 @@ class RoomsSummaryInformation extends React.PureComponent {
                         {items.length > 0 &&
                             <TableRow key={`summary`}>
                                 <TableCell><b>Итого</b></TableCell>
+                                <TableCell>{sumFreeRooms}</TableCell>
                                 <TableCell>{sumFree}</TableCell>
                                 <TableCell>{sumBusy}</TableCell>
                                 <TableCell>{sumPopulated}</TableCell>
@@ -66,6 +70,7 @@ RoomsSummaryInformation.propTypes = {
             populated:          PropTypes.number.isRequired,
             busy:               PropTypes.number.isRequired,
             total:              PropTypes.number.isRequired,
+            free_rooms:         PropTypes.number.isRequired,
         }),
     ),
 };
