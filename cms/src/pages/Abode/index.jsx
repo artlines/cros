@@ -22,9 +22,6 @@ class Abode extends React.Component {
         super(props);
 
         this.state = {
-            housing: [],
-            isFetching: false,
-            error: false,
             form: {
                 open: false,
                 initialValues: {},
@@ -37,11 +34,7 @@ class Abode extends React.Component {
     }
 
     loadData = () => {
-        this.setState({isFetching: true, form: {...this.state.form, open: false}});
-        api.get(`housing`).then(res => {
-            this.setState({housing: res.items, isFetching: false})
-        });
-        this.props.fetchRoomTypes();
+        this.props.fetchHousings();
     };
 
     handleCloseHousingForm = () => this.setState({form: {...this.state.form, open: false}});
@@ -76,7 +69,10 @@ class Abode extends React.Component {
     };
 
     render() {
-        const { housing, error, isFetching, form: { open, initialValues } } = this.state;
+        const { form: { open, initialValues } } = this.state;
+        const { housing: { items, isFetching } } = this.props;
+
+        console.log(`Housing index`, items);
 
         return (
             <div>
@@ -98,12 +94,12 @@ class Abode extends React.Component {
                             </Grid>
                         </Grid>
                     </Grid>
-                    {map(sortBy(housing, 'title'), h =>
+                    {map(sortBy(items, 'title'), h =>
                         <Grid key={h.id} item xs={12} sm={6} lg={4}>
-                            <HousingCard housing={h} onEdit={this.openEditForm} onDelete={this.deleteItem}/>
+                            <HousingCard housing={h} onEdit={this.openEditForm} onDelete={this.deleteItem} update={this.loadData}/>
                         </Grid>
                     )}
-                    {housing.length === 0 &&
+                    {items.length === 0 &&
                         <Grid item xs={12}>
                             <Typography variant={`subtitle1`}>Нет данных</Typography>
                         </Grid>
@@ -114,9 +110,14 @@ class Abode extends React.Component {
     }
 }
 
-const mapDispatchToProps = dispatch =>
+const mapStateToProps = state =>
     ({
-        fetchRoomTypes: () => dispatch(abode.fetchRoomTypes()),
+        housing: state.abode.housing,
     });
 
-export default connect(null, mapDispatchToProps)(Abode);
+const mapDispatchToProps = dispatch =>
+    ({
+        fetchHousings: () => dispatch(abode.fetchHousings()),
+    });
+
+export default connect(mapStateToProps, mapDispatchToProps)(Abode);

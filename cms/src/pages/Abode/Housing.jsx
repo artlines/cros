@@ -6,7 +6,9 @@ import {
     Typography,
     LinearProgress,
 } from '@material-ui/core';
-import CompareArrowsIcon from '@material-ui/icons/CompareArrows';
+import {
+    CompareArrows as CompareArrowsIcon,
+} from '@material-ui/icons';
 import FabButton from '../../components/utils/FabButton';
 import ApartmentsAddForm from '../../components/Abode/ApartmentsAddForm';
 import ChangeRoomsTypesForm from "../../components/Abode/ChangeRoomsTypesForm";

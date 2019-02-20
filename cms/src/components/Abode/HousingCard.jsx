@@ -15,20 +15,27 @@ import {
     TableBody,
     TableRow,
     TableCell,
+    Tooltip,
 } from "@material-ui/core";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
+import {
+    Edit as EditIcon,
+    Delete as DeleteIcon,
+    Lock as LockIcon,
+} from "@material-ui/icons";
 import map from "lodash/map";
 import sortBy from "lodash/sortBy";
 import ConfirmDialog from "../utils/ConfirmDialog";
+import ReservedPlacesModal from './ReservedPlacesModal';
 
 class HousingCard extends React.PureComponent {
 
     render() {
         const {
             housing: { id, num_of_floors, title, description, abode_info },
-            onEdit, onDelete,
+            update, onEdit, onDelete,
         }  = this.props;
+
+        console.log(this.props);
 
         return (
             <Card>
@@ -81,6 +88,16 @@ class HousingCard extends React.PureComponent {
                             <Link to={`/cms/abode/housing/${id}/resettlement`}>
                                 <Button>Расселение</Button>
                             </Link>
+
+                            <ReservedPlacesModal
+                                trigger={
+                                    <Tooltip title={`Резервирование`}>
+                                        <IconButton><LockIcon/></IconButton>
+                                    </Tooltip>
+                                }
+                                items={abode_info}
+                                onSuccessSubmit={update}
+                            />
                         </Grid>
                     </Grid>
                 </CardActions>
@@ -98,12 +115,15 @@ HousingCard.propTypes = {
         description:    PropTypes.string.isRequired,
         abode_info:     PropTypes.arrayOf(
             PropTypes.shape({
-                room_type_id:   PropTypes.number.isRequired,
-                total:          PropTypes.number.isRequired,
-                busy:           PropTypes.number.isRequired,
+                room_type_id:       PropTypes.number.isRequired,
+                room_type_title:    PropTypes.string.isRequired,
+                reserved:           PropTypes.number.isRequired,
+                busy:               PropTypes.number.isRequired,
+                total:              PropTypes.number.isRequired,
             })
         ),
     }),
+    update:     PropTypes.func.isRequired,
     onEdit:     PropTypes.func.isRequired,
     onDelete:   PropTypes.func.isRequired,
 };
