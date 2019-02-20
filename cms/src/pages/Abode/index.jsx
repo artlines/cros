@@ -72,8 +72,6 @@ class Abode extends React.Component {
         const { form: { open, initialValues } } = this.state;
         const { housing: { items, isFetching } } = this.props;
 
-        console.log(`Housing index`, items);
-
         return (
             <div>
                 <LinearProgress show={isFetching}/>

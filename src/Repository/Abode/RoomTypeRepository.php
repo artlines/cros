@@ -58,7 +58,7 @@ class RoomTypeRepository  extends EntityRepository
                 WHERE p_r.id IS NULL
               ) as free_rooms
             FROM abode.room_type rt
-              INNER JOIN abode.room r ON rt.id = r.type_id
+              LEFT JOIN abode.room r ON rt.id = r.type_id
               LEFT JOIN participating.conference_member cm ON rt.id = cm.room_type_id
               LEFT JOIN abode.place p_cm ON cm.id = p_cm.conference_member_id
               LEFT JOIN abode.place p_r ON r.id = p_r.room_id

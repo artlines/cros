@@ -35,8 +35,6 @@ class HousingCard extends React.PureComponent {
             update, onEdit, onDelete,
         }  = this.props;
 
-        console.log(this.props);
-
         return (
             <Card>
                 <CardContent>
@@ -88,13 +86,13 @@ class HousingCard extends React.PureComponent {
                             <Link to={`/cms/abode/housing/${id}/resettlement`}>
                                 <Button>Расселение</Button>
                             </Link>
-
                             <ReservedPlacesModal
                                 trigger={
                                     <Tooltip title={`Резервирование`}>
                                         <IconButton><LockIcon/></IconButton>
                                     </Tooltip>
                                 }
+                                housing_id={id}
                                 items={abode_info}
                                 onSuccessSubmit={update}
                             />

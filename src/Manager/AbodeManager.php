@@ -81,18 +81,7 @@ class AbodeManager
             $statsByRoomTypeId[$_room_type_id]['total'] += $_total_places;
         }
 
-        $result = [];
-        foreach ($statsByRoomTypeId as $room_type_id => $stat) {
-            $result[] = [
-                'room_type_id'      => $room_type_id,
-                'room_type_title'   => $stat['room_type_title'],
-                'reserved'          => $stat['reserved'],
-                'busy'              => $stat['busy'],
-                'total'             => $stat['total'],
-            ];
-        }
-
-        return $result;
+        return $statsByRoomTypeId;
     }
 
     /**
