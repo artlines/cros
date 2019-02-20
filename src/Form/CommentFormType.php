@@ -19,7 +19,7 @@ class CommentFormType extends AbstractType
                 'label' => 'Задать вопрос',
                 'attr' => [
                     'class' => 'cs-theme-color-gray-dark-v3',
-                    'placeholder' => 'Ваш вопрос организатору...',
+                    'placeholder' => 'Введите текст обращения...',
                     'rows' => '8',
                 ],
 //                'required' => false,
