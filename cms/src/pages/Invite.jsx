@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {
-    Button,
+    IconButton,
     Grid,
     Table,
     TableHead,
@@ -84,7 +84,8 @@ class Invite extends React.Component {
                                     <TableCell>Наименование</TableCell>
                                     <TableCell>Реквизиты</TableCell>
                                     <TableCell>Счета</TableCell>
-                                    <TableCell>Повторная отправка</TableCell>
+                                    <TableCell>Статус</TableCell>
+                                    <TableCell numeric>Повторная отправка</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -95,6 +96,8 @@ class Invite extends React.Component {
                                         </TableCell>
                                         <TableCell>
                                             {item.name}
+                                            <Typography variant={`caption`}>{item.email}</Typography>
+                                            <Typography variant={`caption`}>Участников: {item.total_members}</Typography>
                                         </TableCell>
                                         <TableCell>
                                             <div style={{whiteSpace: 'nowrap'}}><b>ИНН:</b> {item.inn}</div>
@@ -118,12 +121,18 @@ class Invite extends React.Component {
                                                 </div>
                                             )}
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell style={{whiteSpace: 'no-wrap'}}>
+                                            {item.is_finish
+                                                ? 'Зарегистрирована'
+                                                : 'Отправлено приглашение'
+                                            }
+                                        </TableCell>
+                                        <TableCell numeric>
                                             <ConfirmDialog
                                                 title={`Повторная отправка приглашения`}
                                                 text={`Вы уверены что хотите заного отправить письмо-приглашение?`}
                                                 onConfirm={() => this.reInvite(item.id)}
-                                                trigger={<Button><AutorenewIcon/></Button>}
+                                                trigger={<IconButton><AutorenewIcon/></IconButton>}
                                             />
                                         </TableCell>
                                     </TableRow>
