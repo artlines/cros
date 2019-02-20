@@ -56,11 +56,12 @@ class ConferenceOrganizationRepository extends EntityRepository
 
         $query = $dql
             ->addOrderBy('co.id', 'ASC')
+            ->addGroupBy('co.id')
             ->setParameters($parameters);
 
         $queryC = clone $query;
 
-        $query = $query->addGroupBy('co.id')->setMaxResults($limit)->setFirstResult($offset);
+        $query = $query->setMaxResults($limit)->setFirstResult($offset);
 
         $result = [
             $query->getQuery()->getResult(),
