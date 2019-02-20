@@ -91,6 +91,8 @@ class ConferenceOrganizationController extends ApiController
                 'invoices_count'    => $invoices->count(),
                 'invoices_payed'    => $invoices_payed,
                 'invited_by'        => $invitedBy ? $invitedBy->getFullName() : null,
+                'is_finish'         => $co->isFinish(),
+                'email'             => $org->getEmail(),
             ];
         }
 
