@@ -432,7 +432,7 @@ class ConferenceRegistrationController extends AbstractController
         return $this->render('conference_registration/index.html.twig', [
             'form' => $form->createView(),
             'ConferenceOrganization' => $ConferenceOrganization ?? null,
-            'RoomTypes' => $roomTypesInfo,
+            'roomTypesInfo' => $roomTypesInfo,
             'Conference' => $Conference,
             'LimitUsersByOrg' => $Conference->getLimitUsersByOrg(),
             'LimitUsersGlobal' => $Conference->getLimitUsersGlobal(),
