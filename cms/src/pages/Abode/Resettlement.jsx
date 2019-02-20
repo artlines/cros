@@ -128,8 +128,8 @@ class Resettlement extends React.Component {
 
         return (info &&
             <React.Fragment>
-                <Typography>Свободно / Занято / Всего</Typography>
-                <Typography>{info.total - info.busy} / {info.busy} / {info.total}</Typography>
+                <Typography>Свободно / Резерв / Занято / Всего</Typography>
+                <Typography>{info.total - info.busy - info.reserved} / {info.reserved} / {info.busy} / {info.total}</Typography>
             </React.Fragment>
         );
     };

@@ -4,9 +4,11 @@ namespace App\Manager;
 
 use App\Entity\Abode\Apartment;
 use App\Entity\Abode\Housing;
+use App\Entity\Abode\ReservedPlaces;
 use App\Entity\Abode\Room;
 use App\Entity\Participating\Invoice;
 use App\Repository\Abode\ApartmentRepository;
+use App\Repository\Abode\ReservedPlacesRepository;
 use App\Repository\Abode\RoomRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -29,6 +31,9 @@ class AbodeManager
     /** @var RoomRepository */
     protected $roomRepository;
 
+    /** @var ReservedPlacesRepository */
+    protected $reservedPlacesRepo;
+
     /**
      * AbodeManager constructor.
      * @param EntityManagerInterface $entityManager
@@ -39,9 +44,10 @@ class AbodeManager
         $this->em       = $entityManager;
         $this->logger   = $logger;
 
+        $this->roomRepository       = $this->em->getRepository(Room::class);
         $this->housingRepository    = $this->em->getRepository(Housing::class);
         $this->apartmentRepository  = $this->em->getRepository(Apartment::class);
-        $this->roomRepository       = $this->em->getRepository(Room::class);
+        $this->reservedPlacesRepo   = $this->em->getRepository(ReservedPlaces::class);
     }
 
     /**
@@ -53,17 +59,21 @@ class AbodeManager
     {
         /** @var Room[] $rooms */
         $rooms = $this->roomRepository->getByHousing($housing);
+        $reservedInfo = $this->reservedPlacesRepo->getReservedInfo($housing->getId());
 
         $statsByRoomTypeId = [];
         foreach ($rooms as $room) {
-            $_room_type_id  = $room->getType()->getId();
-            $_total_places  = $room->getType()->getMaxPlaces();
-            $_busy_places   = $room->getPlaces()->count();
+            $_room_type_id      = $room->getType()->getId();
+            $_room_type_title   = $room->getType()->getTitle();
+            $_total_places      = $room->getType()->getMaxPlaces();
+            $_busy_places       = $room->getPlaces()->count();
 
             if (!isset($statsByRoomTypeId[$_room_type_id])) {
                 $statsByRoomTypeId[$_room_type_id] = [
-                    'busy'  => 0,
-                    'total' => 0,
+                    'room_type_title'   => $_room_type_title,
+                    'reserved'          => $reservedInfo[$_room_type_id] ?? 0,
+                    'busy'              => 0,
+                    'total'             => 0,
                 ];
             };
 
@@ -74,9 +84,11 @@ class AbodeManager
         $result = [];
         foreach ($statsByRoomTypeId as $room_type_id => $stat) {
             $result[] = [
-                'room_type_id'  => $room_type_id,
-                'busy'          => $stat['busy'],
-                'total'         => $stat['total'],
+                'room_type_id'      => $room_type_id,
+                'room_type_title'   => $stat['room_type_title'],
+                'reserved'          => $stat['reserved'],
+                'busy'              => $stat['busy'],
+                'total'             => $stat['total'],
             ];
         }
 
