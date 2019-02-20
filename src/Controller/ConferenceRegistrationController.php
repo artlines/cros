@@ -11,6 +11,7 @@ use App\Entity\Participating\Organization;
 use App\Entity\Participating\User;
 use App\Form\CommentFormType;
 use App\Form\ConferenceOrganizationFormType;
+use App\Repository\Abode\RoomTypeRepository;
 use App\Repository\ConferenceMemberRepository;
 use App\Repository\ConferenceOrganizationRepository;
 use App\Service\Mailer;
@@ -198,17 +199,16 @@ class ConferenceRegistrationController extends AbstractController
                 ConferenceOrganizationFormType::class);
         }
 
-        /** @var Conference $Conference */
-
-        $roomTypes = $this->getDoctrine()
-            ->getRepository(RoomType::class)
-            ->findAllFreeForConference($Conference->getId());
+        /** @var RoomTypeRepository $roomTypeRepo */
+        $roomTypeRepo = $this->getDoctrine()->getRepository(RoomType::class);
+        $roomTypesInfo = $roomTypeRepo->getSummaryInformation();
         $TotalFree = 0;
         $TotalUsed = 0;
-        foreach ($roomTypes as list($RoomType, $used, $rooms)){
+
+        foreach ($roomTypesInfo as $type) {
             /** @var RoomType $RoomType */
-            $TotalFree += max(0, $RoomType->getMaxPlaces()*$rooms - $used);
-            $TotalUsed += $used;
+            $TotalFree += max(0, $type['total'] - $type['busy'] - $type['reserved']);
+            $TotalUsed += $type['busy'] + $type['reserved'];
         }
 
         if($TotalFree<1 or $TotalUsed>=$Conference->getLimitUsersGlobal() ){
@@ -432,7 +432,7 @@ class ConferenceRegistrationController extends AbstractController
         return $this->render('conference_registration/index.html.twig', [
             'form' => $form->createView(),
             'ConferenceOrganization' => $ConferenceOrganization ?? null,
-            'RoomTypes' => $roomTypes,
+            'RoomTypes' => $roomTypesInfo,
             'Conference' => $Conference,
             'LimitUsersByOrg' => $Conference->getLimitUsersByOrg(),
             'LimitUsersGlobal' => $Conference->getLimitUsersGlobal(),

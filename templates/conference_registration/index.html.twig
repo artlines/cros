@@ -427,23 +427,21 @@ id     name    inn kpp
         <div id="roomType_">
             Класс участия не выбран
         </div>
-        {% for item in RoomTypes  %}
-            {% set roomType=item[0] %}
-            {% set used=item[1] %}
-            {% set rooms=item[2] %}
-            {% if roomType.maxPlaces*rooms-used > 0  %}
-                <div id="roomType_{{ roomType.id }}" data-rooms="{{ roomType.maxPlaces }}">
-                    Класс участия: <b>{{ roomType.title }}</b><br />
-                    Стоимость:  <b>{{ roomType.cost|number_format }}</b> ₽
-                    {% if roomType.maxPlaces == 1 %}
+        {% for item in roomTypesInfo  %}
+            {% set free_places = item.total - item.busy - item.reserved %}
+            {% if free_places > 0  %}
+                <div id="roomType_{{ item.room_type_id }}" data-rooms="{{ item.room_type_max_places }}">
+                    Класс участия: <b>{{ item.room_type_title }}</b><br />
+                    Стоимость:  <b>{{ item.room_type_cost|number_format }}</b> ₽
+                    {% if item.room_type_max_places == 1 %}
                         за комнату
-                    {% elseif roomType.maxPlaces == 2 %}
+                    {% elseif item.room_type_max_places == 2 %}
                         за одно место в двухместном номере
                     {% endif %}
                     <br />
-                    Количество свободных мест: <b>{{ roomType.maxPlaces*rooms-used }}</b><br />
+                    Количество свободных мест: <b>{{ free_places }}</b><br />
                     <h4>Описание:</h4>
-                    {{ roomType.description|raw }}
+                    {{ item.room_type_description|raw }}
                     <a href="#"
                             data-toggle="modal" data-target="#schemeInfo"
                     >
@@ -452,12 +450,10 @@ id     name    inn kpp
             {% endif %}
         {% endfor %}
         <select id="select-proto">
-            {% for item in RoomTypes  %}
-                {% set roomType=item[0] %}
-                {% set used=item[1] %}
-                {% set rooms=item[2] %}
-                {% if roomType.maxPlaces*rooms-used > 0  %}
-                    <option value="{{ roomType.id }}">{{ roomType.title }} / Стоимость: {{ roomType.cost|number_format }} ₽</option>
+            {% for item in roomTypesInfo  %}
+                {% set free_places = item.total - item.busy - item.reserved %}
+                {% if free_places > 0  %}
+                    <option value="{{ item.room_type_id }}">{{ item.room_type_title }} / Стоимость: {{ item.room_type_cost|number_format }} ₽</option>
                 {% endif %}
             {% endfor %}
         </select>

@@ -47,8 +47,12 @@ class RoomTypeRepository  extends EntityRepository
             SELECT
               rt.id AS room_type_id,
               rt.title AS room_type_title,
+              rt.max_places as room_type_max_places,
+              rt.cost as room_type_cost,
+              rt.description as room_type_description,
               COUNT(DISTINCT cm.id) AS busy,
               COUNT(DISTINCT p_cm.id) AS populated,
+              COALESCE(rp.reserved, 0) as reserved,
               COUNT(DISTINCT r.id)*rt.max_places AS total,
               COUNT(DISTINCT r.id) FILTER (
                 WHERE p_r.id IS NULL
@@ -58,7 +62,14 @@ class RoomTypeRepository  extends EntityRepository
               LEFT JOIN participating.conference_member cm ON rt.id = cm.room_type_id
               LEFT JOIN abode.place p_cm ON cm.id = p_cm.conference_member_id
               LEFT JOIN abode.place p_r ON r.id = p_r.room_id
-            GROUP BY rt.id
+              LEFT JOIN (
+                SELECT
+                  arp.room_type_id,
+                  SUM(arp.count) as reserved
+                FROM abode.reserved_places arp
+                GROUP BY arp.room_type_id
+              ) rp ON rp.room_type_id = rt.id
+            GROUP BY rt.id, rp.reserved
         ");
 
         $stmt->execute();

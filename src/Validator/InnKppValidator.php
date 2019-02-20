@@ -6,6 +6,7 @@ namespace App\Validator;
 use App\Entity\Abode\RoomType;
 use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\ConferenceOrganization;
+use App\Repository\Abode\RoomTypeRepository;
 use App\Repository\ConferenceMemberRepository;
 use App\Repository\ConferenceOrganizationRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -54,29 +55,28 @@ class InnKppValidator extends ConstraintValidator
                     ->addViolation();
             }
 
-            $roomTypes = $em
-                ->getRepository(RoomType::class)
-                ->findAllFreeForConference($conf_id);
-            /** @var RoomType $roomType */
-            $arFreeRooms = [];
-            foreach ($roomTypes as list($RoomType, $used, $rooms)){
-                /** @var RoomType $RoomType */
-                $arFreeRooms[$RoomType->getId()] = $RoomType->getMaxPlaces()*$rooms - $used;
+            /** @var RoomTypeRepository $roomTypeRepo */
+            $roomTypeRepo = $em->getRepository(RoomType::class);
+            $roomTypesInfo = $roomTypeRepo->getSummaryInformation();
+
+            $arFreePlaces = [];
+            foreach ($roomTypesInfo as $type){
+                $arFreePlaces[$type['room_type_id']] = $type['total'] - $type['busy'] - $type['reserved'];
             }
+
             $usedEmail = [];
             foreach ( $value->getConferenceMembers() as $key => $conferenceMember ){
 
                 $roomTypeId = $conferenceMember->getRoomType()->getId();
-                if (isset($arFreeRooms[$roomTypeId]) and $arFreeRooms[$roomTypeId]>0) {
+                if (isset($arFreePlaces[$roomTypeId]) and $arFreePlaces[$roomTypeId]>0) {
                     // вычитаем предполагаемое заселение.
-                    $arFreeRooms[$roomTypeId] -= 1;
+                    $arFreePlaces[$roomTypeId] -= 1;
                 } else {
                     $this->context
                         ->buildViolation('Не достаточно свободных номеров' )
                         ->atPath("ConferenceMembers[{$key}].RoomType")
                         ->addViolation();
                 }
-
 
                 if($conferenceMember->getId()>0) continue;
                 $email = $conferenceMember->getUser()->getEmail();
