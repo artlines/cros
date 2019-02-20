@@ -5,17 +5,17 @@ namespace App\Entity\Abode;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class ReservedRooms
+ * Class ReservedPlaces
  * @package App\Entity\Abode
  *
  * @ORM\Table(
  *     schema="abode",
- *     name="reserved_rooms",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="unique_reserved_rooms_idx", columns={"room_type_id", "housing_id"})}
+ *     name="reserved_places",
+ *     uniqueConstraints={@ORM\UniqueConstraint(name="unique_reserved_places_idx", columns={"room_type_id", "housing_id"})}
  * )
  * @ORM\Entity()
  */
-class ReservedRooms
+class ReservedPlaces
 {
     /**
      * @var integer
