@@ -297,6 +297,12 @@ class ConferenceRegistrationController extends AbstractController
 
 
                 $conference = $ConferenceOrganization->getConference();
+                if (is_null($conferenceMember->getArrival())) {
+                    $conferenceMember->setArrival($Conference->getEventStart());
+                }
+                if (is_null($conferenceMember->getLeaving())) {
+                    $conferenceMember->setLeaving($Conference->getEventFinish());
+                }
                 $conferenceMember->setConference($conference);
                 $conferenceMember->setConferenceOrganization($ConferenceOrganization);
             }
