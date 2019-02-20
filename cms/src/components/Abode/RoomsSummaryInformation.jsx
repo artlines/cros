@@ -16,6 +16,7 @@ class RoomsSummaryInformation extends React.PureComponent {
         const { items } = this.props;
 
         const sumFreeRooms = reduce(items, (sum, item) => sum + item.free_rooms, 0);
+        const sumReserved = reduce(items, (sum, item) => sum + item.reserved, 0);
         const sumBusy = reduce(items, (sum, item) => sum + item.busy, 0);
         const sumPopulated = reduce(items, (sum, item) => sum + item.populated, 0);
         const sumTotal = reduce(items, (sum, item) => sum + item.total, 0);
@@ -27,32 +28,32 @@ class RoomsSummaryInformation extends React.PureComponent {
                     <TableHead>
                         <TableRow>
                             <TableCell>Тип комнаты</TableCell>
-                            <TableCell>Свободно комнат</TableCell>
-                            <TableCell>Свободно</TableCell>
-                            <TableCell>Занято</TableCell>
-                            <TableCell>Заселено</TableCell>
-                            <TableCell>Всего</TableCell>
+                            <TableCell style={{whiteSpace: 'no-wrap'}} numeric>Свободно комнат / мест</TableCell>
+                            <TableCell numeric>Мест в резерве</TableCell>
+                            <TableCell numeric>Мест занято</TableCell>
+                            <TableCell numeric>Мест заселено</TableCell>
+                            <TableCell numeric>Всего мест</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {map(sortBy(items, 'room_type_title'), item =>
                             <TableRow key={item.room_type_id}>
                                 <TableCell>{item.room_type_title}</TableCell>
-                                <TableCell>{item.free_rooms}</TableCell>
-                                <TableCell>{item.total - item.busy}</TableCell>
-                                <TableCell>{item.busy}</TableCell>
-                                <TableCell>{item.populated}</TableCell>
-                                <TableCell>{item.total}</TableCell>
+                                <TableCell numeric>{item.free_rooms} / {item.total - item.busy - item.reserved}</TableCell>
+                                <TableCell numeric>{item.reserved}</TableCell>
+                                <TableCell numeric>{item.busy}</TableCell>
+                                <TableCell numeric>{item.populated}</TableCell>
+                                <TableCell numeric>{item.total}</TableCell>
                             </TableRow>
                         )}
                         {items.length > 0 &&
                             <TableRow key={`summary`}>
                                 <TableCell><b>Итого</b></TableCell>
-                                <TableCell>{sumFreeRooms}</TableCell>
-                                <TableCell>{sumFree}</TableCell>
-                                <TableCell>{sumBusy}</TableCell>
-                                <TableCell>{sumPopulated}</TableCell>
-                                <TableCell>{sumTotal}</TableCell>
+                                <TableCell numeric>{sumFreeRooms} / {sumFree}</TableCell>
+                                <TableCell numeric>{sumReserved}</TableCell>
+                                <TableCell numeric>{sumBusy}</TableCell>
+                                <TableCell numeric>{sumPopulated}</TableCell>
+                                <TableCell numeric>{sumTotal}</TableCell>
                             </TableRow>
                         }
                     </TableBody>
@@ -68,6 +69,7 @@ RoomsSummaryInformation.propTypes = {
             room_type_id:       PropTypes.number.isRequired,
             room_type_title:    PropTypes.string.isRequired,
             populated:          PropTypes.number.isRequired,
+            reserved:           PropTypes.number.isRequired,
             busy:               PropTypes.number.isRequired,
             total:              PropTypes.number.isRequired,
             free_rooms:         PropTypes.number.isRequired,
