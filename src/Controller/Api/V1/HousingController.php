@@ -214,23 +214,24 @@ class HousingController extends ApiController
                     $reservedPlaces->setRoomType($roomType);
                 }
 
-                /** Check that reserve count not larger then free places count in current housing */
-                $summaryRoomTypeInfo = $abodeInfo[$roomType->getId()];
-                $freePlaces = $summaryRoomTypeInfo['total'] - $summaryRoomTypeInfo['populated'];
+                if ($reserve['count'] !== 0) {
+                    /** Check that reserve count not larger then free places count in current housing */
+                    $summaryRoomTypeInfo = $abodeInfo[$roomType->getId()];
+                    $freePlaces = $summaryRoomTypeInfo['total'] - $summaryRoomTypeInfo['populated'];
 
-                if ($reserve['count'] > $freePlaces) {
-                    throw new \Exception("Для типа комнаты '{$summaryRoomTypeInfo['room_type_title']}' "
-                        ."количество зарезервированных мест превышает количество свободных ($freePlaces).");
+                    if ($reserve['count'] > $freePlaces) {
+                        throw new \Exception("Для типа комнаты '{$summaryRoomTypeInfo['room_type_title']}' "
+                            ."количество зарезервированных мест превышает количество свободных ($freePlaces).");
+                    }
+
+                    /** Check that global reserve count not larger then busy count */
+                    $summaryInfo = $roomTypeRepo->getSummaryInformation($roomType->getId());
+                    $sum_free_places = $summaryInfo['total'] - $summaryInfo['busy'];
+                    if ($reserve['count'] > $sum_free_places) {
+                        throw new \Exception("Для типа комнаты '{$summaryRoomTypeInfo['room_type_title']}' "
+                            ."ОБЩЕЕ количество зарезервированных мест превышает количество свободных ($sum_free_places).");
+                    }
                 }
-
-                /** Check that global reserve count not larger then busy count */
-                $summaryInfo = $roomTypeRepo->getSummaryInformation($roomType->getId());
-                $sum_free_places = $summaryInfo['total'] - $summaryInfo['busy'];
-                if ($reserve['count'] > $sum_free_places) {
-                    throw new \Exception("Для типа комнаты '{$summaryRoomTypeInfo['room_type_title']}' "
-                        ."ОБЩЕЕ количество зарезервированных мест превышает количество свободных ($sum_free_places).");
-                }
-
 
                 $reservedPlaces->setCount($reserve['count']);
 
