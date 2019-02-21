@@ -6,6 +6,7 @@ use App\Entity\Abode\Housing;
 use App\Entity\Abode\ReservedPlaces;
 use App\Entity\Abode\RoomType;
 use App\Manager\AbodeManager;
+use App\Repository\Abode\RoomTypeRepository;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -181,6 +182,7 @@ class HousingController extends ApiController
 
         $conn = $this->em->getConnection();
         $reservedPlacesRepo = $this->em->getRepository(ReservedPlaces::class);
+        /** @var RoomTypeRepository $roomTypeRepo */
         $roomTypeRepo = $this->em->getRepository(RoomType::class);
 
         $reserves = $this->requestData['reserves'] ?? null;
@@ -212,7 +214,7 @@ class HousingController extends ApiController
                     $reservedPlaces->setRoomType($roomType);
                 }
 
-                /** Check that reserve count not larger then free places count */
+                /** Check that reserve count not larger then free places count in current housing */
                 $summaryRoomTypeInfo = $abodeInfo[$roomType->getId()];
                 $freePlaces = $summaryRoomTypeInfo['total'] - $summaryRoomTypeInfo['populated'];
 
@@ -220,6 +222,15 @@ class HousingController extends ApiController
                     throw new \Exception("Для типа комнаты '{$summaryRoomTypeInfo['room_type_title']}' "
                         ."количество зарезервированных мест превышает количество свободных ($freePlaces).");
                 }
+
+                /** Check that global reserve count not larger then busy count */
+                $summaryInfo = $roomTypeRepo->getSummaryInformation($roomType->getId());
+                $sum_free_places = $summaryInfo['total'] - $summaryInfo['busy'];
+                if ($reserve['count'] > $sum_free_places) {
+                    throw new \Exception("Для типа комнаты '{$summaryRoomTypeInfo['room_type_title']}' "
+                        ."ОБЩЕЕ количество зарезервированных мест превышает количество свободных ($sum_free_places).");
+                }
+
 
                 $reservedPlaces->setCount($reserve['count']);
 
