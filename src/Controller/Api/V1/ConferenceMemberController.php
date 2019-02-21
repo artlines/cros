@@ -298,6 +298,7 @@ class ConferenceMemberController extends ApiController
                 $user = $conferenceMember->getUser();
                 $neighbourhood = $conferenceMember->getNeighbourhood();
                 $roomType = $conferenceMember->getRoomType();
+                $manager = $conferenceMember->getConferenceOrganization()->getInvitedBy();
 
                 $invoices = $conferenceMember->getConferenceOrganization()->getInvoices();
                 $invoices_payed = true;
@@ -316,6 +317,7 @@ class ConferenceMemberController extends ApiController
                     'neighbourhood' => $neighbourhood ? $neighbourhood->getUser()->getFullName() : null,
                     'invoices_count'=> $invoices->count(),
                     'invoices_payed'=> $invoices_payed,
+                    'manager_name'  => $manager ? $manager->getFirstName().' '.$manager->getLastName() : null,
                 ];
             }
         }
