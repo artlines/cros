@@ -197,6 +197,20 @@ class ConferenceMemberController extends ApiController
             return $this->notFound('Room type not found.');
         }
 
+        /**
+         * If room type was changed then check that member not settlement
+         * @var Place $place
+         */
+        if (
+            $roomType !== $conferenceMember->getRoomType()
+            && $place = $this->em->getRepository(Place::class)->findOneBy(['conferenceMember' => $conferenceMember])
+        ) {
+            return $this->badRequest(
+                'Участник уже заселен в комнату типа "'.$conferenceMember->getRoomType()->getTitle()
+                .'" в номере #'.$place->getRoom()->getApartment()->getNumber().'. Выселите его, чтобы сменить тип комнаты.'
+            );
+        }
+
         $member = $conferenceMember->getUser();
 
         /**
