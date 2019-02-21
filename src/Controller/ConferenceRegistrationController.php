@@ -179,8 +179,7 @@ class ConferenceRegistrationController extends AbstractController
 
             $dumper->dump($cloner->cloneVar($request), $output);
             $output = stream_get_contents($output, -1, 0);
-            $this->logger->info('POSTDATA:' . base64_encode($output));
-            dd(base64_encode($output));
+            $this->logger->notice('POSTDATA:' . base64_encode($output));
         }
         $hash = $request->get('hash');
         if( $hash ) {
