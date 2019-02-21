@@ -195,7 +195,7 @@ class InviteForm extends React.Component {
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField
-                                    // required
+                                    required
                                     label={"КПП"}
                                     type={"number"}
                                     value={values.kpp}
