@@ -61,7 +61,8 @@ class RoomTypeRepository  extends EntityRepository
                   COUNT(DISTINCT r.id)*rt.max_places AS total,
                   COUNT(DISTINCT r.id) FILTER (
                     WHERE p_r.id IS NULL
-                  ) as free_rooms
+                  ) as free_rooms,
+                  COUNT(DISTINCT r.id) as total_rooms
                 FROM abode.room_type rt
                   LEFT JOIN abode.room r ON rt.id = r.type_id
                   LEFT JOIN participating.conference_member cm ON rt.id = cm.room_type_id
