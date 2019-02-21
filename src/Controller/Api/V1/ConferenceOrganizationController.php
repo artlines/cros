@@ -328,7 +328,7 @@ class ConferenceOrganizationController extends ApiController
         $data = $inviteData;
         $data['hash'] = $inviteHash;
         $data['org_name'] = $name;
-        $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, array_merge($bcc_emails, $data['mngr_email']));
+        $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, array_merge($bcc_emails, [$data['mngr_email']]));
 
         return $this->success();
     }
@@ -368,7 +368,7 @@ class ConferenceOrganizationController extends ApiController
         }
         $data['hash'] = $conferenceOrganization->getInviteHash();
         $data['org_name'] = $organization->getName();
-        $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, array_merge($bcc_emails, $data['mngr_email']));
+        $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, array_merge($bcc_emails, [$data['mngr_email']]));
 
         return $this->success();
     }
