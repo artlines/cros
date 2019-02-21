@@ -3,7 +3,10 @@
 namespace App\Controller\Api\V1;
 
 use App\Entity\Abode\Housing;
+use App\Entity\Abode\ReservedPlaces;
+use App\Entity\Abode\RoomType;
 use App\Manager\AbodeManager;
+use App\Repository\Abode\RoomTypeRepository;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -161,6 +164,92 @@ class HousingController extends ApiController
     }
 
     /**
+     * @Route("housing/{housing_id}/reserve_places", requirements={"id":"\d+"}, methods={"POST"}, name="reserve_update")
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param $housing_id
+     * @param AbodeManager $am
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @throws EntityNotFoundException
+     * @throws \Doctrine\DBAL\ConnectionException
+     */
+    public function reservePlaces($housing_id, AbodeManager $am)
+    {
+        /** @var Housing $housing */
+        $housing = $this->findEntity($housing_id);
+
+        $abodeInfo = $am->calculateAbodeInfoByHousing($housing);
+
+        $conn = $this->em->getConnection();
+        $reservedPlacesRepo = $this->em->getRepository(ReservedPlaces::class);
+        /** @var RoomTypeRepository $roomTypeRepo */
+        $roomTypeRepo = $this->em->getRepository(RoomType::class);
+
+        $reserves = $this->requestData['reserves'] ?? null;
+        if (!$reserves) {
+            return $this->badRequest('Не переданы обязательные параметры.');
+        }
+
+        $conn->beginTransaction();
+
+        try {
+            foreach ($reserves as $reserve) {
+                if ($reserve['count'] < 0) {
+                    throw new \Exception('Количество зарезервированных номеров не может быть меньше нуля.');
+                }
+
+                /** @var RoomType $roomType */
+                if (!$roomType = $roomTypeRepo->find($reserve['room_type_id'])) {
+                    throw new \Exception('Тип комнаты не найден.');
+                };
+
+                $reservedPlaces = $reservedPlacesRepo->findOneBy([
+                    'roomType'  => $roomType,
+                    'housing'   => $housing
+                ]);
+
+                if (!$reservedPlaces) {
+                    $reservedPlaces = new ReservedPlaces();
+                    $reservedPlaces->setHousing($housing);
+                    $reservedPlaces->setRoomType($roomType);
+                }
+
+                if ($reserve['count'] !== 0) {
+                    /** Check that reserve count not larger then free places count in current housing */
+                    $summaryRoomTypeInfo = $abodeInfo[$roomType->getId()];
+                    $freePlaces = $summaryRoomTypeInfo['total'] - $summaryRoomTypeInfo['populated'];
+
+                    if ($reserve['count'] > $freePlaces) {
+                        throw new \Exception("Для типа комнаты '{$summaryRoomTypeInfo['room_type_title']}' "
+                            ."количество зарезервированных мест превышает количество свободных ($freePlaces).");
+                    }
+
+                    /** Check that global reserve count not larger then busy count */
+                    $summaryInfo = $roomTypeRepo->getSummaryInformation($roomType->getId());
+                    $sum_free_places = $summaryInfo['total'] - $summaryInfo['busy'];
+                    if ($reserve['count'] > $sum_free_places) {
+                        throw new \Exception("Для типа комнаты '{$summaryRoomTypeInfo['room_type_title']}' "
+                            ."ОБЩЕЕ количество зарезервированных мест превышает количество свободных ($sum_free_places).");
+                    }
+                }
+
+                $reservedPlaces->setCount($reserve['count']);
+
+                $this->em->persist($reservedPlaces);
+                $this->em->flush();
+            }
+
+            $conn->commit();
+        } catch (\Exception $e) {
+            $conn->rollBack();
+
+            return $this->badRequest($e->getMessage());
+        }
+
+        return $this->success();
+    }
+
+    /**
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param $id
      * @return null|object|\Symfony\Component\HttpFoundation\JsonResponse
@@ -182,17 +271,25 @@ class HousingController extends ApiController
      */
     private function getResponseItem(Housing $housing)
     {
-        $_abode_info = [];
-
         $item = [
             'id'            => $housing->getId(),
             'num_of_floors' => $housing->getNumOfFloors(),
             'title'         => $housing->getTitle(),
             'description'   => $housing->getDescription(),
-            'abode_info'    => $_abode_info,
+            'abode_info'    => [],
         ];
 
-        $item['abode_info'] = $this->am->calculateAbodeInfoByHousing($housing);
+        $abodeInfo = $this->am->calculateAbodeInfoByHousing($housing);
+
+        foreach ($abodeInfo as $room_type_id => $stat) {
+            $item['abode_info'][] = [
+                'room_type_id'      => $room_type_id,
+                'room_type_title'   => $stat['room_type_title'],
+                'reserved'          => $stat['reserved'],
+                'populated'         => $stat['populated'],
+                'total'             => $stat['total'],
+            ];
+        }
 
         return $item;
     }

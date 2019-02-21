@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     name="reserved_places",
  *     uniqueConstraints={@ORM\UniqueConstraint(name="unique_reserved_places_idx", columns={"room_type_id", "housing_id"})}
  * )
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\Abode\ReservedPlacesRepository")
  */
 class ReservedPlaces
 {

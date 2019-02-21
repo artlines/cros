@@ -197,6 +197,20 @@ class ConferenceMemberController extends ApiController
             return $this->notFound('Room type not found.');
         }
 
+        /**
+         * If room type was changed then check that member not settlement
+         * @var Place $place
+         */
+        if (
+            $roomType !== $conferenceMember->getRoomType()
+            && $place = $this->em->getRepository(Place::class)->findOneBy(['conferenceMember' => $conferenceMember])
+        ) {
+            return $this->badRequest(
+                'Участник уже заселен в комнату типа "'.$conferenceMember->getRoomType()->getTitle()
+                .'" в номере #'.$place->getRoom()->getApartment()->getNumber().'. Выселите его, чтобы сменить тип комнаты.'
+            );
+        }
+
         $member = $conferenceMember->getUser();
 
         /**
@@ -298,6 +312,7 @@ class ConferenceMemberController extends ApiController
                 $user = $conferenceMember->getUser();
                 $neighbourhood = $conferenceMember->getNeighbourhood();
                 $roomType = $conferenceMember->getRoomType();
+                $manager = $conferenceMember->getConferenceOrganization()->getInvitedBy();
 
                 $invoices = $conferenceMember->getConferenceOrganization()->getInvoices();
                 $invoices_payed = true;
@@ -316,6 +331,7 @@ class ConferenceMemberController extends ApiController
                     'neighbourhood' => $neighbourhood ? $neighbourhood->getUser()->getFullName() : null,
                     'invoices_count'=> $invoices->count(),
                     'invoices_payed'=> $invoices_payed,
+                    'manager_name'  => $manager ? $manager->getFirstName().' '.$manager->getLastName() : null,
                 ];
             }
         }

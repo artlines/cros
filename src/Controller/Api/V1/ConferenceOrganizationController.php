@@ -254,7 +254,7 @@ class ConferenceOrganizationController extends ApiController
         $mngr_phone = $this->requestData['mngr_phone'] ?? null;
         $mngr_email = $this->requestData['mngr_email'] ?? null;
 
-        if (!$fio || !$email || !$name || !$inn || !$mngr_first_name || !$mngr_last_name || !$mngr_phone || !$mngr_email) {
+        if (!$fio || !$email || !$name || !$inn || !$kpp || !$mngr_first_name || !$mngr_last_name || !$mngr_phone || !$mngr_email) {
             return $this->badRequest('Не переданы обязательные параметры.');
         }
 
@@ -328,7 +328,7 @@ class ConferenceOrganizationController extends ApiController
         $data = $inviteData;
         $data['hash'] = $inviteHash;
         $data['org_name'] = $name;
-        $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, $bcc_emails);
+        $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, array_merge($bcc_emails, [$data['mngr_email']]));
 
         return $this->success();
     }
@@ -368,7 +368,7 @@ class ConferenceOrganizationController extends ApiController
         }
         $data['hash'] = $conferenceOrganization->getInviteHash();
         $data['org_name'] = $organization->getName();
-        $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, $bcc_emails);
+        $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, array_merge($bcc_emails, [$data['mngr_email']]));
 
         return $this->success();
     }
