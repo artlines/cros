@@ -2,6 +2,9 @@ export const ABODE = {
     REQUEST_HOUSING: "ABODE_REQUEST_HOUSING",
     RECEIVE_HOUSING: "ABODE_RECEIVE_HOUSING",
 
+    REQUEST_HOUSINGS: "ABODE_REQUEST_HOUSINGS",
+    RECEIVE_HOUSINGS: "ABODE_RECEIVE_HOUSINGS",
+
     REQUEST_PARTICIPATION_CLASS: "ABODE_REQUEST_PARTICIPATION_CLASS",
     RECEIVE_PARTICIPATION_CLASS: "ABODE_RECEIVE_PARTICIPATION_CLASS",
 
@@ -90,6 +93,24 @@ export default (state = initialState, action) => {
                 },
             },
         };
+        case ABODE.REQUEST_HOUSINGS:
+            return {
+                ...state,
+                housing: {
+                    ...state.housing,
+                    isFetching: true,
+                    error: false,
+                },
+            };
+        case ABODE.RECEIVE_HOUSINGS:
+            return {
+                ...state,
+                housing: {
+                    ...state.housing,
+                    isFetching: false,
+                    ...payload,
+                },
+            };
     case ABODE.REQUEST_ROOMS:
         return {
             ...state,
