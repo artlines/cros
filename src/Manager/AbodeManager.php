@@ -6,6 +6,7 @@ use App\Entity\Abode\Apartment;
 use App\Entity\Abode\Housing;
 use App\Entity\Abode\ReservedPlaces;
 use App\Entity\Abode\Room;
+use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\Invoice;
 use App\Repository\Abode\ApartmentRepository;
 use App\Repository\Abode\ReservedPlacesRepository;
@@ -66,18 +67,18 @@ class AbodeManager
             $_room_type_id      = $room->getType()->getId();
             $_room_type_title   = $room->getType()->getTitle();
             $_total_places      = $room->getType()->getMaxPlaces();
-            $_busy_places       = $room->getPlaces()->count();
+            $_populated_places  = $room->getPlaces()->count();
 
             if (!isset($statsByRoomTypeId[$_room_type_id])) {
                 $statsByRoomTypeId[$_room_type_id] = [
                     'room_type_title'   => $_room_type_title,
                     'reserved'          => $reservedInfo[$_room_type_id] ?? 0,
-                    'busy'              => 0,
+                    'populated'         => 0,
                     'total'             => 0,
                 ];
             };
 
-            $statsByRoomTypeId[$_room_type_id]['busy'] += $_busy_places;
+            $statsByRoomTypeId[$_room_type_id]['populated'] += $_populated_places;
             $statsByRoomTypeId[$_room_type_id]['total'] += $_total_places;
         }
 

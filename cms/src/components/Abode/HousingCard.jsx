@@ -57,14 +57,14 @@ class HousingCard extends React.PureComponent {
                         <TableHead>
                             <TableRow>
                                 <TableCell>Тип комнаты</TableCell>
-                                <TableCell numeric>Мест в резерве / Занято / Всего</TableCell>
+                                <TableCell numeric>Мест в резерве / Заселено / Всего</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {map(sortBy(abode_info, 'room_type_title'), item =>
                                 <TableRow key={item.room_type_id}>
                                     <TableCell>{item.room_type_title}</TableCell>
-                                    <TableCell numeric>{item.reserved} / {item.busy} / {item.total}</TableCell>
+                                    <TableCell numeric>{item.reserved} / {item.populated} / {item.total}</TableCell>
                                 </TableRow>
                             )}
                         </TableBody>
@@ -116,7 +116,7 @@ HousingCard.propTypes = {
                 room_type_id:       PropTypes.number.isRequired,
                 room_type_title:    PropTypes.string.isRequired,
                 reserved:           PropTypes.number.isRequired,
-                busy:               PropTypes.number.isRequired,
+                populated:          PropTypes.number.isRequired,
                 total:              PropTypes.number.isRequired,
             })
         ),

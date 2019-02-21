@@ -202,7 +202,7 @@ class HousingController extends ApiController
                 };
 
                 $reservedPlaces = $reservedPlacesRepo->findOneBy([
-                    'roomType'  => $reserve['room_type_id'],
+                    'roomType'  => $roomType,
                     'housing'   => $housing
                 ]);
 
@@ -214,7 +214,7 @@ class HousingController extends ApiController
 
                 /** Check that reserve count not larger then free places count */
                 $summaryRoomTypeInfo = $abodeInfo[$roomType->getId()];
-                $freePlaces = $summaryRoomTypeInfo['total'] - $summaryRoomTypeInfo['busy'];
+                $freePlaces = $summaryRoomTypeInfo['total'] - $summaryRoomTypeInfo['populated'];
 
                 if ($reserve['count'] > $freePlaces) {
                     throw new \Exception("Для типа комнаты '{$summaryRoomTypeInfo['room_type_title']}' "
@@ -274,7 +274,7 @@ class HousingController extends ApiController
                 'room_type_id'      => $room_type_id,
                 'room_type_title'   => $stat['room_type_title'],
                 'reserved'          => $stat['reserved'],
-                'busy'              => $stat['busy'],
+                'populated'         => $stat['populated'],
                 'total'             => $stat['total'],
             ];
         }

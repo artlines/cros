@@ -12,6 +12,7 @@ import {
     Typography,
 } from '@material-ui/core';
 import map from "lodash/map";
+import sortBy from "lodash/sortBy";
 import API from '../../libs/api';
 import LinearProgress from '../utils/LinearProgress';
 import ErrorMessage from '../utils/ErrorMessage';
@@ -36,7 +37,7 @@ class ReservedPlacesModal extends React.Component {
         const { open } = this.state;
 
         if (open !== prevState.open && open) {
-            this.setState({ data: map(items, i => ({
+            this.setState({ data: map(sortBy(items, 'room_type_title'), i => ({
                     room_type_id:       i.room_type_id,
                     room_type_title:    i.room_type_title,
                     count:              i.reserved,
@@ -100,7 +101,7 @@ class ReservedPlacesModal extends React.Component {
                         <form onSubmit={this.handleSubmit} id={"reserved_places-form"}>
                             <LinearProgress show={submitting}/>
                             <Grid container spacing={16}>
-                                {map(data, (i, index) =>
+                                {map(sortBy(data), (i, index) =>
                                     <React.Fragment key={index}>
                                         <Grid item xs={8}>
                                             <Typography>{i.room_type_title}</Typography>
