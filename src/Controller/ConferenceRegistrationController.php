@@ -16,6 +16,7 @@ use App\Repository\ConferenceMemberRepository;
 use App\Repository\ConferenceOrganizationRepository;
 use App\Service\Mailer;
 use Doctrine\ORM\EntityManager;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -23,6 +24,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\VarDumper\Cloner\VarCloner;
+use Symfony\Component\VarDumper\Dumper\CliDumper;
 
 class ConferenceRegistrationController extends AbstractController
 {
@@ -33,6 +36,15 @@ class ConferenceRegistrationController extends AbstractController
     const MAIL_SEND_PASSWORD     = 'cros.send.password';
     const MAIL_SEND_COMMENT      = 'cros.send.comment';
     const MAIL_BCC               = 'cros@nag.ru';
+
+    /** @var LoggerInterface */
+    protected $logger;
+
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->logger   = $logger;
+    }
+
 
     private function getRandomPassword()
     {
@@ -160,6 +172,16 @@ class ConferenceRegistrationController extends AbstractController
         Mailer $mailer
     )
     {
+        if ($request->getMethod() == 'POST') {
+            $cloner = new VarCloner();
+            $dumper = new CliDumper();
+            $output = fopen('php://memory', 'r+b');
+
+            $dumper->dump($cloner->cloneVar($request), $output);
+            $output = stream_get_contents($output, -1, 0);
+            $this->logger->info('POSTDATA:' . base64_encode($output));
+            dd(base64_encode($output));
+        }
         $hash = $request->get('hash');
         if( $hash ) {
             $ConferenceOrganization = $this->getDoctrine()
