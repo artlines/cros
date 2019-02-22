@@ -254,7 +254,7 @@ class ConferenceOrganizationController extends ApiController
         $mngr_phone = $this->requestData['mngr_phone'] ?? null;
         $mngr_email = $this->requestData['mngr_email'] ?? null;
 
-        if (!$fio || !$email || !$name || !$inn || !$kpp || !$mngr_first_name || !$mngr_last_name || !$mngr_phone || !$mngr_email) {
+        if (!$fio || !$email || !$name || !$inn || !is_null($kpp) || !$mngr_first_name || !$mngr_last_name || !$mngr_phone || !$mngr_email) {
             return $this->badRequest('Не переданы обязательные параметры.');
         }
 
