@@ -508,6 +508,22 @@ class Organization
     }
 
     /**
+     * @return null|string
+     */
+    public function getB2bGuid(): ?string
+    {
+        return $this->b2b_guid;
+    }
+
+    /**
+     * @param null|string $b2b_guid
+     */
+    public function setB2bGuid(?string $b2b_guid)
+    {
+        $this->b2b_guid = $b2b_guid;
+    }
+
+    /**
      * Get typePerson
      *
      * @return string
@@ -516,6 +532,7 @@ class Organization
     {
         return $this->typePerson;
     }
+
     public function __toString()
     {
         // TODO: Implement __toString() method.
