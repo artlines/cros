@@ -55,6 +55,30 @@ class Invoice
     private $date;
 
     /**
+     * GUID заказа из b2b
+     *
+     * @var string|null
+     * @ORM\Column(name="b2b_order_guid", type="string", nullable=true, unique=true)
+     */
+    private $orderGuid;
+
+    /**
+     * Зафиксированная сумма заказа выставленного счета
+     *
+     * @var float|null
+     * @ORM\Column(name="fixed_amount", type="decimal", precision=12, scale=2, nullable=true)
+     */
+    private $fixedAmount;
+
+    /**
+     * Флаг, отправлен ли запрос на выставление счета
+     *
+     * @var bool
+     * @ORM\Column(name="bill_sent", type="boolean", nullable=false, options={"default":"0"})
+     */
+    private $billSent;
+
+    /**
      * @var ConferenceOrganization
      *
      * @ORM\ManyToOne(targetEntity="ConferenceOrganization", inversedBy="invoices")
@@ -148,5 +172,53 @@ class Invoice
     public function setConferenceOrganization(ConferenceOrganization $conferenceOrganization)
     {
         $this->conferenceOrganization = $conferenceOrganization;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getOrderGuid(): ?string
+    {
+        return $this->orderGuid;
+    }
+
+    /**
+     * @param null|string $orderGuid
+     */
+    public function setOrderGuid(?string $orderGuid)
+    {
+        $this->orderGuid = $orderGuid;
+    }
+
+    /**
+     * @return float
+     */
+    public function getFixedAmount(): ?float
+    {
+        return $this->fixedAmount;
+    }
+
+    /**
+     * @param float $fixedAmount
+     */
+    public function setFixedAmount(?float $fixedAmount)
+    {
+        $this->fixedAmount = $fixedAmount;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBillSent(): bool
+    {
+        return $this->billSent;
+    }
+
+    /**
+     * @param bool $billSent
+     */
+    public function setBillSent(bool $billSent)
+    {
+        $this->billSent = $billSent;
     }
 }

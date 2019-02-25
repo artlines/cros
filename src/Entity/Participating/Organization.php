@@ -127,6 +127,13 @@ class Organization
     private $typePerson;
 
     /**
+     * Fixed GUID организации из b2b
+     * @var string|null
+     * @ORM\Column(name="b2b_guid", type="string", nullable=true, unique=true)
+     */
+    private $b2b_guid;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
