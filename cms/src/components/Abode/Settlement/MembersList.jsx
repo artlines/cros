@@ -17,7 +17,7 @@ class MembersList extends React.Component {
 
         this.state = {
             page: 0,
-            rowsPerPage: 10,
+            rowsPerPage: 8,
             search: '',
         };
     }
