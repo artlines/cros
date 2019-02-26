@@ -16,13 +16,8 @@ class Mailer
     /** Template alias */
     private $templateAlias;
 
-    /**
-     * @param mixed $templateAlias
-     */
-    public function setTemplateAlias($templateAlias): void
-    {
-        $this->templateAlias = $templateAlias;
-    }
+    /** @var array Attachments */
+    private $attachments;
 
     /**
      * Mailer constructor.
@@ -35,6 +30,37 @@ class Mailer
         $this->clientAlias      = getenv('SOA_MAILER_CLIENT_ALIAS');
         $this->clientSecret     = getenv('SOA_MAILER_CLIENT_SECRET');
         $this->templateAlias    = getenv('SOA_MAILER_TEMPLATE_ALIAS');
+
+        $this->attachments = [];
+    }
+
+    /**
+     * @param mixed $templateAlias
+     */
+    public function setTemplateAlias($templateAlias): void
+    {
+        $this->templateAlias = $templateAlias;
+    }
+
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param $pathname
+     * @param null|string $originalName
+     */
+    public function addAttachment($pathname, ?string $originalName = null)
+    {
+        if (!is_file($pathname)) {
+            return;
+        }
+        $pathInfo = pathinfo($pathname);
+
+        $attachment = [
+            'data_base64' => base64_encode(file_get_contents($pathname)),
+            'filename'    => $originalName ?? $pathInfo['basename'],
+            'contentType' => (new \finfo)->file($pathname, FILEINFO_MIME_TYPE)
+        ];
+
+        $this->attachments[] = $attachment;
     }
 
     /**
@@ -62,6 +88,7 @@ class Mailer
             'template_alias'    => $this->templateAlias,
             'timestamp'         => $timestamp,
             'params'            => $params,
+            'attachments'       => $this->attachments,
         ];
 
         if ($sendCc) {

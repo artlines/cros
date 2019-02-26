@@ -8,8 +8,6 @@
 
 {% block stylesheets %}{% endblock %}
 
-{% block javascripts %}{% endblock %}
-
 {% block body %}
 
 	{% if form %}
@@ -48,12 +46,14 @@
 
 		{{ form_start(form) }}
 
+        {{ form_errors(form) }}
+
         {{ form_row(form.speaker) }}
         {{ form_row(form.email) }}
         {{ form_row(form.mobile) }}
         {{ form_row(form.title) }}
         {{ form_row(form.theses) }}
-        {{ form_row(form.files) }}
+		{{ form_row(form.files) }}
         {{ form_row(form.recaptcha) }}
 
         {{ form_row(form.send) }}
@@ -85,3 +85,26 @@
 
 {% endblock %}
 
+{% block javascripts %}
+<script>
+    jQuery(document). ready(function() {
+        jQuery('input[type="file"]').on('change', function(e) {
+            var id = jQuery(this).attr('id');
+
+            var fileName = '';
+            switch (e.target.files.length) {
+                case 0:
+                    fileName = 'Выберите файл(ы)';
+                    break;
+                case 1:
+                    fileName = e.target.files[0].name;
+                    break;
+                default:
+                    fileName = 'Выбрано ' + e.target.files.length + ' файл(а)';
+            }
+
+            jQuery(this).parent().find('label[for='+id+']').text(fileName).attr('style', 'overflow: hidden');
+        })
+    })
+</script>
+{% endblock %}
