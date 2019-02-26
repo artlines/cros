@@ -171,6 +171,11 @@ class ConferenceRegistrationController extends AbstractController
     /**
      * @Route("/registration/{hash}", name="conference_registration_hash")
      * @Route("/registration", name="registration")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param Mailer $mailer
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
      */
     public function index(
         Request $request,

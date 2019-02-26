@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Conference;
 use App\Entity\Sponsor;
 use App\Entity\Content\Info;
+use App\Service\Mailer;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
@@ -27,12 +29,20 @@ class InfoController extends AbstractController
      * @Route("/info/{alias}", name="info")
      * @param $alias
      * @param Request $request
-     * @param \Swift_Mailer $mailer
+     * @param Mailer $mailer
+     * @param \Swift_Mailer $swiftMailer
      * @param EntityManagerInterface $em
+     * @param ParameterBagInterface $parameterBag
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function info($alias, Request $request, \Swift_Mailer $mailer, EntityManagerInterface $em)
-	{
+    public function info(
+        $alias,
+        Mailer $mailer,
+        Request $request,
+        \Swift_Mailer $swiftMailer,
+        EntityManagerInterface $em,
+        ParameterBagInterface $parameterBag
+    ) {
         /* SPONSOR */
         if ($alias == 'sponsors') {
             /** @var Conference $conference */
@@ -69,12 +79,13 @@ class InfoController extends AbstractController
 
 		/* BECOME-SPEAKER */
 		if ($alias == 'become-speaker') {
+            $bcc_emails = $parameterBag->has('become_speaker_bcc_emails')
+                ? $parameterBag->get('become_speaker_bcc_emails') : [];
+
 			$good_extens = ['pdf', 'txt', 'rtf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'];
 			$mimeMsg = 'Допустимые расширения файлов: '.implode(', ', $good_extens);
 
-            $defaultData = array(
-                //'theses' => 'asd'
-            );
+            $defaultData = [];
 			$form = $this->createFormBuilder($defaultData)
 				->add('speaker', TextType::class, ['attr' => ['class' => 'cs-theme-color-gray-dark-v3'], 'label' => 'Имя'])
 				->add('email', EmailType::class, ['attr' => ['class' => 'cs-theme-color-gray-dark-v3'], 'label' => 'E-mail'])
@@ -105,75 +116,61 @@ class InfoController extends AbstractController
 
 			if ($form->isSubmitted()) {
 				$files = $form->get('files')->getData();
-				$_tmp = array();
 
 				/** @var UploadedFile $file */
                 foreach ($files as $file) {
 					$_exten = $file->getClientOriginalExtension();
 					if (!in_array($_exten, $good_extens)) {
-						if ($_files_valid) {
-							$_files_valid = false;
-							$form->get('files')->addError(new FormError($mimeMsg));
-						};
+                        $_files_valid = false;
+                        $form->get('files')->addError(new FormError($mimeMsg));
 						break;
-					};
-				};
-			};
+					}
+				}
+			}
 			/* end check */
 
 			if ($form->isSubmitted() && $form->isValid() && $_files_valid) {
                 $data = $form->getData();
 
                 $files = $data['files'];
-
-                $message = new \Swift_Message();
-                $message
-                    ->setSubject('КРОС-2.0-18: Заявка на добавление докладчика')
-                    ->setFrom('cros@nag.ru')
-                    ->setTo($data['email'])
-                    ->setBody(
-                        $this->renderView(
-                            'Emails/become-speaker.html.twig',
-                            [
-                                'speaker' => $data['speaker'],
-                                'email' => $data['email'],
-                                'mobile' => $data['mobile'],
-                                'title' => $data['title'],
-                                'theses' => $data['theses'],
-                            ]
-                        ), 'text/html');
-
+                /** @var UploadedFile $file */
                 foreach ($files as $file) {
-                    $message->attach(\Swift_Attachment::fromPath($file)
-                            ->setFilename($file->getClientOriginalName()));
+                    $mailer->addAttachment($file->getPathname(), $file->getClientOriginalName());
                 }
 
-                $mailer->send($message);
+                $mailer->setTemplateAlias('cros2019.become_speaker');
+                $mailer->send('КРОС-2019: Заявка на добавление докладчика', [
+                    'speaker'   => $data['speaker'],
+                    'email'     => $data['email'],
+                    'mobile'    => $data['mobile'],
+                    'title'     => $data['title'],
+                    'theses'    => $data['theses'],
+                ], $data['email'], null, $bcc_emails);
 
-				return $this->render('frontend/info/become-speaker.html.twig', array(
+				return $this->render('frontend/info/become-speaker.html.twig', [
 					'form' => false,
 					'data' => $data
-		        ));
+		        ]);
 			}
 
-			return $this->render('frontend/info/become-speaker.html.twig', array(
+			return $this->render('frontend/info/become-speaker.html.twig', [
 				'form' => $form->createView(),
 				'data' => false
-            ));
+            ]);
 		};
 
 		/* BECOME-SPONSOR */
 		// (ФИО, Компания, Телефон, E-mail)
 		if ($alias == 'become-sponsor') {
+            $bcc_emails = $parameterBag->has('become_sponsor_bcc_emails')
+                ? $parameterBag->get('become_sponsor_bcc_emails') : [];
 
-            $choices = array(
-                'Золотой партнер' => 'Золотой партнер',
-                'Серебряный партнер' => 'Серебряный партнер',
-            );
+            $choices = [
+                'Золотой партнер'       => 'Золотой партнер',
+                'Серебряный партнер'    => 'Серебряный партнер',
+            ];
 
-			$defaultData = array(
-				//'theses' => 'asd'
-				);
+			$defaultData = [];
 			$form = $this->createFormBuilder($defaultData)
 				->add('company', TextType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Компания'))
 				->add('email', EmailType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'E-mail'))
@@ -190,7 +187,7 @@ class InfoController extends AbstractController
                         new RecaptchaTrue(['message' => 'Обязательное поле'])
                     ],
                 ])
-                ->add('send', SubmitType::class, array('label' => 'Отправить', 'attr' => array('class' => 'btn-success')))
+                ->add('send', SubmitType::class, ['label' => 'Отправить', 'attr' => ['class' => 'btn-success']])
 				->getForm();
 
 			$form->handleRequest($request);
@@ -199,35 +196,25 @@ class InfoController extends AbstractController
 
 				$data = $form->getData();
 
-                $message = new \Swift_Message();
-                $message
-                    ->setSubject('КРОС-2.0-18: Заявка на добавление спонсора')
-                    ->setFrom('cros@nag.ru')
-                    ->setTo('cros@nag.ru')
-                    ->setBody(
-                        $this->renderView(
-                            'Emails/become-sponsor.html.twig',
-                            array(
-                                'email' => $data['email'],
-                                'company' => $data['company'],
-                                'mobile' => $data['mobile'],
-                                'present' => $data['present'],
-                                'packet' => $data['packet'],
-                            )
-                        ), 'text/html');
+                $mailer->setTemplateAlias('cros2019.become_sponsor');
+                $mailer->send('КРОС-2019: Заявка на добавление спонсора', [
+                    'email'     => $data['email'],
+                    'company'   => $data['company'],
+                    'mobile'    => $data['mobile'],
+                    'present'   => $data['present'],
+                    'packet'    => $data['packet'],
+                ], $data['email'], null, $bcc_emails);
 
-                $mailer->send($message);
-
-				return $this->render('frontend/info/become-sponsor.html.twig', array(
+				return $this->render('frontend/info/become-sponsor.html.twig', [
 					'form' => false,
 					'data' => $data
-		        ));
+		        ]);
 			}
 
-			return $this->render('frontend/info/become-sponsor.html.twig', array(
+			return $this->render('frontend/info/become-sponsor.html.twig', [
 				'form' => $form->createView(),
 				'data' => false
-            ));
+            ]);
 		};
 
         /* reminder-SPONSOR */
@@ -256,7 +243,7 @@ class InfoController extends AbstractController
 
                 $message = new \Swift_Message();
                 $message
-                    ->setSubject('КРОС-2.0-18: Заявка на напоминание освобождения брони')
+                    ->setSubject('КРОС-2019: Заявка на напоминание освобождения брони')
                     ->setFrom('cros@nag.ru')
                     ->setTo('cros@nag.ru')
                     ->setBody(
@@ -268,7 +255,7 @@ class InfoController extends AbstractController
                             )
                         ), 'text/html');
 
-                $mailer->send($message);
+                $swiftMailer->send($message);
 
                 return $this->render('frontend/info/reminder-sponsor.html.twig', array(
                     'form' => false,
