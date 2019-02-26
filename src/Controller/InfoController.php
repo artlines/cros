@@ -93,6 +93,7 @@ class InfoController extends AbstractController
 				->add('title', TextType::class, ['attr' => ['class' => 'cs-theme-color-gray-dark-v3'], 'label' => 'Тема доклада'])
                 ->add('theses', TextareaType::class, ['attr' => ['class' => 'cs-theme-color-gray-dark-v3'], 'label' => 'Тезисы'])
                 ->add('files', FileType::class, [
+                                    'required' => false,
 									'label' => 'Файлы', 
 									'multiple' => true,
 									'constraints' => [
