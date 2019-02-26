@@ -571,4 +571,20 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return null|string
+     */
+    public function getB2bGuid(): ?string
+    {
+        return $this->b2b_guid;
+    }
+
+    /**
+     * @param null|string $b2b_guid
+     */
+    public function setB2bGuid(?string $b2b_guid)
+    {
+        $this->b2b_guid = $b2b_guid;
+    }
+
 }

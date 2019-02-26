@@ -45,10 +45,36 @@ class B2BApi
     }
 
     /**
+     * Create new contractor on B2B
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param string $title
+     * @param string $inn
+     * @param null $kpp
+     * @return array with elements
+     *      `http_code` => HTTP code of response,
+     *      `result`    => data or error string (if http_code !== 200)
+     */
+    public function createContractor(string $title, string $inn, $kpp = null)
+    {
+        $result = $this->_executeCurl('contractor/new', [
+            'title' => $title,
+            'inn'   => $inn,
+            'kpp'   => $kpp,
+        ], Request::METHOD_POST);
+
+        return $result;
+    }
+
+    /**
+     * Find contractor on B2B
+     *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param string $inn
      * @param string|null $kpp
-     * @return mixed
+     * @return array with elements
+     *      `http_code` => HTTP code of response,
+     *      `data`    => data or error string (if http_code !== 200)
      */
     public function findContractorByInnKpp(string $inn, ?string $kpp = null)
     {
@@ -58,35 +84,77 @@ class B2BApi
     }
 
     /**
+     * Create new contractor on B2B
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param string $email
+     * @param string $fio
+     * @return array with elements
+     *      `http_code` => HTTP code of response,
+     *      `result`    => data or error string (if http_code !== 200)
+     */
+    public function createUser(string $email, string $fio)
+    {
+        $result = $this->_executeCurl('user/new', [
+            'email' => $email,
+            'fio'   => $fio,
+        ], Request::METHOD_POST);
+
+        return $result;
+    }
+
+    /**
+     * Find user on B2B
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param string $email
+     * @return array with elements
+     *      `http_code` => HTTP code of response,
+     *      `data`    => data or error string (if http_code !== 200)
+     */
+    public function findUserByEmail(string $email)
+    {
+        $result = $this->_executeCurl('user', ['email' => $email], Request::METHOD_GET);
+
+        return $result;
+    }
+
+
+
+    /**
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param $alias
      * @param array $data
      * @param string $method
-     * @param bool $decodeJson Decode JSON from string
-     * @return mixed
+     * @return array with elements
+     *      `http_code` => HTTP code of response,
+     *      `data`      => data or error string
      */
-    private function _executeCurl($alias, array $data = [], string $method = Request::METHOD_GET, $decodeJson = TRUE)
+    private function _executeCurl($alias, array $data = [], string $method = Request::METHOD_GET)
     {
-        $url = $this->b2bHost . '/api/secure/' . $alias;
+        $url = $this->b2bHost . '/api/secure/' . $alias
+            . ($method === Request::METHOD_GET ? '?' . http_build_query($data) : '');
 
         $ch = curl_init();
 
-        $curlOpts = [
-            CURLOPT_URL             => $method === Request::METHOD_GET ? $url . '?' . http_build_query($data) : $url,
+        curl_setopt_array($ch, [
+            CURLOPT_URL             => $url,
             CURLOPT_HTTPHEADER      => [ self::AUTH_KEY_NAME . ": {$this->b2bToken}" ],
             CURLOPT_CUSTOMREQUEST   => $method,
             CURLOPT_POSTFIELDS      => $method === Request::METHOD_GET ? [] : $data,
             CURLOPT_RETURNTRANSFER  => TRUE,
-        ];
+        ]);
 
-        curl_setopt_array($ch, $curlOpts);
         $output = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
         curl_close($ch);
 
-        if ($decodeJson) {
-            $output = json_decode($output);
+        $output = json_decode($output, TRUE);
+        if (isset($output['error'])) {
+            $output = $output['error'];
         }
 
-        return $output;
+        return ['data' => $output, 'http_code' => $httpCode];
     }
 }

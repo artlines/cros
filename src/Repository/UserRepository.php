@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Conference;
+use App\Entity\Participating\ConferenceMember;
+use Doctrine\ORM\Query\Expr;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -19,6 +21,7 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
     /**
      * @param string $username
      * @return object|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function loadUserByUsername($username)
     {
@@ -30,6 +33,44 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
             ->getOneOrNullResult();
     }
 
+    /**
+     * Return users which participating in CROS-{$year}
+     * without b2b_guid (b2b_guid === NULL)
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param int $year
+     * @param bool $onlyRepresentative
+     * @return mixed
+     */
+    public function findWithoutB2bGuidByConferenceYear(int $year, $onlyRepresentative = FALSE)
+    {
+        $qb = $this->createQueryBuilder('u');
+
+        $query = $qb
+            ->select('u')
+            ->leftJoin(ConferenceMember::class, 'cm', Expr\Join::WITH, 'cm.user = u')
+            ->leftJoin(Conference::class, 'c', Expr\Join::WITH, 'cm.conference = c')
+            ->where('c.year = :year')
+            ->andWhere($qb->expr()->isNull('u.b2b_guid'));
+
+        if ($onlyRepresentative) {
+            $query->andWhere('u.representative = TRUE');
+        }
+
+        return $query
+            ->setParameters([
+                'year' => $year,
+            ])
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param array $data
+     * @return array
+     * @throws \Doctrine\DBAL\DBALException
+     */
     public function searchBy(array $data = [])
     {
         $conn = $this->getEntityManager()->getConnection();
