@@ -447,14 +447,14 @@ jQuery(document).ready(function () {
         .on('change', validateInnKpp)
         .each(function () {
             new IMask(this, {
-                mask: Number
+                mask: /^\d+$/
             });
         });
     jQuery('.kpp')
         .on('change', validateInnKpp)
         .each(function () {
             new IMask(this, {
-                mask: Number
+                mask: /^\d+$/
             });
         });
 
