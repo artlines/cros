@@ -118,15 +118,17 @@ class InfoController extends AbstractController
 			if ($form->isSubmitted()) {
 				$files = $form->get('files')->getData();
 
-				/** @var UploadedFile $file */
-                foreach ($files as $file) {
-					$_exten = $file->getClientOriginalExtension();
-					if (!in_array($_exten, $good_extens)) {
-                        $_files_valid = false;
-                        $form->get('files')->addError(new FormError($mimeMsg));
-						break;
-					}
-				}
+				if ($files) {
+                    /** @var UploadedFile $file */
+                    foreach ($files as $file) {
+                        $_exten = $file->getClientOriginalExtension();
+                        if (!in_array($_exten, $good_extens)) {
+                            $_files_valid = false;
+                            $form->get('files')->addError(new FormError($mimeMsg));
+                            break;
+                        }
+                    }
+                }
 			}
 			/* end check */
 
