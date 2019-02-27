@@ -96,6 +96,13 @@ class Organization
     private $kpp;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="invalid_inn_kpp", type="boolean", nullable=true)
+     */
+    private $invalidInnKpp;
+
+    /**
      * @ORM\Column(name="hidden", type="boolean", nullable=true)
      */
     private $hidden;
@@ -521,6 +528,22 @@ class Organization
     public function setB2bGuid(?string $b2b_guid)
     {
         $this->b2b_guid = $b2b_guid;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isInvalidInnKpp(): ?bool
+    {
+        return $this->invalidInnKpp;
+    }
+
+    /**
+     * @param bool|null $invalidInnKpp
+     */
+    public function setInvalidInnKpp(?bool $invalidInnKpp)
+    {
+        $this->invalidInnKpp = $invalidInnKpp;
     }
 
     /**
