@@ -254,6 +254,8 @@ class ConferenceOrganizationController extends ApiController
         $mngr_phone = $this->requestData['mngr_phone'] ?? null;
         $mngr_email = $this->requestData['mngr_email'] ?? null;
 
+        $logger->notice('[Invite Organization] Received data', ['data' => $this->requestData]);
+
         if (!$fio || !$email || !$name || !$inn || is_null($kpp) || !$mngr_first_name || !$mngr_last_name || !$mngr_phone || !$mngr_email) {
             return $this->badRequest('Не переданы обязательные параметры.');
         }
@@ -265,11 +267,11 @@ class ConferenceOrganizationController extends ApiController
             return $this->notFound("Conference with year $year not found.");
         }
 
-        $logger->info('[Invite Organization]', ['inn' => $inn, 'kpp' => $kpp]);
+        $logger->notice('[Invite Organization] Try to found organization', ['inn' => $inn, 'kpp' => $kpp]);
 
         /** @var Organization $organization */
         if ($organization = $this->em->getRepository(Organization::class)->findOneBy(['inn' => $inn, 'kpp' => $kpp])) {
-            $logger->info('[Invite Organization] Found Organization', [
+            $logger->notice('[Invite Organization] Found Organization', [
                 'id'    => $organization->getId(),
                 'name'  => $organization->getName()
             ]);
@@ -282,7 +284,7 @@ class ConferenceOrganizationController extends ApiController
                 ->findOneBy(['conference' => $conference, 'organization' => $organization]);
 
             if ($conferenceOrganization) {
-                $logger->info('[Invite Organization] Found ConferenceOrganization', [
+                $logger->notice('[Invite Organization] Found ConferenceOrganization', [
                     'id'        => $conferenceOrganization->getId(),
                     'is_finish' => $conferenceOrganization->isFinish() ? 'true' : 'false'
                 ]);
@@ -296,7 +298,7 @@ class ConferenceOrganizationController extends ApiController
                 }
             }
         } else {
-            $logger->info('[Invite Organization] Not found Organization, create new');
+            $logger->notice('[Invite Organization] Not found Organization, create new');
 
             $organization = new Organization();
             $organization->setInn($inn);
@@ -329,6 +331,7 @@ class ConferenceOrganizationController extends ApiController
         $data['hash'] = $inviteHash;
         $data['org_name'] = $name;
         $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, array_merge($bcc_emails, [$data['mngr_email']]));
+        $logger->notice('[Invite Organization] Organization invited', ['data' => $data]);
 
         return $this->success();
     }
@@ -341,9 +344,10 @@ class ConferenceOrganizationController extends ApiController
      * @param $id
      * @param Mailer $mailer
      * @param ParameterBagInterface $parameterBag
+     * @param LoggerInterface $logger
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function reInvite($id, Mailer $mailer, ParameterBagInterface $parameterBag)
+    public function reInvite($id, Mailer $mailer, ParameterBagInterface $parameterBag, LoggerInterface $logger)
     {
         $bcc_emails = $parameterBag->has('invite_bcc_emails') ? $parameterBag->get('invite_bcc_emails') : null;
 
@@ -369,6 +373,7 @@ class ConferenceOrganizationController extends ApiController
         $data['hash'] = $conferenceOrganization->getInviteHash();
         $data['org_name'] = $organization->getName();
         $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, array_merge($bcc_emails, [$data['mngr_email']]));
+        $logger->notice('[Invite Organization] Organization reinvited', ['id' => $id, 'data' => $data]);
 
         return $this->success();
     }
