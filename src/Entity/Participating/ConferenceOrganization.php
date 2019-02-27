@@ -76,9 +76,9 @@ class ConferenceOrganization
     /**
      * @var bool
      *
-     * @ORM\Column(name="approved", type="boolean", nullable=false, options={"default": 0})
+     * @ORM\Column(name="need_invoice", type="boolean", nullable=false, options={"default": 0})
      */
-    private $approved;
+    private $needInvoice;
 
     /**
      * @var ArrayCollection|Comment[]
@@ -130,8 +130,8 @@ class ConferenceOrganization
     public function __construct()
     {
         $this->createdAt    = new \DateTime();
+        $this->needInvoice  = false;
         $this->sponsor      = false;
-        $this->approved     = false;
         $this->finish       = false;
         $this->comments     = new ArrayCollection();
         $this->invoices     = new ArrayCollection();
@@ -324,17 +324,17 @@ class ConferenceOrganization
     /**
      * @return bool
      */
-    public function isApproved(): bool
+    public function isNeedInvoice(): bool
     {
-        return $this->approved;
+        return $this->needInvoice;
     }
 
     /**
-     * @param bool $approved
+     * @param bool $needInvoice
      */
-    public function setApproved(bool $approved)
+    public function setNeedInvoice(bool $needInvoice)
     {
-        $this->approved = $approved;
+        $this->needInvoice = $needInvoice;
     }
 
     /**
