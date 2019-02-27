@@ -331,6 +331,7 @@ class ConferenceOrganizationController extends ApiController
         $data['hash'] = $inviteHash;
         $data['org_name'] = $name;
         $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, array_merge($bcc_emails, [$data['mngr_email']]));
+        $logger->notice('[Invite Organization] Organization invited', ['data' => $data]);
 
         return $this->success();
     }
@@ -343,9 +344,10 @@ class ConferenceOrganizationController extends ApiController
      * @param $id
      * @param Mailer $mailer
      * @param ParameterBagInterface $parameterBag
+     * @param LoggerInterface $logger
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function reInvite($id, Mailer $mailer, ParameterBagInterface $parameterBag)
+    public function reInvite($id, Mailer $mailer, ParameterBagInterface $parameterBag, LoggerInterface $logger)
     {
         $bcc_emails = $parameterBag->has('invite_bcc_emails') ? $parameterBag->get('invite_bcc_emails') : null;
 
@@ -371,6 +373,7 @@ class ConferenceOrganizationController extends ApiController
         $data['hash'] = $conferenceOrganization->getInviteHash();
         $data['org_name'] = $organization->getName();
         $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, array_merge($bcc_emails, [$data['mngr_email']]));
+        $logger->notice('[Invite Organization] Organization reinvited', ['id' => $id, 'data' => $data]);
 
         return $this->success();
     }
