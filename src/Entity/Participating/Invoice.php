@@ -63,20 +63,11 @@ class Invoice
     private $orderGuid;
 
     /**
-     * Зафиксированная сумма заказа выставленного счета
+     * @var \DateTime
      *
-     * @var float|null
-     * @ORM\Column(name="fixed_amount", type="decimal", precision=12, scale=2, nullable=true)
+     * @ORM\Column(name="created_at", type="datetime", options={"default": "CURRENT_TIMESTAMP"}, nullable=false)
      */
-    private $fixedAmount;
-
-    /**
-     * Флаг, отправлен ли запрос на выставление счета
-     *
-     * @var bool
-     * @ORM\Column(name="bill_sent", type="boolean", nullable=false, options={"default":"0"})
-     */
-    private $billSent;
+    private $createdAt;
 
     /**
      * @var ConferenceOrganization
@@ -85,6 +76,14 @@ class Invoice
      * @ORM\JoinColumn(name="conference_organization_id", referencedColumnName="id", nullable=false)
      */
     private $conferenceOrganization;
+
+    /**
+     * Invoice constructor.
+     */
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     /**
      * @return int
@@ -188,37 +187,5 @@ class Invoice
     public function setOrderGuid(?string $orderGuid)
     {
         $this->orderGuid = $orderGuid;
-    }
-
-    /**
-     * @return float
-     */
-    public function getFixedAmount(): ?float
-    {
-        return $this->fixedAmount;
-    }
-
-    /**
-     * @param float $fixedAmount
-     */
-    public function setFixedAmount(?float $fixedAmount)
-    {
-        $this->fixedAmount = $fixedAmount;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isBillSent(): bool
-    {
-        return $this->billSent;
-    }
-
-    /**
-     * @param bool $billSent
-     */
-    public function setBillSent(bool $billSent)
-    {
-        $this->billSent = $billSent;
     }
 }
