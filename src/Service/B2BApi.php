@@ -201,27 +201,44 @@ class B2BApi
     }
 
     /**
+     * Get order invoice document
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param $guid
+     * @return array
+     */
+    public function getOrderInvoiceFile($guid)
+    {
+        $result = $this->_executeCurl("order/$guid/invoice", [], Request::METHOD_GET, TRUE);
+
+        return $result;
+    }
+
+    /**
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param $alias
      * @param array $data
      * @param string $method
+     * @param bool $isFile
      * @return array with elements
      *      `http_code` => HTTP code of response,
      *      `data`      => data or error string
      */
-    private function _executeCurl($alias, array $data = [], string $method = Request::METHOD_GET)
+    private function _executeCurl($alias, array $data = [], string $method = Request::METHOD_GET, $isFile = FALSE)
     {
         $url = $this->b2bHost.'/api/secure/'.$alias.($method === Request::METHOD_GET ? '?'.http_build_query($data) : '');
 
         $ch = curl_init();
 
-        curl_setopt_array($ch, [
+        $curlOpts = [
             CURLOPT_URL             => $url,
             CURLOPT_HTTPHEADER      => [ self::AUTH_KEY_NAME . ": {$this->b2bToken}" ],
             CURLOPT_CUSTOMREQUEST   => $method,
             CURLOPT_POSTFIELDS      => $method === Request::METHOD_GET ? [] : http_build_query($data),
-            CURLOPT_RETURNTRANSFER  => TRUE,
-        ]);
+            CURLOPT_RETURNTRANSFER  => $isFile ? FALSE : TRUE,
+        ];
+
+        curl_setopt_array($ch, $curlOpts);
 
         $output = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);

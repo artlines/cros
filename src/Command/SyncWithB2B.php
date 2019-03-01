@@ -314,6 +314,7 @@ class SyncWithB2B extends Command
                 continue;
             }
 
+            $invoice->setNumber($infoResponse['data']['order_number']);
             $invoice->setStatusGuid($infoResponse['data']['payment_status_guid']);
             $invoice->setStatusText($infoResponse['data']['payment_status']);
 
@@ -349,7 +350,9 @@ class SyncWithB2B extends Command
                 'user_guid'         => $dataToInvoice['user_guid'],
                 'phone'             => $dataToInvoice['user_phone'],
                 'email'             => $dataToInvoice['user_email'],
-                'services'          => [ [ 'sku' => self::CROS_SERVICE_SKU, 'amount' => $dataToInvoice['fresh_amount'] ] ],
+                'services'          => [
+                    [ 'sku' => self::CROS_SERVICE_SKU, 'amount' => $dataToInvoice['fresh_amount']*100 ]
+                ],
             ]);
 
             if ($createResponse['http_code'] !== 200) {
@@ -372,6 +375,7 @@ class SyncWithB2B extends Command
             $invoice->setConferenceOrganization($conferenceOrganizationReference);
             $invoice->setAmount($dataToInvoice['fresh_amount']);
             $invoice->setOrderGuid($createResponse['data']['guid']);
+            $invoice->setNumber($createResponse['data']['order_number']);
             $invoice->setStatusGuid($createResponse['data']['payment_status_guid']);
             $invoice->setStatusText($createResponse['data']['payment_status']);
 
