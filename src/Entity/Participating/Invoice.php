@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @package App\Entity\Participating
  *
  * @ORM\Table(schema="participating", name="invoice")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\InvoiceRepository")
  */
 class Invoice
 {
@@ -61,6 +61,20 @@ class Invoice
      * @ORM\Column(name="b2b_order_guid", type="string", nullable=true, unique=true)
      */
     private $orderGuid;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="status_guid", type="string", nullable=true)
+     */
+    private $statusGuid;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="status_text", type="string", nullable=true)
+     */
+    private $statusText;
 
     /**
      * @var \DateTime
@@ -187,5 +201,37 @@ class Invoice
     public function setOrderGuid(?string $orderGuid)
     {
         $this->orderGuid = $orderGuid;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getStatusGuid(): ?string
+    {
+        return $this->statusGuid;
+    }
+
+    /**
+     * @param null|string $statusGuid
+     */
+    public function setStatusGuid(?string $statusGuid)
+    {
+        $this->statusGuid = $statusGuid;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStatusText(): ?string
+    {
+        return $this->statusText;
+    }
+
+    /**
+     * @param string|null $statusText
+     */
+    public function setStatusText(?string $statusText)
+    {
+        $this->statusText = $statusText;
     }
 }
