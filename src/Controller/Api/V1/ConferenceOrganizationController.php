@@ -71,7 +71,7 @@ class ConferenceOrganizationController extends ApiController
                     'date'      => $invoice->getDate()->getTimestamp(),
                 ];
 
-                if ($invoice->getStatus() !== Invoice::STATUS__FULLY_PAYED) {
+                if ($invoice->getStatus() !== Invoice::STATUS__FULLY_PAYED || $invoice->getStatusGuid() !== Invoice::STATUS_GUID__FULLY_PAYED) {
                     $invoices_payed = false;
                 }
             }

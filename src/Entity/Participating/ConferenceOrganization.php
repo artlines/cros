@@ -130,8 +130,8 @@ class ConferenceOrganization
     public function __construct()
     {
         $this->createdAt    = new \DateTime();
-        $this->sponsor      = false;
         $this->approved     = false;
+        $this->sponsor      = false;
         $this->finish       = false;
         $this->comments     = new ArrayCollection();
         $this->invoices     = new ArrayCollection();

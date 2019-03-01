@@ -1,4 +1,4 @@
 parameters:
     invite_bcc_emails: ['e.nachuychenko@nag.ru']
-    become_sponsor_bcc_emails: ['evgeny.shambala@yandex.ru']
-    become_speaker_bcc_emails: ['evgeny.shambala@gmail.com']
+    become_sponsor_bcc_emails: ['e.nachuychenko@nag.ru']
+    become_speaker_bcc_emails: ['e.nachuychenko@nag.ru']

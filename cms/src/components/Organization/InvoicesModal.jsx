@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {
     Button,
+    IconButton,
     Dialog,
     DialogTitle,
     DialogContent,
@@ -13,16 +14,21 @@ import {
     TableBody,
     TableRow,
     TableCell,
+    Tooltip,
+    Typography,
 } from '@material-ui/core';
 import map from 'lodash/map';
 import Money from "../utils/Money";
 import DateTime from "../utils/DateTime";
 import InvoiceStatus from './InvoiceStatus';
-import {Close as CloseIcon, Edit as EditIcon} from "@material-ui/icons";
+import {
+    Close as CloseIcon,
+    Edit as EditIcon,
+    Receipt as ReceiptIcon,
+} from "@material-ui/icons";
 import FabButton from "../utils/FabButton";
 import find from "lodash/find";
 import InvoiceForm from "./InvoiceForm";
-import ConfirmDialog from "../utils/ConfirmDialog";
 import LinearProgress from '../utils/LinearProgress';
 import API from '../../libs/api';
 
@@ -55,6 +61,11 @@ class InvoicesModal extends React.Component {
     delete = (id) => {
         api.delete(`invoice/${id}`)
             .then(this.update);
+    };
+
+    downloadInvoice = id => {
+        const href = `${api.apiHost}/invoice/${id}/download`; //s
+        window.open(href, '_blank').focus();
     };
 
     handleOpen = () => this.setState({open: true});
@@ -105,7 +116,7 @@ class InvoicesModal extends React.Component {
                                 Счета {organizationName}
                             </Grid>
                             <Grid item>
-                                <FabButton title={`Добавить счет`} onClick={this.openForm}/>
+                                {/*<FabButton title={`Добавить счет`} onClick={this.openForm}/>*/}
                             </Grid>
                         </Grid>
                     </DialogTitle>
@@ -125,7 +136,7 @@ class InvoicesModal extends React.Component {
                                 {map(items, item =>
                                     <TableRow key={item.id}>
                                         <TableCell>
-                                            {item.number}
+                                            {item.number || <Typography variant={`caption`}>отсутствует</Typography>}
                                         </TableCell>
                                         <TableCell>
                                             <Money withPenny value={item.amount}/>
@@ -134,14 +145,24 @@ class InvoicesModal extends React.Component {
                                             <DateTime value={item.date}/>
                                         </TableCell>
                                         <TableCell>
-                                            <InvoiceStatus id={item.status}/>
+                                            {item.status_text || <InvoiceStatus id={item.status}/>}
                                         </TableCell>
                                         <TableCell align={'right'}>
-                                            <Button onClick={() => this.openForm(item.id)}><EditIcon/></Button>
-                                            <ConfirmDialog
-                                                trigger={<Button><CloseIcon/></Button>}
-                                                onConfirm={() => this.delete(item.id)}
-                                            />
+                                            {/*<Button onClick={() => this.openForm(item.id)}><EditIcon/></Button>*/}
+                                            {/*<ConfirmDialog*/}
+                                                {/*trigger={<Button><CloseIcon/></Button>}*/}
+                                                {/*onConfirm={() => this.delete(item.id)}*/}
+                                            {/*/>*/}
+                                            <Tooltip title={`Скачать счет`}>
+                                                <div>
+                                                    <IconButton
+                                                        disabled={!item.doc_ready}
+                                                        onClick={() => this.downloadInvoice(item.id)}
+                                                    >
+                                                        <ReceiptIcon/>
+                                                    </IconButton>
+                                                </div>
+                                            </Tooltip>
                                         </TableCell>
                                     </TableRow>
                                 )}
@@ -175,11 +196,13 @@ InvoicesModal.propTypes = {
      */
     items: PropTypes.arrayOf(
         PropTypes.shape({
-            id:     PropTypes.number.isRequired,
-            number: PropTypes.number.isRequired,
-            amount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-            date:   PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-            status: PropTypes.number.isRequired,
+            id:             PropTypes.number.isRequired,
+            number:         PropTypes.string,
+            amount:         PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+            date:           PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+            status:         PropTypes.number,
+            status_text:    PropTypes.string,
+            doc_ready:      PropTypes.bool.isRequired,
         }),
     ),
 };

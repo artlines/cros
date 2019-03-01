@@ -96,6 +96,13 @@ class Organization
     private $kpp;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="invalid_inn_kpp", type="boolean", nullable=true)
+     */
+    private $invalidInnKpp;
+
+    /**
      * @ORM\Column(name="hidden", type="boolean", nullable=true)
      */
     private $hidden;
@@ -125,6 +132,13 @@ class Organization
      * @ORM\Column(name="type_person", type="text", length=1, nullable=true)
      */
     private $typePerson;
+
+    /**
+     * Fixed GUID организации из b2b
+     * @var string|null
+     * @ORM\Column(name="b2b_guid", type="string", nullable=true, unique=true)
+     */
+    private $b2b_guid;
 
     /**
      * @var \DateTime
@@ -501,6 +515,38 @@ class Organization
     }
 
     /**
+     * @return null|string
+     */
+    public function getB2bGuid(): ?string
+    {
+        return $this->b2b_guid;
+    }
+
+    /**
+     * @param null|string $b2b_guid
+     */
+    public function setB2bGuid(?string $b2b_guid)
+    {
+        $this->b2b_guid = $b2b_guid;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isInvalidInnKpp(): ?bool
+    {
+        return $this->invalidInnKpp;
+    }
+
+    /**
+     * @param bool|null $invalidInnKpp
+     */
+    public function setInvalidInnKpp(?bool $invalidInnKpp)
+    {
+        $this->invalidInnKpp = $invalidInnKpp;
+    }
+
+    /**
      * Get typePerson
      *
      * @return string
@@ -509,6 +555,7 @@ class Organization
     {
         return $this->typePerson;
     }
+
     public function __toString()
     {
         // TODO: Implement __toString() method.

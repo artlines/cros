@@ -4,6 +4,9 @@ namespace App\Controller\Api\V1;
 
 use App\Entity\Participating\ConferenceOrganization;
 use App\Entity\Participating\Invoice;
+use App\Service\B2BApi;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
@@ -39,11 +42,13 @@ class InvoiceController extends ApiController
         $items = [];
         foreach ($conferenceOrganization->getInvoices() as $invoice) {
             $items[] = [
-                'id'        => $invoice->getId(),
-                'number'    => $invoice->getNumber(),
-                'amount'    => $invoice->getAmount(),
-                'date'      => $invoice->getDate()->format("Y-m-d"),
-                'status'    => $invoice->getStatus(),
+                'id'            => $invoice->getId(),
+                'number'        => $invoice->getNumber(),
+                'amount'        => $invoice->getAmount(),
+                'date'          => $invoice->getDate()->format("Y-m-d"),
+                'status'        => $invoice->getStatus(),
+                'status_text'   => $invoice->getStatusText(),
+                'doc_ready'     => $invoice->isDocumentReady(),
             ];
         }
 
@@ -138,5 +143,30 @@ class InvoiceController extends ApiController
         $this->em->flush();
 
         return $this->success();
+    }
+
+    /**
+     * @Route("invoice/{id}/download", requirements={"id":"\d+"}, methods={"GET"}, name="get_document")
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param $id
+     * @param B2BApi $b2BApi
+     * @return \Symfony\Component\HttpFoundation\JsonResponse|StreamedResponse
+     */
+    public function download($id, B2BApi $b2BApi)
+    {
+        /** @var Invoice $invoice */
+        if (!$invoice = $this->em->find(Invoice::class, $id)) {
+            return $this->notFound('Invoice not found.');
+        }
+
+        $docName = $invoice->getDocumentName();
+
+        return new StreamedResponse(function () use ($b2BApi, $invoice) {
+            $b2BApi->getOrderInvoiceFile($invoice->getOrderGuid());
+        }, 200, [
+            'Content-Type'          => 'application/pdf',
+            'Content-Disposition'   => 'inline; filename="'.$docName.'"',
+        ]);
     }
 }
