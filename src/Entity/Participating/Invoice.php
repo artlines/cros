@@ -17,6 +17,10 @@ class Invoice
     const STATUS__PARTLY_PAYED  = 2; // частично оплачен
     const STATUS__FULLY_PAYED   = 3; // полностью оплачен
 
+    const DOCUMENT_NOT_READY_GUIDS = [
+        'fd774678-3631-11e8-be9f-d89d671c895f', // Ожидание счета
+    ];
+
     /**
      * @var integer
      *
@@ -27,9 +31,9 @@ class Invoice
     private $id;
 
     /**
-     * @var integer
+     * @var string|null
      *
-     * @ORM\Column(name="num", type="integer", nullable=true)
+     * @ORM\Column(name="num", type="string", nullable=true)
      */
     private $number;
 
@@ -110,7 +114,7 @@ class Invoice
     }
 
     /**
-     * @return int
+     * @return string|null
      */
     public function getNumber()
     {
@@ -118,9 +122,9 @@ class Invoice
     }
 
     /**
-     * @param int $number
+     * @param string|null $number
      */
-    public function setNumber(int $number)
+    public function setNumber(?string $number)
     {
         $this->number = $number;
     }
@@ -235,5 +239,16 @@ class Invoice
     public function setStatusText(?string $statusText)
     {
         $this->statusText = $statusText;
+    }
+
+    /**
+     * Check that invoice document is ready
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @return bool
+     */
+    public function isDocumentReady()
+    {
+        return ($this->statusGuid && !in_array($this->statusGuid, self::DOCUMENT_NOT_READY_GUIDS));
     }
 }
