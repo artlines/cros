@@ -48,7 +48,7 @@ class ConferenceOrganizationRepository extends EntityRepository
                 INNER JOIN public.conference                      pc ON pco.conference_id = pc.id AND pc.year = :year
                 INNER JOIN participating.conference_member       pcm ON pco.id = pcm.conference_organization_id
                 INNER JOIN abode.room_type                       art ON pcm.room_type_id = art.id
-              WHERE po.id IN ( SELECT org_id FROM tmp_representative_members ) AND po.b2b_guid IS NOT NULL
+              WHERE po.id IN ( SELECT org_id FROM tmp_representative_members ) AND po.b2b_guid IS NOT NULL AND po.invalid_inn_kpp = FALSE
               GROUP BY po.id, po.name, pco.id
             ),
             tmp_invoice_pre AS (

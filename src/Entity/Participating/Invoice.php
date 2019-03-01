@@ -97,6 +97,8 @@ class Invoice
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->date      = $this->createdAt;
+        $this->status    = self::STATUS__NO_PAYED;
     }
 
     /**

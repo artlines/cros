@@ -68,19 +68,19 @@ class SyncWithB2B extends Command
         $output->writeln("[START]");
 
         // sync contractors with b2b_guid for valid inn kpp
-        //$this->_syncContractorsValid();
+        $this->_syncContractorsValid();
 
         // sync contractors
-        //$this->_syncContractors();
+        $this->_syncContractors();
 
         // sync users
-        //$this->_syncUsers();
+        $this->_syncUsers();
 
         // sync ties
-        //$this->_syncUsersToContractor();
+        $this->_syncUsersToContractor();
 
         // sync invoices status
-        //$this->_checkInvoicesStatus();
+        $this->_checkInvoicesStatus();
 
         // sync invoices
         $this->_checkAndMakeInvoices();
@@ -88,6 +88,11 @@ class SyncWithB2B extends Command
         $output->writeln("[END]");
     }
 
+    /**
+     * Check and set contractor `invalid` flag to organization `invalid_inn_kpp` flag
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     */
     public function _syncContractorsValid()
     {
         $this->output->writeln("==========");
@@ -212,6 +217,11 @@ class SyncWithB2B extends Command
         }
     }
 
+    /**
+     * Make ties between users and contractors
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     */
     private function _syncUsersToContractor()
     {
         $this->output->writeln("==========");
@@ -280,22 +290,43 @@ class SyncWithB2B extends Command
         }
     }
 
+    /**
+     * Check invoice status
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     */
     private function _checkInvoicesStatus()
     {
         /** @var InvoiceRepository $invoiceRepo */
         $invoiceRepo = $this->em->getRepository(Invoice::class);
         $invoices = $invoiceRepo->getWithOrderGuidToSync();
-        dump($invoices); die();
+        $this->log("Found ".count($invoices)." invoices to sync.");
 
         foreach ($invoices as $invoice) {
             $guid = $invoice->getOrderGuid();
+            $this->log("Check Invoice (ID: {$invoice->getId()}).");
 
             $infoResponse = $this->b2bApi->getOrderInfo($guid);
 
-            dump($infoResponse);
+            if ($infoResponse['http_code'] !== 200) {
+                $this->log("Catch error while trying to sync information about Invoice (ID: {$invoice->getId()})."
+                    ." Error: {$infoResponse['data']} | Skipped it!", ['guid' => $guid]);
+                continue;
+            }
+
+            $invoice->setStatusGuid($infoResponse['data']['payment_status_guid']);
+            $invoice->setStatusText($infoResponse['data']['payment_status']);
+
+            $this->em->persist($invoice);
+            $this->em->flush();
         }
     }
 
+    /**
+     * Make invoices to organizations
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     */
     private function _checkAndMakeInvoices()
     {
         $this->output->writeln("==========");
@@ -327,8 +358,18 @@ class SyncWithB2B extends Command
                 continue;
             }
 
+            try {
+                /** @var ConferenceOrganization $conferenceOrganizationReference */
+                $conferenceOrganizationReference = $this->em->getReference(ConferenceOrganization::class, $dataToInvoice['conf_org_id']);
+            } catch (\Exception $e) {
+                $this->log("Catch error while trying to get reference "
+                    ."ConferenceOrganization (ID: {$dataToInvoice['conf_org_id']}) of Organization (ID: {$dataToInvoice['org_id']})."
+                    ." Error: {$e->getMessage()} | Skipped it!", $dataToInvoice);
+                continue;
+            }
+
             $invoice = new Invoice();
-            $invoice->setConferenceOrganization($this->em->getReference(ConferenceOrganization::class, $dataToInvoice['conf_org_id']));
+            $invoice->setConferenceOrganization($conferenceOrganizationReference);
             $invoice->setAmount($dataToInvoice['fresh_amount']);
             $invoice->setOrderGuid($createResponse['data']['guid']);
             $invoice->setStatusGuid($createResponse['data']['payment_status_guid']);
