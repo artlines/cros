@@ -84,6 +84,54 @@ class B2BApi
     }
 
     /**
+     * Find contractor on B2B
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param string $guid
+     * @return array with elements
+     *      `http_code` => HTTP code of response,
+     *      `data`    => data or error string (if http_code !== 200)
+     */
+    public function findContractorByGuid(string $guid)
+    {
+        $result = $this->_executeCurl("contractor/$guid", [], Request::METHOD_GET);
+
+        return $result;
+    }
+
+    /**
+     * Return contractor users fixed_guids
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param $guid
+     * @return array
+     */
+    public function getContractorUsers($guid)
+    {
+        $result = $this->_executeCurl("contractor/$guid/users");
+
+        return $result;
+    }
+
+    /**
+     * Create new ties users with contractor
+     *
+     * @param $contractor_guid
+     * @param $data array
+     *      contains elements:
+     *          `users_guids` - array of users B2B fixed_guids
+     *
+     * @return array
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     */
+    public function updateContractorUsers($contractor_guid, $data)
+    {
+        $result = $this->_executeCurl('contractor/'.$contractor_guid.'/users', $data, Request::METHOD_POST);
+
+        return $result;
+    }
+
+    /**
      * Create new contractor on B2B
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
@@ -119,7 +167,24 @@ class B2BApi
         return $result;
     }
 
+    /**
+     * Create new order
+     *
+     * @param $data array of items:
+     *      contractor_guid => fixed GUID contractor from B2B
+     *      user_guid       => fixed GUID user from B2B
+     *      phone           => order phone
+     *      email           => order email
+     *      services        => ['sku' => service SKU, 'amount' => amount of service]
+     *
+     * @return array
+     */
+    public function createOrder($data)
+    {
+        $result = $this->_executeCurl('order/new', $data, Request::METHOD_POST);
 
+        return $result;
+    }
 
     /**
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
@@ -132,8 +197,7 @@ class B2BApi
      */
     private function _executeCurl($alias, array $data = [], string $method = Request::METHOD_GET)
     {
-        $url = $this->b2bHost . '/api/secure/' . $alias
-            . ($method === Request::METHOD_GET ? '?' . http_build_query($data) : '');
+        $url = $this->b2bHost.'/api/secure/'.$alias.($method === Request::METHOD_GET ? '?'.http_build_query($data) : '');
 
         $ch = curl_init();
 
@@ -141,7 +205,7 @@ class B2BApi
             CURLOPT_URL             => $url,
             CURLOPT_HTTPHEADER      => [ self::AUTH_KEY_NAME . ": {$this->b2bToken}" ],
             CURLOPT_CUSTOMREQUEST   => $method,
-            CURLOPT_POSTFIELDS      => $method === Request::METHOD_GET ? [] : $data,
+            CURLOPT_POSTFIELDS      => $method === Request::METHOD_GET ? [] : http_build_query($data),
             CURLOPT_RETURNTRANSFER  => TRUE,
         ]);
 

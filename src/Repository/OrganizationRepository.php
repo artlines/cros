@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Conference;
 use App\Entity\Participating\ConferenceOrganization;
+use App\Entity\Participating\Organization;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
 
@@ -15,6 +16,24 @@ use Doctrine\ORM\Query\Expr;
  */
 class OrganizationRepository extends EntityRepository
 {
+    /**
+     * Find organizations to check requisites where invalidInnKpp in null
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @return Organization[]
+     */
+    public function findNotInnKppCheckedWithB2bGuid()
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $query = $qb
+            ->select('o')
+            ->where($qb->expr()->isNotNull('o.b2b_guid'))
+            ->andWhere($qb->expr()->isNull('o.invalidInnKpp'));
+
+        return $query->getQuery()->getResult();
+    }
+
     /**
      * Return organizations which participating in CROS-{$year}
      * without b2b_guid (b2b_guid === NULL)
