@@ -34,11 +34,11 @@ class B2BApi
     {
         $this->logger = $logger;
 
-        try {
-            $this->b2bHost = $parameterBag->get('b2b_api_host');
-            $this->b2bToken = $parameterBag->get('b2b_api_token');
-        } catch (ParameterNotFoundException $e) {
-            $msg = "[B2B API] Ошибка инициализации сервиса. Не установлены необходимые параметры ('b2b_api_host', 'b2b_api_token') в parameters.yaml";
+        $this->b2bHost  = getenv('B2B_API_HOST');
+        $this->b2bToken = getenv('B2B_API_TOKEN');
+
+        if (!$this->b2bToken || !$this->b2bHost) {
+            $msg = "[B2B API] Ошибка инициализации сервиса. Не установлены необходимые параметры ('B2B_API_HOST', 'B2B_API_TOKEN') .env";
             $this->logger->critical($msg);
             throw new \Exception($msg);
         }

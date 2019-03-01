@@ -2,6 +2,3 @@ parameters:
     invite_bcc_emails: ['e.nachuychenko@nag.ru', 'p.milenin@nag.ru']
     become_sponsor_bcc_emails: ['e.nachuychenko@nag.ru', 'cros@nag.ru']
     become_speaker_bcc_emails: ['e.nachuychenko@nag.ru', 'cros@nag.ru']
-
-    b2b_api_host: 'https://b2b.nag.ru'
-    b2b_api_token: '40dd3380132a619701661a28670223ff9d084d5f50e4cb2e8cf8b6268d92566b'
