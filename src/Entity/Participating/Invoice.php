@@ -29,7 +29,7 @@ class Invoice
     /**
      * @var integer
      *
-     * @ORM\Column(name="num", type="integer", nullable=false)
+     * @ORM\Column(name="num", type="integer", nullable=true)
      */
     private $number;
 

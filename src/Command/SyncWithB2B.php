@@ -3,9 +3,11 @@
 namespace App\Command;
 
 use App\Entity\Participating\ConferenceOrganization;
+use App\Entity\Participating\Invoice;
 use App\Entity\Participating\Organization;
 use App\Entity\Participating\User;
 use App\Repository\ConferenceOrganizationRepository;
+use App\Repository\InvoiceRepository;
 use App\Repository\OrganizationRepository;
 use App\Repository\UserRepository;
 use App\Service\B2BApi;
@@ -278,6 +280,22 @@ class SyncWithB2B extends Command
         }
     }
 
+    private function _checkInvoicesStatus()
+    {
+        /** @var InvoiceRepository $invoiceRepo */
+        $invoiceRepo = $this->em->getRepository(Invoice::class);
+        $invoices = $invoiceRepo->getWithOrderGuidToSync();
+        dump($invoices); die();
+
+        foreach ($invoices as $invoice) {
+            $guid = $invoice->getOrderGuid();
+
+            $infoResponse = $this->b2bApi->getOrderInfo($guid);
+
+            dump($infoResponse);
+        }
+    }
+
     private function _checkAndMakeInvoices()
     {
         $this->output->writeln("==========");
@@ -287,43 +305,39 @@ class SyncWithB2B extends Command
         $dataToInvoices = $conferenceOrganizationRepo->findToMakeInvoice(self::CROS_YEAR);
         $this->log("Found ".count($dataToInvoices)." organizations to make invoice.");
 
-        dump($dataToInvoices);
-
         foreach ($dataToInvoices as $dataToInvoice) {
             $this->log("Check Organization (ID: {$dataToInvoice['org_id']}) to make invoice.");
 
-            if (!isset($dataToInvoice['user_guid'], $dataToInvoice['email'], $dataToInvoice['phone'])) {
+            if (!isset($dataToInvoice['user_guid'], $dataToInvoice['user_email'], $dataToInvoice['user_phone'])) {
                 $this->log("Not enough data to make invoice for Organization (ID: {$dataToInvoice['org_id']}). Skipped it!", $dataToInvoice);
                 continue;
             }
 
             $createResponse = $this->b2bApi->createOrder([
-                'contractor_guid'   => $dataToInvoice['contractor_guid'],
+                'contractor_guid'   => $dataToInvoice['org_b2b_guid'],
                 'user_guid'         => $dataToInvoice['user_guid'],
-                'phone'             => $dataToInvoice['phone'],
-                'email'             => $dataToInvoice['email'],
-                'services'          => [ [ 'sku' => self::CROS_SERVICE_SKU, 'amount' => 50000 ] ],
+                'phone'             => $dataToInvoice['user_phone'],
+                'email'             => $dataToInvoice['user_email'],
+                'services'          => [ [ 'sku' => self::CROS_SERVICE_SKU, 'amount' => $dataToInvoice['fresh_amount'] ] ],
             ]);
 
             if ($createResponse['http_code'] !== 200) {
                 $this->log("Catch error while trying to make invoice for Organization (ID: {$dataToInvoice['org_id']})."
-                    ." Error: {$createResponse['data']} | Skipped it!", $dataToInvoice);
+                    ." Error: {$createResponse['data']} | Skipped it! brrrrra", $dataToInvoice);
                 continue;
             }
 
-            // TODO: create new invoice !
-            /**
-            po.id AS organization_id,
-            pco.id AS conference_organization_id,
-            po.b2b_guid as contractor_guid,
-            pm.b2b_guid as user_guid,
-            pm.phone as phone,
-            pm.email as email
-             */
+            $invoice = new Invoice();
+            $invoice->setConferenceOrganization($this->em->getReference(ConferenceOrganization::class, $dataToInvoice['conf_org_id']));
+            $invoice->setAmount($dataToInvoice['fresh_amount']);
+            $invoice->setOrderGuid($createResponse['data']['guid']);
+            $invoice->setStatusGuid($createResponse['data']['payment_status_guid']);
+            $invoice->setStatusText($createResponse['data']['payment_status']);
+
+            $this->em->persist($invoice);
+            $this->em->flush();
         }
 
-        die();
-        dump($createResponse);
     }
 
     protected function log($msg, array $data = [])

@@ -18,11 +18,20 @@ class ConferenceOrganizationRepository extends EntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $stmt = $conn->prepare("
-            WITH tmp_representative_members AS (
-              SELECT po.id as org_id
+            WITH tmp_representative_members_pre AS (
+              SELECT
+                po.id as org_id,
+                pm.email as user_email,
+                pm.phone as user_phone,
+                pm.b2b_guid as user_guid,
+                RANK() OVER (PARTITION BY po.id ORDER BY pm.b2b_guid ASC) as user_rnk
               FROM participating.organization po
-                LEFT JOIN participating.member pm ON po.id = pm.organization_id
-              WHERE pm.representative = TRUE
+                INNER JOIN participating.member pm ON po.id = pm.organization_id AND pm.representative = TRUE
+            ),
+            tmp_representative_members AS (
+              SELECT *
+              FROM tmp_representative_members_pre
+              WHERE user_rnk = 1
             ),
             tmp_places AS (
               SELECT po.id as org_id, pco.id as conf_org_id, COUNT(ap.id) as place_count
@@ -33,13 +42,13 @@ class ConferenceOrganizationRepository extends EntityRepository
               GROUP BY po.id, pco.id
             ),
             tmp_members AS (
-              SELECT po.id AS org_id, po.name AS org_name, pco.id AS conf_org_id, COUNT(pcm.id) AS member_count, SUM(art.cost) AS summa
+              SELECT po.id AS org_id, po.b2b_guid AS org_b2b_guid, po.name AS org_name, pco.id AS conf_org_id, COUNT(pcm.id) AS member_count, SUM(art.cost) AS summa
               FROM participating.organization po
                 INNER JOIN participating.conference_organization pco ON po.id = pco.organization_id
                 INNER JOIN public.conference                      pc ON pco.conference_id = pc.id AND pc.year = :year
                 INNER JOIN participating.conference_member       pcm ON pco.id = pcm.conference_organization_id
                 INNER JOIN abode.room_type                       art ON pcm.room_type_id = art.id
-              WHERE po.id IN ( SELECT org_id FROM tmp_representative_members )
+              WHERE po.id IN ( SELECT org_id FROM tmp_representative_members ) AND po.b2b_guid IS NOT NULL
               GROUP BY po.id, po.name, pco.id
             ),
             tmp_invoice_pre AS (
@@ -53,10 +62,21 @@ class ConferenceOrganizationRepository extends EntityRepository
               FROM tmp_invoice_pre
               WHERE invoice_rnk = 1
             )
-            SELECT t_m.org_id, t_m.org_name, t_m.conf_org_id, t_i.id as invoice_id, t_i.amount as last_invoice_amount, t_m.summa as fresh_amount
+            SELECT
+                   t_m.org_id,
+                   t_m.org_name,
+                   t_m.org_b2b_guid,
+                   t_m.conf_org_id,
+                   t_rm.user_guid,
+                   t_rm.user_email,
+                   t_rm.user_phone,
+                   t_i.id as invoice_id,
+                   t_i.amount as last_invoice_amount,
+                   t_m.summa as fresh_amount
             FROM tmp_members t_m
-              LEFT JOIN tmp_invoice t_i ON t_m.conf_org_id = t_i.conf_org_id
-              INNER JOIN tmp_places  t_p ON t_p.conf_org_id = t_m.conf_org_id AND t_p.place_count = t_m.member_count
+              LEFT JOIN tmp_invoice                 t_i ON t_m.conf_org_id = t_i.conf_org_id
+              INNER JOIN tmp_places                 t_p ON t_p.conf_org_id = t_m.conf_org_id AND t_p.place_count = t_m.member_count
+              LEFT JOIN tmp_representative_members t_rm ON t_rm.org_id = t_m.org_id
             WHERE
                   t_i.amount IS NULL OR t_i.amount != t_m.summa
         ");

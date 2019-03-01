@@ -187,6 +187,20 @@ class B2BApi
     }
 
     /**
+     * Return order information
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param $guid
+     * @return array
+     */
+    public function getOrderInfo($guid)
+    {
+        $result = $this->_executeCurl("order/$guid");
+
+        return $result;
+    }
+
+    /**
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param $alias
      * @param array $data
