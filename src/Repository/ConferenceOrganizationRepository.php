@@ -18,38 +18,47 @@ class ConferenceOrganizationRepository extends EntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $stmt = $conn->prepare("
-            SELECT
-                   organization_id,
-                   conference_organization_id,
-                   contractor_guid,
-                   b2b_order_guid,
-                   invoice_amount,
-                   SUM(fresh_amount) as fresh_amount
-            FROM (
-                 SELECT
-                       po.id AS organization_id,
-                       pi.b2b_order_guid,
-                       pi.amount as invoice_amount,
-                       RANK() OVER (PARTITION BY pi.conference_organization_id ORDER BY pi.created_at DESC) as invoice_rnk,
-                       SUM(art.cost) as fresh_amount,
-                       pco.id AS conference_organization_id,
-                       po.b2b_guid as contractor_guid
-                FROM participating.conference_organization pco
-                  LEFT JOIN participating.organization po ON (pco.organization_id = po.id)
-                  LEFT JOIN public.conference pc ON (pco.conference_id = pc.id)
-                  LEFT JOIN participating.conference_member pcm ON (pco.id = pcm.conference_organization_id)
-                  LEFT JOIN abode.room_type art ON pcm.room_type_id = art.id
-                  LEFT JOIN participating.member pm ON pcm.user_id = pm.id AND pm.representative = TRUE
-                  LEFT JOIN abode.place ap ON (pcm.id = ap.conference_member_id)
-                  LEFT JOIN participating.invoice pi ON pi.conference_organization_id = pco.id
-                WHERE pc.year = :year AND po.invalid_inn_kpp = FALSE AND po.b2b_guid IS NOT NULL
-                GROUP BY po.id, pco.id, pi.id, pm.id, pm.b2b_guid, pm.phone, pm.email
-                HAVING COUNT(ap.id) FILTER (WHERE ap.id IS NOT NULL) = COUNT(pcm.id) AND COUNT(pcm.id) != 0
-                ORDER BY po.id
-              ) t
-            WHERE invoice_rnk = 1
-            GROUP BY organization_id, conference_organization_id, contractor_guid, invoice_amount, b2b_order_guid
-            HAVING invoice_amount is NULL OR SUM(fresh_amount) != invoice_amount
+            WITH tmp_representative_members AS (
+              SELECT po.id as org_id
+              FROM participating.organization po
+                LEFT JOIN participating.member pm ON po.id = pm.organization_id
+              WHERE pm.representative = TRUE
+            ),
+            tmp_places AS (
+              SELECT po.id as org_id, pco.id as conf_org_id, COUNT(ap.id) as place_count
+              FROM abode.place ap
+                LEFT JOIN participating.conference_member       pcm ON ap.conference_member_id = pcm.id
+                LEFT JOIN participating.conference_organization pco ON pcm.conference_organization_id = pco.id
+                LEFT JOIN participating.organization            po ON pco.organization_id = po.id
+              GROUP BY po.id, pco.id
+            ),
+            tmp_members AS (
+              SELECT po.id AS org_id, po.name AS org_name, pco.id AS conf_org_id, COUNT(pcm.id) AS member_count, SUM(art.cost) AS summa
+              FROM participating.organization po
+                INNER JOIN participating.conference_organization pco ON po.id = pco.organization_id
+                INNER JOIN public.conference                      pc ON pco.conference_id = pc.id AND pc.year = :year
+                INNER JOIN participating.conference_member       pcm ON pco.id = pcm.conference_organization_id
+                INNER JOIN abode.room_type                       art ON pcm.room_type_id = art.id
+              WHERE po.id IN ( SELECT org_id FROM tmp_representative_members )
+              GROUP BY po.id, po.name, pco.id
+            ),
+            tmp_invoice_pre AS (
+              SELECT pi.id, pi.conference_organization_id AS conf_org_id, pi.amount, pi.b2b_order_guid,
+                RANK() OVER (PARTITION BY pi.conference_organization_id ORDER BY pi.created_at DESC) as invoice_rnk
+              FROM participating.invoice pi
+              WHERE pi.conference_organization_id IN ( SELECT conf_org_id FROM tmp_members )
+            ),
+            tmp_invoice AS (
+              SELECT *
+              FROM tmp_invoice_pre
+              WHERE invoice_rnk = 1
+            )
+            SELECT t_m.org_id, t_m.org_name, t_m.conf_org_id, t_i.id as invoice_id, t_i.amount as last_invoice_amount, t_m.summa as fresh_amount
+            FROM tmp_members t_m
+              LEFT JOIN tmp_invoice t_i ON t_m.conf_org_id = t_i.conf_org_id
+              INNER JOIN tmp_places  t_p ON t_p.conf_org_id = t_m.conf_org_id AND t_p.place_count = t_m.member_count
+            WHERE
+                  t_i.amount IS NULL OR t_i.amount != t_m.summa
         ");
 
         $stmt->execute(['year' => $year]);

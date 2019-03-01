@@ -287,13 +287,13 @@ class SyncWithB2B extends Command
         $dataToInvoices = $conferenceOrganizationRepo->findToMakeInvoice(self::CROS_YEAR);
         $this->log("Found ".count($dataToInvoices)." organizations to make invoice.");
 
-        dump($dataToInvoices); die();
+        dump($dataToInvoices);
 
         foreach ($dataToInvoices as $dataToInvoice) {
-            $this->log("Check Organization (ID: {$dataToInvoice['organization_id']}) to make invoice.");
+            $this->log("Check Organization (ID: {$dataToInvoice['org_id']}) to make invoice.");
 
             if (!isset($dataToInvoice['user_guid'], $dataToInvoice['email'], $dataToInvoice['phone'])) {
-                $this->log("Not enough data to make invoice for Organization (ID: {$dataToInvoice['organization_id']}). Skipped it!", $dataToInvoice);
+                $this->log("Not enough data to make invoice for Organization (ID: {$dataToInvoice['org_id']}). Skipped it!", $dataToInvoice);
                 continue;
             }
 
@@ -306,7 +306,7 @@ class SyncWithB2B extends Command
             ]);
 
             if ($createResponse['http_code'] !== 200) {
-                $this->log("Catch error while trying to make invoice for Organization (ID: {$dataToInvoice['organization_id']})."
+                $this->log("Catch error while trying to make invoice for Organization (ID: {$dataToInvoice['org_id']})."
                     ." Error: {$createResponse['data']} | Skipped it!", $dataToInvoice);
                 continue;
             }
