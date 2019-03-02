@@ -83,6 +83,13 @@ class Invoice
     private $statusText;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_sent", type="boolean", nullable=false, options={"default": "0"})
+     */
+    private $isSent;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", options={"default": "CURRENT_TIMESTAMP"}, nullable=false)
@@ -105,6 +112,7 @@ class Invoice
         $this->createdAt = new \DateTime();
         $this->date      = $this->createdAt;
         $this->status    = self::STATUS__NO_PAYED;
+        $this->isSent    = FALSE;
     }
 
     /**
@@ -241,6 +249,22 @@ class Invoice
     public function setStatusText(?string $statusText)
     {
         $this->statusText = $statusText;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSent(): bool
+    {
+        return $this->isSent;
+    }
+
+    /**
+     * @param bool $isSent
+     */
+    public function setIsSent(bool $isSent)
+    {
+        $this->isSent = $isSent;
     }
 
     /**
