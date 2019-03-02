@@ -17,11 +17,8 @@ class Invoice
     const STATUS__PARTLY_PAYED  = 2; // частично оплачен
     const STATUS__FULLY_PAYED   = 3; // полностью оплачен
 
-    const STATUS_GUID__FULLY_PAYED = 'fd774679-3631-11e8-be9f-d89d671c895f'; // Оплачен
-
-    const DOCUMENT_NOT_READY_GUIDS = [
-        'fd774678-3631-11e8-be9f-d89d671c895f', // Ожидание счета
-    ];
+    const STATUS_GUID__FULLY_PAYED          = 'fd774679-3631-11e8-be9f-d89d671c895f'; // Оплачен
+    const STATUS_GUID__DOCUMENT_NOT_READY   = 'fd774678-3631-11e8-be9f-d89d671c895f'; // Ожидание счета
 
     /**
      * @var integer
@@ -275,7 +272,7 @@ class Invoice
      */
     public function isDocumentReady()
     {
-        return ($this->statusGuid && !in_array($this->statusGuid, self::DOCUMENT_NOT_READY_GUIDS));
+        return $this->statusGuid !== self::STATUS_GUID__DOCUMENT_NOT_READY;
     }
 
     /**
@@ -288,7 +285,7 @@ class Invoice
     {
         $date = $this->date->format('d.m.Y');
 
-        $docName = "Счет оплату №{$this->number} от $date".".pdf";
+        $docName = "Счет на оплату от $date".".pdf";
 
         return $docName;
     }
