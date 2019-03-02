@@ -44,23 +44,39 @@ class Mailer
 
     /**
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
-     * @param $pathname
+     * @param $file
      * @param null|string $originalName
      */
-    public function addAttachment($pathname, ?string $originalName = null)
+    public function addAttachment($file, ?string $originalName = null)
     {
-        if (!is_file($pathname)) {
+        if (is_string($file)) {
+            if (!is_file($file)) {
+                return;
+            }
+
+            $pathInfo = pathinfo($file);
+
+            $attachment = [
+                'data_base64' => base64_encode(file_get_contents($file)),
+                'filename'    => $originalName ?? $pathInfo['basename'],
+                'contentType' => (new \finfo)->file($file, FILEINFO_MIME_TYPE)
+            ];
+        } elseif (is_array($file) && isset($file['data_base64'], $file['filename'], $file['contentType'])) {
+            $attachment = $file;
+        } else {
             return;
         }
-        $pathInfo = pathinfo($pathname);
-
-        $attachment = [
-            'data_base64' => base64_encode(file_get_contents($pathname)),
-            'filename'    => $originalName ?? $pathInfo['basename'],
-            'contentType' => (new \finfo)->file($pathname, FILEINFO_MIME_TYPE)
-        ];
 
         $this->attachments[] = $attachment;
+    }
+
+    /**
+     * Clear attachments array
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     */
+    public function clearAttachments()
+    {
+        $this->attachments = [];
     }
 
     /**

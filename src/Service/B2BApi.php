@@ -209,7 +209,7 @@ class B2BApi
      */
     public function getOrderInvoiceFile($guid)
     {
-        $result = $this->_executeCurl("order/$guid/invoice", [], Request::METHOD_GET, TRUE);
+        $result = $this->_executeCurl("order/$guid/invoice", [], Request::METHOD_GET);
 
         return $result;
     }
@@ -219,12 +219,11 @@ class B2BApi
      * @param $alias
      * @param array $data
      * @param string $method
-     * @param bool $isFile
      * @return array with elements
      *      `http_code` => HTTP code of response,
      *      `data`      => data or error string
      */
-    private function _executeCurl($alias, array $data = [], string $method = Request::METHOD_GET, $isFile = FALSE)
+    private function _executeCurl($alias, array $data = [], string $method = Request::METHOD_GET)
     {
         $url = $this->b2bHost.'/api/secure/'.$alias.($method === Request::METHOD_GET ? '?'.http_build_query($data) : '');
 
@@ -235,7 +234,7 @@ class B2BApi
             CURLOPT_HTTPHEADER      => [ self::AUTH_KEY_NAME . ": {$this->b2bToken}" ],
             CURLOPT_CUSTOMREQUEST   => $method,
             CURLOPT_POSTFIELDS      => $method === Request::METHOD_GET ? [] : http_build_query($data),
-            CURLOPT_RETURNTRANSFER  => $isFile ? FALSE : TRUE,
+            CURLOPT_RETURNTRANSFER  => TRUE,
         ];
 
         curl_setopt_array($ch, $curlOpts);
@@ -245,11 +244,11 @@ class B2BApi
 
         curl_close($ch);
 
-        $output = json_decode($output, TRUE);
-        if (isset($output['error'])) {
-            $output = $output['error'];
+        $outputJson = json_decode($output, TRUE);
+        if (isset($outputJson['error'])) {
+            $outputJson = $outputJson['error'];
         }
 
-        return ['data' => $output, 'http_code' => $httpCode];
+        return ['data' => $outputJson ?? $output, 'http_code' => $httpCode];
     }
 }

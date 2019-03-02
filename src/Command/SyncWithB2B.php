@@ -11,11 +11,15 @@ use App\Repository\InvoiceRepository;
 use App\Repository\OrganizationRepository;
 use App\Repository\UserRepository;
 use App\Service\B2BApi;
+use App\Service\Mailer;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class SyncWithB2B extends Command
 {
@@ -37,18 +41,35 @@ class SyncWithB2B extends Command
     /** @var OutputInterface */
     protected $output;
 
+    /** @var Mailer */
+    protected $mailer;
+
+    /** Emails to send BCC of invoice mail */
+    protected $invoiceBccEmails;
+
     /**
      * SyncWithB2B constructor.
      * @param string|null $name
      * @param EntityManagerInterface $em
      * @param B2BApi $b2bApi
      * @param LoggerInterface $logger
+     * @param Mailer $mailer
+     * @param ParameterBagInterface $parameterBag
      */
-    public function __construct(string $name = null, EntityManagerInterface $em, B2BApi $b2bApi, LoggerInterface $logger)
-    {
+    public function __construct(
+        string $name = null,
+        EntityManagerInterface $em,
+        B2BApi $b2bApi,
+        LoggerInterface $logger,
+        Mailer $mailer,
+        ParameterBagInterface $parameterBag
+    ) {
         $this->em       = $em;
         $this->b2bApi   = $b2bApi;
         $this->logger   = $logger;
+        $this->mailer   = $mailer;
+
+        $this->invoiceBccEmails = $parameterBag->has('invoice_bcc_emails') ? $parameterBag->get('invoice_bcc_emails') : null;
 
         parent::__construct($name);
     }
@@ -57,13 +78,22 @@ class SyncWithB2B extends Command
     {
         $this
             ->setName('app:sync-with-b2b')
-            ->setDescription('Synchronize with B2B');
+            ->setDescription('Synchronize with B2B')
+            ->addOption(
+                'send-invoices',
+                null,
+                InputOption::VALUE_NONE,
+                'Send invoices to organizations'
+            )
+        ;
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $this->input    = $input;
         $this->output   = $output;
+
+        $sendInvoices = $input->getOption('send-invoices');
 
         $output->writeln("[START]");
 
@@ -81,6 +111,11 @@ class SyncWithB2B extends Command
 
         // sync invoices status
         $this->_checkInvoicesStatus();
+
+        // send invoices to org
+        if ($sendInvoices) {
+            $this->_sendInvoices();
+        }
 
         // sync invoices
         $this->_checkAndMakeInvoices();
@@ -297,6 +332,8 @@ class SyncWithB2B extends Command
      */
     private function _checkInvoicesStatus()
     {
+        $this->output->writeln("==========");
+
         /** @var InvoiceRepository $invoiceRepo */
         $invoiceRepo = $this->em->getRepository(Invoice::class);
         $invoices = $invoiceRepo->getWithOrderGuidToSync();
@@ -320,6 +357,59 @@ class SyncWithB2B extends Command
 
             $this->em->persist($invoice);
             $this->em->flush();
+        }
+    }
+
+    /** Send invoices to organization participating members */
+    private function _sendInvoices()
+    {
+        $this->output->writeln("==========");
+
+        /** Configure mailer */
+        $this->mailer->setTemplateAlias('cros2019.common');
+
+        /** @var InvoiceRepository $invoiceRepo */
+        $invoiceRepo = $this->em->getRepository(Invoice::class);
+        $invoicesData = $invoiceRepo->getInfoToSend();
+        $this->log("Found ".count($invoicesData)." invoices which will be send to organizations.");
+
+        foreach ($invoicesData as $invoiceData) {
+            $this->output->writeln('*');
+            $sendCc = json_decode($invoiceData['emails'], true);
+            $sendTo = array_shift($sendCc);
+
+            $file = $this->b2bApi->getOrderInvoiceFile($invoiceData['b2b_order_guid']);
+
+            if ($file['http_code'] !== 200) {
+                $this->log("Document for Invoice (ID: {$invoiceData['id']}) doesn't exist yet.");
+            } else {
+                /** @var Invoice $invoice */
+                $invoice = $this->em->find(Invoice::class, $invoiceData['id']);
+
+                $this->mailer->addAttachment([
+                    'data_base64'   => base64_encode($file['data']),
+                    'filename'      => $invoice->getDocumentName(),
+                    'contentType'   => 'application/pdf',
+                ]);
+
+                $invoice->setIsSent(true);
+
+                try {
+                    $this->log("Try to send document of Invoice (ID: {$invoiceData['id']}) to members.", [
+                        'send_to' => $sendTo,
+                        'send_cc' => $sendCc,
+                    ]);
+                    $this->em->persist($invoice);
+                    $this->mailer->send($invoiceData['org_name'], ['header' => 'Вам выставлен счет.'], $sendTo, $sendCc, $this->invoiceBccEmails);
+                    $this->em->flush();
+
+                    $this->log("Document of Invoice (ID: {$invoiceData['id']}) has been sent.");
+                } catch (\Exception $e) {
+                    $this->log("Catch error while send Invoice (ID: {$invoiceData['id']}). Error: {$e->getMessage()}.");
+                }
+
+                $this->mailer->clearAttachments();
+            }
         }
     }
 

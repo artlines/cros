@@ -5,6 +5,7 @@ namespace App\Controller\Api\V1;
 use App\Entity\Participating\ConferenceOrganization;
 use App\Entity\Participating\Invoice;
 use App\Service\B2BApi;
+use App\Service\Mailer;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -162,8 +163,13 @@ class InvoiceController extends ApiController
 
         $docName = $invoice->getDocumentName();
 
-        return new StreamedResponse(function () use ($b2BApi, $invoice) {
-            $b2BApi->getOrderInvoiceFile($invoice->getOrderGuid());
+        $fileResponse = $b2BApi->getOrderInvoiceFile($invoice->getOrderGuid());
+        if ($fileResponse['http_code'] !== 200) {
+            throw $this->createNotFoundException($fileResponse['data']);
+        }
+
+        return new StreamedResponse(function () use ($fileResponse) {
+            echo $fileResponse['data'];
         }, 200, [
             'Content-Type'          => 'application/pdf',
             'Content-Disposition'   => 'inline; filename="'.$docName.'"',
