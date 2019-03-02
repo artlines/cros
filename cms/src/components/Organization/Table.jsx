@@ -9,6 +9,7 @@ import {
     TableRow,
     TableCell,
     Button,
+    IconButton,
     TablePagination,
     Grid,
 } from '@material-ui/core';
@@ -128,7 +129,7 @@ class OrganizationTable extends React.Component {
                                                     <Button
                                                         style={{
                                                             color: item.invoices_count > 0
-                                                                ? item.invoices_payed ? green[700] : red[700]
+                                                                ? item.invoices_payed === item.invoices_count ? green[700] : red[700]
                                                                 : 'inherit'
                                                         }}
                                                     >
@@ -147,7 +148,7 @@ class OrganizationTable extends React.Component {
                                             />
                                         </TableCell>
                                         <TableCell>
-                                            <Button onClick={() => onEdit(item.id)}><EditIcon/></Button>
+                                            <IconButton onClick={() => onEdit(item.id)}><EditIcon/></IconButton>
                                         </TableCell>
                                     </TableRow>
                                 )}
