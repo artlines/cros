@@ -33,67 +33,9 @@ class ConferenceOrganizationController extends ApiController
     {
         /** @var ConferenceOrganizationRepository $confOrgRepo */
         $confOrgRepo = $this->em->getRepository(ConferenceOrganization::class);
-//        $placeRepository = $this->em->getRepository(Place::class);
-//
-//        $year = date('Y');
-//
-//        /** @var Conference|null $conference */
-//        $conference = $this->em->getRepository(Conference::class)->findOneBy(['year' => $year]);
-//        if (!$conference) {
-//            return $this->notFound("Conference with year $year not found.");
-//        }
 
         /** @var ConferenceOrganization[] $conferenceOrganizations */
         list($items, $totalCount) = $confOrgRepo->searchByNative($this->requestData);
-
-//        $items = [];
-//        foreach ($conferenceOrganizations as $co) {
-//            $org = $co->getOrganization();
-//            $members = $co->getConferenceMembers();
-//            $invitedBy = $co->getInvitedBy();
-//            $invoices = $co->getInvoices();
-//
-//            $inRoom = 0;
-//            foreach ($members as $member) {
-//                /** @var Place $place */
-//                if ($placeRepository->findOneBy(['conferenceMember' => $member])) {
-//                    $inRoom++;
-//                }
-//            }
-//
-//            $invoices_payed = true;
-//            $invoice_items = [];
-//            foreach ($invoices as $invoice) {
-//                $invoice_items[] = [
-//                    'number'    => $invoice->getNumber(),
-//                    'amount'    => $invoice->getAmount(),
-//                    'status'    => $invoice->getStatus(),
-//                    'date'      => $invoice->getDate()->getTimestamp(),
-//                ];
-//
-//                if ($invoice->getStatus() !== Invoice::STATUS__FULLY_PAYED || $invoice->getStatusGuid() !== Invoice::STATUS_GUID__FULLY_PAYED) {
-//                    $invoices_payed = false;
-//                }
-//            }
-//
-//            $items[] = [
-//                'id'                => $co->getId(),
-//                'name'              => $org->getName(),
-//                'inn'               => $org->getInn(),
-//                'kpp'               => $org->getKpp(),
-//                'city'              => $org->getCity(),
-//                'requisites'        => $org->getRequisites(),
-//                'address'           => $org->getAddress(),
-//                'total_members'     => $members->count(),
-//                'in_room_members'   => $inRoom,
-//                'comments_count'    => $co->getComments()->count(),
-//                'invoices_count'    => $invoices->count(),
-//                'invoices_payed'    => $invoices_payed,
-//                'invited_by'        => $invitedBy ? $invitedBy->getFullName() : null,
-//                'is_finish'         => $co->isFinish(),
-//                'email'             => $org->getEmail(),
-//            ];
-//        }
 
         return $this->success(['items' => $items, 'total_count' => $totalCount]);
     }

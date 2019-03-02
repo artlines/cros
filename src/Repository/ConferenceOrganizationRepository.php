@@ -122,8 +122,6 @@ class ConferenceOrganizationRepository extends EntityRepository
      * Search conference organizations by conference, invited_by and search string
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
-     * @param array $data
-     * @return array
      */
     public function searchByNative(array $data = [])
     {
