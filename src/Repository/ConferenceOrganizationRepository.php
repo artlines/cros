@@ -145,7 +145,7 @@ class ConferenceOrganizationRepository extends EntityRepository
                   OR tcoi.invalid_inn_kpp = TRUE
                   OR tms.representative_members = 0
                   OR tms.total_members != tms.in_room_members
-                ) AND tms.total_members != 0";
+                )";
         }
         if (isset($data['invited_by'])) {
             $where .= " AND tcoi.invited_by_id IN (:invited_by)";
