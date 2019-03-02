@@ -225,6 +225,14 @@ class ConferenceOrganizationRepository extends EntityRepository
               FROM participating.conference_organization pco
                 LEFT JOIN participating.organization po ON pco.organization_id = po.id
                 LEFT JOIN participating.member       pm ON pco.invited_by = pm.id
+            ),
+            tmp_comments_stat AS (
+              SELECT
+                     pco.id as conf_org_id,
+                     COUNT(pc.*) as comments_count
+              FROM participating.conference_organization pco
+                LEFT JOIN participating.comment pc ON pco.id = pc.conference_organization_id
+              GROUP BY pco.id
             )
             SELECT
                    pco.id,
@@ -240,7 +248,7 @@ class ConferenceOrganizationRepository extends EntityRepository
                    tcoi.invited_by,
                    tms.total_members,
                    tms.in_room_members,
-                   COUNT(pc.id) as comments_count,
+                   tcs.comments_count,
                    tis.invoices_count,
                    tis.invoices_payed,
                    pco.finish as is_finish
@@ -249,8 +257,8 @@ class ConferenceOrganizationRepository extends EntityRepository
               INNER JOIN tmp_invoices_stat      tis ON pco.id = tis.conf_org_id
               INNER JOIN tmp_conf_org_info     tcoi ON pco.id = tcoi.conf_org_id
               INNER JOIN tmp_members_stat       tms ON pco.id = tms.conf_org_id
-              LEFT JOIN tmp_search_idx          tsi ON pco.id = tsi.conf_org_id
-              LEFT JOIN participating.comment    pc ON pco.id = pc.conference_organization_id
+              INNER JOIN tmp_search_idx         tsi ON pco.id = tsi.conf_org_id
+              INNER JOIN tmp_comments_stat      tcs ON pco.id = tcs.conf_org_id
             WHERE $where
             GROUP BY
                    pco.id,
@@ -266,6 +274,7 @@ class ConferenceOrganizationRepository extends EntityRepository
                    tcoi.invited_by,
                    tms.total_members,
                    tms.in_room_members,
+                   tcs.comments_count,
                    tis.invoices_count,
                    tis.invoices_payed
         ";
