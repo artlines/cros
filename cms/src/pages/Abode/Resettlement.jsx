@@ -256,7 +256,10 @@ const mapDispatchToProps = (dispatch, ownProps) =>
     ({
         fetchRoomTypes: () => dispatch(abode.fetchRoomTypes()),
         fetchApartmentTypes: () => dispatch(abode.fetchApartmentTypes()),
-        fetchNotSettledMembers: () => dispatch(resettlement.fetchNotSettledMembers()),
+        fetchNotSettledMembers: () => {
+            const id = Number(ownProps.match.params.id);
+            dispatch(resettlement.fetchNotSettledMembers(id))
+        },
 
         fetchApartments: () => {
             const id = Number(ownProps.match.params.id);

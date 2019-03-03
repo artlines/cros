@@ -400,7 +400,7 @@ class SyncWithB2B extends Command
                         'send_cc' => $sendCc,
                     ]);
                     $this->em->persist($invoice);
-                    $this->mailer->send($invoiceData['org_name'], ['header' => 'Вам выставлен счет.'], $sendTo, $sendCc, $this->invoiceBccEmails);
+                    $this->mailer->send("КРОС-2019: ".$invoiceData['org_name'], ['header' => 'Вам выставлен счет.'], $sendTo, $sendCc, $this->invoiceBccEmails);
                     $this->em->flush();
 
                     $this->log("Document of Invoice (ID: {$invoiceData['id']}) has been sent.");

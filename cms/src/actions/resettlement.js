@@ -14,11 +14,11 @@ export default {
         };
     },
 
-    fetchNotSettledMembers: () => {
+    fetchNotSettledMembers: (housing_id = null) => {
 
         return dispatch => {
             dispatch({ type: RESETTLEMENT.REQUEST_MEMBERS });
-            request.get(`conference_member/not_settled`)
+            request.get(`conference_member/not_settled`, { housing_id })
                 .then(payload => dispatch({ type: RESETTLEMENT.RECEIVE_MEMBERS, payload }));
         };
     },
