@@ -29,7 +29,7 @@ class MemberInfoListItem extends React.PureComponent {
         let secondaryText = dense ? org_name : room_type.title;
         if (!dense) {
             if (invoices_count) {
-                secondaryText += ` | ${invoices_payed 
+                secondaryText += ` | ${invoices_count === invoices_payed 
                     ? `<span style="color: ${green[700]};">Оплачено</span>` 
                     : `<span style="color: ${red[700]};">Не оплачено</span>`
                 }`;
@@ -66,6 +66,8 @@ MemberInfoListItem.propTypes = {
         first_name:     PropTypes.string.isRequired,
         last_name:      PropTypes.string.isRequired,
         org_name:       PropTypes.string.isRequired,
+        invoices_count: PropTypes.number,
+        invoices_payed: PropTypes.number,
         neighbourhood:  PropTypes.string,
         manager_name:   PropTypes.string,
     }),
