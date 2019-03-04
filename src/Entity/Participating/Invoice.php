@@ -20,6 +20,8 @@ class Invoice
     const STATUS_GUID__FULLY_PAYED          = 'fd774679-3631-11e8-be9f-d89d671c895f'; // Оплачен
     const STATUS_GUID__DOCUMENT_NOT_READY   = 'fd774678-3631-11e8-be9f-d89d671c895f'; // Ожидание счета
 
+    const ORDER_STATUS_GUID__CANCELED       = '0f7423b0-f9ef-11e8-9074-d89d672a5c53'; // Отменен
+
     /**
      * @var integer
      *
@@ -64,6 +66,13 @@ class Invoice
      * @ORM\Column(name="b2b_order_guid", type="string", nullable=true, unique=true)
      */
     private $orderGuid;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="order_status_guid", type="string", nullable=true)
+     */
+    private $orderStatusGuid;
 
     /**
      * @var string|null
@@ -214,6 +223,22 @@ class Invoice
     public function setOrderGuid(?string $orderGuid)
     {
         $this->orderGuid = $orderGuid;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getOrderStatusGuid(): ?string
+    {
+        return $this->orderStatusGuid;
+    }
+
+    /**
+     * @param null|string $orderStatusGuid
+     */
+    public function setOrderStatusGuid(?string $orderStatusGuid)
+    {
+        $this->orderStatusGuid = $orderStatusGuid;
     }
 
     /**
