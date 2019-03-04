@@ -352,6 +352,8 @@ class SyncWithB2B extends Command
             }
 
             $invoice->setNumber($infoResponse['data']['order_number']);
+            $invoice->setOrderStatusGuid($infoResponse['data']['order_status_guid']);
+            $invoice->setAmount($infoResponse['data']['order_amount'] / 100);
             $invoice->setStatusGuid($infoResponse['data']['payment_status_guid']);
             $invoice->setStatusText($infoResponse['data']['payment_status']);
 
@@ -464,7 +466,8 @@ class SyncWithB2B extends Command
             $invoice = new Invoice();
             $invoice->setConferenceOrganization($conferenceOrganizationReference);
             $invoice->setAmount($dataToInvoice['fresh_amount']);
-            $invoice->setOrderGuid($createResponse['data']['guid']);
+            $invoice->setOrderGuid($createResponse['data']['order_guid']);
+            $invoice->setOrderStatusGuid($createResponse['data']['order_status_guid']);
             $invoice->setNumber($createResponse['data']['order_number']);
             $invoice->setStatusGuid($createResponse['data']['payment_status_guid']);
             $invoice->setStatusText($createResponse['data']['payment_status']);
