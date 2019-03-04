@@ -14,7 +14,7 @@ import find from "lodash/find";
 class MemberInfoListItem extends React.PureComponent {
     render() {
         const { room_types, dense, theme,
-            member: { first_name, last_name, org_name, room_type_id, neighbourhood, invoices_count, invoices_payed },
+            member: { first_name, last_name, org_name, room_type_id, neighbourhood, invoices_count, invoices_payed, manager_name },
         } = this.props;
 
         /** Check room_type */
@@ -29,7 +29,7 @@ class MemberInfoListItem extends React.PureComponent {
         let secondaryText = dense ? org_name : room_type.title;
         if (!dense) {
             if (invoices_count) {
-                secondaryText += ` | ${invoices_payed 
+                secondaryText += ` | ${invoices_count === invoices_payed 
                     ? `<span style="color: ${green[700]};">Оплачено</span>` 
                     : `<span style="color: ${red[700]};">Не оплачено</span>`
                 }`;
@@ -38,6 +38,8 @@ class MemberInfoListItem extends React.PureComponent {
             }
 
             neighbourhood && (secondaryText += `<br/>СП: ${neighbourhood}`);
+
+            manager_name && (secondaryText += `<br/>Менеджер: ${manager_name}`);
         }
 
         return (
@@ -64,7 +66,10 @@ MemberInfoListItem.propTypes = {
         first_name:     PropTypes.string.isRequired,
         last_name:      PropTypes.string.isRequired,
         org_name:       PropTypes.string.isRequired,
+        invoices_count: PropTypes.number,
+        invoices_payed: PropTypes.number,
         neighbourhood:  PropTypes.string,
+        manager_name:   PropTypes.string,
     }),
     dense: PropTypes.bool,
 };

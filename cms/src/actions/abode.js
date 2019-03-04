@@ -5,6 +5,14 @@ const request = new API();
 
 export default {
 
+    fetchHousings: () => {
+        return dispatch => {
+            dispatch({ type: ABODE.REQUEST_HOUSINGS });
+            request.get(`housing`)
+                .then(payload => dispatch({ type: ABODE.RECEIVE_HOUSINGS, payload }));
+        };
+    },
+
     fetchHousing: id => {
         return dispatch => {
             dispatch({ type: ABODE.REQUEST_HOUSING });

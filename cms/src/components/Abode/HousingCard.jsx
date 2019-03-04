@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import {
     Button,
+    IconButton,
     Card,
     CardContent,
     CardActions,
@@ -14,23 +15,25 @@ import {
     TableBody,
     TableRow,
     TableCell,
+    Tooltip,
 } from "@material-ui/core";
-import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
-import find from "lodash/find";
+import {
+    Edit as EditIcon,
+    Delete as DeleteIcon,
+    Lock as LockIcon,
+} from "@material-ui/icons";
 import map from "lodash/map";
 import sortBy from "lodash/sortBy";
 import ConfirmDialog from "../utils/ConfirmDialog";
+import ReservedPlacesModal from './ReservedPlacesModal';
 
 class HousingCard extends React.PureComponent {
 
     render() {
         const {
             housing: { id, num_of_floors, title, description, abode_info },
-            room_types, onEdit, onDelete,
+            update, onEdit, onDelete,
         }  = this.props;
-
-        if (room_types.isFetching) return null;
 
         return (
             <Card>
@@ -54,14 +57,14 @@ class HousingCard extends React.PureComponent {
                         <TableHead>
                             <TableRow>
                                 <TableCell>Тип комнаты</TableCell>
-                                <TableCell align={`right`}>Мест занято / Всего</TableCell>
+                                <TableCell numeric>Мест в резерве / Заселено / Всего</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {map(sortBy(abode_info, 'room_type_id'), item =>
+                            {map(sortBy(abode_info, 'room_type_title'), item =>
                                 <TableRow key={item.room_type_id}>
-                                    <TableCell>{find(room_types.items, {id: item.room_type_id}).title}</TableCell>
-                                    <TableCell align={`right`}>{item.busy} / {item.total}</TableCell>
+                                    <TableCell>{item.room_type_title}</TableCell>
+                                    <TableCell numeric>{item.reserved} / {item.populated} / {item.total}</TableCell>
                                 </TableRow>
                             )}
                         </TableBody>
@@ -70,9 +73,9 @@ class HousingCard extends React.PureComponent {
                 <CardActions>
                     <Grid container justify={`space-between`}>
                         <Grid item>
-                            <Button onClick={() => onEdit(id)}><EditIcon/></Button>
+                            <IconButton onClick={() => onEdit(id)}><EditIcon/></IconButton>
                             <ConfirmDialog
-                                trigger={<Button><DeleteIcon/></Button>}
+                                trigger={<IconButton><DeleteIcon/></IconButton>}
                                 onConfirm={() => onDelete(id)}
                             />
                         </Grid>
@@ -83,6 +86,16 @@ class HousingCard extends React.PureComponent {
                             <Link to={`/cms/abode/housing/${id}/resettlement`}>
                                 <Button>Расселение</Button>
                             </Link>
+                            <ReservedPlacesModal
+                                trigger={
+                                    <Tooltip title={`Резервирование`}>
+                                        <IconButton><LockIcon/></IconButton>
+                                    </Tooltip>
+                                }
+                                housing_id={id}
+                                items={abode_info}
+                                onSuccessSubmit={update}
+                            />
                         </Grid>
                     </Grid>
                 </CardActions>
@@ -100,20 +113,17 @@ HousingCard.propTypes = {
         description:    PropTypes.string.isRequired,
         abode_info:     PropTypes.arrayOf(
             PropTypes.shape({
-                room_type_id:   PropTypes.number.isRequired,
-                total:          PropTypes.number.isRequired,
-                busy:           PropTypes.number.isRequired,
+                room_type_id:       PropTypes.number.isRequired,
+                room_type_title:    PropTypes.string.isRequired,
+                reserved:           PropTypes.number.isRequired,
+                populated:          PropTypes.number.isRequired,
+                total:              PropTypes.number.isRequired,
             })
         ),
     }),
+    update:     PropTypes.func.isRequired,
     onEdit:     PropTypes.func.isRequired,
     onDelete:   PropTypes.func.isRequired,
-    room_types: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state =>
-    ({
-        room_types: state.abode.room_type,
-    });
-
-export default connect(mapStateToProps)(HousingCard);
+export default HousingCard;

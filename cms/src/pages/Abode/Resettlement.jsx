@@ -128,8 +128,8 @@ class Resettlement extends React.Component {
 
         return (info &&
             <React.Fragment>
-                <Typography>Свободно / Занято / Всего</Typography>
-                <Typography>{info.total - info.busy} / {info.busy} / {info.total}</Typography>
+                <Typography>Свободно / Резерв / Заселено / Всего</Typography>
+                <Typography>{info.total - info.populated - info.reserved} / {info.reserved} / {info.populated} / {info.total}</Typography>
             </React.Fragment>
         );
     };
@@ -256,7 +256,10 @@ const mapDispatchToProps = (dispatch, ownProps) =>
     ({
         fetchRoomTypes: () => dispatch(abode.fetchRoomTypes()),
         fetchApartmentTypes: () => dispatch(abode.fetchApartmentTypes()),
-        fetchNotSettledMembers: () => dispatch(resettlement.fetchNotSettledMembers()),
+        fetchNotSettledMembers: () => {
+            const id = Number(ownProps.match.params.id);
+            dispatch(resettlement.fetchNotSettledMembers(id))
+        },
 
         fetchApartments: () => {
             const id = Number(ownProps.match.params.id);

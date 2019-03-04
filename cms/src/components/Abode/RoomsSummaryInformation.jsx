@@ -16,6 +16,7 @@ class RoomsSummaryInformation extends React.PureComponent {
         const { items } = this.props;
 
         const sumFreeRooms = reduce(items, (sum, item) => sum + item.free_rooms, 0);
+        const sumTotalRooms = reduce(items, (sum, item) => sum + item.total_rooms, 0);
         const sumReserved = reduce(items, (sum, item) => sum + item.reserved, 0);
         const sumBusy = reduce(items, (sum, item) => sum + item.busy, 0);
         const sumPopulated = reduce(items, (sum, item) => sum + item.populated, 0);
@@ -32,7 +33,7 @@ class RoomsSummaryInformation extends React.PureComponent {
                             <TableCell numeric>Мест в резерве</TableCell>
                             <TableCell numeric>Мест занято</TableCell>
                             <TableCell numeric>Мест заселено</TableCell>
-                            <TableCell numeric>Всего мест</TableCell>
+                            <TableCell numeric>Всего комнат / мест</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -43,7 +44,7 @@ class RoomsSummaryInformation extends React.PureComponent {
                                 <TableCell numeric>{item.reserved}</TableCell>
                                 <TableCell numeric>{item.busy}</TableCell>
                                 <TableCell numeric>{item.populated}</TableCell>
-                                <TableCell numeric>{item.total}</TableCell>
+                                <TableCell numeric>{item.total_rooms} / {item.total}</TableCell>
                             </TableRow>
                         )}
                         {items.length > 0 &&
@@ -53,7 +54,7 @@ class RoomsSummaryInformation extends React.PureComponent {
                                 <TableCell numeric>{sumReserved}</TableCell>
                                 <TableCell numeric>{sumBusy}</TableCell>
                                 <TableCell numeric>{sumPopulated}</TableCell>
-                                <TableCell numeric>{sumTotal}</TableCell>
+                                <TableCell numeric>{sumTotalRooms} / {sumTotal}</TableCell>
                             </TableRow>
                         }
                     </TableBody>
@@ -73,6 +74,7 @@ RoomsSummaryInformation.propTypes = {
             busy:               PropTypes.number.isRequired,
             total:              PropTypes.number.isRequired,
             free_rooms:         PropTypes.number.isRequired,
+            total_rooms:        PropTypes.number.isRequired,
         }),
     ),
 };

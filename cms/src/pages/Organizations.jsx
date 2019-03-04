@@ -7,7 +7,7 @@ import system from '../actions/system';
 import OrganizationTable from '../components/Organization/Table';
 import {
     TextField,
-    Grid,
+    Grid, FormControlLabel, Switch, FormHelperText, FormControl,
 } from '@material-ui/core';
 import isArray from 'lodash/isArray';
 import isEqual from 'lodash/isEqual';
@@ -64,7 +64,9 @@ class Organizations extends React.Component {
 
     handleFilterChange = field => event => {
         let newQuery = {...this.state.query};
-        const value = isArray(event) ? map(event, i => i.value) : event.target.value;
+        const value = isArray(event)
+            ? map(event, i => i.value)
+            : (event.target.checked ? true : event.target.value);
 
         if (!value) {
             delete(newQuery[field]);
@@ -105,7 +107,7 @@ class Organizations extends React.Component {
                     onSuccess={() => this.update(null, null, true)}
                 />
                 <Grid container spacing={16}>
-                    <Grid item xs={4}>
+                    <Grid item xs={12} sm={6} lg={3}>
                         <TextField
                             fullWidth
                             label={`Поиск`}
@@ -114,18 +116,29 @@ class Organizations extends React.Component {
                             InputLabelProps={{shrink: true}}
                         />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={12} sm={6} lg={3}>
                         <SuggestingSelectField
                             options={map(managers, i => ({ value: i.id, label: `${i.first_name} ${i.last_name}` }))}
                             onChange={this.handleFilterChange(`invited_by[]`)}
                             isSearchable
                             isMulti
                             placeholder={`Начните вводить имя`}
-                            label={`Менеджер`}
+                            label={`Ответственный менеджер`}
                             fullWidth
                         />
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={12} sm={6} lg={3}>
+                        <FormControl>
+                            <FormControlLabel
+                                label={"Без автовыставления счета"}
+                                control={
+                                    <Switch onChange={this.handleFilterChange('no_auto_invoicing')} />
+                                }
+                            />
+                            <FormHelperText>Не получилось автоматически выставить счет</FormHelperText>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={6} lg={3}>
                         <Grid container justify={`flex-end`}>
                             <Grid item>
                                 <FabButton title={`Добавить организацию`} onClick={this.openForm}/>
@@ -164,9 +177,8 @@ Organizations.propTypes = {
                 total_members:      PropTypes.number.isRequired,
                 in_room_members:    PropTypes.number.isRequired,
                 comments_count:     PropTypes.number.isRequired,
-                invoices:           PropTypes.array.isRequired,
                 invoices_count:     PropTypes.number.isRequired,
-                invoices_payed:     PropTypes.bool.isRequired,
+                invoices_payed:     PropTypes.number.isRequired,
                 invited_by:         PropTypes.string,
             }),
         ),

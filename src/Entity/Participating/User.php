@@ -131,6 +131,13 @@ class User implements UserInterface
     private $representative;
 
     /**
+     * Fixed GUID пользователя из b2b
+     * @var string|null
+     * @ORM\Column(name="b2b_guid", type="string", nullable=true, unique=true)
+     */
+    private $b2b_guid;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime", nullable=false)
@@ -165,16 +172,6 @@ class User implements UserInterface
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param int $id
-     * @return User
-     */
-    public function setId(int $id): User
-    {
-        $this->id = $id;
-        return $this;
     }
 
     /**
@@ -572,6 +569,22 @@ class User implements UserInterface
     public function setNewPhoto( $Photo)
     {
         return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getB2bGuid(): ?string
+    {
+        return $this->b2b_guid;
+    }
+
+    /**
+     * @param null|string $b2b_guid
+     */
+    public function setB2bGuid(?string $b2b_guid)
+    {
+        $this->b2b_guid = $b2b_guid;
     }
 
 }

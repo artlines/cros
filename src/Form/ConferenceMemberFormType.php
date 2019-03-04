@@ -43,7 +43,7 @@ class ConferenceMemberFormType extends AbstractType
                 [
                     'label' => 'Ранний заезд',
                     'widget' => 'single_text',
-                    'format' => 'yyyy.MM.dd HH:mm',
+                    'format' => 'dd.MM.yyyy HH:mm',
                     'attr' => [
                         'class' => 'form-control input-inline datetimepicker cs-theme-color-gray-dark-v3',
                         'data-provide' => 'datetimepicker',
@@ -60,7 +60,7 @@ class ConferenceMemberFormType extends AbstractType
                 [
                     'label' => 'Поздний выезд',
                     'widget' => 'single_text',
-                    'format' => 'yyyy.MM.dd HH:mm',
+                    'format' => 'dd.MM.yyyy HH:mm',
                     'attr' => [
 //                        'type' => "text",
                         'class' => 'datetime form-control input-inline datetimepicker cs-theme-color-gray-dark-v3',

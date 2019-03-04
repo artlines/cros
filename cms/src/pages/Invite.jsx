@@ -85,7 +85,7 @@ class Invite extends React.Component {
                                     <TableCell>Реквизиты</TableCell>
                                     <TableCell>Счета</TableCell>
                                     <TableCell>Статус</TableCell>
-                                    <TableCell numeric>Повторная отправка</TableCell>
+                                    <TableCell align={`right`}>Повторная отправка</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -122,12 +122,9 @@ class Invite extends React.Component {
                                             )}
                                         </TableCell>
                                         <TableCell style={{whiteSpace: 'no-wrap'}}>
-                                            {item.is_finish
-                                                ? 'Зарегистрирована'
-                                                : 'Отправлено приглашение'
-                                            }
+                                            {item.is_finish ? 'Зарегистрирована' : 'Отправлено приглашение'}
                                         </TableCell>
-                                        <TableCell numeric>
+                                        <TableCell align={`right`}>
                                             <ConfirmDialog
                                                 title={`Повторная отправка приглашения`}
                                                 text={`Вы уверены что хотите заного отправить письмо-приглашение?`}

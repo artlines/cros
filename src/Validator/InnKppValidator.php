@@ -66,7 +66,13 @@ class InnKppValidator extends ConstraintValidator
 
             $usedEmail = [];
             foreach ( $value->getConferenceMembers() as $key => $conferenceMember ){
+                if ($key >= $value->getConference()->getLimitUsersByOrg() ) {
+                    $this->context
+                        ->buildViolation('Превышен лимит участников на одну организацию' )
+                        ->atPath("ConferenceMembers[{$key}].RoomType")
+                        ->addViolation();
 
+                }
                 $roomTypeId = $conferenceMember->getRoomType()->getId();
                 if (isset($arFreePlaces[$roomTypeId]) and $arFreePlaces[$roomTypeId]>0) {
                     // вычитаем предполагаемое заселение.

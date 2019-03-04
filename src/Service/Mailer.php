@@ -16,13 +16,8 @@ class Mailer
     /** Template alias */
     private $templateAlias;
 
-    /**
-     * @param mixed $templateAlias
-     */
-    public function setTemplateAlias($templateAlias): void
-    {
-        $this->templateAlias = $templateAlias;
-    }
+    /** @var array Attachments */
+    private $attachments;
 
     /**
      * Mailer constructor.
@@ -35,6 +30,53 @@ class Mailer
         $this->clientAlias      = getenv('SOA_MAILER_CLIENT_ALIAS');
         $this->clientSecret     = getenv('SOA_MAILER_CLIENT_SECRET');
         $this->templateAlias    = getenv('SOA_MAILER_TEMPLATE_ALIAS');
+
+        $this->attachments = [];
+    }
+
+    /**
+     * @param mixed $templateAlias
+     */
+    public function setTemplateAlias($templateAlias): void
+    {
+        $this->templateAlias = $templateAlias;
+    }
+
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param $file
+     * @param null|string $originalName
+     */
+    public function addAttachment($file, ?string $originalName = null)
+    {
+        if (is_string($file)) {
+            if (!is_file($file)) {
+                return;
+            }
+
+            $pathInfo = pathinfo($file);
+
+            $attachment = [
+                'data_base64' => base64_encode(file_get_contents($file)),
+                'filename'    => $originalName ?? $pathInfo['basename'],
+                'contentType' => (new \finfo)->file($file, FILEINFO_MIME_TYPE)
+            ];
+        } elseif (is_array($file) && isset($file['data_base64'], $file['filename'], $file['contentType'])) {
+            $attachment = $file;
+        } else {
+            return;
+        }
+
+        $this->attachments[] = $attachment;
+    }
+
+    /**
+     * Clear attachments array
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     */
+    public function clearAttachments()
+    {
+        $this->attachments = [];
     }
 
     /**
@@ -62,6 +104,7 @@ class Mailer
             'template_alias'    => $this->templateAlias,
             'timestamp'         => $timestamp,
             'params'            => $params,
+            'attachments'       => $this->attachments,
         ];
 
         if ($sendCc) {

@@ -40,7 +40,7 @@
                         Телефон: {{ user.phone|default('') }}<br>
                         E-mail: {{ user.email|default('') }}<br>
                         Номер автомобиля: {{ user.carNumber|default('') }}<br>
-                        Класс участия: {{ user.roomType|default('') }}<br>
+                        Класс участия: {{ user.roomType|default('') }} ({{ user.cost }}р.)<br>
                         {% set fullprice = fullprice + user.cost %}
                         {% if user.arrival == data.conference.eventStart %}
                             Ранний заезд: нет<br>

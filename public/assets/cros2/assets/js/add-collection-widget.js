@@ -362,7 +362,7 @@ const updateItem = function (item) {
 
     item.find('.datetimepicker').datetimepicker({
         locale: 'ru',
-        format: 'YYYY.MM.DD HH:mm',
+        format: 'DD.MM.YYYY HH:mm',
         sideBySide: true,
     });
 
@@ -447,14 +447,14 @@ jQuery(document).ready(function () {
         .on('change', validateInnKpp)
         .each(function () {
             new IMask(this, {
-                mask: Number
+                mask: /^\d+$/
             });
         });
     jQuery('.kpp')
         .on('change', validateInnKpp)
         .each(function () {
             new IMask(this, {
-                mask: Number
+                mask: /^\d+$/
             });
         });
 

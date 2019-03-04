@@ -3,13 +3,10 @@ import PropTypes from 'prop-types';
 import {
     Typography,
     List,
-    ListItem,
-    ListItemText,
     TablePagination,
     Grid,
     TextField,
 } from '@material-ui/core';
-import MemberInfoListItem from "./MemberInfoListItem";
 import map from "lodash/map";
 import slice from "lodash/slice";
 import f from "lodash/filter";
@@ -20,7 +17,7 @@ class MembersList extends React.Component {
 
         this.state = {
             page: 0,
-            rowsPerPage: 12,
+            rowsPerPage: 8,
             search: '',
         };
     }
@@ -109,6 +106,7 @@ MembersList.propTypes = {
         org_name:       PropTypes.string.isRequired,
         room_type_id:   PropTypes.number.isRequired,
         neighbourhood:  PropTypes.string,
+        manager_name:   PropTypes.string,
     })),
 };
 

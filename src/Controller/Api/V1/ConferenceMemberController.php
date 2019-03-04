@@ -9,6 +9,7 @@ use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\ConferenceOrganization;
 use App\Entity\Participating\Invoice;
 use App\Entity\Participating\User;
+use App\Repository\ConferenceMemberRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -197,6 +198,20 @@ class ConferenceMemberController extends ApiController
             return $this->notFound('Room type not found.');
         }
 
+        /**
+         * If room type was changed then check that member not settlement
+         * @var Place $place
+         */
+        if (
+            $roomType !== $conferenceMember->getRoomType()
+            && $place = $this->em->getRepository(Place::class)->findOneBy(['conferenceMember' => $conferenceMember])
+        ) {
+            return $this->badRequest(
+                'Участник уже заселен в комнату типа "'.$conferenceMember->getRoomType()->getTitle()
+                .'" в номере #'.$place->getRoom()->getApartment()->getNumber().'. Выселите его, чтобы сменить тип комнаты.'
+            );
+        }
+
         $member = $conferenceMember->getUser();
 
         /**
@@ -276,8 +291,6 @@ class ConferenceMemberController extends ApiController
      * @Route("conference_member/not_settled")
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
-     *
-     *
      */
     public function getNotSettled()
     {
@@ -288,38 +301,11 @@ class ConferenceMemberController extends ApiController
             return $this->notFound("Conference with year $year not found.");
         }
 
-        /** @var ConferenceMember[] $conferenceMembers */
-        $conferenceMembers = $this->em->getRepository(ConferenceMember::class)
-            ->findBy(['conference' => $conference]);
+        /** @var ConferenceMemberRepository $conferenceMemberRepo */
+        $conferenceMemberRepo = $this->em->getRepository(ConferenceMember::class);
 
-        $items = [];
-        foreach ($conferenceMembers as $conferenceMember) {
-            if (!$conferenceMember->getPlace()) {
-                $user = $conferenceMember->getUser();
-                $neighbourhood = $conferenceMember->getNeighbourhood();
-                $roomType = $conferenceMember->getRoomType();
+        $conferenceMemberData = $conferenceMemberRepo->getNotSettled($year, $this->requestData['housing_id'] ?? null);
 
-                $invoices = $conferenceMember->getConferenceOrganization()->getInvoices();
-                $invoices_payed = true;
-                foreach ($invoices as $invoice) {
-                    if ($invoice->getStatus() !== Invoice::STATUS__FULLY_PAYED) {
-                        $invoices_payed = false;
-                    }
-                }
-
-                $items[] = [
-                    'id'            => $conferenceMember->getId(),
-                    'first_name'    => $user->getFirstName(),
-                    'last_name'     => $user->getLastName(),
-                    'org_name'      => $user->getOrganization()->getName(),
-                    'room_type_id'  => $roomType ? $roomType->getId() : null,
-                    'neighbourhood' => $neighbourhood ? $neighbourhood->getUser()->getFullName() : null,
-                    'invoices_count'=> $invoices->count(),
-                    'invoices_payed'=> $invoices_payed,
-                ];
-            }
-        }
-
-        return $this->success(['items' => $items]);
+        return $this->success(['items' => $conferenceMemberData]);
     }
 }

@@ -8,6 +8,7 @@ use App\Entity\Participating\ConferenceOrganization;
 use App\Entity\Participating\Invoice;
 use App\Entity\Participating\Organization;
 use App\Repository\ConferenceOrganizationRepository;
+use App\Repository\InvoiceRepository;
 use App\Service\Mailer;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -33,67 +34,16 @@ class ConferenceOrganizationController extends ApiController
     {
         /** @var ConferenceOrganizationRepository $confOrgRepo */
         $confOrgRepo = $this->em->getRepository(ConferenceOrganization::class);
-        $placeRepository = $this->em->getRepository(Place::class);
-
-        $year = date('Y');
-
-        /** @var Conference|null $conference */
-        $conference = $this->em->getRepository(Conference::class)->findOneBy(['year' => $year]);
-        if (!$conference) {
-            return $this->notFound("Conference with year $year not found.");
-        }
+        /** @var InvoiceRepository $invoiceRepo */
+        $invoiceRepo = $this->em->getRepository(Invoice::class);
 
         /** @var ConferenceOrganization[] $conferenceOrganizations */
-        list($conferenceOrganizations, $totalCount) = $confOrgRepo->searchBy($conference, $this->requestData);
+        list($items, $totalCount) = $confOrgRepo->searchByNative($this->requestData);
 
-        $items = [];
-        foreach ($conferenceOrganizations as $co) {
-            $org = $co->getOrganization();
-            $members = $co->getConferenceMembers();
-            $invitedBy = $co->getInvitedBy();
-            $invoices = $co->getInvoices();
+        $invoices = $invoiceRepo->getInvoicesGroupByConfOrganization();
 
-            $inRoom = 0;
-            foreach ($members as $member) {
-                /** @var Place $place */
-                if ($placeRepository->findOneBy(['conferenceMember' => $member])) {
-                    $inRoom++;
-                }
-            }
-
-            $invoices_payed = true;
-            $invoice_items = [];
-            foreach ($invoices as $invoice) {
-                $invoice_items[] = [
-                    'number'    => $invoice->getNumber(),
-                    'amount'    => $invoice->getAmount(),
-                    'status'    => $invoice->getStatus(),
-                    'date'      => $invoice->getDate()->getTimestamp(),
-                ];
-
-                if ($invoice->getStatus() !== Invoice::STATUS__FULLY_PAYED) {
-                    $invoices_payed = false;
-                }
-            }
-
-            $items[] = [
-                'id'                => $co->getId(),
-                'name'              => $org->getName(),
-                'inn'               => $org->getInn(),
-                'kpp'               => $org->getKpp(),
-                'city'              => $org->getCity(),
-                'requisites'        => $org->getRequisites(),
-                'address'           => $org->getAddress(),
-                'total_members'     => $members->count(),
-                'in_room_members'   => $inRoom,
-                'comments_count'    => $co->getComments()->count(),
-                'invoices'          => $invoice_items,
-                'invoices_count'    => $invoices->count(),
-                'invoices_payed'    => $invoices_payed,
-                'invited_by'        => $invitedBy ? $invitedBy->getFullName() : null,
-                'is_finish'         => $co->isFinish(),
-                'email'             => $org->getEmail(),
-            ];
+        foreach ($items as $index => $item) {
+            $items[$index]['invoices'] = $invoices[$item['id']] ?? [];
         }
 
         return $this->success(['items' => $items, 'total_count' => $totalCount]);
@@ -254,7 +204,9 @@ class ConferenceOrganizationController extends ApiController
         $mngr_phone = $this->requestData['mngr_phone'] ?? null;
         $mngr_email = $this->requestData['mngr_email'] ?? null;
 
-        if (!$fio || !$email || !$name || !$inn || !$mngr_first_name || !$mngr_last_name || !$mngr_phone || !$mngr_email) {
+        $logger->notice('[Invite Organization] Received data', ['data' => $this->requestData]);
+
+        if (!$fio || !$email || !$name || !$inn || is_null($kpp) || !$mngr_first_name || !$mngr_last_name || !$mngr_phone || !$mngr_email) {
             return $this->badRequest('Не переданы обязательные параметры.');
         }
 
@@ -265,11 +217,11 @@ class ConferenceOrganizationController extends ApiController
             return $this->notFound("Conference with year $year not found.");
         }
 
-        $logger->info('[Invite Organization]', ['inn' => $inn, 'kpp' => $kpp]);
+        $logger->notice('[Invite Organization] Try to found organization', ['inn' => $inn, 'kpp' => $kpp]);
 
         /** @var Organization $organization */
         if ($organization = $this->em->getRepository(Organization::class)->findOneBy(['inn' => $inn, 'kpp' => $kpp])) {
-            $logger->info('[Invite Organization] Found Organization', [
+            $logger->notice('[Invite Organization] Found Organization', [
                 'id'    => $organization->getId(),
                 'name'  => $organization->getName()
             ]);
@@ -282,7 +234,7 @@ class ConferenceOrganizationController extends ApiController
                 ->findOneBy(['conference' => $conference, 'organization' => $organization]);
 
             if ($conferenceOrganization) {
-                $logger->info('[Invite Organization] Found ConferenceOrganization', [
+                $logger->notice('[Invite Organization] Found ConferenceOrganization', [
                     'id'        => $conferenceOrganization->getId(),
                     'is_finish' => $conferenceOrganization->isFinish() ? 'true' : 'false'
                 ]);
@@ -296,7 +248,7 @@ class ConferenceOrganizationController extends ApiController
                 }
             }
         } else {
-            $logger->info('[Invite Organization] Not found Organization, create new');
+            $logger->notice('[Invite Organization] Not found Organization, create new');
 
             $organization = new Organization();
             $organization->setInn($inn);
@@ -328,7 +280,8 @@ class ConferenceOrganizationController extends ApiController
         $data = $inviteData;
         $data['hash'] = $inviteHash;
         $data['org_name'] = $name;
-        $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, $bcc_emails);
+        $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, array_merge($bcc_emails, [$data['mngr_email']]));
+        $logger->notice('[Invite Organization] Organization invited', ['data' => $data]);
 
         return $this->success();
     }
@@ -341,9 +294,10 @@ class ConferenceOrganizationController extends ApiController
      * @param $id
      * @param Mailer $mailer
      * @param ParameterBagInterface $parameterBag
+     * @param LoggerInterface $logger
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
-    public function reInvite($id, Mailer $mailer, ParameterBagInterface $parameterBag)
+    public function reInvite($id, Mailer $mailer, ParameterBagInterface $parameterBag, LoggerInterface $logger)
     {
         $bcc_emails = $parameterBag->has('invite_bcc_emails') ? $parameterBag->get('invite_bcc_emails') : null;
 
@@ -368,7 +322,8 @@ class ConferenceOrganizationController extends ApiController
         }
         $data['hash'] = $conferenceOrganization->getInviteHash();
         $data['org_name'] = $organization->getName();
-        $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, $bcc_emails);
+        $mailer->send('Приглашаем вас на КРОС-2019', $data, $email, null, array_merge($bcc_emails, [$data['mngr_email']]));
+        $logger->notice('[Invite Organization] Organization reinvited', ['id' => $id, 'data' => $data]);
 
         return $this->success();
     }

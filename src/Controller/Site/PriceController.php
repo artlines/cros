@@ -22,4 +22,14 @@ class PriceController extends AbstractController
             'roomTypes' => $roomTypes
         ]);
     }
+
+    /**
+     * @Route("/cost")
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     */
+    public function cost()
+    {
+        return $this->redirectToRoute('price', [], 301);
+    }
 }
