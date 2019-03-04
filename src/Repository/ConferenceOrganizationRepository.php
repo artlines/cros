@@ -133,9 +133,9 @@ class ConferenceOrganizationRepository extends EntityRepository
         $where = 'TRUE';
 
         $parameters = [
-            'year' => $year,
-            'invoice_fully_payed_status_id' => Invoice::STATUS__FULLY_PAYED,
-            'invoice_fully_payed_status_guid' => Invoice::STATUS_GUID__FULLY_PAYED,
+            'year'                              => $year,
+            'invoice_fully_payed_status_id'     => Invoice::STATUS__FULLY_PAYED,
+            'invoice_fully_payed_status_guid'   => Invoice::STATUS_GUID__FULLY_PAYED,
         ];
 
         /** Check data */

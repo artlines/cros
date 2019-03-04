@@ -8,6 +8,7 @@ use App\Entity\Participating\ConferenceOrganization;
 use App\Entity\Participating\Invoice;
 use App\Entity\Participating\Organization;
 use App\Repository\ConferenceOrganizationRepository;
+use App\Repository\InvoiceRepository;
 use App\Service\Mailer;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -33,9 +34,17 @@ class ConferenceOrganizationController extends ApiController
     {
         /** @var ConferenceOrganizationRepository $confOrgRepo */
         $confOrgRepo = $this->em->getRepository(ConferenceOrganization::class);
+        /** @var InvoiceRepository $invoiceRepo */
+        $invoiceRepo = $this->em->getRepository(Invoice::class);
 
         /** @var ConferenceOrganization[] $conferenceOrganizations */
         list($items, $totalCount) = $confOrgRepo->searchByNative($this->requestData);
+
+        $invoices = $invoiceRepo->getInvoicesGroupByConfOrganization();
+
+        foreach ($items as $index => $item) {
+            $items[$index]['invoices'] = $invoices[$item['id']] ?? [];
+        }
 
         return $this->success(['items' => $items, 'total_count' => $totalCount]);
     }
