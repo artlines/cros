@@ -10,6 +10,7 @@ use App\Entity\Participating\ConferenceOrganization;
 use App\Entity\Participating\Organization;
 use App\Entity\Participating\User;
 use App\Form\CommentFormType;
+use App\Form\ConferenceMemberFormType;
 use App\Form\ConferenceOrganizationFormType;
 use App\Repository\Abode\RoomTypeRepository;
 use App\Repository\ConferenceMemberRepository;
@@ -480,19 +481,22 @@ class ConferenceRegistrationController extends AbstractController
 
     /**
      * @Route("/registration-show", name="registration_show")
-     *
-     * @return object
+     * @param Request $request
+     * @param Mailer $mailer
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function stepThree(Request $request, Mailer $mailer)
+    public function registrationShow(Request $request, Mailer $mailer)
     {
         /** @var User $user */
         /** @var Organization $organization */
         if (!$this->getUser()) {
-            throw $this->createNotFoundException();
+            return $this->render('conference_registration/no_access.html.twig');
         }
 
         if (!$this->getUser()->getOrganization()){
-            throw $this->createNotFoundException();
+            return $this->render('conference_registration/no_access.html.twig');
         }
 
         $organization = $this->getUser()->getOrganization();
@@ -512,6 +516,9 @@ class ConferenceRegistrationController extends AbstractController
             $CommentForm = $this->createForm(
                 CommentFormType::class
             );
+
+            $memberForm = $this->createForm(
+                ConferenceMemberFormType::class);
 
             $CommentForm->handleRequest($request);
 
@@ -561,6 +568,7 @@ class ConferenceRegistrationController extends AbstractController
                 'ConferenceOrganization' => $conferenceOrganization,
                 'comments' => $comments,
                 'form' => $CommentForm->createView(),
+                'memberForm' => $memberForm->createView()
             ]);
         } else {
             throw $this->createNotFoundException();

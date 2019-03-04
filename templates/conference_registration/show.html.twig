@@ -106,49 +106,63 @@
     <button
             type="button"
             class="add-another-collection-widget btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mb-20"
-            data-list="#members-fields-list"
+            data-toggle="modal" data-target="#addModal"
     >
         Добавить участника</button>
     <div>
         Допустиимо {{ ConferenceOrganization.conference.limitUsersByOrg }} участника на конференцию
     </div>
 </div>
-<div>
-    <h3>Добавить ещё одного участника</h3>
-    {{ form_start(memberForm) }}
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Добавление участника конференции</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h3></h3>
+                    {{ form_start(memberForm) }}
 
-    <div class="row">
-        <div class="col-md-3">{{- form_row(memberForm.user.lastName) -}}</div>
-        <div class="col-md-3">{{- form_row(memberForm.user.firstName) -}}</div>
-        <div class="col-md-3">{{- form_row(memberForm.user.middleName) -}}</div>
-        <div class="col-md-3">{{- form_row(memberForm.user.sex) -}}</div>
-    </div>
-    <div class="row">
-        <div class="col-md-3">{{- form_row(memberForm.user.phone) -}}</div>
-        <div class="col-md-3">{{- form_row(memberForm.user.email) -}}</div>
-        <div class="col-md-3">{{- form_row(memberForm.user.post) -}}</div>
-        <div class="col-md-3" style="padding-top: 37px">{{- form_row(memberForm.user.representative) -}}</div>
-    </div>
-    <div class="row">
-        <div class="col-md-3">{{- form_row(memberForm.arrival,{'value':ConferenceOrganization.Conference.eventStart|date("d.m.Y H:i")}) -}}</div>
-        <div class="col-md-3">{{- form_row(memberForm.leaving,{'value':ConferenceOrganization.Conference.eventFinish|date("d.m.Y H:i") }) -}}</div>
-        <div class="col-md-3">{{- form_row(memberForm.carNumber) -}}</div>
-        <div class="col-md-3">{{- form_row(memberForm.user.newphoto) -}}</div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">{{- form_row(memberForm.RoomType) -}}</div>
-        {#<div class="col-md-3">{{- form_row(memberForm.neighbourhood) -}}</div>#}
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <h3>Информация о классе участия:</h3>
-            <div class="roomTypeInfo"></div>
+                    <div class="row">
+                        <div class="col-md-3">{{- form_row(memberForm.user.lastName) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.user.firstName) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.user.middleName) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.user.sex) -}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">{{- form_row(memberForm.user.phone) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.user.email) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.user.post) -}}</div>
+                        <!--div class="col-md-3" style="padding-top: 37px">{{- form_row(memberForm.user.representative) -}}</div-->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">{{- form_row(memberForm.arrival,{'value':ConferenceOrganization.Conference.eventStart|date("d.m.Y H:i")}) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.leaving,{'value':ConferenceOrganization.Conference.eventFinish|date("d.m.Y H:i") }) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.carNumber) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.user.newphoto) -}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">{{- form_row(memberForm.RoomType) -}}</div>
+                        <!--div class="col-md-3">{{- form_row(memberForm.neighbourhood) -}}</div-->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3>Информация о классе участия:</h3>
+                            <div class="roomTypeInfo"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    {{ form_row(memberForm.save) }}
+                </div>
+                {{ form_end(memberForm) }}
+            </div>
         </div>
     </div>
-    {{ form_row(memberForm.save) }}
 
-    {{ form_end(memberForm) }}
-</div>
 
 <h3>Вопрос организатору</h3>
 <table class="table">
