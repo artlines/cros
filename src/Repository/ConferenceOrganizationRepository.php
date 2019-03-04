@@ -155,6 +155,9 @@ class ConferenceOrganizationRepository extends EntityRepository
             $where .= " AND tsi.search ILIKE :search";
             $parameters['search'] = '%'.mb_strtolower($data['search']).'%';
         }
+        if (isset($data['with_comments'])) {
+            $where .= " AND tcs.comments_count != 0";
+        }
 
         /** Check for limit and offset */
         if (isset($data['@limit'])) {

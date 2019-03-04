@@ -139,6 +139,17 @@ class Organizations extends React.Component {
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={3}>
+                        <FormControl>
+                            <FormControlLabel
+                                label={"Есть комментарии"}
+                                control={
+                                    <Switch onChange={this.handleFilterChange('with_comments')} />
+                                }
+                            />
+                            <FormHelperText>Имеются комментарии по организации</FormHelperText>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12}>
                         <Grid container justify={`flex-end`}>
                             <Grid item>
                                 <FabButton title={`Добавить организацию`} onClick={this.openForm}/>
