@@ -40,9 +40,13 @@ class ConferenceOrganizationController extends ApiController
         /** @var ConferenceOrganization[] $conferenceOrganizations */
         list($items, $totalCount) = $confOrgRepo->searchByNative($this->requestData);
 
-        $invoices = $invoiceRepo;
+        $invoices = $invoiceRepo->getInvoicesGroupByConfOrganization();
 
-        dump($items); die();
+        foreach ($items as $index => $item) {
+            if (isset($invoices[$item['id']])) {
+                $items[$index]['invoices'] = $invoices[$item['id']];
+            }
+        }
 
         return $this->success(['items' => $items, 'total_count' => $totalCount]);
     }

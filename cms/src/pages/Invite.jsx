@@ -104,7 +104,7 @@ class Invite extends React.Component {
                                             <div style={{whiteSpace: 'nowrap'}}><b>КПП:</b> {item.kpp}</div>
                                         </TableCell>
                                         <TableCell>
-                                            {item.invoices_count.length === 0 && 'Нет счета'}
+                                            {item.invoices.length === 0 && 'Нет счета'}
                                             {map(item.invoices, (invoice, i) =>
                                                 <div key={i} style={{ whiteSpace: 'nowrap', padding: `2px 0` }}>
                                                     Счет&nbsp;

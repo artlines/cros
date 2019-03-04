@@ -11,9 +11,41 @@ class InvoiceRepository extends EntityRepository
     {
         $conn = $this->getEntityManager()->getConnection();
 
+        $parameters = [
+            'invoice_fully_payed_status_id'     => Invoice::STATUS__FULLY_PAYED,
+            'invoice_fully_payed_status_guid'   => Invoice::STATUS_GUID__FULLY_PAYED,
+        ];
+
         $query = "
-            
+            SELECT
+                   pco.id as conf_org_id,
+                   pi.id as id,
+                   pi.status_id as status,
+                   pi.num as number,
+                   pi.amount as amount,
+                   CASE WHEN (pi.status_id = :invoice_fully_payed_status_id OR pi.status_guid = :invoice_fully_payed_status_guid) 
+                       THEN TRUE 
+                       ELSE FALSE 
+                   END as payed
+            FROM participating.conference_organization pco
+              INNER JOIN participating.invoice pi ON pco.id = pi.conference_organization_id
         ";
+
+        $stmt = $conn->prepare($query);
+        $stmt->execute($parameters);
+
+        $items = $stmt->fetchAll();
+
+        $result = [];
+        foreach ($items as $item) {
+            if (!isset($result[$item['conf_org_id']])) {
+                $result[$item['conf_org_id']] = [];
+            }
+
+            $result[$item['conf_org_id']][] = $item;
+        }
+
+        return $result;
     }
 
     /**
