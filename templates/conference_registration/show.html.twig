@@ -103,8 +103,52 @@
                 </div>
             </div>
 {% endfor %}
+    <button
+            type="button"
+            class="add-another-collection-widget btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mb-20"
+            data-list="#members-fields-list"
+    >
+        Добавить участника</button>
+    <div>
+        Допустиимо {{ ConferenceOrganization.conference.limitUsersByOrg }} участника на конференцию
+    </div>
 </div>
+<div>
+    <h3>Добавить ещё одного участника</h3>
+    {{ form_start(memberForm) }}
 
+    <div class="row">
+        <div class="col-md-3">{{- form_row(memberForm.user.lastName) -}}</div>
+        <div class="col-md-3">{{- form_row(memberForm.user.firstName) -}}</div>
+        <div class="col-md-3">{{- form_row(memberForm.user.middleName) -}}</div>
+        <div class="col-md-3">{{- form_row(memberForm.user.sex) -}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">{{- form_row(memberForm.user.phone) -}}</div>
+        <div class="col-md-3">{{- form_row(memberForm.user.email) -}}</div>
+        <div class="col-md-3">{{- form_row(memberForm.user.post) -}}</div>
+        <div class="col-md-3" style="padding-top: 37px">{{- form_row(memberForm.user.representative) -}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">{{- form_row(memberForm.arrival,{'value':ConferenceOrganization.Conference.eventStart|date("d.m.Y H:i")}) -}}</div>
+        <div class="col-md-3">{{- form_row(memberForm.leaving,{'value':ConferenceOrganization.Conference.eventFinish|date("d.m.Y H:i") }) -}}</div>
+        <div class="col-md-3">{{- form_row(memberForm.carNumber) -}}</div>
+        <div class="col-md-3">{{- form_row(memberForm.user.newphoto) -}}</div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">{{- form_row(memberForm.RoomType) -}}</div>
+        {#<div class="col-md-3">{{- form_row(memberForm.neighbourhood) -}}</div>#}
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Информация о классе участия:</h3>
+            <div class="roomTypeInfo"></div>
+        </div>
+    </div>
+    {{ form_row(memberForm.save) }}
+
+    {{ form_end(memberForm) }}
+</div>
 
 <h3>Вопрос организатору</h3>
 <table class="table">

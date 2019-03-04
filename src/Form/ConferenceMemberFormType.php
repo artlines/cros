@@ -84,6 +84,13 @@ class ConferenceMemberFormType extends AbstractType
                     'query_builder' => function (RoomTypeRepository $roomTypeRepository) {
                         return $roomTypeRepository->createQueryBuilder('rt')
                             ->orderBy('rt.title');
+                    },
+                    'choice_label' => function ($item) {
+                        /** @var RoomType $item */
+                        return $item->getTitle()
+                            . ' / Стоимость:'
+                            . number_format($item->getCost())
+                            . '₽';
                     }
                 ]
             )
