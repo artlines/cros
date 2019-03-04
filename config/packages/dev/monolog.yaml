@@ -6,6 +6,22 @@ monolog:
             level: debug
         console:
             type: console
+        deduplicated:
+            type: deduplication
+            handler: filter
+        filter:
+            type: filter
+            min_level: notice
+            max_level: critical
+            handler: swift
+        swift:
+            type: swift_mailer
+            from_email: 'error@nag.ru'
+            to_email: ['e.suzev@nag.ru']
+            subject: 'Ошибка на сайте cros.nag.ru'
+            level: debug
+            formatter: monolog.formatter.html
+            content_type: text/html
 
 parameters:
     cros_emails: [ 'e.nachuychenko@nag.ru' ]
