@@ -125,7 +125,7 @@ class InvoicesModal extends React.Component {
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>№ счета</TableCell>
+                                    <TableCell>№ заказа</TableCell>
                                     <TableCell>Сумма</TableCell>
                                     <TableCell>Дата</TableCell>
                                     <TableCell>Статус</TableCell>
