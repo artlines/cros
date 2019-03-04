@@ -43,9 +43,7 @@ class ConferenceOrganizationController extends ApiController
         $invoices = $invoiceRepo->getInvoicesGroupByConfOrganization();
 
         foreach ($items as $index => $item) {
-            if (isset($invoices[$item['id']])) {
-                $items[$index]['invoices'] = $invoices[$item['id']];
-            }
+            $items[$index]['invoices'] = $invoices[$item['id']] ?? [];
         }
 
         return $this->success(['items' => $items, 'total_count' => $totalCount]);
