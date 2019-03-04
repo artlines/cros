@@ -7,7 +7,18 @@ use Doctrine\ORM\EntityRepository;
 
 class InvoiceRepository extends EntityRepository
 {
+    public function getInvoicesGroupByConfOrganization()
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $query = "
+            
+        ";
+    }
+
     /**
+     * Get invoices which need synchronize with b2b
+     *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @return Invoice[]
      */
@@ -22,6 +33,11 @@ class InvoiceRepository extends EntityRepository
         return $query->getQuery()->getResult();
     }
 
+    /**
+     * Get information about invoices which need send to the representative members of organization
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     */
     public function getInfoToSend()
     {
         $conn = $this->getEntityManager()->getConnection();
