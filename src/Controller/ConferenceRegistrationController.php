@@ -487,6 +487,14 @@ class ConferenceRegistrationController extends AbstractController
     {
         /** @var User $user */
         /** @var Organization $organization */
+        if (!$this->getUser()) {
+            throw $this->createNotFoundException();
+        }
+
+        if (!$this->getUser()->getOrganization()){
+            throw $this->createNotFoundException();
+        }
+
         $organization = $this->getUser()->getOrganization();
         $Conference = $this->getDoctrine()->getRepository(Conference::class)
             ->findOneBy(['year' => date("Y")]);
