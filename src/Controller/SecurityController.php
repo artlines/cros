@@ -56,7 +56,10 @@ class SecurityController extends AbstractController
             ->getClient('google_nag')
             ->redirect(
                 ['email'],
-                ['redirect_uri' => $this->generateUrl('google_auth_callback', [], UrlGeneratorInterface::ABSOLUTE_URL)]
+                [
+                    'prompt'        => 'select_account consent',
+                    'redirect_uri'  => $this->generateUrl('google_auth_callback', [], UrlGeneratorInterface::ABSOLUTE_URL),
+                ]
             );
     }
 
