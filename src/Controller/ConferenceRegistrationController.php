@@ -18,6 +18,7 @@ use App\Repository\ConferenceOrganizationRepository;
 use App\Service\Mailer;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -519,7 +520,8 @@ class ConferenceRegistrationController extends AbstractController
 
             $CommentForm = $this->createForm(
                 CommentFormType::class
-            );
+            )
+            ;
 
             $currentMemberFormViews = [];
             foreach ($conferenceOrganization->getConferenceMembers() as $key => $iConferenceMember) {
@@ -528,6 +530,7 @@ class ConferenceRegistrationController extends AbstractController
                 )
                     ->remove('RoomType')
                     ->get('user')->remove( 'representative')->getParent()
+                    ->add('id', HiddenType::class)
                     ->add(
                         'save',
                         SubmitType::class,
@@ -540,10 +543,22 @@ class ConferenceRegistrationController extends AbstractController
                     )
                     ->createView();
             }
+            /** @var ConferenceMember $CM */
+            $CM = (isset($request->get('conference_member_form')['id']))
+                ? $this->getDoctrine()
+                    ->getRepository(ConferenceMember::class)
+                    ->findOneBy([
+                        'id'=> $request->get('conference_member_form')['id']
+                    ])
+                : null;
+            $CMRoomType = $CM
+                ? $CM->getRoomType()
+                : null;
 
             $memberForm = $this->createForm(
-                ConferenceMemberFormType::class)
+                ConferenceMemberFormType::class, $CM)
                 ->remove('neighbourhood')
+                ->add('id', HiddenType::class)
                 ->add(
                     'save',
                     SubmitType::class,
@@ -555,8 +570,22 @@ class ConferenceRegistrationController extends AbstractController
                     ]
                 )
             ;
+            $memberForm->handleRequest($request);
+            if ($memberForm->isSubmitted() && $memberForm->isValid()) {
+                /** @var EntityManager $em */
+                /** @var ConferenceMember $CM */
+                $CM = $memberForm->getData();
+                $CM->setRoomType($CMRoomType);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($memberForm->getData());
+                $em->flush();
 
+                //dd($memberForm->getData());
+            }
             $CommentForm->handleRequest($request);
+//            if ($request->request->has('conference_member_form')) {
+//
+//            }
 
             if ($CommentForm->isSubmitted() && $CommentForm->isValid()) {
 

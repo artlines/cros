@@ -91,11 +91,15 @@
                             </tr>
                             <tr>
                                 <th scope="row">Класс участия</th>
+                                {% if member.roomType  %}
                                 <td>{{- member.roomType.title -}}</td>
+                                {% endif %}
                             </tr>
                             <tr>
                                 <th scope="row">Стоимость</th>
+                                {% if member.roomType  %}
                                 <td>{{ member.roomType.cost|number_format(2,'.',' ') }} ₽</td>
+                                {% endif %}
                             </tr>
                             </tbody>
                         </table>
