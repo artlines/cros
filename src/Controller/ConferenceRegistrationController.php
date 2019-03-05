@@ -548,12 +548,17 @@ class ConferenceRegistrationController extends AbstractController
                 ? $this->getDoctrine()
                     ->getRepository(ConferenceMember::class)
                     ->findOneBy([
-                        'id'=> $request->get('conference_member_form')['id'] ?? 0
+                        'id'=> intval($request->get('conference_member_form')['id'])
                     ])
                 : null;
+            if (!$CM) {
+               $CM = new ConferenceMember();
+            }
             $CMRoomType = $CM
                 ? $CM->getRoomType()
                 : null;
+            $CM->setConferenceOrganization($conferenceOrganization);
+            $CM->setConference($conferenceOrganization->getConference());
             $memberForm = $this->createForm(
                 ConferenceMemberFormType::class, $CM)
                 ->remove('neighbourhood')

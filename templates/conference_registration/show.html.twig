@@ -151,8 +151,8 @@
                         {#<!--div class="col-md-3" style="padding-top: 37px">{{- form_row(memberForm.user.representative) -}}</div-->#}
                     </div>
                     <div class="row">
-                        <div class="col-md-3">{{- form_row(memberForm.arrival,{'value':ConferenceOrganization.Conference.eventStart|date("d.m.Y H:i")}) -}}</div>
-                        <div class="col-md-3">{{- form_row(memberForm.leaving,{'value':ConferenceOrganization.Conference.eventFinish|date("d.m.Y H:i") }) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.arrival,{'data':ConferenceOrganization.Conference.eventStart|date("d.m.Y H:i")}) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.leaving,{'data':ConferenceOrganization.Conference.eventFinish|date("d.m.Y H:i") }) -}}</div>
                         <div class="col-md-3">{{- form_row(memberForm.carNumber) -}}</div>
                         <div class="col-md-3">{{- form_row(memberForm.user.newphoto) -}}</div>
                     </div>
@@ -198,8 +198,8 @@
                         <!--div class="col-md-3" style="padding-top: 37px">{{- form_row(memberForm.user.representative) -}}</div-->
                     </div>
                     <div class="row">
-                        <div class="col-md-3">{{- form_row(memberForm.arrival,{'value':ConferenceOrganization.Conference.eventStart|date("d.m.Y H:i")}) -}}</div>
-                        <div class="col-md-3">{{- form_row(memberForm.leaving,{'value':ConferenceOrganization.Conference.eventFinish|date("d.m.Y H:i") }) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.arrival,{'data':ConferenceOrganization.Conference.eventStart|date("d.m.Y H:i")}) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.leaving,{'data':ConferenceOrganization.Conference.eventFinish|date("d.m.Y H:i") }) -}}</div>
                         <div class="col-md-3">{{- form_row(memberForm.carNumber) -}}</div>
                         <div class="col-md-3">{{- form_row(memberForm.user.newphoto) -}}</div>
                     </div>
@@ -338,6 +338,14 @@
         {% if submitted %}
         jQuery('#addModal').modal('show');
         {% endif %}
+        fixErrorLabels();
+    };
+
+    const fixErrorLabels = function () {
+        jQuery('.invalid-feedback').each(function () {
+            jQuery(this).parent().parent().find('input').first().after(jQuery(this));
+            jQuery(this).parent().parent().find('select').first().after(jQuery(this));
+        });
     };
 </script>
 {% endblock %}
