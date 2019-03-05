@@ -500,9 +500,12 @@ class ConferenceRegistrationController extends AbstractController
         }
 
         $organization = $this->getUser()->getOrganization();
-        $Conference = $this->getDoctrine()->getRepository(Conference::class)
+        $Conference = $this->getDoctrine()
+            ->getRepository(Conference::class)
             ->findOneBy(['year' => date("Y")]);
+
         if ($organization and $Conference) {
+            /** @var ConferenceOrganization $conferenceOrganization */
             $conferenceOrganization = $this->getDoctrine()
                 ->getRepository(ConferenceOrganization::class)
                 ->findOneBy([
@@ -510,13 +513,24 @@ class ConferenceRegistrationController extends AbstractController
                     'conference' => $Conference,
                 ]);
             if (!$conferenceOrganization) {
-                throw $this->createNotFoundException();
+                return $this->render('conference_registration/no_access.html.twig');
             }
 
             $CommentForm = $this->createForm(
                 CommentFormType::class
             );
 
+            $memberForm = $this->createForm(
+                ConferenceMemberFormType::class);
+
+            $memberForms = [];
+            foreach ($conferenceOrganization->getConferenceMembers() as $key => $iConferenceMember) {
+                $currentMemberFormViews[$key] = $this->createForm(
+                    ConferenceMemberFormType::class, $iConferenceMember
+                )
+                    ->remove('RoomType')
+                    ->createView();
+            }
             $memberForm = $this->createForm(
                 ConferenceMemberFormType::class);
 
@@ -556,6 +570,7 @@ class ConferenceRegistrationController extends AbstractController
 
                 return $this->redirectToRoute('registration_show');
             }
+
             $comments = $this->getDoctrine()
                 ->getRepository(Comment::class)
                 ->findBy([
@@ -568,7 +583,8 @@ class ConferenceRegistrationController extends AbstractController
                 'ConferenceOrganization' => $conferenceOrganization,
                 'comments' => $comments,
                 'form' => $CommentForm->createView(),
-                'memberForm' => $memberForm->createView()
+                'memberForm' => $memberForm->createView(),
+                'currentMemberFormViews' => $currentMemberFormViews
             ]);
         } else {
             throw $this->createNotFoundException();

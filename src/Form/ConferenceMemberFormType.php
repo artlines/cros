@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Abode\Room;
 use App\Entity\Abode\RoomType;
 use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\User;
@@ -82,12 +83,43 @@ class ConferenceMemberFormType extends AbstractType
                         'class' => 'cs-theme-color-gray-dark-v3 select-roomtype',
                     ],
                     'required' => true,
+//                    'choices' => function (RoomTypeRepository $roomTypeRepository) {
+//                        return $roomTypeRepository->getSummaryInformation();
+//                    },
+
                     'query_builder' => function (RoomTypeRepository $roomTypeRepository) {
-                        return $roomTypeRepository->createQueryBuilder('rt')
-                            ->orderBy('rt.title');
+                        return $roomTypeRepository
+                            ->createQueryBuilder('rt')
+                            ->select([
+                                'rt',
+                                'rt.title',
+                                'rt.cost',
+                                'SUM(rt.maxPlaces)'
+                            ])
+                            ->innerJoin(
+                                Room::class,
+                                'r',
+                                "WITH",
+                                'r.type=rt.id'
+                            )
+                            ->groupBy('rt.id')
+                            ;
+
+
+
+/*
+                         * abode.room room ON room.type_id = type.id
+  WHERE type.id = NEW.room_type_id;
+                         */
                     },
+
+//                    'query_builder' => function (RoomTypeRepository $roomTypeRepository) {
+//                        return $roomTypeRepository->createQueryBuilder('rt')
+//                            ->orderBy('rt.title');
+//                    },
                     'choice_label' => function ($item) {
                         /** @var RoomType $item */
+                        dd($item);
                         return $item->getTitle()
                             . ' / Стоимость:'
                             . number_format($item->getCost())
