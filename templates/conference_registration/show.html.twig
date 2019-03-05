@@ -134,9 +134,9 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                {{ form_start(memberForm) }}
                 <div class="modal-body">
                     <h3></h3>
-                    {{ form_start(memberForm) }}
 
                     <div class="row">
                         <div class="col-md-3">{{- form_row(memberForm.user.lastName) -}}</div>
@@ -160,6 +160,7 @@
                         {#<div class="col-md-6">{{- form_row(memberForm.RoomType) -}}</div>#}
                         <!--div class="col-md-3">{{- form_row(memberForm.neighbourhood) -}}</div-->
                     </div>
+                    {{ form_errors(memberForm) }}
                 </div>
                 <div class="modal-footer">
                     {{ form_row(memberForm.save) }}
@@ -206,6 +207,7 @@
                         <div class="col-md-6">{{- form_row(memberForm.RoomType) -}}</div>
                         {#<!--div class="col-md-3">{{- form_row(memberForm.neighbourhood) -}}</div-->#}
                     </div>
+                    {{ form_errors(memberForm) }}
                 </div>
                 <div class="modal-footer">
                     {{ form_row(memberForm.save) }}

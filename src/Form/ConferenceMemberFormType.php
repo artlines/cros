@@ -7,6 +7,7 @@ use App\Entity\Abode\RoomType;
 use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\User;
 use App\Repository\Abode\RoomTypeRepository;
+use App\Validator\ConferenceMemberForm;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -164,6 +165,10 @@ class ConferenceMemberFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ConferenceMember::class,
+            'constraints' => [
+                new ConferenceMemberForm()
+            ]
         ]);
+
     }
 }
