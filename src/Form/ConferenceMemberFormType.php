@@ -83,9 +83,6 @@ class ConferenceMemberFormType extends AbstractType
                         'class' => 'cs-theme-color-gray-dark-v3 select-roomtype',
                     ],
                     'required' => true,
-//                    'choices' => function (RoomTypeRepository $roomTypeRepository) {
-//                        return $roomTypeRepository->getSummaryInformation();
-//                    },
                     'query_builder' => function (RoomTypeRepository $roomTypeRepository) {
 
                         $roomTypesInfo = $roomTypeRepository->getSummaryInformation();
@@ -98,43 +95,14 @@ class ConferenceMemberFormType extends AbstractType
                             }
                         }
 
-                        //$roomTypeRepo->getSummaryInformation();
                         return $roomTypeRepository
                             ->createQueryBuilder('rt')
                             ->where('rt.id in (:ids)')
                             ->setParameter('ids', $arFreeIds)
                             ;
 
-/*
-    SELECT INTO room_count SUM(type.max_places)
-    FROM abode.room_type type
-    INNER JOIN abode.room room ON room.type_id = type.id
-  WHERE type.id = NEW.room_type_id;
-
-    SELECT INTO user_count COUNT(m.user_id)
-    FROM participating.conference_member m
-      INNER JOIN public.conference c ON m.conference_id = c.id
-    WHERE m.room_type_id = NEW.room_type_id
-      AND c.year = DATE_PART('year', NOW());
-
-    IF room_count > user_count THEN
-      return NEW;
-    ELSE
-      RAISE EXCEPTION 'User count more then room count';
-    END IF;
-
- * */
-
-/*
-                         * abode.room room ON room.type_id = type.id
-  WHERE type.id = NEW.room_type_id;
-                         */
                     },
 
-//                    'query_builder' => function (RoomTypeRepository $roomTypeRepository) {
-//                        return $roomTypeRepository->createQueryBuilder('rt')
-//                            ->orderBy('rt.title');
-//                    },
                     'choice_label' => function ($item) {
                         /** @var RoomType $item */
                         //dd($item);
