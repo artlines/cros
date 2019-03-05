@@ -520,10 +520,7 @@ class ConferenceRegistrationController extends AbstractController
                 CommentFormType::class
             );
 
-            $memberForm = $this->createForm(
-                ConferenceMemberFormType::class);
-
-            $memberForms = [];
+            $currentMemberFormViews = [];
             foreach ($conferenceOrganization->getConferenceMembers() as $key => $iConferenceMember) {
                 $currentMemberFormViews[$key] = $this->createForm(
                     ConferenceMemberFormType::class, $iConferenceMember

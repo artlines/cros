@@ -86,26 +86,44 @@ class ConferenceMemberFormType extends AbstractType
 //                    'choices' => function (RoomTypeRepository $roomTypeRepository) {
 //                        return $roomTypeRepository->getSummaryInformation();
 //                    },
-
                     'query_builder' => function (RoomTypeRepository $roomTypeRepository) {
+
+                        $roomTypesInfo = $roomTypeRepository->getSummaryInformation();
+
+                        $arFreeIds = [];
+                        foreach ($roomTypesInfo as $type){
+                            //$arFreePlaces[$type['room_type_id']] = $type['total'] - $type['busy'] - $type['reserved'];
+                            if( $type['total'] - $type['busy'] - $type['reserved'] >0 ){
+                                $arFreeIds[] = $type['room_type_id'];
+                            }
+                        }
+
+                        //$roomTypeRepo->getSummaryInformation();
                         return $roomTypeRepository
                             ->createQueryBuilder('rt')
-                            ->select([
-                                'rt',
-                                'rt.title',
-                                'rt.cost',
-                                'SUM(rt.maxPlaces)'
-                            ])
-                            ->innerJoin(
-                                Room::class,
-                                'r',
-                                "WITH",
-                                'r.type=rt.id'
-                            )
-                            ->groupBy('rt.id')
+                            ->where('rt.id in (:ids)')
+                            ->setParameter('ids', $arFreeIds)
                             ;
 
+/*
+    SELECT INTO room_count SUM(type.max_places)
+    FROM abode.room_type type
+    INNER JOIN abode.room room ON room.type_id = type.id
+  WHERE type.id = NEW.room_type_id;
 
+    SELECT INTO user_count COUNT(m.user_id)
+    FROM participating.conference_member m
+      INNER JOIN public.conference c ON m.conference_id = c.id
+    WHERE m.room_type_id = NEW.room_type_id
+      AND c.year = DATE_PART('year', NOW());
+
+    IF room_count > user_count THEN
+      return NEW;
+    ELSE
+      RAISE EXCEPTION 'User count more then room count';
+    END IF;
+
+ * */
 
 /*
                          * abode.room room ON room.type_id = type.id
@@ -119,7 +137,7 @@ class ConferenceMemberFormType extends AbstractType
 //                    },
                     'choice_label' => function ($item) {
                         /** @var RoomType $item */
-                        dd($item);
+                        //dd($item);
                         return $item->getTitle()
                             . ' / Стоимость:'
                             . number_format($item->getCost())
