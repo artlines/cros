@@ -219,7 +219,7 @@
     {% if submitted == false %}
         {{ submitted }}
     {% endif %}
-    submitted=  {{ submitted }}
+    submitted= {{ submitted }}
 
 <h3>Вопрос организатору</h3>
 <table class="table">
@@ -338,9 +338,9 @@
             jQuery(this).parent().find('label[for='+id+']').text(fileName).attr('style','overflow: hidden');
             //alert('The file "' + fileName + '" has been selected.' );
         });
-    {% if submitted== -1 %}
+    {% if submitted == -1 %}
         jQuery('#addModal').modal('show');
-    {% elseif submitted>=0 %}
+    {% elseif submitted >= 0 %}
         jQuery('#editModal{{ submitted }}').modal('show');
     {% endif %}
         fixErrorLabels();

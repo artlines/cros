@@ -543,12 +543,9 @@ class ConferenceRegistrationController extends AbstractController
             $currentMemberFormViews = [];
             $submitted = -1;
             foreach ($conferenceOrganization->getConferenceMembers() as $key => $iConferenceMember) {
-                if ($CM == $iConferenceMember ){
-                    $submitted = $key;
-                }
-                $currentMemberFormViews[$key] = $this->createForm(
+                $form = $this->createForm(
                     ConferenceMemberFormType::class,
-                    $CM->getId() == $iConferenceMember->getId()
+                    $CM == $iConferenceMember
                         ? $CM
                         : $iConferenceMember
                 )
@@ -564,7 +561,13 @@ class ConferenceRegistrationController extends AbstractController
                                 'class' => 'u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15'
                             ]
                         ]
-                    )
+                    );
+                if ($CM == $iConferenceMember){
+                    $submitted = $key;
+                    $form->handleRequest($request);
+                }
+
+                $currentMemberFormViews[$key] = $form
                     ->createView();
             }
 
@@ -589,7 +592,9 @@ class ConferenceRegistrationController extends AbstractController
                 $memberForm->remove('roomType');
             }
             ;
-            $memberForm->handleRequest($request);
+            if( $submitted == -1 ) {
+                $memberForm->handleRequest($request);
+            }
             if ($memberForm->isSubmitted() && $memberForm->isValid()) {
                 /** @var EntityManager $em */
                 /** @var ConferenceMember $CM */
@@ -666,7 +671,7 @@ class ConferenceRegistrationController extends AbstractController
                 'form' => $CommentForm->createView(),
                 'memberForm' => $memberForm->createView(),
                 'currentMemberFormViews' => $currentMemberFormViews,
-                'submitted' => $memberForm->isSubmitted() ? $submitted : false,
+                'submitted' => $submitted,
             ]);
         } else {
             throw $this->createNotFoundException();
