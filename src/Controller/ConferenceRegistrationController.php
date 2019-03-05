@@ -548,17 +548,16 @@ class ConferenceRegistrationController extends AbstractController
                 ? $this->getDoctrine()
                     ->getRepository(ConferenceMember::class)
                     ->findOneBy([
-                        'id'=> $request->get('conference_member_form')['id']
+                        'id'=> $request->get('conference_member_form')['id'] ?? 0
                     ])
                 : null;
             $CMRoomType = $CM
                 ? $CM->getRoomType()
                 : null;
-
             $memberForm = $this->createForm(
                 ConferenceMemberFormType::class, $CM)
                 ->remove('neighbourhood')
-                ->add('id', HiddenType::class)
+                ->remove('roomType')
                 ->add(
                     'save',
                     SubmitType::class,
@@ -568,19 +567,25 @@ class ConferenceRegistrationController extends AbstractController
                             'class' => 'u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15'
                         ]
                     ]
-                )
+                );
+            $memberForm->remove('roomType');
+            if($CM){
+                // Если редактируем
+                $memberForm->add('id', HiddenType::class);
+                $memberForm->remove('roomType');
+            }
             ;
             $memberForm->handleRequest($request);
             if ($memberForm->isSubmitted() && $memberForm->isValid()) {
                 /** @var EntityManager $em */
                 /** @var ConferenceMember $CM */
                 $CM = $memberForm->getData();
+                // restore roomType value ->remove('roomType') not works
                 $CM->setRoomType($CMRoomType);
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($memberForm->getData());
+                $em->persist($CM);
                 $em->flush();
-
-                //dd($memberForm->getData());
+                return $this->redirectToRoute('registration_show');
             }
             $CommentForm->handleRequest($request);
 //            if ($request->request->has('conference_member_form')) {
