@@ -489,7 +489,7 @@ class ConferenceRegistrationController extends AbstractController
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function registrationShow(Request $request, Mailer $mailer)
+    public function registrationShow(Request $request, Mailer $mailer, UserPasswordEncoderInterface $passwordEncoder)
     {
         /** @var User $user */
         /** @var Organization $organization */
@@ -579,11 +579,22 @@ class ConferenceRegistrationController extends AbstractController
             if ($memberForm->isSubmitted() && $memberForm->isValid()) {
                 /** @var EntityManager $em */
                 /** @var ConferenceMember $CM */
-                $CM = $memberForm->getData();
+                $CMNew = $memberForm->getData();
                 // restore roomType value ->remove('roomType') not works
-                $CM->setRoomType($CMRoomType);
+                if ($CM && $CMRoomType) {
+                    $CMNew->setRoomType($CMRoomType);
+                }
+                $user = $CMNew->getUser();
+                $user->setPhone(preg_replace('/[\D]/', '', $user->getPhone()));
+                $user->setOrganization($conferenceOrganization->getOrganization());
+                $password = $this->getRandomPassword();
+                $user->setPassword(
+                    $passwordEncoder->encodePassword($user, $password)
+                );
+                $CMNew->setConference($conferenceOrganization->getConference());
+                $CMNew->setConferenceOrganization($conferenceOrganization);
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($CM);
+                $em->persist($CMNew);
                 $em->flush();
                 return $this->redirectToRoute('registration_show');
             }
