@@ -125,7 +125,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Добавление участника конференции</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Редактирование участника конференции</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -144,7 +144,7 @@
                         <div class="col-md-3">{{- form_row(memberForm.user.phone) -}}</div>
                         <div class="col-md-3">{{- form_row(memberForm.user.email) -}}</div>
                         <div class="col-md-3">{{- form_row(memberForm.user.post) -}}</div>
-                        <!--div class="col-md-3" style="padding-top: 37px">{{- form_row(memberForm.user.representative) -}}</div-->
+                        {#<!--div class="col-md-3" style="padding-top: 37px">{{- form_row(memberForm.user.representative) -}}</div-->#}
                     </div>
                     <div class="row">
                         <div class="col-md-3">{{- form_row(memberForm.arrival,{'value':ConferenceOrganization.Conference.eventStart|date("d.m.Y H:i")}) -}}</div>
@@ -199,7 +199,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">{{- form_row(memberForm.RoomType) -}}</div>
-                        <!--div class="col-md-3">{{- form_row(memberForm.neighbourhood) -}}</div-->
+                        {#<!--div class="col-md-3">{{- form_row(memberForm.neighbourhood) -}}</div-->#}
                     </div>
                 </div>
                 <div class="modal-footer">

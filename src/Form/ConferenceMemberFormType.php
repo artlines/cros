@@ -183,16 +183,7 @@ class ConferenceMemberFormType extends AbstractType
                     'help' => 'Выбор участника, для размещения в одном номере'
                 ]
             )
-            ->add(
-                'save',
-                SubmitType::class,
-                [
-                    'label' => 'Добавить пользователя',
-                    'attr' => [
-                        'class' => 'u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15'
-                    ]
-                ]
-            );
+            ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             // ... adding the name field if needed

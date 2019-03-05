@@ -18,6 +18,7 @@ use App\Repository\ConferenceOrganizationRepository;
 use App\Service\Mailer;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -526,10 +527,34 @@ class ConferenceRegistrationController extends AbstractController
                     ConferenceMemberFormType::class, $iConferenceMember
                 )
                     ->remove('RoomType')
+                    ->get('user')->remove( 'representative')->getParent()
+                    ->add(
+                        'save',
+                        SubmitType::class,
+                        [
+                            'label' => 'Редактировать участника',
+                            'attr' => [
+                                'class' => 'u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15'
+                            ]
+                        ]
+                    )
                     ->createView();
             }
+
             $memberForm = $this->createForm(
-                ConferenceMemberFormType::class);
+                ConferenceMemberFormType::class)
+                ->remove('neighbourhood')
+                ->add(
+                    'save',
+                    SubmitType::class,
+                    [
+                        'label' => 'Добавить участника',
+                        'attr' => [
+                            'class' => 'u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15'
+                        ]
+                    ]
+                )
+            ;
 
             $CommentForm->handleRequest($request);
 
