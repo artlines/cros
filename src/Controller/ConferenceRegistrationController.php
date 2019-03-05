@@ -651,7 +651,8 @@ class ConferenceRegistrationController extends AbstractController
                 'comments' => $comments,
                 'form' => $CommentForm->createView(),
                 'memberForm' => $memberForm->createView(),
-                'currentMemberFormViews' => $currentMemberFormViews
+                'currentMemberFormViews' => $currentMemberFormViews,
+                'submitted' => $memberForm->isSubmitted(),
             ]);
         } else {
             throw $this->createNotFoundException();

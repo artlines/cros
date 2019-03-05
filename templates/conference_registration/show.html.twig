@@ -335,7 +335,9 @@
             jQuery(this).parent().find('label[for='+id+']').text(fileName).attr('style','overflow: hidden');
             //alert('The file "' + fileName + '" has been selected.' );
         });
-
+        {% if submitted %}
+        jQuery('#addModal').modal('show');
+        {% endif %}
     };
 </script>
 {% endblock %}
