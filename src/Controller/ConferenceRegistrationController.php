@@ -505,7 +505,6 @@ class ConferenceRegistrationController extends AbstractController
         $Conference = $this->getDoctrine()
             ->getRepository(Conference::class)
             ->findOneBy(['year' => date("Y")]);
-
         if ($organization and $Conference) {
             /** @var ConferenceOrganization $conferenceOrganization */
             $conferenceOrganization = $this->getDoctrine()
@@ -514,6 +513,7 @@ class ConferenceRegistrationController extends AbstractController
                     'organization' => $organization,
                     'conference' => $Conference,
                 ]);
+
             if (!$conferenceOrganization) {
                 return $this->render('conference_registration/no_access.html.twig');
             }
@@ -522,8 +522,18 @@ class ConferenceRegistrationController extends AbstractController
                 CommentFormType::class
             )
             ;
-
-            /** @var ConferenceMember $CM */
+            $canAdd = false;
+            $canEdit = false;
+            foreach ($conferenceOrganization->getConferenceMembers() as $key => $iConferenceMember) {
+                //dump('$this->getUser()',$iConferenceMember );
+                if( $iConferenceMember->getUser()->isRepresentative() and $iConferenceMember->getUser() == $this->getUser() ){
+                    $canEdit = true;
+                }
+            }
+            if( $conferenceOrganization->getConferenceMembers()->count() < $conferenceOrganization->getConference()->getLimitUsersByOrg() ){
+                $canAdd = true;
+            }
+                /** @var ConferenceMember $CM */
             $CM = (isset($request->get('conference_member_form')['id']))
                 ? $this->getDoctrine()
                     ->getRepository(ConferenceMember::class)
@@ -536,6 +546,9 @@ class ConferenceRegistrationController extends AbstractController
             }
             $CMRoomType = $CM
                 ? $CM->getRoomType()
+                : null;
+            $CMNeighbourhood = $CM
+                ? $CM->getNeighbourhood()
                 : null;
 
             $CM->setConferenceOrganization($conferenceOrganization);
@@ -565,6 +578,7 @@ class ConferenceRegistrationController extends AbstractController
                 if ($CM == $iConferenceMember){
                     $submitted = $key;
                     $form->handleRequest($request);
+                    $submitForm = $form;
                 }
 
                 $currentMemberFormViews[$key] = $form
@@ -594,14 +608,16 @@ class ConferenceRegistrationController extends AbstractController
             ;
             if( $submitted == -1 ) {
                 $memberForm->handleRequest($request);
+                $submitForm = $memberForm;
             }
-            if ($memberForm->isSubmitted() && $memberForm->isValid()) {
+            if ($submitForm->isSubmitted() && $submitForm->isValid()) {
                 /** @var EntityManager $em */
                 /** @var ConferenceMember $CM */
-                $CMNew = $memberForm->getData();
+                $CMNew = $submitForm->getData();
                 // restore roomType value ->remove('roomType') not works
                 if ($CM && $CMRoomType) {
                     $CMNew->setRoomType($CMRoomType);
+                    $CMNew->setNeighbourhood($CMNeighbourhood);
                 }
                 $user = $CMNew->getUser();
                 $user->setPhone(preg_replace('/[\D]/', '', $user->getPhone()));
@@ -671,7 +687,9 @@ class ConferenceRegistrationController extends AbstractController
                 'form' => $CommentForm->createView(),
                 'memberForm' => $memberForm->createView(),
                 'currentMemberFormViews' => $currentMemberFormViews,
-                'submitted' => $submitted,
+                'submitted' => $request->getMethod()=='POST' ? $submitted : false,
+                'canAdd' => $canAdd,
+                'canEdit' => $canEdit,
             ]);
         } else {
             throw $this->createNotFoundException();

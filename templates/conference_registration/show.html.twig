@@ -103,6 +103,7 @@
                             </tr>
                             </tbody>
                         </table>
+                        {% if  canEdit %}
                         <button
                                 type="button"
                                 class="btn btn-primary cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mb-20"
@@ -110,10 +111,12 @@
                             >
                             Редактировать
                         </button>
+                        {% endif %}
                     </div>
                 </div>
             </div>
 {% endfor %}
+    {% if  canAdd %}
     <button
             type="button"
             class="add-another-collection-widget btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mb-20"
@@ -123,6 +126,7 @@
     <div>
         Допустиимо {{ ConferenceOrganization.conference.limitUsersByOrg }} участника на конференцию
     </div>
+    {% endif %}
 </div>
 {% for key,memberForm in currentMemberFormViews %}
     <div class="modal fade" id="editModal{{ key }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -216,10 +220,6 @@
             </div>
         </div>
     </div>
-    {% if submitted == false %}
-        {{ submitted }}
-    {% endif %}
-    submitted= {{ submitted }}
 
 <h3>Вопрос организатору</h3>
 <table class="table">
