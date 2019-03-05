@@ -115,10 +115,12 @@ class Invoice
      */
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
-        $this->date      = $this->createdAt;
-        $this->status    = self::STATUS__NO_PAYED;
-        $this->isSent    = FALSE;
+        $this->createdAt    = new \DateTime();
+        $this->date         = $this->createdAt;
+        $this->status       = self::STATUS__NO_PAYED;
+        $this->isSent       = FALSE;
+        $this->statusGuid   = self::STATUS_GUID__DOCUMENT_NOT_READY;
+        $this->statusText   = 'Ожидание счета';
     }
 
     /**

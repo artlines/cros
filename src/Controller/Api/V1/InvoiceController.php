@@ -65,12 +65,9 @@ class InvoiceController extends ApiController
     public function new()
     {
         $amount = $this->requestData['amount'] ?? null;
-        $number = $this->requestData['number'] ?? null;
-        $date = $this->requestData['date'] ?? null;
-        $status = $this->requestData['status'] ?? null;
         $conference_organization_id = $this->requestData['conference_organization_id'] ?? null;
 
-        if (!$amount || !$number || !$date || !$status || !$conference_organization_id) {
+        if (!$amount || !$conference_organization_id) {
             return $this->badRequest('Не переданы обязательные параметры.');
         }
 
@@ -82,9 +79,6 @@ class InvoiceController extends ApiController
         $invoice = new Invoice();
         $invoice->setAmount($amount);
         $invoice->setConferenceOrganization($conferenceOrganization);
-        $invoice->setNumber($number);
-        $invoice->setStatus($status);
-        $invoice->setDate(new \DateTime($date));
 
         $this->em->persist($invoice);
         $this->em->flush();

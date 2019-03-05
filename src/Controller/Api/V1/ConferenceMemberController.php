@@ -75,6 +75,7 @@ class ConferenceMemberController extends ApiController
                 'arrival'       => $_arrival ? $_arrival->format('Y-m-d\TH:i') : null,
                 'leaving'       => $_leaving ? $_leaving->format('Y-m-d\TH:i') : null,
                 'room_type_id'  => $roomType ? $roomType->getId() : null,
+                'room_type_cost'=> $roomType ? $roomType->getCost() : null,
                 'place'         => $placeInfo,
             ];
         }
