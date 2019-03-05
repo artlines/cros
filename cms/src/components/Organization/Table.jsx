@@ -8,16 +8,19 @@ import {
     TableBody,
     TableRow,
     TableCell,
+    Tooltip,
     Button,
     IconButton,
     TablePagination,
     Grid,
 } from '@material-ui/core';
+import { Receipt as ReceiptIcon } from '@material-ui/icons';
 import { green, red } from '@material-ui/core/colors';
 import map from 'lodash/map';
 import InvoicesModal from './InvoicesModal';
 import CommentsModal from "./CommentsModal";
 import MembersModal from "./MembersModal";
+import MakeInvoiceModal from "./MakeInvoiceModal";
 import LinearProgress from '../utils/LinearProgress';
 import {Edit as EditIcon} from "@material-ui/icons";
 
@@ -122,22 +125,33 @@ class OrganizationTable extends React.Component {
                                             />
                                         </TableCell>
                                         <TableCell>
-                                            <InvoicesModal
-                                                organizationId={item.id}
-                                                organizationName={item.name}
-                                                trigger={
-                                                    <Button
-                                                        style={{
-                                                            color: item.invoices_count > 0
-                                                                ? item.invoices_payed === item.invoices_count ? green[700] : red[700]
-                                                                : 'inherit'
-                                                        }}
-                                                    >
-                                                        {item.invoices_count}
-                                                    </Button>
-                                                }
-                                                update={this.updateInvoices}
-                                            />
+                                            {item.invoices_count === 0 &&
+                                                <MakeInvoiceModal
+                                                    trigger={
+                                                        <Tooltip title={`Выставить счет`}>
+                                                            <IconButton>
+                                                                <ReceiptIcon/>
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    }
+                                                />
+                                            }
+                                            {item.invoices_count > 0 &&
+                                                <InvoicesModal
+                                                    organizationId={item.id}
+                                                    organizationName={item.name}
+                                                    trigger={
+                                                        <Button
+                                                            style={{
+                                                                color: item.invoices_payed === item.invoices_count ? green[700] : red[700]
+                                                            }}
+                                                        >
+                                                            {item.invoices_count}
+                                                        </Button>
+                                                    }
+                                                    update={this.updateInvoices}
+                                                />
+                                            }
                                         </TableCell>
                                         <TableCell>
                                             <CommentsModal
