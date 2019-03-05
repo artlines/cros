@@ -23,10 +23,10 @@ class ConferenceMemberFormValidator extends ConstraintValidator
         if (is_object($conferenceMember) || $conferenceMember instanceof ConferenceMember) {
             /* @var $constraint App\Validator\ConferenceMemberForm */
 
-            $this->context
-                ->buildViolation('DEBUG STOP')
-                ->atPath("ConferenceMember")
-                ->addViolation();
+//            $this->context
+//                ->buildViolation('DEBUG STOP')
+//                ->atPath("ConferenceMember")
+//                ->addViolation();
 
             $email = $conferenceMember->getUser()->getEmail();
             $em = $this->registry->getManagerForClass(\get_class($conferenceMember));
@@ -37,7 +37,7 @@ class ConferenceMemberFormValidator extends ConstraintValidator
             $conf_id = $conferenceMember->getConferenceOrganization()->getConference()->getId();
             $cm = $repository->findConferenceMemberByEmail($conf_id, $email);
 
-            if ($cm) {
+            if ($cm and $cm != $conferenceMember) {
                 $this->context
                     ->buildViolation('Пользователь с такой почтой уже зарегистрирован')
                     ->atPath("user.email")
@@ -57,24 +57,27 @@ class ConferenceMemberFormValidator extends ConstraintValidator
             foreach ($roomTypesInfo as $type){
                 $arFreePlaces[$type['room_type_id']] = $type['total'] - $type['busy'] - $type['reserved'];
             }
+
             $count = $conferenceMember->getConferenceOrganization()->getConferenceMembers()->count();
             $limit = $conferenceMember->getConference()->getLimitUsersByOrg();
-            $roomTypeId = $conferenceMember->getRoomType()->getId();
-            if ($count >= $limit ) {
+            if ($count >= $limit and $conferenceMember->getId()<1) {
                 $this->context
                     ->buildViolation('Превышен лимит участников на одну организацию' )
                     ->atPath("roomType")
                     ->addViolation();
             }
 
-            if (isset($arFreePlaces[$roomTypeId]) and $arFreePlaces[$roomTypeId]>0) {
-                // вычитаем предполагаемое заселение.
-                //$arFreePlaces[$roomTypeId] -= 1;
-            } else {
-                $this->context
-                    ->buildViolation('Не достаточно свободных номеров' )
-                    ->atPath("roomType")
-                    ->addViolation();
+            if ($conferenceMember->getRoomType()) {
+                $roomTypeId = $conferenceMember->getRoomType()->getId();
+                if (isset($arFreePlaces[$roomTypeId]) and $arFreePlaces[$roomTypeId] > 0) {
+                    // вычитаем предполагаемое заселение.
+                    //$arFreePlaces[$roomTypeId] -= 1;
+                } else {
+                    $this->context
+                        ->buildViolation('Не достаточно свободных номеров')
+                        ->atPath("roomType")
+                        ->addViolation();
+                }
             }
 
 

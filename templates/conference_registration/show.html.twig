@@ -135,7 +135,7 @@
                     </button>
                 </div>
                 {{ form_start(memberForm) }}
-                <div class="modal-body">
+                <div class="modal-body conference-member">
                     <h3></h3>
 
                     <div class="row">
@@ -216,7 +216,10 @@
             </div>
         </div>
     </div>
-
+    {% if submitted == false %}
+        {{ submitted }}
+    {% endif %}
+    submitted=  {{ submitted }}
 
 <h3>Вопрос организатору</h3>
 <table class="table">
@@ -335,9 +338,11 @@
             jQuery(this).parent().find('label[for='+id+']').text(fileName).attr('style','overflow: hidden');
             //alert('The file "' + fileName + '" has been selected.' );
         });
-        {% if submitted %}
+    {% if submitted== -1 %}
         jQuery('#addModal').modal('show');
-        {% endif %}
+    {% elseif submitted>=0 %}
+        jQuery('#editModal{{ submitted }}').modal('show');
+    {% endif %}
         fixErrorLabels();
     };
 

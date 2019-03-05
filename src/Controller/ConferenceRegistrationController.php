@@ -523,10 +523,34 @@ class ConferenceRegistrationController extends AbstractController
             )
             ;
 
+            /** @var ConferenceMember $CM */
+            $CM = (isset($request->get('conference_member_form')['id']))
+                ? $this->getDoctrine()
+                    ->getRepository(ConferenceMember::class)
+                    ->findOneBy([
+                        'id'=> intval($request->get('conference_member_form')['id'])
+                    ])
+                : null;
+            if (!$CM) {
+               $CM = new ConferenceMember();
+            }
+            $CMRoomType = $CM
+                ? $CM->getRoomType()
+                : null;
+
+            $CM->setConferenceOrganization($conferenceOrganization);
+            $CM->setConference($conferenceOrganization->getConference());
             $currentMemberFormViews = [];
+            $submitted = -1;
             foreach ($conferenceOrganization->getConferenceMembers() as $key => $iConferenceMember) {
+                if ($CM == $iConferenceMember ){
+                    $submitted = $key;
+                }
                 $currentMemberFormViews[$key] = $this->createForm(
-                    ConferenceMemberFormType::class, $iConferenceMember
+                    ConferenceMemberFormType::class,
+                    $CM->getId() == $iConferenceMember->getId()
+                        ? $CM
+                        : $iConferenceMember
                 )
                     ->remove('RoomType')
                     ->get('user')->remove( 'representative')->getParent()
@@ -543,22 +567,7 @@ class ConferenceRegistrationController extends AbstractController
                     )
                     ->createView();
             }
-            /** @var ConferenceMember $CM */
-            $CM = (isset($request->get('conference_member_form')['id']))
-                ? $this->getDoctrine()
-                    ->getRepository(ConferenceMember::class)
-                    ->findOneBy([
-                        'id'=> intval($request->get('conference_member_form')['id'])
-                    ])
-                : null;
-            if (!$CM) {
-               $CM = new ConferenceMember();
-            }
-            $CMRoomType = $CM
-                ? $CM->getRoomType()
-                : null;
-            $CM->setConferenceOrganization($conferenceOrganization);
-            $CM->setConference($conferenceOrganization->getConference());
+
             $memberForm = $this->createForm(
                 ConferenceMemberFormType::class, $CM)
                 ->remove('neighbourhood')
@@ -657,7 +666,7 @@ class ConferenceRegistrationController extends AbstractController
                 'form' => $CommentForm->createView(),
                 'memberForm' => $memberForm->createView(),
                 'currentMemberFormViews' => $currentMemberFormViews,
-                'submitted' => $memberForm->isSubmitted(),
+                'submitted' => $memberForm->isSubmitted() ? $submitted : false,
             ]);
         } else {
             throw $this->createNotFoundException();
