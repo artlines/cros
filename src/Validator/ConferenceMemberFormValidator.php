@@ -79,8 +79,10 @@ class ConferenceMemberFormValidator extends ConstraintValidator
             if ($conferenceMember->getRoomType()) {
                 $roomTypeId = $conferenceMember->getRoomType()->getId();
                 if (
-                (!isset($arFreePlaces[$roomTypeId])
-                    or $arFreePlaces[$roomTypeId] < 1)
+                    (
+                        !isset($arFreePlaces[$roomTypeId])
+                        or $arFreePlaces[$roomTypeId] < 1
+                    )
                     // Проверка что создание участника ( исключение, для редактирования )
                     and $conferenceMember->getId() < 1
 
