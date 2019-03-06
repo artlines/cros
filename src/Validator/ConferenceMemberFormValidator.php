@@ -23,11 +23,6 @@ class ConferenceMemberFormValidator extends ConstraintValidator
         if (is_object($conferenceMember) || $conferenceMember instanceof ConferenceMember) {
             /* @var $constraint App\Validator\ConferenceMemberForm */
 
-//            $this->context
-//                ->buildViolation('DEBUG STOP')
-//                ->atPath("ConferenceMember")
-//                ->addViolation();
-
             $email = $conferenceMember->getUser()->getEmail();
             $em = $this->registry->getManagerForClass(\get_class($conferenceMember));
             $repository = $em->getRepository(ConferenceMember::class);
