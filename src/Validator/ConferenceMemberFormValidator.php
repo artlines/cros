@@ -39,7 +39,7 @@ class ConferenceMemberFormValidator extends ConstraintValidator
                     ->addViolation();
             } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $this->context
-                    ->buildViolation('Не верный формат почты')
+                    ->buildViolation('Неверный формат почты')
                     ->atPath("user.email")
                     ->addViolation();
             }
@@ -69,7 +69,7 @@ class ConferenceMemberFormValidator extends ConstraintValidator
                     //$arFreePlaces[$roomTypeId] -= 1;
                 } else {
                     $this->context
-                        ->buildViolation('Не достаточно свободных номеров')
+                        ->buildViolation('Недостаточно свободных номеров')
                         ->atPath("roomType")
                         ->addViolation();
                 }
