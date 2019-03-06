@@ -484,7 +484,7 @@ class ConferenceRegistrationController extends AbstractController
         ]);
     }
 
-    public function mailSendPassword( ConferenceMember $conferenceMember, string $password )
+    public function mailSendPassword(ConferenceMember $conferenceMember, string $password)
     {
         $Conference = $conferenceMember->getConference();
         $ConferenceOrganization = $conferenceMember->getConferenceOrganization();
@@ -526,7 +526,7 @@ class ConferenceRegistrationController extends AbstractController
         );
     }
 
-    public function mailSendUserCreate( ConferenceMember $conferenceMember, ?ConferenceMember $conferenceMemberOld = null)
+    public function mailSendUserCreate(ConferenceMember $conferenceMember, ?ConferenceMember $conferenceMemberOld = null)
     {
         $ConferenceOrganization = $conferenceMember->getConferenceOrganization();
         $arUsers = [];
@@ -568,9 +568,9 @@ class ConferenceRegistrationController extends AbstractController
             'comment' => $ConferenceOrganization->getOrganization()->getComment(),
             'users' => $arUsers
         ];
-        if($conferenceMemberOld){
+        if ($conferenceMemberOld) {
             $this->mailer->setTemplateAlias(self::MAIL_SEND_USER_UPDATE);
-        }else {
+        } else {
             $this->mailer->setTemplateAlias(self::MAIL_SEND_USER_ADD);
         }
         foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
@@ -591,9 +591,9 @@ class ConferenceRegistrationController extends AbstractController
         }
     }
 
-    public function mailSendUserUpdate( ConferenceMember $conferenceMember, ?ConferenceMember $conferenceMemberOld = null )
+    public function mailSendUserUpdate(ConferenceMember $conferenceMember, ?ConferenceMember $conferenceMemberOld = null)
     {
-        $this->mailSendUserCreate($conferenceMember,$conferenceMemberOld);
+        $this->mailSendUserCreate($conferenceMember, $conferenceMemberOld);
     }
 
     /**
@@ -622,7 +622,7 @@ class ConferenceRegistrationController extends AbstractController
             return $this->render('conference_registration/no_access.html.twig');
         }
 
-        if (!$this->getUser()->getOrganization()){
+        if (!$this->getUser()->getOrganization()) {
             return $this->render('conference_registration/no_access.html.twig');
         }
 
@@ -645,29 +645,28 @@ class ConferenceRegistrationController extends AbstractController
 
             $CommentForm = $this->createForm(
                 CommentFormType::class
-            )
-            ;
+            );
             $canAdd = false;
             $canEdit = false;
             foreach ($conferenceOrganization->getConferenceMembers() as $key => $iConferenceMember) {
                 //dump('$this->getUser()',$iConferenceMember );
-                if( $iConferenceMember->getUser()->isRepresentative() and $iConferenceMember->getUser() == $this->getUser() ){
+                if ($iConferenceMember->getUser()->isRepresentative() and $iConferenceMember->getUser() == $this->getUser()) {
                     $canEdit = true;
                 }
             }
-            if( $canEdit and $conferenceOrganization->getConferenceMembers()->count() < $conferenceOrganization->getConference()->getLimitUsersByOrg() ){
+            if ($canEdit and $conferenceOrganization->getConferenceMembers()->count() < $conferenceOrganization->getConference()->getLimitUsersByOrg()) {
                 $canAdd = true;
             }
-                /** @var ConferenceMember $CM */
+            /** @var ConferenceMember $CM */
             $CM = (isset($request->get('conference_member_form')['id']))
                 ? $this->getDoctrine()
                     ->getRepository(ConferenceMember::class)
                     ->findOneBy([
-                        'id'=> intval($request->get('conference_member_form')['id'])
+                        'id' => intval($request->get('conference_member_form')['id'])
                     ])
                 : null;
             if (!$CM) {
-               $CM = new ConferenceMember();
+                $CM = new ConferenceMember();
             }
             $CMRoomType = $CM
                 ? $CM->getRoomType()
@@ -681,12 +680,12 @@ class ConferenceRegistrationController extends AbstractController
             $currentMemberFormViews = [];
             $submitted = -1;
 
-            $CMOld =  clone $CM;
+            $CMOld = clone $CM;
             $userOld = $CMOld->getUser();
             if ($userOld) {
                 $userOld = clone $userOld;
 //                $userOld->setLastName('test lastname');
-                $CMOld->setUser($userOld );
+                $CMOld->setUser($userOld);
             }
 
 
@@ -698,7 +697,7 @@ class ConferenceRegistrationController extends AbstractController
                         : $iConferenceMember
                 )
                     ->remove('RoomType')
-                    ->get('user')->remove( 'representative')->getParent()
+                    ->get('user')->remove('representative')->getParent()
                     ->add('id', HiddenType::class)
                     ->add(
                         'save',
@@ -710,7 +709,7 @@ class ConferenceRegistrationController extends AbstractController
                             ]
                         ]
                     );
-                if ($CM == $iConferenceMember){
+                if ($CM == $iConferenceMember) {
                     $submitted = $key;
                     $form->handleRequest($request);
                     $submitForm = $form;
@@ -734,13 +733,12 @@ class ConferenceRegistrationController extends AbstractController
                     ]
                 );
             $memberForm->remove('roomType');
-            if($CM){
+            if ($CM) {
                 // Если редактируем
                 $memberForm->add('id', HiddenType::class);
                 $memberForm->remove('roomType');
-            }
-            ;
-            if( $submitted == -1 ) {
+            };
+            if ($submitted == -1) {
                 $memberForm->handleRequest($request);
                 $submitForm = $memberForm;
             }
@@ -772,7 +770,7 @@ class ConferenceRegistrationController extends AbstractController
                 $user->setOrganization($conferenceOrganization->getOrganization());
                 $CMNew->setConference($conferenceOrganization->getConference());
                 $CMNew->setConferenceOrganization($conferenceOrganization);
-                $createUser = $CMNew->getId()<1;
+                $createUser = $CMNew->getId() < 1;
                 $password = $this->getRandomPassword();
                 if ($createUser) {
                     $user->setPassword(
@@ -805,8 +803,7 @@ class ConferenceRegistrationController extends AbstractController
                 /** @var Comment $comment */
                 $comment
                     ->setUser($this->getUser())
-                    ->setConferenceOrganization($conferenceOrganization)
-                    ;
+                    ->setConferenceOrganization($conferenceOrganization);
                 /** @var EntityManager $em */
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($comment);
@@ -838,8 +835,7 @@ class ConferenceRegistrationController extends AbstractController
                 ->findBy([
                     'conferenceOrganization' => $conferenceOrganization,
                     'isPrivate' => false,
-                ], ['createdAt' =>'DESC'])
-            ;
+                ], ['createdAt' => 'DESC']);
 
             return $this->render('conference_registration/show.html.twig', [
                 'ConferenceOrganization' => $conferenceOrganization,
@@ -847,7 +843,7 @@ class ConferenceRegistrationController extends AbstractController
                 'form' => $CommentForm->createView(),
                 'memberForm' => $memberForm->createView(),
                 'currentMemberFormViews' => $currentMemberFormViews,
-                'submitted' => $request->getMethod()=='POST' ? $submitted : false,
+                'submitted' => $request->getMethod() == 'POST' ? $submitted : false,
                 'canAdd' => $canAdd,
                 'canEdit' => $canEdit,
             ]);
