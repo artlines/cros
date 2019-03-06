@@ -525,22 +525,29 @@ class ConferenceRegistrationController extends AbstractController
         );
     }
 
-    public function mailSendUserCreate( ConferenceMember $conferenceMember, $update = false )
+    public function mailSendUserCreate( ConferenceMember $conferenceMember, ConferenceMember $conferenceMemberOld )
     {
         $ConferenceOrganization = $conferenceMember->getConferenceOrganization();
         $arUsers = [];
-        $arUsers[] = [
-            'firstName' => $conferenceMember->getUser()->getFirstName(),
-            'middleName' => $conferenceMember->getUser()->getMiddleName(),
-            'lastName' => $conferenceMember->getUser()->getLastName(),
-            'post' => $conferenceMember->getUser()->getPost(),
-            'phone' => $conferenceMember->getUser()->getPhone(),
-            'email' => $conferenceMember->getUser()->getEmail(),
-            'carNumber' => $conferenceMember->getCarNumber(),
-            'roomType' => $conferenceMember->getRoomType()->getTitle(),
-            'cost' => $conferenceMember->getRoomType()->getCost(),
-            'arrival' => $conferenceMember->getArrival()->getTimestamp(),
-            'leaving' => $conferenceMember->getLeaving()->getTimestamp(),
+        $arUsers = [
+            'old' => [
+                'firstName' => $conferenceMemberOld->getUser()->getFirstName(),
+                'middleName' => $conferenceMemberOld->getUser()->getMiddleName(),
+                'lastName' => $conferenceMemberOld->getUser()->getLastName(),
+                'post' => $conferenceMemberOld->getUser()->getPost(),
+                'phone' => $conferenceMemberOld->getUser()->getPhone(),
+                'email' => $conferenceMemberOld->getUser()->getEmail(),
+                'carNumber' => $conferenceMemberOld->getCarNumber(),
+            ],
+            'new' => [
+                'firstName' => $conferenceMember->getUser()->getFirstName(),
+                'middleName' => $conferenceMember->getUser()->getMiddleName(),
+                'lastName' => $conferenceMember->getUser()->getLastName(),
+                'post' => $conferenceMember->getUser()->getPost(),
+                'phone' => $conferenceMember->getUser()->getPhone(),
+                'email' => $conferenceMember->getUser()->getEmail(),
+                'carNumber' => $conferenceMember->getCarNumber(),
+            ],
         ];
         $params_organization = [
             'name' => $ConferenceOrganization->getOrganization()->getName(),
@@ -551,7 +558,7 @@ class ConferenceRegistrationController extends AbstractController
             'comment' => $ConferenceOrganization->getOrganization()->getComment(),
             'users' => $arUsers
         ];
-        if($update){
+        if($conferenceMemberOld){
             $this->mailer->setTemplateAlias(self::MAIL_SEND_USER_UPDATE);
         }else {
             $this->mailer->setTemplateAlias(self::MAIL_SEND_REGISTERED);
@@ -575,9 +582,9 @@ class ConferenceRegistrationController extends AbstractController
         }
     }
 
-    public function mailSendUserUpdate( ConferenceMember $conferenceMember )
+    public function mailSendUserUpdate( ConferenceMember $conferenceMember, ConferenceMember $conferenceMemberOld )
     {
-        $this->mailSendUserCreate($conferenceMember,true);
+        $this->mailSendUserCreate($conferenceMember,$conferenceMemberOld);
     }
 
     /**
@@ -654,6 +661,16 @@ class ConferenceRegistrationController extends AbstractController
             $CM->setConference($conferenceOrganization->getConference());
             $currentMemberFormViews = [];
             $submitted = -1;
+
+            $CMOld =  clone $CM;
+            $userOld = $CMOld->getUser();
+            if ($userOld) {
+                $userOld = clone $userOld;
+//                $userOld->setLastName('test lastname');
+                $CMOld->setUser($userOld );
+            }
+
+
             foreach ($conferenceOrganization->getConferenceMembers() as $key => $iConferenceMember) {
                 $form = $this->createForm(
                     ConferenceMemberFormType::class,
@@ -683,7 +700,6 @@ class ConferenceRegistrationController extends AbstractController
                 $currentMemberFormViews[$key] = $form
                     ->createView();
             }
-
             $memberForm = $this->createForm(
                 ConferenceMemberFormType::class, $CM)
                 ->remove('neighbourhood')
@@ -737,7 +753,7 @@ class ConferenceRegistrationController extends AbstractController
                     $this->mailSendPassword($CMNew, $password);
                     $this->mailSendUserCreate($CMNew);
                 } else {
-                    $this->mailSendUserUpdate($CMNew);
+                    $this->mailSendUserUpdate($CMNew, $CMOld);
                 }
 
                 //$mailer->setTemplateAlias(self::MAIL_SEND_USER_UPDATE);

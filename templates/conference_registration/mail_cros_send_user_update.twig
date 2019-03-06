@@ -33,28 +33,66 @@
                             <br>
                             {% set i = 1 %}
                             {% set fullprice = 0 %}
-                            {% for user in data.organization.users %}
-                        <h4>Участник {{ i }}{% set i = i + 1 %}</h4>
-                        ФИО: {{ user.lastName }} {{ user.firstName }} {{ user.middleName|default('') }}<br>
-                        Должность: {{ user.post|default('') }}<br>
-                        Телефон: {{ user.phone|default('') }}<br>
-                        E-mail: {{ user.email|default('') }}<br>
-                        Номер автомобиля: {{ user.carNumber|default('') }}<br>
-                        Класс участия: {{ user.roomType|default('') }} ({{ user.cost }}р.)<br>
-                        {% set fullprice = fullprice + user.cost %}
-                        {% if user.arrival == data.conference.eventStart %}
-                            Ранний заезд: нет<br>
-                        {% else %}
-                            Ранний заезд: {{ user.arrival|date('d.m.Y H:i') }} <br>
-                        {% endif %}
-                        {% if user.leaving == data.conference.eventFinish %}
-                            Поздний выезд: нет<br>
-                        {% else %}
-                            Поздний выезд: {{ user.leaving|date('d.m.Y H:i') }} <br>
+                            {% set user = data.organization.users['new'] %}
+                            {% set old = data.organization.users['old'] %}
+                        <h4>Обновлена информация об участнике</h4>
+                        {% if user.lastName != old.lastName
+                           or user.firstName != old.firstName
+                           or user.middleName != old.middleName %}
+                            <s>ФИО: {{ old.lastName }} {{ old.firstName }} {{ old.middleName|default('') }}</s><br>
+                            ФИО: {{ user.lastName }} {{ user.firstName }} {{ user.middleName|default('') }}<br>
                         {% endif %}
 
-                        {% endfor %}
-                        <h4>Сумма: {{ fullprice }}р.</h4>
+                        {% if user.post != old.post %}
+                            <s>Должность: {{ old.post|default('') }}</s>><br>
+                            Должность: {{ user.post|default('') }}<br>
+                        {% endif %}
+
+                        {% if user.phone != old.phone %}
+                            <s>Телефон: {{ old.phone|default('') }}</s>><br>
+                            Телефон: {{ user.phone|default('') }}<br>
+                        {% endif %}
+
+                        {% if user.email != old.email %}
+                            <s>E-mail: {{ old.email|default('') }}</s><br>
+                            E-mail: {{ user.email|default('') }}<br>
+                        {% endif %}
+
+                        {% if user.carNumber != old.carNumber %}
+                            <s>Номер автомобиля: {{ old.carNumber|default('') }}</s><br>
+                            Номер автомобиля: {{ user.carNumber|default('') }}<br>
+                        {% endif %}
+
+                        {% if user.arrival != old.arrival %}
+                            <s>
+                                {% if old.arrival == data.conference.eventStart %}
+                                    Ранний заезд: нет<br>
+                                {% else %}
+                                    Ранний заезд: {{ old.arrival|date('d.m.Y H:i') }} <br>
+                                {% endif %}
+                            </s>
+                                {% if user.arrival == data.conference.eventStart %}
+                                    Ранний заезд: нет<br>
+                                {% else %}
+                                    Ранний заезд: {{ user.arrival|date('d.m.Y H:i') }} <br>
+                                {% endif %}
+                        {% endif %}
+
+                        {% if user.leaving != old.leaving %}
+                            <s>
+                            {% if old.leaving == data.conference.eventFinish %}
+                                Поздний выезд: нет<br>
+                            {% else %}
+                                Поздний выезд: {{ old.leaving|date('d.m.Y H:i') }} <br>
+                            {% endif %}
+                            </s>
+                            {% if user.leaving == data.conference.eventFinish %}
+                                Поздний выезд: нет<br>
+                            {% else %}
+                                Поздний выезд: {{ user.leaving|date('d.m.Y H:i') }} <br>
+                            {% endif %}
+                        {% endif %}
+
                         <h4>Реквизиты</h4>
                         ИНН: {{ data.organization.inn|default('') }}<br>
                         КПП: {{ data.organization.kpp|default('') }}<br><br>
