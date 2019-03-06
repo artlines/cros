@@ -553,6 +553,10 @@ class ConferenceRegistrationController extends AbstractController
                 'phone' => $conferenceMember->getUser()->getPhone(),
                 'email' => $conferenceMember->getUser()->getEmail(),
                 'carNumber' => $conferenceMember->getCarNumber(),
+                'roomType' => $conferenceMember->getRoomType()->getTitle(),
+                'cost' => $conferenceMember->getRoomType()->getCost(),
+                'arrival' => $conferenceMember->getArrival()->getTimestamp(),
+                'leaving' => $conferenceMember->getLeaving()->getTimestamp(),
             ],
         ];
         $params_organization = [
