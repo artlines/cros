@@ -353,9 +353,12 @@ class SyncWithB2B extends Command
 
             $invoice->setNumber($infoResponse['data']['order_number']);
             $invoice->setOrderStatusGuid($infoResponse['data']['order_status_guid']);
-            $invoice->setAmount($infoResponse['data']['order_amount'] / 100);
             $invoice->setStatusGuid($infoResponse['data']['payment_status_guid']);
             $invoice->setStatusText($infoResponse['data']['payment_status']);
+
+            if ($infoResponse['data']['order_amount']) {
+                $invoice->setAmount($infoResponse['data']['order_amount'] / 100);
+            }
 
             $this->em->persist($invoice);
             $this->em->flush();
