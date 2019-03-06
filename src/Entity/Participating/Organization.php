@@ -136,7 +136,7 @@ class Organization
     /**
      * Fixed GUID организации из b2b
      * @var string|null
-     * @ORM\Column(name="b2b_guid", type="string", nullable=true, unique=true)
+     * @ORM\Column(name="b2b_guid", type="string", nullable=true)
      */
     private $b2b_guid;
 
