@@ -38,14 +38,17 @@ class ConferenceRegistrationController extends AbstractController
     const MAIL_SEND_REGISTERED = 'cros.send.registered';
     const MAIL_SEND_PASSWORD = 'cros.send.password';
     const MAIL_SEND_COMMENT = 'cros.send.comment';
+    const MAIL_SEND_USER_UPDATE = 'cros.send.user_update';
     const MAIL_BCC = 'cros@nag.ru';
 
     /** @var LoggerInterface */
     protected $logger;
+    protected $mailer;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, Mailer $mailer)
     {
         $this->logger = $logger;
+        $this->mailer = $mailer;
     }
 
 
@@ -480,6 +483,102 @@ class ConferenceRegistrationController extends AbstractController
         ]);
     }
 
+    public function mailSendPassword( ConferenceMember $conferenceMember, string $password )
+    {
+        $Conference = $conferenceMember->getConference();
+        $ConferenceOrganization = $conferenceMember->getConferenceOrganization();
+        $user = [
+            'firstName' => $conferenceMember->getUser()->getFirstName(),
+            'middleName' => $conferenceMember->getUser()->getMiddleName(),
+            'lastName' => $conferenceMember->getUser()->getLastName(),
+            'post' => $conferenceMember->getUser()->getPost(),
+            'phone' => $conferenceMember->getUser()->getPhone(),
+            'email' => $conferenceMember->getUser()->getEmail(),
+            'carNumber' => $conferenceMember->getCarNumber(),
+            'roomType' => $conferenceMember->getRoomType()->getTitle(),
+            'cost' => $conferenceMember->getRoomType()->getCost(),
+            'arrival' => $conferenceMember->getArrival()->getTimestamp(),
+            'leaving' => $conferenceMember->getLeaving()->getTimestamp(),
+        ];
+        $params_organization = [
+            'name' => $ConferenceOrganization->getOrganization()->getName(),
+            'inn' => $ConferenceOrganization->getOrganization()->getInn(),
+            'kpp' => $ConferenceOrganization->getOrganization()->getKpp(),
+            'requisites' => $ConferenceOrganization->getOrganization()->getRequisites(),
+            'address' => $ConferenceOrganization->getOrganization()->getAddress(),
+            'comment' => $ConferenceOrganization->getOrganization()->getComment(),
+        ];
+        $this->mailer->setTemplateAlias(self::MAIL_SEND_PASSWORD);
+        $this->mailer->send(
+            'КРОС 2019: Пароль для доступа',
+            [
+                'user' => $user,
+                'email' => $conferenceMember->getUser()->getEmail(),
+                'password' => $password,
+                'organization' => $params_organization,
+                'conference' => [
+                    'eventStart' => $Conference->getEventStart()->getTimestamp(),
+                    'eventFinish' => $Conference->getEventFinish()->getTimestamp(),
+                ]
+            ],
+            $conferenceMember->getUser()->getEmail(), null, $this->getBcc()
+        );
+    }
+
+    public function mailSendUserCreate( ConferenceMember $conferenceMember, $update = false )
+    {
+        $ConferenceOrganization = $conferenceMember->getConferenceOrganization();
+        $arUsers = [];
+        $arUsers[] = [
+            'firstName' => $conferenceMember->getUser()->getFirstName(),
+            'middleName' => $conferenceMember->getUser()->getMiddleName(),
+            'lastName' => $conferenceMember->getUser()->getLastName(),
+            'post' => $conferenceMember->getUser()->getPost(),
+            'phone' => $conferenceMember->getUser()->getPhone(),
+            'email' => $conferenceMember->getUser()->getEmail(),
+            'carNumber' => $conferenceMember->getCarNumber(),
+            'roomType' => $conferenceMember->getRoomType()->getTitle(),
+            'cost' => $conferenceMember->getRoomType()->getCost(),
+            'arrival' => $conferenceMember->getArrival()->getTimestamp(),
+            'leaving' => $conferenceMember->getLeaving()->getTimestamp(),
+        ];
+        $params_organization = [
+            'name' => $ConferenceOrganization->getOrganization()->getName(),
+            'inn' => $ConferenceOrganization->getOrganization()->getInn(),
+            'kpp' => $ConferenceOrganization->getOrganization()->getKpp(),
+            'requisites' => $ConferenceOrganization->getOrganization()->getRequisites(),
+            'address' => $ConferenceOrganization->getOrganization()->getAddress(),
+            'comment' => $ConferenceOrganization->getOrganization()->getComment(),
+            'users' => $arUsers
+        ];
+        if($update){
+            $this->mailer->setTemplateAlias(self::MAIL_SEND_USER_UPDATE);
+        }else {
+            $this->mailer->setTemplateAlias(self::MAIL_SEND_REGISTERED);
+        }
+        foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
+            if ($conferenceMember->getUser()->isRepresentative()) {
+                dd(
+                $this->mailer->send(
+                    'КРОС 2019: ' . $ConferenceOrganization->getOrganization()->getName(),
+                    [
+                        'organization' => $params_organization,
+                        'conference' => [
+                            'eventStart' => $ConferenceOrganization->getConference()->getEventStart()->getTimestamp(),
+                            'eventFinish' => $ConferenceOrganization->getConference()->getEventFinish()->getTimestamp(),
+                        ]
+                    ],
+                    $conferenceMember->getUser()->getEmail(), null, $this->getBcc()
+                ));
+            }
+
+        }
+    }
+
+    public function mailSendUserUpdate( ConferenceMember $conferenceMember )
+    {
+        $this->mailSendUserCreate($conferenceMember,true);
+    }
 
     /**
      * @Route("/registration-show", name="registration_show")
@@ -622,15 +721,27 @@ class ConferenceRegistrationController extends AbstractController
                 $user = $CMNew->getUser();
                 $user->setPhone(preg_replace('/[\D]/', '', $user->getPhone()));
                 $user->setOrganization($conferenceOrganization->getOrganization());
-                $password = $this->getRandomPassword();
-                $user->setPassword(
-                    $passwordEncoder->encodePassword($user, $password)
-                );
                 $CMNew->setConference($conferenceOrganization->getConference());
                 $CMNew->setConferenceOrganization($conferenceOrganization);
+                $createUser = $CMNew->getId()<1;
+                if ($createUser) {
+                    $password = $this->getRandomPassword();
+                    $user->setPassword(
+                        $passwordEncoder->encodePassword($user, $password)
+                    );
+                }
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($CMNew);
                 $em->flush();
+                if ($createUser) {
+                    $this->mailSendPassword($CMNew, $password);
+                    $this->mailSendUserCreate($CMNew);
+                } else {
+                    $this->mailSendUserUpdate($CMNew);
+                }
+
+                //$mailer->setTemplateAlias(self::MAIL_SEND_USER_UPDATE);
+
                 return $this->redirectToRoute('registration_show');
             }
             $CommentForm->handleRequest($request);
