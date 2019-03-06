@@ -353,9 +353,12 @@ class SyncWithB2B extends Command
 
             $invoice->setNumber($infoResponse['data']['order_number']);
             $invoice->setOrderStatusGuid($infoResponse['data']['order_status_guid']);
-            $invoice->setAmount($infoResponse['data']['order_amount'] / 100);
             $invoice->setStatusGuid($infoResponse['data']['payment_status_guid']);
             $invoice->setStatusText($infoResponse['data']['payment_status']);
+
+            if ($infoResponse['data']['order_amount']) {
+                $invoice->setAmount($infoResponse['data']['order_amount'] / 100);
+            }
 
             $this->em->persist($invoice);
             $this->em->flush();
@@ -443,7 +446,7 @@ class SyncWithB2B extends Command
                 'phone'             => $dataToInvoice['user_phone'],
                 'email'             => $dataToInvoice['user_email'],
                 'services'          => [
-                    [ 'sku' => self::CROS_SERVICE_SKU, 'amount' => $dataToInvoice['fresh_amount']*100 ]
+                    [ 'sku' => self::CROS_SERVICE_SKU, 'amount' => $dataToInvoice['last_invoice_amount']*100 ]
                 ],
             ]);
 
@@ -453,19 +456,22 @@ class SyncWithB2B extends Command
                 continue;
             }
 
-            try {
-                /** @var ConferenceOrganization $conferenceOrganizationReference */
-                $conferenceOrganizationReference = $this->em->getReference(ConferenceOrganization::class, $dataToInvoice['conf_org_id']);
-            } catch (\Exception $e) {
-                $this->log("Catch error while trying to get reference "
-                    ."ConferenceOrganization (ID: {$dataToInvoice['conf_org_id']}) of Organization (ID: {$dataToInvoice['org_id']})."
-                    ." Error: {$e->getMessage()} | Skipped it!", $dataToInvoice);
-                continue;
-            }
+//            try {
+//                /** @var ConferenceOrganization $conferenceOrganizationReference */
+//                $conferenceOrganizationReference = $this->em->getReference(ConferenceOrganization::class, $dataToInvoice['conf_org_id']);
+//            } catch (\Exception $e) {
+//                $this->log("Catch error while trying to get reference "
+//                    ."ConferenceOrganization (ID: {$dataToInvoice['conf_org_id']}) of Organization (ID: {$dataToInvoice['org_id']})."
+//                    ." Error: {$e->getMessage()} | Skipped it!", $dataToInvoice);
+//                continue;
+//            }
+//
+//            $invoice = new Invoice();
+//            $invoice->setConferenceOrganization($conferenceOrganizationReference);
+//            $invoice->setAmount($dataToInvoice['fresh_amount']);
 
-            $invoice = new Invoice();
-            $invoice->setConferenceOrganization($conferenceOrganizationReference);
-            $invoice->setAmount($dataToInvoice['fresh_amount']);
+            /** @var Invoice $invoice */
+            $invoice = $this->em->find(Invoice::class, (int) $dataToInvoice['invoice_id']);
             $invoice->setOrderGuid($createResponse['data']['order_guid']);
             $invoice->setOrderStatusGuid($createResponse['data']['order_status_guid']);
             $invoice->setNumber($createResponse['data']['order_number']);

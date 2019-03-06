@@ -79,14 +79,14 @@ class ConferenceOrganizationRepository extends EntityRepository
                    t_rm.user_email,
                    t_rm.user_phone,
                    t_i.id as invoice_id,
+                   t_i.b2b_order_guid as invoice_b2b_order_guid,
                    t_i.amount as last_invoice_amount,
                    t_m.summa as fresh_amount
             FROM tmp_members t_m
-              LEFT JOIN tmp_invoice                 t_i ON t_m.conf_org_id = t_i.conf_org_id
+              INNER JOIN tmp_invoice                 t_i ON t_m.conf_org_id = t_i.conf_org_id
               INNER JOIN tmp_places                 t_p ON t_p.conf_org_id = t_m.conf_org_id AND t_p.place_count = t_m.member_count
               LEFT JOIN tmp_representative_members t_rm ON t_rm.org_id = t_m.org_id
-            WHERE
-                  t_i.amount IS NULL OR t_i.amount != t_m.summa
+            WHERE TRUE AND t_i.b2b_order_guid IS NULL
         ");
 
         $stmt->execute(['year' => $year]);

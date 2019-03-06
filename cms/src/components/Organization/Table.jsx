@@ -8,16 +8,19 @@ import {
     TableBody,
     TableRow,
     TableCell,
+    Tooltip,
     Button,
     IconButton,
     TablePagination,
     Grid,
 } from '@material-ui/core';
+import { Receipt as ReceiptIcon } from '@material-ui/icons';
 import { green, red } from '@material-ui/core/colors';
 import map from 'lodash/map';
 import InvoicesModal from './InvoicesModal';
 import CommentsModal from "./CommentsModal";
 import MembersModal from "./MembersModal";
+import MakeInvoiceModal from "./MakeInvoiceModal";
 import LinearProgress from '../utils/LinearProgress';
 import {Edit as EditIcon} from "@material-ui/icons";
 
@@ -73,7 +76,7 @@ class OrganizationTable extends React.Component {
 
     render() {
         const { page, rowsPerPage } = this.state;
-        const { items, isFetching, total_count, onEdit } = this.props;
+        const { items, isFetching, total_count, onEdit, update } = this.props;
 
         return (
             <React.Fragment>
@@ -86,19 +89,19 @@ class OrganizationTable extends React.Component {
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>ID</TableCell>
+                                    <TableCell align={`center`}>ID</TableCell>
                                     <TableCell>Наименование</TableCell>
                                     <TableCell>Реквизиты</TableCell>
-                                    <TableCell>Участников<br/>всего / заселено</TableCell>
-                                    <TableCell>Счета</TableCell>
-                                    <TableCell>Комментарии</TableCell>
+                                    <TableCell align={`center`}>Участников<br/>всего / заселено</TableCell>
+                                    <TableCell align={`center`}>Счета</TableCell>
+                                    <TableCell align={`center`}>Комментарии</TableCell>
                                     <TableCell> </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {map(items, item =>
                                     <TableRow key={item.id}>
-                                        <TableCell>
+                                        <TableCell align={`center`}>
                                             {item.id}
                                         </TableCell>
                                         <TableCell>
@@ -113,7 +116,7 @@ class OrganizationTable extends React.Component {
                                             <div style={{whiteSpace: 'nowrap'}}><b>ИНН:</b> {item.inn}</div>
                                             <div style={{whiteSpace: 'nowrap'}}><b>КПП:</b> {item.kpp}</div>
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell align={`center`}>
                                             <MembersModal
                                                 organizationId={item.id}
                                                 organizationName={item.name}
@@ -121,25 +124,40 @@ class OrganizationTable extends React.Component {
                                                 update={this.updateMembers}
                                             />
                                         </TableCell>
-                                        <TableCell>
-                                            <InvoicesModal
-                                                organizationId={item.id}
-                                                organizationName={item.name}
-                                                trigger={
-                                                    <Button
-                                                        style={{
-                                                            color: item.invoices_count > 0
-                                                                ? item.invoices_payed === item.invoices_count ? green[700] : red[700]
-                                                                : 'inherit'
-                                                        }}
-                                                    >
-                                                        {item.invoices_count}
-                                                    </Button>
-                                                }
-                                                update={this.updateInvoices}
-                                            />
+                                        <TableCell align={`center`}>
+                                            {item.invoices_count === 0 &&
+                                                <MakeInvoiceModal
+                                                    organization_id={item.id}
+                                                    organization_name={item.name}
+                                                    update={this.updateMembers}
+                                                    onSuccess={() => update(null, null, true)}
+                                                    trigger={
+                                                        <Tooltip title={`Выставить счет`}>
+                                                            <IconButton>
+                                                                <ReceiptIcon/>
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    }
+                                                />
+                                            }
+                                            {item.invoices_count > 0 &&
+                                                <InvoicesModal
+                                                    organizationId={item.id}
+                                                    organizationName={item.name}
+                                                    trigger={
+                                                        <Button
+                                                            style={{
+                                                                color: item.invoices_payed === item.invoices_count ? green[700] : red[700]
+                                                            }}
+                                                        >
+                                                            {item.invoices_count}
+                                                        </Button>
+                                                    }
+                                                    update={this.updateInvoices}
+                                                />
+                                            }
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell align={`center`}>
                                             <CommentsModal
                                                 organizationId={item.id}
                                                 organizationName={item.name}
@@ -147,7 +165,7 @@ class OrganizationTable extends React.Component {
                                                 update={this.updateComments}
                                             />
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell align={`right`}>
                                             <IconButton onClick={() => onEdit(item.id)}><EditIcon/></IconButton>
                                         </TableCell>
                                     </TableRow>

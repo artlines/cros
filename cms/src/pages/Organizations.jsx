@@ -140,17 +140,6 @@ class Organizations extends React.Component {
                             fullWidth
                         />
                     </Grid>
-                    {/*<Grid item xs={12} sm={6} lg={3}>*/}
-                        {/*<FormControl>*/}
-                            {/*<FormControlLabel*/}
-                                {/*label={"Без автовыставления счета"}*/}
-                                {/*control={*/}
-                                    {/*<Switch onChange={this.handleFilterChange('no_auto_invoicing')} />*/}
-                                {/*}*/}
-                            {/*/>*/}
-                            {/*<FormHelperText>Не получилось автоматически выставить счет</FormHelperText>*/}
-                        {/*</FormControl>*/}
-                    {/*</Grid>*/}
                     <Grid item xs={12} sm={6} lg={3}>
                         <TextField
                             label={"Этап"}
