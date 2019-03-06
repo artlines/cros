@@ -119,12 +119,14 @@
     {% if  canAdd %}
     <button
             type="button"
-            class="add-another-collection-widget btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mb-20"
+            class="btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mb-20"
             data-toggle="modal" data-target="#addModal"
     >
         Добавить участника</button>
-    <div>
-        Допустиимо {{ ConferenceOrganization.conference.limitUsersByOrg }} участника на конференцию
+    <div style="display: inline-block;   vertical-align: middle"
+         class="cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mb-20"
+    >
+        Не более {{ ConferenceOrganization.conference.limitUsersByOrg }}-х участников
     </div>
     {% endif %}
 </div>

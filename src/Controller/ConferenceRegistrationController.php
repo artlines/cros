@@ -539,6 +539,10 @@ class ConferenceRegistrationController extends AbstractController
                 'phone' => $conferenceMemberOld->getUser()->getPhone(),
                 'email' => $conferenceMemberOld->getUser()->getEmail(),
                 'carNumber' => $conferenceMemberOld->getCarNumber(),
+                'roomType' => $conferenceMemberOld->getRoomType()->getTitle(),
+                'cost' => $conferenceMemberOld->getRoomType()->getCost(),
+                'arrival' => $conferenceMemberOld->getArrival()->getTimestamp(),
+                'leaving' => $conferenceMemberOld->getLeaving()->getTimestamp(),
             ];
 
         }
@@ -602,6 +606,16 @@ class ConferenceRegistrationController extends AbstractController
      */
     public function registrationShow(Request $request, Mailer $mailer, UserPasswordEncoderInterface $passwordEncoder)
     {
+        if ($request->getMethod() == 'POST') {
+            $cloner = new VarCloner();
+            $dumper = new CliDumper();
+            $output = fopen('php://memory', 'r+b');
+
+            $dumper->dump($cloner->cloneVar($request), $output);
+            $output = stream_get_contents($output, -1, 0);
+            $this->logger->notice('POSTDATA:' . base64_encode($output));
+        }
+
         /** @var User $user */
         /** @var Organization $organization */
         if (!$this->getUser()) {
@@ -744,6 +758,13 @@ class ConferenceRegistrationController extends AbstractController
                 }
                 if (is_null($CMNew->getLeaving())) {
                     $CMNew->setLeaving($Conference->getEventFinish());
+                }
+
+                if (is_null($CMOld->getArrival())) {
+                    $CMOld->setArrival($Conference->getEventStart());
+                }
+                if (is_null($CMOld->getLeaving())) {
+                    $CMOld->setLeaving($Conference->getEventFinish());
                 }
 
                 $user = $CMNew->getUser();
