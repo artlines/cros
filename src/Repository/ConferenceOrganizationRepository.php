@@ -14,6 +14,13 @@ use Doctrine\ORM\Query\Expr;
 
 class ConferenceOrganizationRepository extends EntityRepository
 {
+    const STAGE__INVITE_SENT            = 1;
+    const STAGE__REGISTRATION_COMPLETE  = 2;
+    const STAGE__MEMBERS_SETTLED        = 3;
+    const STAGE__INVOICE_SENT           = 4;
+    const STAGE__INVOICE_PAYED          = 5;
+    const STAGE__INVOICE_CANCELED       = 6;
+
     public function findToMakeInvoice(int $year)
     {
         $conn = $this->getEntityManager()->getConnection();
@@ -72,14 +79,14 @@ class ConferenceOrganizationRepository extends EntityRepository
                    t_rm.user_email,
                    t_rm.user_phone,
                    t_i.id as invoice_id,
+                   t_i.b2b_order_guid as invoice_b2b_order_guid,
                    t_i.amount as last_invoice_amount,
                    t_m.summa as fresh_amount
             FROM tmp_members t_m
-              LEFT JOIN tmp_invoice                 t_i ON t_m.conf_org_id = t_i.conf_org_id
+              INNER JOIN tmp_invoice                 t_i ON t_m.conf_org_id = t_i.conf_org_id
               INNER JOIN tmp_places                 t_p ON t_p.conf_org_id = t_m.conf_org_id AND t_p.place_count = t_m.member_count
               LEFT JOIN tmp_representative_members t_rm ON t_rm.org_id = t_m.org_id
-            WHERE
-                  t_i.amount IS NULL OR t_i.amount != t_m.summa
+            WHERE TRUE AND t_i.b2b_order_guid IS NULL
         ");
 
         $stmt->execute(['year' => $year]);
@@ -138,7 +145,10 @@ class ConferenceOrganizationRepository extends EntityRepository
             'invoice_fully_payed_status_guid'   => Invoice::STATUS_GUID__FULLY_PAYED,
         ];
 
-        /** Check data */
+        /**
+         * Check filter
+         * @deprecated because add staging
+         */
         if (isset($data['no_auto_invoicing']) && $data['no_auto_invoicing']) {
             $where .= " AND (
                 tcoi.invalid_inn_kpp IS NULL 
@@ -147,13 +157,51 @@ class ConferenceOrganizationRepository extends EntityRepository
                   OR tms.total_members != tms.in_room_members
                 )";
         }
+
+        /** Check invited_by filter */
         if (isset($data['invited_by'])) {
             $where .= " AND tcoi.invited_by_id IN (:invited_by)";
             $parameters['invited_by'] = $data['invited_by'];
         }
+
+        /** Check search string */
         if (isset($data['search'])) {
             $where .= " AND tsi.search ILIKE :search";
             $parameters['search'] = '%'.mb_strtolower($data['search']).'%';
+        }
+
+        /** Check flag that show only with comments */
+        if (isset($data['with_comments'])) {
+            $where .= " AND tcs.comments_count != 0";
+        }
+
+        /** Check stage filter */
+        if (isset($data['stage'])) {
+            switch ((int) $data['stage']) {
+                case self::STAGE__INVITE_SENT:
+                    $where .= " AND tms.total_members = 0";
+                    break;
+                case self::STAGE__REGISTRATION_COMPLETE:
+                    $where .= " AND tms.total_members > 0 AND tms.total_members > tms.in_room_members";
+                    break;
+                case self::STAGE__MEMBERS_SETTLED:
+                    $where .= " AND tms.total_members > 0 AND tms.total_members = tms.in_room_members";
+                    break;
+                case self::STAGE__INVOICE_SENT:
+                    $where .= " AND tlii.is_sent = TRUE";
+                    break;
+                case self::STAGE__INVOICE_PAYED:
+                    $where .= " AND tlii.status_guid = :invoice_fully_payed_status_guid__stage";
+                    $parameters['invoice_fully_payed_status_guid__stage'] = Invoice::STATUS_GUID__FULLY_PAYED;
+                    break;
+                case self::STAGE__INVOICE_CANCELED:
+                    $where .= " AND tlii.order_status_guid = :order_canceled_status_guid__stage";
+                    $parameters['order_canceled_status_guid__stage'] = Invoice::ORDER_STATUS_GUID__CANCELED;
+                    break;
+                default:
+                    // nothing
+                    break;
+            }
         }
 
         /** Check for limit and offset */
@@ -165,7 +213,29 @@ class ConferenceOrganizationRepository extends EntityRepository
         }
 
         $query = "
-            WITH tmp_invoices_stat AS (
+            WITH tmp_last_invoice_info_pre AS (
+              SELECT
+                     pco.id as conf_org_id,
+                     pi.id,
+                     pi.is_sent,
+                     pi.status_guid,
+                     pi.order_status_guid,
+                     RANK() OVER (PARTITION BY pco.id ORDER BY pi.created_at DESC, pi.id DESC) as invoice_rnk
+              FROM participating.conference_organization pco
+                LEFT JOIN participating.invoice pi ON pi.conference_organization_id = pco.id
+            ),
+            tmp_last_invoice_info AS (
+              SELECT
+                     pco.id as conf_org_id,
+                     tliip.id,
+                     tliip.is_sent,
+                     tliip.status_guid,
+                     tliip.order_status_guid
+              FROM participating.conference_organization pco
+                LEFT JOIN tmp_last_invoice_info_pre tliip ON tliip.conf_org_id = pco.id
+              WHERE tliip.invoice_rnk = 1
+            ),
+            tmp_invoices_stat AS (
               SELECT
                      pco.id AS conf_org_id,
                      COUNT(pi.*) as invoices_count,
@@ -259,6 +329,7 @@ class ConferenceOrganizationRepository extends EntityRepository
               INNER JOIN tmp_members_stat       tms ON pco.id = tms.conf_org_id
               INNER JOIN tmp_search_idx         tsi ON pco.id = tsi.conf_org_id
               INNER JOIN tmp_comments_stat      tcs ON pco.id = tcs.conf_org_id
+              INNER JOIN tmp_last_invoice_info tlii ON pco.id = tlii.conf_org_id
             WHERE $where
             GROUP BY
                    pco.id,

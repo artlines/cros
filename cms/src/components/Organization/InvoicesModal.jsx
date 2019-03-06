@@ -29,6 +29,7 @@ import {
 import FabButton from "../utils/FabButton";
 import find from "lodash/find";
 import InvoiceForm from "./InvoiceForm";
+import MakeInvoiceModal from "./MakeInvoiceModal";
 import LinearProgress from '../utils/LinearProgress';
 import API from '../../libs/api';
 
@@ -87,7 +88,7 @@ class InvoicesModal extends React.Component {
     closeForm = () => this.setState({form: {...this.state.form, open: false}});
 
     render() {
-        const { organizationName, trigger, items, isFetching } = this.props;
+        const { organizationId, organizationName, trigger, items, isFetching, update } = this.props;
         const { open, form } = this.state;
 
         return (
@@ -116,7 +117,15 @@ class InvoicesModal extends React.Component {
                                 Счета {organizationName}
                             </Grid>
                             <Grid item>
-                                {/*<FabButton title={`Добавить счет`} onClick={this.openForm}/>*/}
+                                {/*<MakeInvoiceModal*/}
+                                    {/*organization_id={organizationId}*/}
+                                    {/*organization_name={organizationName}*/}
+                                    {/*update={this.updateMembers}*/}
+                                    {/*onSuccess={update}*/}
+                                    {/*trigger={*/}
+                                        {/*<FabButton title={`Выставить новый счет`}/>*/}
+                                    {/*}*/}
+                                {/*/>*/}
                             </Grid>
                         </Grid>
                     </DialogTitle>
@@ -125,7 +134,7 @@ class InvoicesModal extends React.Component {
                         <Table>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>№ счета</TableCell>
+                                    <TableCell>№ заказа</TableCell>
                                     <TableCell>Сумма</TableCell>
                                     <TableCell>Дата</TableCell>
                                     <TableCell>Статус</TableCell>

@@ -6,7 +6,7 @@ import abode from '../actions/abode';
 import system from '../actions/system';
 import OrganizationTable from '../components/Organization/Table';
 import {
-    TextField,
+    TextField, MenuItem,
     Grid, FormControlLabel, Switch, FormHelperText, FormControl,
 } from '@material-ui/core';
 import isArray from 'lodash/isArray';
@@ -17,6 +17,15 @@ import map from "lodash/map";
 import OrganizationForm from '../components/Organization/Form';
 import FabButton from '../components/utils/FabButton';
 import SuggestingSelectField from "../components/utils/SuggestingSelectField";
+
+const stages = [
+    { value: 1, text: 'Приглашение отправлено' },
+    { value: 2, text: 'Регистрация завершена' },
+    { value: 3, text: 'Участники расселены' },
+    { value: 4, text: 'Счет отправлен' },
+    { value: 5, text: 'Счет оплачен' },
+    { value: 6, text: 'Счет отменен' },
+];
 
 class Organizations extends React.Component {
     constructor(props) {
@@ -29,6 +38,9 @@ class Organizations extends React.Component {
             form: {
                 open: false,
                 initialValues: {},
+            },
+            filter: {
+                stage: 0,
             },
         };
     }
@@ -64,9 +76,8 @@ class Organizations extends React.Component {
 
     handleFilterChange = field => event => {
         let newQuery = {...this.state.query};
-        const value = isArray(event)
-            ? map(event, i => i.value)
-            : (event.target.checked ? true : event.target.value);
+        const currentFilter = {...this.state.filter};
+        const value = isArray(event) ? map(event, i => i.value) : (event.target.checked ? true : event.target.value);
 
         if (!value) {
             delete(newQuery[field]);
@@ -75,6 +86,8 @@ class Organizations extends React.Component {
         }
 
         newQuery['@offset'] = 0;
+
+        this.setState({ filter: { ...currentFilter, [field]: value } });
 
         clearTimeout(this.searchTimeout);
         this.searchTimeout = setTimeout(() => {
@@ -96,7 +109,7 @@ class Organizations extends React.Component {
 
     render() {
         const { fetchMembers, fetchComments, fetchInvoices, managers, organizations } = this.props;
-        const { form } = this.state;
+        const { form, filter } = this.state;
 
         return (
             <React.Fragment>
@@ -128,17 +141,30 @@ class Organizations extends React.Component {
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} lg={3}>
-                        <FormControl>
-                            <FormControlLabel
-                                label={"Без автовыставления счета"}
-                                control={
-                                    <Switch onChange={this.handleFilterChange('no_auto_invoicing')} />
-                                }
-                            />
-                            <FormHelperText>Не получилось автоматически выставить счет</FormHelperText>
-                        </FormControl>
+                        <TextField
+                            label={"Этап"}
+                            fullWidth
+                            onChange={this.handleFilterChange(`stage`)}
+                            select={true}
+                            InputLabelProps={{shrink: true}}
+                            value={filter.stage}
+                        >
+                            <MenuItem value={0}>Все</MenuItem>
+                            {stages.map(i => <MenuItem key={i.value} value={i.value}>{i.text}</MenuItem>)}
+                        </TextField>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={3}>
+                        <FormControl>
+                            <FormControlLabel
+                                label={"Есть комментарии"}
+                                control={
+                                    <Switch onChange={this.handleFilterChange('with_comments')} />
+                                }
+                            />
+                            <FormHelperText>Имеются комментарии по организации</FormHelperText>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12}>
                         <Grid container justify={`flex-end`}>
                             <Grid item>
                                 <FabButton title={`Добавить организацию`} onClick={this.openForm}/>
