@@ -651,11 +651,11 @@ class ConferenceRegistrationController extends AbstractController
             foreach ($conferenceOrganization->getConferenceMembers() as $key => $iConferenceMember) {
                 //dump('$this->getUser()',$iConferenceMember );
                 if ($iConferenceMember->getUser()->isRepresentative() and $iConferenceMember->getUser() == $this->getUser()) {
-                    $canEdit = true;
+                    //$canEdit = true;
                 }
             }
             if ($canEdit and $conferenceOrganization->getConferenceMembers()->count() < $conferenceOrganization->getConference()->getLimitUsersByOrg()) {
-                $canAdd = true;
+                // $canAdd = true;
             }
             /** @var ConferenceMember $CM */
             $CM = (isset($request->get('conference_member_form')['id']))
