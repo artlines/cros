@@ -151,9 +151,7 @@ class ConferenceMemberFormType extends AbstractType
                     ],
                     'help' => 'Выбор участника, для размещения в одном номере'
                 ]
-            )
-            ;
-
+            );
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             // ... adding the name field if needed
 
