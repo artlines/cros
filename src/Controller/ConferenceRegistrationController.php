@@ -531,33 +531,29 @@ class ConferenceRegistrationController extends AbstractController
         $ConferenceOrganization = $conferenceMember->getConferenceOrganization();
         $arUsers = [];
         if ($conferenceMemberOld) {
-            $arUsers = [
-                'old' => [
-                    'firstName' => $conferenceMemberOld->getUser()->getFirstName(),
-                    'middleName' => $conferenceMemberOld->getUser()->getMiddleName(),
-                    'lastName' => $conferenceMemberOld->getUser()->getLastName(),
-                    'post' => $conferenceMemberOld->getUser()->getPost(),
-                    'phone' => $conferenceMemberOld->getUser()->getPhone(),
-                    'email' => $conferenceMemberOld->getUser()->getEmail(),
-                    'carNumber' => $conferenceMemberOld->getCarNumber(),
-                ],
+            $arUsers['old'] = [
+                'firstName' => $conferenceMemberOld->getUser()->getFirstName(),
+                'middleName' => $conferenceMemberOld->getUser()->getMiddleName(),
+                'lastName' => $conferenceMemberOld->getUser()->getLastName(),
+                'post' => $conferenceMemberOld->getUser()->getPost(),
+                'phone' => $conferenceMemberOld->getUser()->getPhone(),
+                'email' => $conferenceMemberOld->getUser()->getEmail(),
+                'carNumber' => $conferenceMemberOld->getCarNumber(),
             ];
 
         }
-        $arUsers = [
-            'new' => [
-                'firstName' => $conferenceMember->getUser()->getFirstName(),
-                'middleName' => $conferenceMember->getUser()->getMiddleName(),
-                'lastName' => $conferenceMember->getUser()->getLastName(),
-                'post' => $conferenceMember->getUser()->getPost(),
-                'phone' => $conferenceMember->getUser()->getPhone(),
-                'email' => $conferenceMember->getUser()->getEmail(),
-                'carNumber' => $conferenceMember->getCarNumber(),
-                'roomType' => $conferenceMember->getRoomType()->getTitle(),
-                'cost' => $conferenceMember->getRoomType()->getCost(),
-                'arrival' => $conferenceMember->getArrival()->getTimestamp(),
-                'leaving' => $conferenceMember->getLeaving()->getTimestamp(),
-            ],
+        $arUsers['new'] = [
+            'firstName' => $conferenceMember->getUser()->getFirstName(),
+            'middleName' => $conferenceMember->getUser()->getMiddleName(),
+            'lastName' => $conferenceMember->getUser()->getLastName(),
+            'post' => $conferenceMember->getUser()->getPost(),
+            'phone' => $conferenceMember->getUser()->getPhone(),
+            'email' => $conferenceMember->getUser()->getEmail(),
+            'carNumber' => $conferenceMember->getCarNumber(),
+            'roomType' => $conferenceMember->getRoomType()->getTitle(),
+            'cost' => $conferenceMember->getRoomType()->getCost(),
+            'arrival' => $conferenceMember->getArrival()->getTimestamp(),
+            'leaving' => $conferenceMember->getLeaving()->getTimestamp(),
         ];
         $params_organization = [
             'name' => $ConferenceOrganization->getOrganization()->getName(),
