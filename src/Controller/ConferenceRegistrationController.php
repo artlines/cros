@@ -645,7 +645,7 @@ class ConferenceRegistrationController extends AbstractController
                     $canEdit = true;
                 }
             }
-            if( $conferenceOrganization->getConferenceMembers()->count() < $conferenceOrganization->getConference()->getLimitUsersByOrg() ){
+            if( $canEdit and $conferenceOrganization->getConferenceMembers()->count() < $conferenceOrganization->getConference()->getLimitUsersByOrg() ){
                 $canAdd = true;
             }
                 /** @var ConferenceMember $CM */
