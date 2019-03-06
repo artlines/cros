@@ -743,14 +743,21 @@ class ConferenceRegistrationController extends AbstractController
                     $CMNew->setRoomType($CMRoomType);
                     $CMNew->setNeighbourhood($CMNeighbourhood);
                 }
+                if (is_null($CMNew->getArrival())) {
+                    $CMNew->setArrival($Conference->getEventStart());
+                }
+                if (is_null($CMNew->getLeaving())) {
+                    $CMNew->setLeaving($Conference->getEventFinish());
+                }
+
                 $user = $CMNew->getUser();
                 $user->setPhone(preg_replace('/[\D]/', '', $user->getPhone()));
                 $user->setOrganization($conferenceOrganization->getOrganization());
                 $CMNew->setConference($conferenceOrganization->getConference());
                 $CMNew->setConferenceOrganization($conferenceOrganization);
                 $createUser = $CMNew->getId()<1;
+                $password = $this->getRandomPassword();
                 if ($createUser) {
-                    $password = $this->getRandomPassword();
                     $user->setPassword(
                         $passwordEncoder->encodePassword($user, $password)
                     );
