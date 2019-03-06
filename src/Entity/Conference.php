@@ -344,7 +344,6 @@ class Conference
     }
 
     /**
-     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param ConferenceMember $conferenceMember
      */
     public function addConferenceMember(ConferenceMember $conferenceMember)
@@ -356,7 +355,6 @@ class Conference
     }
 
     /**
-     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param ConferenceMember $conferenceMember
      */
     public function removeConferenceMember(ConferenceMember $conferenceMember)
