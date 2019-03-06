@@ -38,6 +38,7 @@ class ConferenceRegistrationController extends AbstractController
     const MAIL_SEND_REGISTERED = 'cros.send.registered';
     const MAIL_SEND_PASSWORD = 'cros.send.password';
     const MAIL_SEND_COMMENT = 'cros.send.comment';
+    const MAIL_SEND_USER_ADD = 'cros.send.user_add';
     const MAIL_SEND_USER_UPDATE = 'cros.send.user_update';
     const MAIL_BCC = 'cros@nag.ru';
 
@@ -525,20 +526,25 @@ class ConferenceRegistrationController extends AbstractController
         );
     }
 
-    public function mailSendUserCreate( ConferenceMember $conferenceMember, ConferenceMember $conferenceMemberOld )
+    public function mailSendUserCreate( ConferenceMember $conferenceMember, ?ConferenceMember $conferenceMemberOld = null)
     {
         $ConferenceOrganization = $conferenceMember->getConferenceOrganization();
         $arUsers = [];
+        if ($conferenceMemberOld) {
+            $arUsers = [
+                'old' => [
+                    'firstName' => $conferenceMemberOld->getUser()->getFirstName(),
+                    'middleName' => $conferenceMemberOld->getUser()->getMiddleName(),
+                    'lastName' => $conferenceMemberOld->getUser()->getLastName(),
+                    'post' => $conferenceMemberOld->getUser()->getPost(),
+                    'phone' => $conferenceMemberOld->getUser()->getPhone(),
+                    'email' => $conferenceMemberOld->getUser()->getEmail(),
+                    'carNumber' => $conferenceMemberOld->getCarNumber(),
+                ],
+            ];
+
+        }
         $arUsers = [
-            'old' => [
-                'firstName' => $conferenceMemberOld->getUser()->getFirstName(),
-                'middleName' => $conferenceMemberOld->getUser()->getMiddleName(),
-                'lastName' => $conferenceMemberOld->getUser()->getLastName(),
-                'post' => $conferenceMemberOld->getUser()->getPost(),
-                'phone' => $conferenceMemberOld->getUser()->getPhone(),
-                'email' => $conferenceMemberOld->getUser()->getEmail(),
-                'carNumber' => $conferenceMemberOld->getCarNumber(),
-            ],
             'new' => [
                 'firstName' => $conferenceMember->getUser()->getFirstName(),
                 'middleName' => $conferenceMember->getUser()->getMiddleName(),
@@ -561,11 +567,10 @@ class ConferenceRegistrationController extends AbstractController
         if($conferenceMemberOld){
             $this->mailer->setTemplateAlias(self::MAIL_SEND_USER_UPDATE);
         }else {
-            $this->mailer->setTemplateAlias(self::MAIL_SEND_REGISTERED);
+            $this->mailer->setTemplateAlias(self::MAIL_SEND_USER_ADD);
         }
         foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
             if ($conferenceMember->getUser()->isRepresentative()) {
-                dd(
                 $this->mailer->send(
                     'КРОС 2019: ' . $ConferenceOrganization->getOrganization()->getName(),
                     [
@@ -576,13 +581,13 @@ class ConferenceRegistrationController extends AbstractController
                         ]
                     ],
                     $conferenceMember->getUser()->getEmail(), null, $this->getBcc()
-                ));
+                );
             }
 
         }
     }
 
-    public function mailSendUserUpdate( ConferenceMember $conferenceMember, ConferenceMember $conferenceMemberOld )
+    public function mailSendUserUpdate( ConferenceMember $conferenceMember, ?ConferenceMember $conferenceMemberOld = null )
     {
         $this->mailSendUserCreate($conferenceMember,$conferenceMemberOld);
     }
