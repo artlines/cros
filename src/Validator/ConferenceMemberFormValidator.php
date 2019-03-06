@@ -44,6 +44,29 @@ class ConferenceMemberFormValidator extends ConstraintValidator
                     ->addViolation();
             }
 
+            $count = $conferenceMember->getConferenceOrganization()->getConferenceMembers()->count();
+            $limit = $conferenceMember->getConference()->getLimitUsersByOrg();
+            if ($count >= $limit
+                // Проверка что создание участника ( исключение, для редактирования )
+                and $conferenceMember->getId()<1
+            ) {
+                $this->context
+                    ->buildViolation('Превышен лимит участников на одну организацию' )
+                    ->atPath("roomType")
+                    ->addViolation();
+            }
+            $members_count = $conferenceMember->getConference()->getConferenceMembers()->count();
+            $conferenceLimit = $conferenceMember->getConference()->getLimitUsersGlobal();
+            if ($members_count >= $conferenceLimit
+                // Проверка что создание участника ( исключение, для редактирования )
+                and $conferenceMember->getId()<1
+            ) {
+                $this->context
+                    ->buildViolation('Превышен лимит участников на конференцию' )
+                    ->atPath("roomType")
+                    ->addViolation();
+            }
+
             /** @var RoomTypeRepository $roomTypeRepo */
             $roomTypeRepo = $em->getRepository(RoomType::class);
             $roomTypesInfo = $roomTypeRepo->getSummaryInformation();
@@ -51,15 +74,6 @@ class ConferenceMemberFormValidator extends ConstraintValidator
             $arFreePlaces = [];
             foreach ($roomTypesInfo as $type){
                 $arFreePlaces[$type['room_type_id']] = $type['total'] - $type['busy'] - $type['reserved'];
-            }
-
-            $count = $conferenceMember->getConferenceOrganization()->getConferenceMembers()->count();
-            $limit = $conferenceMember->getConference()->getLimitUsersByOrg();
-            if ($count >= $limit and $conferenceMember->getId()<1) {
-                $this->context
-                    ->buildViolation('Превышен лимит участников на одну организацию' )
-                    ->atPath("roomType")
-                    ->addViolation();
             }
 
             if ($conferenceMember->getRoomType()) {
