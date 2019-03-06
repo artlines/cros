@@ -2,15 +2,18 @@
 
 namespace App\Form;
 
+use App\Entity\Abode\Room;
 use App\Entity\Abode\RoomType;
 use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\User;
 use App\Repository\Abode\RoomTypeRepository;
+use App\Validator\ConferenceMemberForm;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -82,8 +85,32 @@ class ConferenceMemberFormType extends AbstractType
                     ],
                     'required' => true,
                     'query_builder' => function (RoomTypeRepository $roomTypeRepository) {
-                        return $roomTypeRepository->createQueryBuilder('rt')
-                            ->orderBy('rt.title');
+
+                        $roomTypesInfo = $roomTypeRepository->getSummaryInformation();
+
+                        $arFreeIds = [];
+                        foreach ($roomTypesInfo as $type){
+                            //$arFreePlaces[$type['room_type_id']] = $type['total'] - $type['busy'] - $type['reserved'];
+                            if( $type['total'] - $type['busy'] - $type['reserved'] >0 ){
+                                $arFreeIds[] = $type['room_type_id'];
+                            }
+                        }
+
+                        return $roomTypeRepository
+                            ->createQueryBuilder('rt')
+                            ->where('rt.id in (:ids)')
+                            ->setParameter('ids', $arFreeIds)
+                            ;
+
+                    },
+
+                    'choice_label' => function ($item) {
+                        /** @var RoomType $item */
+                        //dd($item);
+                        return $item->getTitle()
+                            . ' / Стоимость:'
+                            . number_format($item->getCost())
+                            . '₽';
                     }
                 ]
             )
@@ -136,6 +163,10 @@ class ConferenceMemberFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ConferenceMember::class,
+            'constraints' => [
+                new ConferenceMemberForm()
+            ]
         ]);
+
     }
 }

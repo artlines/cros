@@ -10,6 +10,7 @@ use App\Entity\Participating\ConferenceOrganization;
 use App\Entity\Participating\Organization;
 use App\Entity\Participating\User;
 use App\Form\CommentFormType;
+use App\Form\ConferenceMemberFormType;
 use App\Form\ConferenceOrganizationFormType;
 use App\Repository\Abode\RoomTypeRepository;
 use App\Repository\ConferenceMemberRepository;
@@ -17,6 +18,8 @@ use App\Repository\ConferenceOrganizationRepository;
 use App\Service\Mailer;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,14 +38,18 @@ class ConferenceRegistrationController extends AbstractController
     const MAIL_SEND_REGISTERED = 'cros.send.registered';
     const MAIL_SEND_PASSWORD = 'cros.send.password';
     const MAIL_SEND_COMMENT = 'cros.send.comment';
+    const MAIL_SEND_USER_ADD = 'cros.send.user_add';
+    const MAIL_SEND_USER_UPDATE = 'cros.send.user_update';
     const MAIL_BCC = 'cros@nag.ru';
 
     /** @var LoggerInterface */
     protected $logger;
+    protected $mailer;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, Mailer $mailer)
     {
         $this->logger = $logger;
+        $this->mailer = $mailer;
     }
 
 
@@ -477,43 +484,317 @@ class ConferenceRegistrationController extends AbstractController
         ]);
     }
 
+    public function mailSendPassword(ConferenceMember $conferenceMember, string $password)
+    {
+        $Conference = $conferenceMember->getConference();
+        $ConferenceOrganization = $conferenceMember->getConferenceOrganization();
+        $user = [
+            'firstName' => $conferenceMember->getUser()->getFirstName(),
+            'middleName' => $conferenceMember->getUser()->getMiddleName(),
+            'lastName' => $conferenceMember->getUser()->getLastName(),
+            'post' => $conferenceMember->getUser()->getPost(),
+            'phone' => $conferenceMember->getUser()->getPhone(),
+            'email' => $conferenceMember->getUser()->getEmail(),
+            'carNumber' => $conferenceMember->getCarNumber(),
+            'roomType' => $conferenceMember->getRoomType()->getTitle(),
+            'cost' => $conferenceMember->getRoomType()->getCost(),
+            'arrival' => $conferenceMember->getArrival()->getTimestamp(),
+            'leaving' => $conferenceMember->getLeaving()->getTimestamp(),
+        ];
+        $params_organization = [
+            'name' => $ConferenceOrganization->getOrganization()->getName(),
+            'inn' => $ConferenceOrganization->getOrganization()->getInn(),
+            'kpp' => $ConferenceOrganization->getOrganization()->getKpp(),
+            'requisites' => $ConferenceOrganization->getOrganization()->getRequisites(),
+            'address' => $ConferenceOrganization->getOrganization()->getAddress(),
+            'comment' => $ConferenceOrganization->getOrganization()->getComment(),
+        ];
+        $this->mailer->setTemplateAlias(self::MAIL_SEND_PASSWORD);
+        $this->mailer->send(
+            'КРОС 2019: Пароль для доступа',
+            [
+                'user' => $user,
+                'email' => $conferenceMember->getUser()->getEmail(),
+                'password' => $password,
+                'organization' => $params_organization,
+                'conference' => [
+                    'eventStart' => $Conference->getEventStart()->getTimestamp(),
+                    'eventFinish' => $Conference->getEventFinish()->getTimestamp(),
+                ]
+            ],
+            $conferenceMember->getUser()->getEmail(), null, $this->getBcc()
+        );
+    }
+
+    public function mailSendUserCreate(ConferenceMember $conferenceMember, ?ConferenceMember $conferenceMemberOld = null)
+    {
+        $ConferenceOrganization = $conferenceMember->getConferenceOrganization();
+        $arUsers = [];
+        if ($conferenceMemberOld) {
+            $arUsers['old'] = [
+                'firstName' => $conferenceMemberOld->getUser()->getFirstName(),
+                'middleName' => $conferenceMemberOld->getUser()->getMiddleName(),
+                'lastName' => $conferenceMemberOld->getUser()->getLastName(),
+                'post' => $conferenceMemberOld->getUser()->getPost(),
+                'phone' => $conferenceMemberOld->getUser()->getPhone(),
+                'email' => $conferenceMemberOld->getUser()->getEmail(),
+                'carNumber' => $conferenceMemberOld->getCarNumber(),
+                'roomType' => $conferenceMemberOld->getRoomType()->getTitle(),
+                'cost' => $conferenceMemberOld->getRoomType()->getCost(),
+                'arrival' => $conferenceMemberOld->getArrival()->getTimestamp(),
+                'leaving' => $conferenceMemberOld->getLeaving()->getTimestamp(),
+            ];
+
+        }
+        $arUsers['new'] = [
+            'firstName' => $conferenceMember->getUser()->getFirstName(),
+            'middleName' => $conferenceMember->getUser()->getMiddleName(),
+            'lastName' => $conferenceMember->getUser()->getLastName(),
+            'post' => $conferenceMember->getUser()->getPost(),
+            'phone' => $conferenceMember->getUser()->getPhone(),
+            'email' => $conferenceMember->getUser()->getEmail(),
+            'carNumber' => $conferenceMember->getCarNumber(),
+            'roomType' => $conferenceMember->getRoomType()->getTitle(),
+            'cost' => $conferenceMember->getRoomType()->getCost(),
+            'arrival' => $conferenceMember->getArrival()->getTimestamp(),
+            'leaving' => $conferenceMember->getLeaving()->getTimestamp(),
+        ];
+        $params_organization = [
+            'name' => $ConferenceOrganization->getOrganization()->getName(),
+            'inn' => $ConferenceOrganization->getOrganization()->getInn(),
+            'kpp' => $ConferenceOrganization->getOrganization()->getKpp(),
+            'requisites' => $ConferenceOrganization->getOrganization()->getRequisites(),
+            'address' => $ConferenceOrganization->getOrganization()->getAddress(),
+            'comment' => $ConferenceOrganization->getOrganization()->getComment(),
+            'users' => $arUsers
+        ];
+        if ($conferenceMemberOld) {
+            $this->mailer->setTemplateAlias(self::MAIL_SEND_USER_UPDATE);
+        } else {
+            $this->mailer->setTemplateAlias(self::MAIL_SEND_USER_ADD);
+        }
+        foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
+            if ($conferenceMember->getUser()->isRepresentative()) {
+                $this->mailer->send(
+                    'КРОС 2019: ' . $ConferenceOrganization->getOrganization()->getName(),
+                    [
+                        'organization' => $params_organization,
+                        'conference' => [
+                            'eventStart' => $ConferenceOrganization->getConference()->getEventStart()->getTimestamp(),
+                            'eventFinish' => $ConferenceOrganization->getConference()->getEventFinish()->getTimestamp(),
+                        ]
+                    ],
+                    $conferenceMember->getUser()->getEmail(), null, $this->getBcc()
+                );
+            }
+
+        }
+    }
+
+    public function mailSendUserUpdate(ConferenceMember $conferenceMember, ?ConferenceMember $conferenceMemberOld = null)
+    {
+        $this->mailSendUserCreate($conferenceMember, $conferenceMemberOld);
+    }
 
     /**
      * @Route("/registration-show", name="registration_show")
-     *
-     * @return object
+     * @param Request $request
+     * @param Mailer $mailer
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function stepThree(Request $request, Mailer $mailer)
+    public function registrationShow(Request $request, Mailer $mailer, UserPasswordEncoderInterface $passwordEncoder)
     {
+        if ($request->getMethod() == 'POST') {
+            $cloner = new VarCloner();
+            $dumper = new CliDumper();
+            $output = fopen('php://memory', 'r+b');
+
+            $dumper->dump($cloner->cloneVar($request), $output);
+            $output = stream_get_contents($output, -1, 0);
+            $this->logger->notice('POSTDATA:' . base64_encode($output));
+        }
+
         /** @var User $user */
         /** @var Organization $organization */
         if (!$this->getUser()) {
-            throw $this->createNotFoundException();
+            return $this->render('conference_registration/no_access.html.twig');
         }
 
-        if (!$this->getUser()->getOrganization()){
-            throw $this->createNotFoundException();
+        if (!$this->getUser()->getOrganization()) {
+            return $this->render('conference_registration/no_access.html.twig');
         }
 
         $organization = $this->getUser()->getOrganization();
-        $Conference = $this->getDoctrine()->getRepository(Conference::class)
+        $Conference = $this->getDoctrine()
+            ->getRepository(Conference::class)
             ->findOneBy(['year' => date("Y")]);
         if ($organization and $Conference) {
+            /** @var ConferenceOrganization $conferenceOrganization */
             $conferenceOrganization = $this->getDoctrine()
                 ->getRepository(ConferenceOrganization::class)
                 ->findOneBy([
                     'organization' => $organization,
                     'conference' => $Conference,
                 ]);
+
             if (!$conferenceOrganization) {
-                throw $this->createNotFoundException();
+                return $this->render('conference_registration/no_access.html.twig');
             }
 
             $CommentForm = $this->createForm(
                 CommentFormType::class
             );
+            $canAdd = false;
+            $canEdit = false;
+            foreach ($conferenceOrganization->getConferenceMembers() as $key => $iConferenceMember) {
+                //dump('$this->getUser()',$iConferenceMember );
+                if ($iConferenceMember->getUser()->isRepresentative() and $iConferenceMember->getUser() == $this->getUser()) {
+                    $canEdit = true;
+                }
+            }
+            if ($canEdit and $conferenceOrganization->getConferenceMembers()->count() < $conferenceOrganization->getConference()->getLimitUsersByOrg()) {
+                $canAdd = true;
+            }
+            /** @var ConferenceMember $CM */
+            $CM = (isset($request->get('conference_member_form')['id']))
+                ? $this->getDoctrine()
+                    ->getRepository(ConferenceMember::class)
+                    ->findOneBy([
+                        'id' => intval($request->get('conference_member_form')['id'])
+                    ])
+                : null;
+            if (!$CM) {
+                $CM = new ConferenceMember();
+            }
+            $CMRoomType = $CM
+                ? $CM->getRoomType()
+                : null;
+            $CMNeighbourhood = $CM
+                ? $CM->getNeighbourhood()
+                : null;
 
+            $CM->setConferenceOrganization($conferenceOrganization);
+            $CM->setConference($conferenceOrganization->getConference());
+            $currentMemberFormViews = [];
+            $submitted = -1;
+
+            $CMOld = clone $CM;
+            $userOld = $CMOld->getUser();
+            if ($userOld) {
+                $userOld = clone $userOld;
+//                $userOld->setLastName('test lastname');
+                $CMOld->setUser($userOld);
+            }
+
+
+            foreach ($conferenceOrganization->getConferenceMembers() as $key => $iConferenceMember) {
+                $form = $this->createForm(
+                    ConferenceMemberFormType::class,
+                    $CM == $iConferenceMember
+                        ? $CM
+                        : $iConferenceMember
+                )
+                    ->remove('RoomType')
+                    ->get('user')->remove('representative')->getParent()
+                    ->add('id', HiddenType::class)
+                    ->add(
+                        'save',
+                        SubmitType::class,
+                        [
+                            'label' => 'Редактировать участника',
+                            'attr' => [
+                                'class' => 'u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15'
+                            ]
+                        ]
+                    );
+                if ($CM == $iConferenceMember) {
+                    $submitted = $key;
+                    $form->handleRequest($request);
+                    $submitForm = $form;
+                }
+
+                $currentMemberFormViews[$key] = $form
+                    ->createView();
+            }
+            $memberForm = $this->createForm(
+                ConferenceMemberFormType::class, $CM)
+                ->remove('neighbourhood')
+                ->remove('roomType')
+                ->add(
+                    'save',
+                    SubmitType::class,
+                    [
+                        'label' => 'Добавить участника',
+                        'attr' => [
+                            'class' => 'u-btn-darkblue cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mt-15'
+                        ]
+                    ]
+                );
+            $memberForm->remove('roomType');
+            if ($CM) {
+                // Если редактируем
+                $memberForm->add('id', HiddenType::class);
+                $memberForm->remove('roomType');
+            };
+            if ($submitted == -1) {
+                $memberForm->handleRequest($request);
+                $submitForm = $memberForm;
+            }
+            if ($submitForm->isSubmitted() && $submitForm->isValid()) {
+                /** @var EntityManager $em */
+                /** @var ConferenceMember $CM */
+                $CMNew = $submitForm->getData();
+                // restore roomType value ->remove('roomType') not works
+                if ($CM && $CMRoomType) {
+                    $CMNew->setRoomType($CMRoomType);
+                    $CMNew->setNeighbourhood($CMNeighbourhood);
+                }
+                if (is_null($CMNew->getArrival())) {
+                    $CMNew->setArrival($Conference->getEventStart());
+                }
+                if (is_null($CMNew->getLeaving())) {
+                    $CMNew->setLeaving($Conference->getEventFinish());
+                }
+
+                if (is_null($CMOld->getArrival())) {
+                    $CMOld->setArrival($Conference->getEventStart());
+                }
+                if (is_null($CMOld->getLeaving())) {
+                    $CMOld->setLeaving($Conference->getEventFinish());
+                }
+
+                $user = $CMNew->getUser();
+                $user->setPhone(preg_replace('/[\D]/', '', $user->getPhone()));
+                $user->setOrganization($conferenceOrganization->getOrganization());
+                $CMNew->setConference($conferenceOrganization->getConference());
+                $CMNew->setConferenceOrganization($conferenceOrganization);
+                $createUser = $CMNew->getId() < 1;
+                $password = $this->getRandomPassword();
+                if ($createUser) {
+                    $user->setPassword(
+                        $passwordEncoder->encodePassword($user, $password)
+                    );
+                }
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($CMNew);
+                $em->flush();
+                if ($createUser) {
+                    $this->mailSendPassword($CMNew, $password);
+                    $this->mailSendUserCreate($CMNew);
+                } else {
+                    $this->mailSendUserUpdate($CMNew, $CMOld);
+                }
+
+                //$mailer->setTemplateAlias(self::MAIL_SEND_USER_UPDATE);
+
+                return $this->redirectToRoute('registration_show');
+            }
             $CommentForm->handleRequest($request);
+//            if ($request->request->has('conference_member_form')) {
+//
+//            }
 
             if ($CommentForm->isSubmitted() && $CommentForm->isValid()) {
 
@@ -522,8 +803,7 @@ class ConferenceRegistrationController extends AbstractController
                 /** @var Comment $comment */
                 $comment
                     ->setUser($this->getUser())
-                    ->setConferenceOrganization($conferenceOrganization)
-                    ;
+                    ->setConferenceOrganization($conferenceOrganization);
                 /** @var EntityManager $em */
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($comment);
@@ -549,18 +829,23 @@ class ConferenceRegistrationController extends AbstractController
 
                 return $this->redirectToRoute('registration_show');
             }
+
             $comments = $this->getDoctrine()
                 ->getRepository(Comment::class)
                 ->findBy([
                     'conferenceOrganization' => $conferenceOrganization,
                     'isPrivate' => false,
-                ], ['createdAt' =>'DESC'])
-            ;
+                ], ['createdAt' => 'DESC']);
 
             return $this->render('conference_registration/show.html.twig', [
                 'ConferenceOrganization' => $conferenceOrganization,
                 'comments' => $comments,
                 'form' => $CommentForm->createView(),
+                'memberForm' => $memberForm->createView(),
+                'currentMemberFormViews' => $currentMemberFormViews,
+                'submitted' => $request->getMethod() == 'POST' ? $submitted : false,
+                'canAdd' => $canAdd,
+                'canEdit' => $canEdit,
             ]);
         } else {
             throw $this->createNotFoundException();

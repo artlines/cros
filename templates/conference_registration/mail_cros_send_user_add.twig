@@ -1,0 +1,90 @@
+<table width="1000px" height="500px" cellspacing="0" cellpadding="0" border="0"
+       style="font-family: arial; background-position: bottom; width: 1000px; height: 500px; border-collapse:collapse; border-spacing: 0; background: url('https://cros.nag.ru/temp/bg2018.jpg') repeat-y;">
+    <tr><td colspan="3" height="50px" style="height: 50px;"></td></tr>
+    <tr>
+        <td width="40px"></td>
+        <td width="920px">
+            <table width="820px" cellspacing="0" cellpadding="0" border="0"
+                   style="width: 820px; margin: 0 auto; border-collapse:collapse; border-spacing: 0; background-color: rgba(255,255,255,0.87);">
+                <tr>
+                    <td width="180px" style="width: 180px;">
+                    </td>
+                    <td style="padding: 10px 0;" colspan="2">
+                        <h1>{{ data.title|default('') }}</h1>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="320px"
+                        style="text-align: center; padding: 0 20px; width: 320px; vertical-align: top;" rowspan="2">
+                        <a href="https://shop.nag.ru">
+                            <img style="width: 250px;"
+                                 src="https://cros.nag.ru/assets/images/logo-2019.png"
+                                 alt="Вас приветствует компания НАГ">
+                        </a>
+                        <img src="https://cros.nag.ru/temp/cros-logo-desc.png"
+                             alt="Конференция Российских Операторов Связи">
+                    </td>
+                    <td width="500px" style="width: 500px; padding-right: 20px; max-width: 500px; word-wrap: break-word; font-size: 16px;" colspan="2">
+                        <p>
+                            Мы получили Вашу заявку на участие
+                            в Конференции российских операторов связи
+                            КРОС-2019 от компании
+                            <b>{{ data.organization.name|default('') }}</b><br>
+                            <br>
+                            {% set i = 1 %}
+                            {% set fullprice = 0 %}
+                            {% for user in data.organization.users %}
+                        <h4>Добавлен участник</h4>
+                        ФИО: {{ user.lastName }} {{ user.firstName }} {{ user.middleName|default('') }}<br>
+                        Должность: {{ user.post|default('') }}<br>
+                        Телефон: {{ user.phone|default('') }}<br>
+                        E-mail: {{ user.email|default('') }}<br>
+                        Номер автомобиля: {{ user.carNumber|default('') }}<br>
+                        Класс участия: {{ user.roomType|default('') }} ({{ user.cost }}р.)<br>
+                        {% set fullprice = fullprice + user.cost %}
+                        {% if user.arrival == data.conference.eventStart %}
+                            Ранний заезд: нет<br>
+                        {% else %}
+                            Ранний заезд: {{ user.arrival|date('d.m.Y H:i') }} <br>
+                        {% endif %}
+                        {% if user.leaving == data.conference.eventFinish %}
+                            Поздний выезд: нет<br>
+                        {% else %}
+                            Поздний выезд: {{ user.leaving|date('d.m.Y H:i') }} <br>
+                        {% endif %}
+
+                        {% endfor %}
+                        <h4>Сумма: {{ fullprice }}р.</h4>
+                        <h4>Реквизиты</h4>
+                        ИНН: {{ data.organization.inn|default('') }}<br>
+                        КПП: {{ data.organization.kpp|default('') }}<br><br>
+                        {{ data.organization.requisites|default('')|raw }}<br>
+                        <h4>Адрес:</h4>
+                        {{ data.organization.address|default('')|raw }}
+                        <h4>Комментарий:</h4>
+                        {{ data.organization.comment|default('')|raw }}
+                        <hr><br>
+                        В ближайшее время мы вышлем Вам счет на оплату.<br><br>
+
+                        Более подробную информацию можно получить на официальном сайте конференции: <a href="http://cros.nag.ru">cros.nag.ru</a><br><br>
+                        Если произошла какая-либо ошибка, просим Вас сообщить об этом по адресу: <a href="mailto:cros@nag.ru">cros@nag.ru</a><br><br>
+
+                        </p>
+
+                    </td>
+                </tr>
+                <tr style="">
+                    <td width="400px" style="font-size: 16px;">
+                        С уважением,<br>Оргкомитет КРОС-2019<br>E-mail: <a href="mailto:cros@nag.ru">cros@nag.ru</a><br>+7 (343) 379-98-38
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+                <tr><td colspan="3" height="25px" style="height: 25px;"></td></tr>
+            </table>
+        </td>
+        <td width="40px"></td>
+    </tr>
+    <tr><td colspan="3" height="50px" style="height: 50px;"></td></tr>
+</table>

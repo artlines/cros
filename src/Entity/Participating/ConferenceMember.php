@@ -118,6 +118,16 @@ class ConferenceMember
     }
 
     /**
+     * @param int $id
+     * @return ConferenceMember
+     */
+    public function setId(int $id): ConferenceMember
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
      * @return User
      */
     public function getUser()

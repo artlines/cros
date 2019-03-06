@@ -91,7 +91,7 @@ class MemberFormType extends AbstractType
                 ChoiceType::class,
                 [
                     'label' => 'Пол', // 'Member.sex.Label',
-                    'required' => false,
+                    'required' => true,
                     'choices'  => [
                         'Мужской' => User::SEX__MAN,
                         'Женский' => User::SEX__WOMAN,

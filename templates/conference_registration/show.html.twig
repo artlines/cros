@@ -30,7 +30,7 @@
     </table>
     <h3>Информация об участниках</h3>
 <div class="accordion" id="accordion" role="tablist">
-{% for member in ConferenceOrganization.conferenceMembers %}
+{% for key,member in ConferenceOrganization.conferenceMembers %}
             <div class="card cs-mb-10">
                 <div class="card-header" role="tab" id="heading_{{ member.id }}">
                     <h5 class="mb-0">
@@ -91,20 +91,137 @@
                             </tr>
                             <tr>
                                 <th scope="row">Класс участия</th>
+                                {% if member.roomType  %}
                                 <td>{{- member.roomType.title -}}</td>
+                                {% endif %}
                             </tr>
                             <tr>
                                 <th scope="row">Стоимость</th>
+                                {% if member.roomType  %}
                                 <td>{{ member.roomType.cost|number_format(2,'.',' ') }} ₽</td>
+                                {% endif %}
                             </tr>
                             </tbody>
                         </table>
+                        {% if  canEdit %}
+                        <button
+                                type="button"
+                                class="btn btn-primary cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mb-20"
+                                data-toggle="modal" data-target="#editModal{{ key }}"
+                            >
+                            Редактировать
+                        </button>
+                        {% endif %}
                     </div>
                 </div>
             </div>
 {% endfor %}
+    {% if  canAdd %}
+    <button
+            type="button"
+            class="btn u-btn-green cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mb-20"
+            data-toggle="modal" data-target="#addModal"
+    >
+        Добавить участника</button>
+    <div style="display: inline-block;   vertical-align: middle"
+         class="cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mb-20"
+    >
+        Не более {{ ConferenceOrganization.conference.limitUsersByOrg }}-х участников
+    </div>
+    {% endif %}
 </div>
+{% for key,memberForm in currentMemberFormViews %}
+    <div class="modal fade" id="editModal{{ key }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Редактирование участника конференции</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                {{ form_start(memberForm) }}
+                <div class="modal-body conference-member">
+                    <h3></h3>
 
+                    <div class="row">
+                        <div class="col-md-3">{{- form_row(memberForm.user.lastName) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.user.firstName) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.user.middleName) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.user.sex) -}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">{{- form_row(memberForm.user.phone) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.user.email) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.user.post) -}}</div>
+                        {#<!--div class="col-md-3" style="padding-top: 37px">{{- form_row(memberForm.user.representative) -}}</div-->#}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">{{- form_row(memberForm.arrival,{'data':ConferenceOrganization.Conference.eventStart|date("d.m.Y H:i")}) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.leaving,{'data':ConferenceOrganization.Conference.eventFinish|date("d.m.Y H:i") }) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.carNumber) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.user.newphoto) -}}</div>
+                    </div>
+                    <div class="row">
+                        {#<div class="col-md-6">{{- form_row(memberForm.RoomType) -}}</div>#}
+                        <!--div class="col-md-3">{{- form_row(memberForm.neighbourhood) -}}</div-->
+                    </div>
+                    {{ form_errors(memberForm) }}
+                </div>
+                <div class="modal-footer">
+                    {{ form_row(memberForm.save) }}
+                </div>
+                {{ form_end(memberForm) }}
+            </div>
+        </div>
+    </div>
+
+{% endfor %}
+
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Добавление участника конференции</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body conference-member">
+                    <h3></h3>
+                    {{ form_start(memberForm) }}
+
+                    <div class="row">
+                        <div class="col-md-3">{{- form_row(memberForm.user.lastName) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.user.firstName) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.user.middleName) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.user.sex) -}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">{{- form_row(memberForm.user.phone) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.user.email) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.user.post) -}}</div>
+                        <!--div class="col-md-3" style="padding-top: 37px">{{- form_row(memberForm.user.representative) -}}</div-->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">{{- form_row(memberForm.arrival,{'data':ConferenceOrganization.Conference.eventStart|date("d.m.Y H:i")}) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.leaving,{'data':ConferenceOrganization.Conference.eventFinish|date("d.m.Y H:i") }) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.carNumber) -}}</div>
+                        <div class="col-md-3">{{- form_row(memberForm.user.newphoto) -}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">{{- form_row(memberForm.RoomType) -}}</div>
+                        {#<!--div class="col-md-3">{{- form_row(memberForm.neighbourhood) -}}</div-->#}
+                    </div>
+                    {{ form_errors(memberForm) }}
+                </div>
+                <div class="modal-footer">
+                    {{ form_row(memberForm.save) }}
+                </div>
+                {{ form_end(memberForm) }}
+            </div>
+        </div>
+    </div>
 
 <h3>Вопрос организатору</h3>
 <table class="table">
@@ -132,5 +249,164 @@
     {{ form_row(form.save) }}
     {{ form_end(form) }}
 </div>
+<script>
+
+    const validateEmail = function () {
+        let t = this;
+
+        let data = {
+            email: jQuery(t)
+                .parents('.conference-member')
+                .find('.email')
+                .val(),
+            conf_id: jQuery('.conf_id')
+                .val()
+        };
+
+        jQuery.ajax({
+            url: "/conference/registration-validate-email",
+            data: data
+        }).done(function (data) {
+            let eml = jQuery(t)
+                .parents('.conference-member')
+                .find('.email');
+            let trg = eml.parent();
+            if( data && data.found){
+                if(!trg.find('.error').length) {
+                    trg.append(
+                        jQuery('<span></span>')
+                            .addClass('error invalid-feedback d-block')
+                    );
+                }
+                let err = trg.find('.error');
+                eml.addClass('is-invalid');
+                if (data.found == 'email-invalid') {
+                    err.html('<span class="form-error-message">Ошибка формата почты</span>');
+                }else {
+                    err.html('<span class="form-error-message">Пользователь с такой почтой уже зарегистрирован</span>');
+                }
+                // jQuery('html, body').animate({
+                //     scrollTop: err.offset().top-400
+                // }, 1000);
+
+            } else {
+                eml.removeClass('is-invalid');
+                if(trg.find('.error')) {
+                    trg.find('.error').remove();
+                    jQuery('.inn').removeClass('is-invalid');
+                    jQuery('.kpp').removeClass('is-invalid');
+                }
+            }
+            // $('body').scrollTo('#target');
+//        console.log(data.found);
+        });
+        return false;
+    };
+
+
+    const updateItem = function (item) {
+        item.find('.phone').each(function () {
+            new IMask(this, {
+                mask: [
+                    {mask: '{8}(000)000-00-00'},
+                    {mask: '+{7}(000)000-00-00'},
+                ]
+            });
+        });
+
+        item.find('.email').on('change', validateEmail);
+        // item.find('.select-roomtype').children().each(function () {
+        //     let v = jQuery(this).attr("value");
+        //     let look = jQuery('#select-proto')
+        //         .find('[value=' + v + ']');
+        //     if (look.length>0) {
+        //         jQuery(this).text(look.first().text());
+        //     }
+        //     else {
+        //         //    console.log(jQuery(this).parent());
+        //         jQuery(this).remove();
+        //     }
+        // });
+
+        item.find('.datetimepicker').datetimepicker({
+            locale: 'ru',
+            format: 'DD.MM.YYYY HH:mm',
+            sideBySide: true,
+        });
+
+        item.find('input[type="file"]').on( 'change', function(e){
+            var fileName = e.target.files[0]. name;
+            var id = jQuery(this).attr('id');
+            jQuery(this).parent().find('label[for='+id+']').text(fileName).attr('style','overflow: hidden');
+            //alert('The file "' + fileName + '" has been selected.' );
+        });
+    {% if submitted == -1 %}
+        jQuery('#addModal').modal('show');
+    {% elseif submitted >= 0 %}
+        jQuery('#editModal{{ submitted }}').modal('show');
+    {% endif %}
+        fixErrorLabels();
+    };
+
+    const fixErrorLabels = function () {
+        jQuery('.invalid-feedback').each(function () {
+            jQuery(this).parent().parent().find('input').first().after(jQuery(this));
+            jQuery(this).parent().parent().find('select').first().after(jQuery(this));
+        });
+    };
+</script>
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        @font-face {
+            font-family: 'Glyphicons Halflings';
+            src: url(/assets/fonts/glyphicons-halflings-regular.eot);
+            src: url(/assets/fonts/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype'), url(/assets/fonts/glyphicons-halflings-regular.woff) format('woff'), url(/assets/fonts/glyphicons-halflings-regular.ttf) format('truetype'), url(/assets/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg')
+        }
+        .glyphicon {
+            position: relative;
+            top: 1px;
+            display: inline-block;
+            font-family: 'Glyphicons Halflings';
+            font-style: normal;
+            font-weight: normal;
+            line-height: 1;
+
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .glyphicon-chevron-up:before {
+            content: "\e113"
+        }
+
+        .glyphicon-chevron-down:before {
+            content: "\e114"
+        }
+        .glyphicon-chevron-left:before {
+            content: "\e079";
+        }
+        .glyphicon-chevron-right:before {
+            content: "\e080";
+        }
+    </style>
+    <link href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+{% endblock %}
+
+
+{% block javascripts %}
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script defer src="https://unpkg.com/imask"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+    <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+    <script>
+        jQuery(document).ready(function () {
+            jQuery.each( jQuery('.conference-member'), function(i,el){
+            updateItem(jQuery(el));
+        });
+    });
+    </script>
 
 {% endblock %}
