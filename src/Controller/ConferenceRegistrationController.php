@@ -660,7 +660,7 @@ class ConferenceRegistrationController extends AbstractController
                 // не превышен лимит участников на конференции
                 and $conferenceOrganization->getConference()->getConferenceMembers()->count() < $conferenceOrganization->getConference()->getLimitUsersGlobal()
             ) {
-                 // $canAdd = true;
+                $canAdd = true;
             }
             /** @var ConferenceMember $CM */
             $CM = (isset($request->get('conference_member_form')['id']))
