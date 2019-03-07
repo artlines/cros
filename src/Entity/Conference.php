@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Content\Info;
+use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\Speaker;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -95,12 +96,20 @@ class Conference
     private $sponsors;
 
     /**
+     * @var ArrayCollection|ConferenceMember[]
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Participating\ConferenceMember", mappedBy="conference",cascade={"persist"})
+     */
+    private $conferenceMembers;
+
+    /**
      * Conference constructor.
      */
     public function __construct()
     {
         $this->speakers = new ArrayCollection();
         $this->sponsors = new ArrayCollection();
+        $this->conferenceMembers = new ArrayCollection();
     }
 
     /**
@@ -325,4 +334,33 @@ class Conference
     {
         $this->sponsors = $sponsors;
     }
+
+    /**
+     * @return ConferenceMember[]|ArrayCollection
+     */
+    public function getConferenceMembers()
+    {
+        return $this->conferenceMembers;
+    }
+
+    /**
+     * @param ConferenceMember $conferenceMember
+     */
+    public function addConferenceMember(ConferenceMember $conferenceMember)
+    {
+        if (!$this->conferenceMembers->contains($conferenceMember)) {
+            $this->conferenceMembers->add($conferenceMember);
+            $conferenceMember->setConference($this);
+        }
+    }
+
+    /**
+     * @param ConferenceMember $conferenceMember
+     */
+    public function removeConferenceMember(ConferenceMember $conferenceMember)
+    {
+        $this->conferenceMembers->removeElement($conferenceMember);
+        $conferenceMember->setConference($this);
+    }
+
 }
