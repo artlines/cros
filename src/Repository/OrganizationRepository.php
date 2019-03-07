@@ -62,6 +62,35 @@ class OrganizationRepository extends EntityRepository
     }
 
     /**
+     * Возвращает только одну организацию, поиск ведется по ИНН КПП среди участников заданной конференции
+     * @param Conference $conference
+     * @param string $inn
+     * @param string $kpp
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+
+    public function findOrganizationInConference(Conference $conference, string $inn, string $kpp )
+    {
+        return $this
+            ->createQueryBuilder('o')
+            ->innerJoin(
+                ConferenceOrganization::class,
+                'co',
+                Expr\Join::WITH,
+                'o.id = co.organization AND co.conference=:conference'
+                )
+            ->where('o.inn=:inn and o.kpp=:kpp')
+            ->setParameters([
+                'conference' => $conference,
+                'inn'        => $inn,
+                'kpp'        => $kpp,
+            ])
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
      * возвращает названия организаций с заданным ИНН/КПП, окончательно зарегистрированных в конференции текущего года
      * @param string $inn - ИНН организации
      * @param string $kpp - КПП организации
