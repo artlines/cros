@@ -13,16 +13,15 @@ class InvoiceRepository extends EntityRepository
      *
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param \DateInterval $interval Interval which will be sub from `now` DateTime and push to query as `from_created_at`
+     * @return array
      */
     public function findFailedAutoInvoicing(\DateInterval $interval)
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $date_now = new \DateTime('now');
-        $date_now->
-
         $parameters = [
-            'created_at'        => ()->format('d-m-Y H:i:s'),
+            'from_created_at'   => (new \DateTime('now'))->sub($interval)->format('Y-m-d H:i:s'),
             'status_guid__wait' => Invoice::STATUS_GUID__DOCUMENT_NOT_READY,
         ];
 
@@ -35,13 +34,14 @@ class InvoiceRepository extends EntityRepository
                    po.b2b_guid as org_guid,
                    pi.id,
                    pi.num,
-                   pi.b2b_order_guid as order_guid
+                   pi.b2b_order_guid as order_guid,
+                   pi.created_at
             FROM participating.invoice pi
               LEFT JOIN participating.conference_organization pco ON pi.conference_organization_id = pco.id
               LEFT JOIN participating.organization             po ON pco.organization_id = po.id
             WHERE
                   pi.status_guid = :status_guid__wait
-                  AND pi.created_at < :created_at
+                  AND pi.created_at < :from_created_at
         ";
 
         try {
@@ -51,8 +51,6 @@ class InvoiceRepository extends EntityRepository
         }
 
         $stmt->execute($parameters);
-
-        dump($stmt->fetchAll()); die();
 
         return $stmt->fetchAll();
     }

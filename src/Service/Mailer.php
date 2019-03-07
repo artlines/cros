@@ -89,10 +89,11 @@ class Mailer
      * @param string $sendTo
      * @param null|string|array $sendCc
      * @param null|string|array $sendBcc
+     * @param null|string $sender
      *
      * @return mixed
      */
-    public function send(string $subject, array $params, string $sendTo, $sendCc = null, $sendBcc = null)
+    public function send(string $subject, array $params, string $sendTo, $sendCc = null, $sendBcc = null, $sender = null)
     {
         $timestamp = time();
 
@@ -113,6 +114,10 @@ class Mailer
 
         if ($sendBcc) {
             $query['send_bcc'] = $sendBcc;
+        }
+
+        if ($sender) {
+            $query['sender'] = $sender;
         }
 
         $ch = curl_init($this->sendUrl);
