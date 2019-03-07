@@ -128,13 +128,18 @@ class ConferenceOrganizationController extends ApiController
 
         $organization = $conferenceOrganization->getOrganization();
 
+        /** @var Conference $conference */
+        $conference = $this->em->getRepository(Conference::class)
+            ->findOneBy(['year' => date('Y')]);
+        if (!$conference) {
+            return $this->badRequest("Не найдена конференция для {$year}(текущего) года.");
+        }
         /** @var Organization $existOrg */
         $existOrg = $this->em
+
             ->getRepository(Organization::class)
-            ->findOneBy([
-                'inn' => $inn,
-                'kpp' => $kpp
-            ]);
+            ->findOrganizationInConference($conference, $inn, $kpp);
+
         if ($existOrg && $organization !== $existOrg) {
             return $this->badRequest("С такими ИНН и КПП есть организация \"{$existOrg->getName()}\"");
         }
