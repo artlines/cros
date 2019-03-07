@@ -39,7 +39,6 @@ class InfoController extends AbstractController
         $alias,
         Mailer $mailer,
         Request $request,
-        \Swift_Mailer $swiftMailer,
         EntityManagerInterface $em,
         ParameterBagInterface $parameterBag
     ) {
@@ -244,21 +243,17 @@ class InfoController extends AbstractController
 
                 $data = $form->getData();
 
-                $message = new \Swift_Message();
-                $message
-                    ->setSubject('КРОС-2019: Заявка на напоминание освобождения брони')
-                    ->setFrom('cros@nag.ru')
-                    ->setTo('cros@nag.ru')
-                    ->setBody(
-                        $this->renderView(
-                            'Emails/reminder-sponsor.html.twig',
-                            array(
-                                'company' => $data['company'],
-                                'mobile' => $data['mobile'],
-                            )
-                        ), 'text/html');
-
-                $swiftMailer->send($message);
+                $mailer->setTemplateAlias('cros2019.html');
+                $mailer->send('КРОС-2019: Заявка на напоминание освобождения брони', [
+                    'title'    => 'Спасибо. Ваша заявка принята.',
+                    'html'     => $this->renderView(
+                        'Emails/2019_include_place.twig',
+                        array(
+                            'company' => $data['company'],
+                            'mobile' => $data['mobile'],
+                        )
+                    ),
+                ], getenv('CROS_MAIL_BCC'), null, getenv('CROS_MAIL_BCC') );
 
                 return $this->render('frontend/info/reminder-sponsor.html.twig', array(
                     'form' => false,
