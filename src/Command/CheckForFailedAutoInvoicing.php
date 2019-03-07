@@ -81,11 +81,14 @@ class CheckForFailedAutoInvoicing extends Command
         }
 
         foreach ($invoicesData as $invoiceData) {
+            $invoiceData['invalid_inn_kpp'] = $invoiceData['invalid_inn_kpp'] ? 'true' : 'false';
+
             $this->logger->notice("[failed-auto-invoicing] Invoice (ID: {$invoiceData['id']}) didn't make in auto mode.", $invoiceData);
 
             if ($allowNotify && $this->notifyEmails) {
-                $params['header'] .= $invoiceData['name'];
-                $params['text'] .= print_r($invoiceData, true);
+
+                $params['header']   .= $invoiceData['name'];
+                $params['text']     .= print_r($invoiceData, true);
 
                 $title = $invoiceData['name'].": не удалось автоматически выставить счет";
 
