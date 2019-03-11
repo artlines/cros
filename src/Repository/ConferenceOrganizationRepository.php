@@ -461,7 +461,7 @@ class ConferenceOrganizationRepository extends EntityRepository
                 Organization::class,
                 'o',
                 Expr\Join::WITH,
-                'co.organization = o.id'
+                'co.organization = o.id AND coalesce(o.hidden,false) = :hidden'
             )
             ->innerJoin(
                 ConferenceMember::class,
@@ -473,12 +473,11 @@ class ConferenceOrganizationRepository extends EntityRepository
                 Place::class,
                 'p',
                 Expr\Join::WITH,
-                'p.conferenceMember = p.id'
+                'p.conferenceMember = cm.id'
             )
-            ->where('o.hidden = :hidden')
-            ->andWhere('co.conference = :conference')
+            ->where('co.conference = :conference')
             ->setParameters([
-                'hidden'     => false,
+                'hidden'     => 'false',
                 'conference' => $conference,
             ])
             ->groupBy('co.id')
