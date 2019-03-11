@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Участники КРОС {{ conference.year }}{% endblock %}
+
+{% block header_title %}Архив{% endblock %}
+
+{% block body %}
+    {% if conferenceOrganizations is empty %}
+        <h3>Нет организаций</h3>
+    {% else %}
+        <div class="row">
+        {% for key,conferenceOrganization in conferenceOrganizations %}
+            <div class="col-md-3">
+                {% if conferenceOrganization.organization.logo %}
+                    <img width="200" src="/uploads/members/logos/{{ conferenceOrganization.organization.logo }}" /><br>
+                {% endif %}
+                {{ conferenceOrganization.organization.name }}
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
