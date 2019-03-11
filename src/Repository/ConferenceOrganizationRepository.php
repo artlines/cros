@@ -283,6 +283,7 @@ class ConferenceOrganizationRepository extends EntityRepository
               SELECT
                      pco.id as conf_org_id,
                      po.name,
+                     po.hidden,
                      po.inn,
                      po.kpp,
                      po.email,
@@ -307,6 +308,7 @@ class ConferenceOrganizationRepository extends EntityRepository
             SELECT
                    pco.id,
                    tcoi.name,
+                   tcoi.hidden,
                    tcoi.email,
                    tcoi.inn,
                    tcoi.kpp,
@@ -334,6 +336,7 @@ class ConferenceOrganizationRepository extends EntityRepository
             GROUP BY
                    pco.id,
                    tcoi.name,
+                   tcoi.hidden,
                    tcoi.email,
                    tcoi.inn,
                    tcoi.kpp,
