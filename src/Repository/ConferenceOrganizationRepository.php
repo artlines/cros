@@ -451,4 +451,41 @@ class ConferenceOrganizationRepository extends EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function findShowByConference( Conference $conference ){
+// Отображать только те организации, которые имеют заселенных участников.
+// Не показывать организации, которые имеют признак hidden.
+        return $this
+            ->createQueryBuilder('co')
+            ->innerJoin(
+                Organization::class,
+                'o',
+                Expr\Join::WITH,
+                'co.organization = o.id'
+            )
+            ->innerJoin(
+                ConferenceMember::class,
+                'cm',
+                Expr\Join::WITH,
+                'co.id = cm.conferenceOrganization'
+            )
+            ->innerJoin(
+                Place::class,
+                'p',
+                Expr\Join::WITH,
+                'p.conferenceMember = p.id'
+            )
+            ->where('o.hidden = :hidden')
+            ->andWhere('co.conference = :conference')
+            ->setParameters([
+                'hidden'     => false,
+                'conference' => $conference,
+            ])
+            ->groupBy('co.id')
+            ->getQuery()
+            ->getResult()
+            ;
+
+    }
+
 }
