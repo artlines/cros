@@ -37,7 +37,7 @@ class ConferenceMember
     /**
      * @var Conference
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Conference",cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\Conference", inversedBy="conferenceMembers", cascade={"persist"})
      * @ORM\JoinColumn(name="conference_id", referencedColumnName="id", nullable=false)
      */
     private $conference;
