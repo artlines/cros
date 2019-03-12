@@ -29,6 +29,7 @@ class OrganizationForm extends React.Component {
         this.state = {
             values: {
                 name: '',
+                hidden: false,
                 inn: '',
                 kpp: '',
                 city: '',
@@ -68,11 +69,26 @@ class OrganizationForm extends React.Component {
 
     handleChange = (field, index = null) => event => {
         const { values, errors } = this.state;
-        const { name, value } = event.target;
+        const { nam } = event.target;
 
-        const update = index !== null ? { [field]: {...values[field], [index]: value }} : { [field]: value };
+        let value;
+        switch (event.target.type) {
+            case 'checkbox':
+                value = event.target.checked;
+                break;
+            default:
+                value = event.target.value;
+                break;
+        }
 
-        index !== null ? (errors[field] && delete(errors[field][index])) : delete(errors[field]);
+        const update = index !== null
+            ? { [field]: {...values[field], [index]: value }}
+            : { [field]: value };
+
+        index !== null
+            ? (errors[field] && delete(errors[field][index]))
+            : delete(errors[field]);
+
         isEmpty(errors[field]) && delete(errors[field]);
 
         this.setState({
@@ -161,6 +177,20 @@ class OrganizationForm extends React.Component {
                                     helperText={errors.name}
                                     InputLabelProps={{shrink: true}}
                                 />
+                            </Grid>
+                            <Grid item xs={12} sm={12}>
+                                <FormControl>
+                                    <FormControlLabel
+                                        label={"Показать организацию на сайте"}
+                                        control={
+                                            <Switch
+                                                checked={values.hidden}
+                                                onChange={this.handleChange('hidden')}
+                                            />
+                                        }
+                                    />
+                                    <FormHelperText>Для возможности управления данными организации</FormHelperText>
+                                </FormControl>
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField

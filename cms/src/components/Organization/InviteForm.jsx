@@ -27,6 +27,7 @@ class InviteForm extends React.Component {
                 fio: '',
                 email: '',
                 name: '',
+                hidden: false,
                 inn: '',
                 kpp: '',
                 mngr_first_name: '',
