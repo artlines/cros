@@ -195,7 +195,7 @@ Organizations.propTypes = {
             PropTypes.shape({
                 id:                 PropTypes.number.isRequired,
                 name:               PropTypes.string.isRequired,
-                hidden:             PropTypes.bool,
+                // hidden:             PropTypes.bool,
                 inn:                PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
                 kpp:                PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
                 city:               PropTypes.string,

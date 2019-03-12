@@ -9,6 +9,8 @@ import {
     Grid,
     FormControl,
     FormControlLabel,
+    FormHelperText,
+    Switch,
     TextField,
     LinearProgress,
 } from '@material-ui/core';
@@ -159,20 +161,6 @@ class OrganizationForm extends React.Component {
                                     helperText={errors.name}
                                     InputLabelProps={{shrink: true}}
                                 />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <FormControl>
-                                    <FormControlLabel
-                                        label={"Показать организацию на сайте"}
-                                        control={
-                                            <Switch
-                                                checked={values.hidden}
-                                                onChange={this.handleChange('hidden')}
-                                            />
-                                        }
-                                    />
-                                    <FormHelperText>Для возможности управления данными организации</FormHelperText>
-                                </FormControl>
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField
