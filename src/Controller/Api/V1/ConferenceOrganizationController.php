@@ -111,7 +111,7 @@ class ConferenceOrganizationController extends ApiController
     public function update($id)
     {
         $name = $this->requestData['name'] ?? null;
-//        $hidden = $this->requestData['hidden'] ?? null;
+        $hidden = $this->requestData['hidden'] ?? false;
         $inn = $this->requestData['inn'] ?? null;
         $kpp = $this->requestData['kpp'] ?? null;
         $city = $this->requestData['city'] ?? null;
@@ -146,7 +146,7 @@ class ConferenceOrganizationController extends ApiController
         }
 
         $organization->setName($name);
-//        $organization->setHidden($hidden);
+        $organization->setHidden($hidden);
         $organization->setInn($inn);
         $organization->setKpp($kpp);
         $organization->setCity($city);
