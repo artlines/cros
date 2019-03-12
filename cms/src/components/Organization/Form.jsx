@@ -181,7 +181,7 @@ class OrganizationForm extends React.Component {
                             <Grid item xs={12} sm={12}>
                                 <FormControl>
                                     <FormControlLabel
-                                        label={"Показать организацию на сайте"}
+                                        label={"Скрыть организацию в списке на участников сайте"}
                                         control={
                                             <Switch
                                                 checked={values.hidden}
