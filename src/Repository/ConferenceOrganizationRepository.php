@@ -283,6 +283,7 @@ class ConferenceOrganizationRepository extends EntityRepository
               SELECT
                      pco.id as conf_org_id,
                      po.name,
+                     po.hidden,
                      po.inn,
                      po.kpp,
                      po.email,
@@ -307,6 +308,7 @@ class ConferenceOrganizationRepository extends EntityRepository
             SELECT
                    pco.id,
                    tcoi.name,
+                   tcoi.hidden,
                    tcoi.email,
                    tcoi.inn,
                    tcoi.kpp,
@@ -334,6 +336,7 @@ class ConferenceOrganizationRepository extends EntityRepository
             GROUP BY
                    pco.id,
                    tcoi.name,
+                   tcoi.hidden,
                    tcoi.email,
                    tcoi.inn,
                    tcoi.kpp,
@@ -451,4 +454,40 @@ class ConferenceOrganizationRepository extends EntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function findShowByConference( Conference $conference ){
+// Отображать только те организации, которые имеют заселенных участников.
+// Не показывать организации, которые имеют признак hidden.
+        return $this
+            ->createQueryBuilder('co')
+            ->innerJoin(
+                Organization::class,
+                'o',
+                Expr\Join::WITH,
+                'co.organization = o.id AND coalesce(o.hidden,false) = :hidden'
+            )
+            ->innerJoin(
+                ConferenceMember::class,
+                'cm',
+                Expr\Join::WITH,
+                'co.id = cm.conferenceOrganization'
+            )
+            ->innerJoin(
+                Place::class,
+                'p',
+                Expr\Join::WITH,
+                'p.conferenceMember = cm.id'
+            )
+            ->where('co.conference = :conference')
+            ->setParameters([
+                'hidden'     => 'false',
+                'conference' => $conference,
+            ])
+            ->groupBy('co.id')
+            ->getQuery()
+            ->getResult()
+            ;
+
+    }
+
 }

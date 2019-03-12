@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Участники КРОС {{ conference.year }}{% endblock %}
+
+{% block header_title %}Участники КРОС {{ conference.year }}{% endblock %}
+
+{% block body %}
+    {% if conferenceOrganizations is empty %}
+        <h3>Нет организаций</h3>
+    {% else %}
+        <div class="row">
+        {% for key,conferenceOrganization in conferenceOrganizations %}
+            <div class="col-md-3">
+                <div class="card mb-3 box-shadow">
+                    <div class="card-body" >
+                        <div style="height: 125px; width: auto; text-align: center">
+                        <img style="max-height: 100%; max-width: 100%;"
+                         {% if conferenceOrganization.organization.logo %}
+                         src="/uploads/members/logos/{{ conferenceOrganization.organization.logo }}"
+                         {%  endif %}
+                         data-src="holder.js/100px125?theme=thumb&bg=FFFFFF&fg=6ca0dc&text=Нет логотипа"
+                         alt="{{ conferenceOrganization.organization.name }}"
+                         title="{{ conferenceOrganization.organization.name }}"
+                        />
+                        </div>
+                    </div>
+                        <div class="card-body" >
+                        <p class="card-text" style="height: 2em; line-height: 1em; overflow: hidden;">
+                            {{ conferenceOrganization.organization.name }}
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                            </div>
+                            <small class="text-muted">{{conferenceOrganization.conferenceMembers.count}} Участник</small>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/holder.min.js"></script>
+{% endblock %}
+
