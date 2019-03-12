@@ -12,16 +12,16 @@
         {% for key,conferenceOrganization in conferenceOrganizations %}
             <div class="col-md-3">
                 <div class="card mb-3 box-shadow">
-                    <div class="card-body" >
-                        <div style="height: 125px; width: auto; text-align: center">
-                        <img style="max-height: 100%; max-width: 100%;"
-                         {% if conferenceOrganization.organization.logo %}
-                         src="/uploads/members/logos/{{ conferenceOrganization.organization.logo }}"
-                         {%  endif %}
-                         data-src="holder.js/100px125?theme=thumb&bg=FFFFFF&fg=6ca0dc&text=Нет логотипа"
-                         alt="{{ conferenceOrganization.organization.name }}"
-                         title="{{ conferenceOrganization.organization.name }}"
-                        />
+                    <div class="card-body " >
+                        <div class="Aligner" style="height: 125px; width: auto; text-align: center;">
+                            <img  style="max-height: 100%; max-width: 100%;"
+                             {% if conferenceOrganization.organization.logo %}
+                             src="/uploads/members/logos/{{ conferenceOrganization.organization.logo }}"
+                             {%  endif %}
+                             data-src="holder.js/100px125?theme=thumb&bg=FFFFFF&fg=6ca0dc&text=Нет логотипа"
+                             alt="{{ conferenceOrganization.organization.name }}"
+                             title="{{ conferenceOrganization.organization.name }}"
+                            />
                         </div>
                     </div>
                         <div class="card-body" >
@@ -45,7 +45,17 @@
 {% endblock %}
 
 {% block stylesheets %}
-
+<style>
+    .Aligner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .Aligner div {
+        width: 100px;
+        height: 100px;
+    }
+</style>
 {% endblock %}
 
 {% block javascripts %}
