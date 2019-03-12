@@ -19,8 +19,6 @@ class ConferenceMembersController extends AbstractController
     public function members($year = null)
     {
 
-        $year = date("Y");
-
         /** @var Conference $conference */
         $conference = $this
             ->getDoctrine()
