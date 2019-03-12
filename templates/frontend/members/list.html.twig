@@ -12,9 +12,9 @@
         {% for key,conferenceOrganization in conferenceOrganizations %}
             <div class="col-md-3">
                 <div class="card mb-3 box-shadow">
-                    <div class="card-body">
-                        <div >
-                        <img class="card-img-top"
+                    <div class="card-body" >
+                        <div style="height: 125px; width: auto; text-align: center">
+                        <img style="max-height: 100%; max-width: 100%;"
                          {% if conferenceOrganization.organization.logo %}
                          src="/uploads/members/logos/{{ conferenceOrganization.organization.logo }}"
                          {%  endif %}
@@ -24,8 +24,8 @@
                         />
                         </div>
                     </div>
-                        <div class="card-body">
-                        <p class="card-text">
+                        <div class="card-body" >
+                        <p class="card-text" style="height: 2em; line-height: 1em; overflow: hidden;">
                             {{ conferenceOrganization.organization.name }}
                         </p>
                         <div class="d-flex justify-content-between align-items-center">
@@ -45,24 +45,7 @@
 {% endblock %}
 
 {% block stylesheets %}
-    <styles>
-    div.container {
-    height: 100px;
-    }
 
-    .container .img-responsive {
-    display: block;
-    height: auto;
-    max-width: 100%;
-    }
-    /*To */
-
-    .container  .img-responsive {
-    display: block;
-    width: auto;
-    max-height: 100%;
-    }
-        </styles>
 {% endblock %}
 
 {% block javascripts %}
