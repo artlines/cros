@@ -14,12 +14,15 @@ import {
     TableBody,
     TableRow,
     TableCell,
+    Tooltip,
     Typography,
 } from '@material-ui/core';
 import {withStyles} from '@material-ui/core/styles';
+import { blue, green } from '@material-ui/core/colors';
 import {
     Close as CloseIcon,
     Edit as EditIcon,
+    CheckCircle as CheckCircleIcon,
 } from '@material-ui/icons';
 import map from 'lodash/map';
 import find from 'lodash/find';
@@ -136,7 +139,14 @@ class MembersModal extends React.Component {
                                 {map(items, item =>
                                     <TableRow key={item.id}>
                                         <TableCell>
-                                            {item.last_name} {item.first_name} {item.middle_name}
+                                            <React.Fragment>
+                                                {item.last_name} {item.first_name} {item.middle_name}
+                                                {item.representative &&
+                                                <Tooltip title={`Представитель`}>
+                                                    <CheckCircleIcon style={{fontSize: 14, color: green[700]}}/>
+                                                </Tooltip>
+                                                }
+                                            </React.Fragment>
                                             <Typography variant={`caption`}>{item.post}</Typography>
                                         </TableCell>
                                         <TableCell className={classes.noWrap}>

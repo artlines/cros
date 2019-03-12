@@ -3,10 +3,58 @@
 namespace App\Repository;
 
 use App\Entity\Participating\Invoice;
+use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityRepository;
 
 class InvoiceRepository extends EntityRepository
 {
+    /**
+     * Find invoices which didn't make in auto mode
+     *
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param \DateInterval $interval Interval which will be sub from `now` DateTime and push to query as `from_created_at`
+     * @return array
+     */
+    public function findFailedAutoInvoicing(\DateInterval $interval)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $parameters = [
+            'from_created_at'   => (new \DateTime('now'))->sub($interval)->format('Y-m-d H:i:s'),
+            'status_guid__wait' => Invoice::STATUS_GUID__DOCUMENT_NOT_READY,
+        ];
+
+        $query = "
+            SELECT
+                   po.name,
+                   po.inn,
+                   po.kpp,
+                   po.invalid_inn_kpp,
+                   po.b2b_guid as org_guid,
+                   pi.id,
+                   pi.num,
+                   pi.b2b_order_guid as order_guid,
+                   pi.created_at
+            FROM participating.invoice pi
+              LEFT JOIN participating.conference_organization pco ON pi.conference_organization_id = pco.id
+              LEFT JOIN participating.organization             po ON pco.organization_id = po.id
+            WHERE
+                  pi.status_guid = :status_guid__wait
+                  AND pi.created_at < :from_created_at
+        ";
+
+        try {
+            $stmt = $conn->prepare($query);
+        } catch (DBALException $e) {
+            return [];
+        }
+
+        $stmt->execute($parameters);
+
+        return $stmt->fetchAll();
+    }
+
     public function getInvoicesGroupByConfOrganization()
     {
         $conn = $this->getEntityManager()->getConnection();

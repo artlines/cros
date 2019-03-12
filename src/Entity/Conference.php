@@ -98,7 +98,7 @@ class Conference
     /**
      * @var ArrayCollection|ConferenceMember[]
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Participating\ConferenceMember", mappedBy="conference",cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Participating\ConferenceMember", mappedBy="conference", cascade={"persist"})
      */
     private $conferenceMembers;
 

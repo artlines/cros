@@ -3,3 +3,4 @@ parameters:
     invoice_bcc_emails: ['e.nachuychenko@nag.ru']
     become_sponsor_bcc_emails: ['e.nachuychenko@nag.ru']
     become_speaker_bcc_emails: ['e.nachuychenko@nag.ru']
+    failed_auto_invoice_emails: ['e.nachuychenko@nag.ru']
