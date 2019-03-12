@@ -31,13 +31,14 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
                             </div>
+                            {% if conferenceOrganization.conferenceMembers.count>1 %}
+                            <small class="text-muted">{{conferenceOrganization.conferenceMembers.count}} Участника</small>
+                            {% else %}
                             <small class="text-muted">{{conferenceOrganization.conferenceMembers.count}} Участник</small>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
         {% endfor %}
         </div>
