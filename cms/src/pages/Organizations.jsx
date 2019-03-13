@@ -164,6 +164,17 @@ class Organizations extends React.Component {
                             <FormHelperText>Имеются комментарии по организации</FormHelperText>
                         </FormControl>
                     </Grid>
+                    <Grid item xs={12} sm={6} lg={3}>
+                        <FormControl>
+                            <FormControlLabel
+                                label={"Нет ответственного"}
+                                control={
+                                    <Switch onChange={this.handleFilterChange('without_manager')} />
+                                }
+                            />
+                            <FormHelperText>Не указан ответственный менеджер</FormHelperText>
+                        </FormControl>
+                    </Grid>
                     <Grid item xs={12}>
                         <Grid container justify={`flex-end`}>
                             <Grid item>

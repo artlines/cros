@@ -175,6 +175,11 @@ class ConferenceOrganizationRepository extends EntityRepository
             $where .= " AND tcs.comments_count != 0";
         }
 
+        /** Check flag that show only with comments */
+        if (isset($data['without_manager'])) {
+            $where .= " AND pco.invited_by IS NULL";
+        }
+
         /** Check stage filter */
         if (isset($data['stage'])) {
             switch ((int) $data['stage']) {
@@ -185,7 +190,7 @@ class ConferenceOrganizationRepository extends EntityRepository
                     $where .= " AND tms.total_members > 0 AND tms.total_members > tms.in_room_members";
                     break;
                 case self::STAGE__MEMBERS_SETTLED:
-                    $where .= " AND tms.total_members > 0 AND tms.total_members = tms.in_room_members";
+                    $where .= " AND tms.total_members > 0 AND tms.total_members = tms.in_room_members AND tis.invoices_count = 0";
                     break;
                 case self::STAGE__INVOICE_SENT:
                     $where .= " AND tlii.is_sent = TRUE";
