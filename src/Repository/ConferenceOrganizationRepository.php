@@ -485,7 +485,7 @@ class ConferenceOrganizationRepository extends EntityRepository
             ])
             ->groupBy('co.id, o.id')
             ->orderBy('co.priority','DESC')
-            ->orderBy('o.name','DESC')
+            ->orderBy('o.name','ASC')
             ->getQuery()
             ->getResult()
             ;
