@@ -631,11 +631,48 @@ class ConferenceRegistrationController extends AbstractController
 
         $organization = $this->getUser()->getOrganization();
 
-
         $form = $this->createForm(
-            OrganizationLkFormType::class
+            OrganizationLkFormType::class,
+            $organization
 
         );
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+
+            /** @var ConferenceOrganization $ConferenceOrganization */
+            $organizationNew = $form->getData();
+
+            $files = $request->files->get('organization_lk_form');
+            if ($files and isset(
+                    $files['newlogo']
+                )) {
+                /** @var UploadedFile $file */
+                $file = $files['newlogo'];
+//                $fileName = $organization->getId().'.'.$file->guessExtension();
+                $fileName = $this->generateUniqueFileName() . '.' . $file->guessExtension();
+                // Move the file to the directory where brochures are stored
+                try {
+                    $file->move(
+                        self::DIRECTORY_UPLOAD . 'members/logos/',
+                        $fileName
+                    );
+                    $organizationNew->setLogo($fileName);
+                } catch (FileException $e) {
+//                    $organizationNew->setLogo('');
+                    // ... handle exception if something happens during file upload
+                }
+
+            }
+            /** @var EntityManager $em */
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($organizationNew);
+            $em->flush();
+            return $this->redirectToRoute('registration_show');
+        }
+
 
         return $this->render('conference_registration/edit_logo.html.twig', [
             'form' => $form->createView(),

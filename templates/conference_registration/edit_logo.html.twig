@@ -19,7 +19,7 @@
 </style>
 
 <h4>Карточка компании "{{ organization.name }}"</h4>
-
+<div class="row">
     <div class="col-lg-2 col-md-4">
         <div class="card mb-3 mt-3 box-shadow">
             <div class="card-body " >
@@ -51,18 +51,20 @@
             </div>
         </div>
     </div>
+    <div class="col-lg-5 col-md-8">
+        {#{{ dump(form) }}#}
+        <h4>Изменение данных о компании:</h4>
+        {{ form_start(form) }}
+            <div>{{- form_row(form.newlogo) -}}</div>
 
-    {#{{ dump(form) }}#}
-    <h3>Изменение данных о компании:</h3>
-{{ form_start(form) }}
-    <div class="row">
-        <div class="col-md-3">{{- form_row(form.newlogo) -}}</div>
+        {{ form_row(form._token) }}
+
+        {# ... #}
+        {{ form_end(form) }}
     </div>
 
-    {{ form_row(form._token) }}
+    </div>
 
-    {# ... #}
-    {{ form_end(form) }}
 
 {% endblock %}
 
