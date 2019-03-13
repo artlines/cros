@@ -175,6 +175,11 @@ class ConferenceOrganizationRepository extends EntityRepository
             $where .= " AND tcs.comments_count != 0";
         }
 
+        /** Check flag that show only with comments */
+        if (isset($data['without_manager'])) {
+            $where .= " AND pco.invited_by IS NULL";
+        }
+
         /** Check stage filter */
         if (isset($data['stage'])) {
             switch ((int) $data['stage']) {
