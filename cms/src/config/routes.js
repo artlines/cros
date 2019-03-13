@@ -7,6 +7,7 @@ import Organizations from "../pages/Organizations";
 import Invite from "../pages/Invite";
 import Users from "../pages/Users";
 import Conferences from "../pages/Conferences";
+import Program from "../pages/Program";
 import NotFound from "../pages/NotFound";
 import {
     PeopleOutlined as People,
@@ -16,6 +17,7 @@ import {
     DashboardOutlined as Dashboard,
     SettingsApplicationsOutlined as SettingsApplications,
     EventSeatOutlined as EventSeat,
+    EventNoteOutlined as EventNote,
 } from "@material-ui/icons";
 
 export default [
@@ -28,6 +30,39 @@ export default [
             Icon: Dashboard,
             title: "Главная",
         },
+    },
+    {
+        path: "/cms/conferences",
+        Component: Conferences,
+        exact: true,
+        title: "Конференции",
+        menuItem: {
+            Icon: EventSeat,
+            title: "Конференции",
+        },
+        role: "ROLE_ADMINISTRATOR",
+    },
+    {
+        path: "/cms/program",
+        Component: Program,
+        exact: true,
+        title: "Программа",
+        menuItem: {
+            Icon: EventNote,
+            title: "Программа",
+        },
+        role: "ROLE_CONTENT_MANAGER",
+    },
+    {
+        path: "/cms/organizations",
+        Component: Organizations,
+        exact: true,
+        title: "Организации",
+        menuItem: {
+            Icon: BusinessCenter,
+            title: "Организации",
+        },
+        role: "ROLE_SETTLEMENT_MANAGER",
     },
     {
         path: "/cms/abode",
@@ -44,7 +79,7 @@ export default [
         path: "/cms/abode/settings",
         Component: AbodeSettings,
         exact: true,
-        title: "Расселение",
+        title: "Настройка расселения",
         menuItem: {
             Icon: SettingsApplications,
             title: "Настройка расселения",
@@ -66,17 +101,6 @@ export default [
         role: "ROLE_SETTLEMENT_MANAGER",
     },
     {
-        path: "/cms/organizations",
-        Component: Organizations,
-        exact: true,
-        title: "Организации",
-        menuItem: {
-            Icon: BusinessCenter,
-            title: "Организации",
-        },
-        role: "ROLE_SETTLEMENT_MANAGER",
-    },
-    {
         path: "/cms/invite",
         Component: Invite,
         exact: true,
@@ -95,17 +119,6 @@ export default [
         menuItem: {
             Icon: People,
             title: "Пользователи",
-        },
-        role: "ROLE_ADMINISTRATOR",
-    },
-    {
-        path: "/cms/conferences",
-        Component: Conferences,
-        exact: true,
-        title: "Конференции",
-        menuItem: {
-            Icon: EventSeat,
-            title: "Конференции",
         },
         role: "ROLE_ADMINISTRATOR",
     },
