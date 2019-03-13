@@ -49,6 +49,7 @@ class InvoiceController extends ApiController
                 'date'          => $invoice->getDate()->format("Y-m-d"),
                 'status'        => $invoice->getStatus(),
                 'status_text'   => $invoice->getStatusText(),
+                'account_target'=> $invoice->getAccountTarget(),
                 'doc_ready'     => $invoice->isDocumentReady(),
             ];
         }

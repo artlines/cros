@@ -89,6 +89,13 @@ class Invoice
     private $statusText;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(name="account_target", type="string", nullable=true)
+     */
+    private $accountTarget;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="is_sent", type="boolean", nullable=false, options={"default": "0"})
@@ -273,6 +280,22 @@ class Invoice
     public function setStatusText(?string $statusText)
     {
         $this->statusText = $statusText;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAccountTarget(): ?string
+    {
+        return $this->accountTarget;
+    }
+
+    /**
+     * @param string|null $accountTarget
+     */
+    public function setAccountTarget(?string $accountTarget)
+    {
+        $this->accountTarget = $accountTarget;
     }
 
     /**

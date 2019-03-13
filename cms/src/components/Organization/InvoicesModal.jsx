@@ -146,6 +146,7 @@ class InvoicesModal extends React.Component {
                                     <TableRow key={item.id}>
                                         <TableCell>
                                             {item.number || <Typography variant={`caption`}>отсутствует</Typography>}
+                                            {item.account_target && <Typography variant={`caption`}>{item.account_target}</Typography>}
                                         </TableCell>
                                         <TableCell>
                                             <Money withPenny value={item.amount}/>
@@ -211,6 +212,7 @@ InvoicesModal.propTypes = {
             date:           PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
             status:         PropTypes.number,
             status_text:    PropTypes.string,
+            account_target: PropTypes.string,
             doc_ready:      PropTypes.bool.isRequired,
         }),
     ),
