@@ -9,33 +9,34 @@
         <h3>Нет организаций</h3>
     {% else %}
         <div class="row">
+            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="ban" class="svg-inline--fa fa-ban fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 8C119.034 8 8 119.033 8 256s111.034 248 248 248 248-111.034 248-248S392.967 8 256 8zm130.108 117.892c65.448 65.448 70 165.481 20.677 235.637L150.47 105.216c70.204-49.356 170.226-44.735 235.638 20.676zM125.892 386.108c-65.448-65.448-70-165.481-20.677-235.637L361.53 406.784c-70.203 49.356-170.226 44.736-235.638-20.676z"></path></svg>
         {% for key,conferenceOrganization in conferenceOrganizations %}
-            <div class="col-md-3">
-                <div class="card mb-3 box-shadow">
+            <div class="col-lg-2 col-md-4">
+                <div class="card mb-2 box-shadow">
                     <div class="card-body " >
                         <div class="Aligner" style="height: 125px; width: auto; text-align: center;">
+                            {% if conferenceOrganization.organization.logo %}
                             <img  style="max-height: 100%; max-width: 100%;"
-                             {% if conferenceOrganization.organization.logo %}
                              src="/uploads/members/logos/{{ conferenceOrganization.organization.logo }}"
-                             {%  endif %}
-                             data-src="holder.js/100px125?theme=thumb&bg=FFFFFF&fg=6ca0dc&text=Нет логотипа"
                              alt="{{ conferenceOrganization.organization.name }}"
                              title="{{ conferenceOrganization.organization.name }}"
                             />
+                            {%  else %}
+                                <i class="fa fa-ban" style="color:#6fa2dd; font-size:30px"></i>
+                            {%  endif %}
                         </div>
                     </div>
                         <div class="card-body" >
-                        <p class="card-text" style="height: 2em; line-height: 1em; overflow: hidden;">
+                        <p class="card-text"
+                           style="height: 3em; line-height: 1em; overflow: hidden;"
+                           title="{{ conferenceOrganization.organization.name }}"
+                        >
                             {{ conferenceOrganization.organization.name }}
                         </p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
                             </div>
-                            {% if conferenceOrganization.conferenceMembers.count>1 %}
-                            <small class="text-muted">{{conferenceOrganization.conferenceMembers.count}} Участника</small>
-                            {% else %}
-                            <small class="text-muted">{{conferenceOrganization.conferenceMembers.count}} Участник</small>
-                            {% endif %}
+                            <small class="text-muted">{{conferenceOrganization.organization.city|default('---') }}</small>
                         </div>
                     </div>
                 </div>
@@ -60,6 +61,5 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/holder.min.js"></script>
 {% endblock %}
 
