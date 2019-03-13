@@ -609,6 +609,60 @@ class ConferenceRegistrationController extends AbstractController
         }
     }
 
+    private function imageResize($filename, $maxWidth=1024)
+    {
+        if (function_exists('imagecolorallocatealpha')) {
+            $imgInfo = getimagesize($filename);
+
+            switch ($imgInfo[2]) {
+                case 1:
+                    $image = imagecreatefromgif($filename);
+                    break;
+                case 2:
+                    $image = imagecreatefromjpeg($filename);
+                    break;
+                case 3:
+                    $image = imagecreatefrompng($filename);
+                    break;
+                default:
+                    trigger_error('Unsupported filetype!', E_USER_WARNING);
+                    break;
+            }
+
+            $width = imagesx($image);
+            $height = imagesy($image);
+            if ($width > $maxWidth) {
+                $coef = $maxWidth / $width;
+                $width *= $coef;
+                $height *= $coef;
+            } else {
+                return $filename;
+            }
+            $newImg = imagecreatetruecolor($width, $height);
+            imagealphablending($newImg, false);
+            imagesavealpha($newImg, true);
+            $transparent = imagecolorallocatealpha($newImg, 255, 255, 255, 127);
+            imagefilledrectangle($newImg, 0, 0, $width, $height, $transparent);
+            imagecopyresampled($newImg, $image, 0, 0, 0, 0, $width, $height,
+                $imgInfo[0], $imgInfo[1]);
+            //Generate the file, and rename it to $newfilename
+            switch ($imgInfo[2]) {
+                case 1:
+                    imagegif($newImg, $filename);
+                    break;
+                case 2:
+                    imagejpeg($newImg, $filename, 100);
+                    break;
+                case 3:
+                    imagepng($newImg, $filename, 0);
+                    break;
+                default:
+                    trigger_error('Failed resize image!', E_USER_WARNING);
+                    break;
+            }
+        }
+
+    }
 
     /**
      * @Route("/registration-logo-edit", name="registration_edit_logo")
@@ -655,6 +709,7 @@ class ConferenceRegistrationController extends AbstractController
                 $fileName = $this->generateUniqueFileName() . '.' . $file->guessExtension();
                 // Move the file to the directory where brochures are stored
                 try {
+                    $this->imageResize($file->getRealPath(), 1024);
                     $file->move(
                         self::DIRECTORY_UPLOAD . 'members/logos/',
                         $fileName
