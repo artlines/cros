@@ -610,13 +610,21 @@ class ConferenceRegistrationController extends AbstractController
 
 
     /**
-     * @Route("/registration-logo", name="registration_edit_logo")
+     * @Route("/registration-logo-edit", name="registration_edit_logo")
      * @param Request $request
      * @param Mailer $mailer
      */
-    public function registrationEditLogo(Request $request, Mailer $mailer, UserPasswordEncoderInterface $passwordEncoder)
+    public function registrationEditLogo(Request $request, Mailer $mailer)
     {
-
+        $form = $this->createForm(
+            ConferenceMemberFormType::class,
+            $CM == $iConferenceMember
+                ? $CM
+                : $iConferenceMember
+        )
+        return $this->render('conference_registration/edit_logo.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
