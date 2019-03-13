@@ -185,7 +185,7 @@ class ConferenceOrganizationRepository extends EntityRepository
                     $where .= " AND tms.total_members > 0 AND tms.total_members > tms.in_room_members";
                     break;
                 case self::STAGE__MEMBERS_SETTLED:
-                    $where .= " AND tms.total_members > 0 AND tms.total_members = tms.in_room_members";
+                    $where .= " AND tms.total_members > 0 AND tms.total_members = tms.in_room_members AND tis.invoices_count = 0";
                     break;
                 case self::STAGE__INVOICE_SENT:
                     $where .= " AND tlii.is_sent = TRUE";
