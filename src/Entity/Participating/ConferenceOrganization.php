@@ -125,6 +125,11 @@ class ConferenceOrganization
     private $inviteData;
 
     /**
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    private $priority = 0;
+
+    /**
      * ConferenceOrganization constructor.
      */
     public function __construct()
@@ -419,6 +424,18 @@ class ConferenceOrganization
     public function setInviteData(?array $inviteData): void
     {
         $this->inviteData = $inviteData;
+    }
+
+    public function getPriority(): ?int
+    {
+        return $this->priority;
+    }
+
+    public function setPriority(int $priority): self
+    {
+        $this->priority = $priority;
+
+        return $this;
     }
 
 }
