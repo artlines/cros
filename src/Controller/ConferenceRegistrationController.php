@@ -608,6 +608,17 @@ class ConferenceRegistrationController extends AbstractController
         }
     }
 
+
+    /**
+     * @Route("/registration-logo", name="registration_edit_logo")
+     * @param Request $request
+     * @param Mailer $mailer
+     */
+    public function registrationEditLogo(Request $request, Mailer $mailer, UserPasswordEncoderInterface $passwordEncoder)
+    {
+
+    }
+
     /**
      * @Route("/registration-show", name="registration_show")
      * @param Request $request
