@@ -17,19 +17,22 @@ use Doctrine\ORM\Query\Expr;
 class OrganizationRepository extends EntityRepository
 {
     /**
-     * Find organizations to check requisites where invalidInnKpp in null
+     * Find organizations where invalidInnKpp in null
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @return Organization[]
      */
-    public function findNotInnKppCheckedWithB2bGuid()
+    public function findWithB2bGuid($onlyNotCheckedForInnKpp = false)
     {
         $qb = $this->createQueryBuilder('o');
 
         $query = $qb
             ->select('o')
-            ->where($qb->expr()->isNotNull('o.b2b_guid'))
-            ->andWhere($qb->expr()->isNull('o.invalidInnKpp'));
+            ->where($qb->expr()->isNotNull('o.b2b_guid'));
+
+        if ($onlyNotCheckedForInnKpp) {
+            $query = $query->andWhere($qb->expr()->isNull('o.invalidInnKpp'));
+        }
 
         return $query->getQuery()->getResult();
     }

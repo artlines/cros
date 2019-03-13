@@ -83,7 +83,13 @@ class SyncWithB2B extends Command
                 'send-invoices',
                 null,
                 InputOption::VALUE_NONE,
-                'Send invoices to organizations'
+                'Send invoices to organizations if needed (Invoice->is_send == FALSE)'
+            )
+            ->addOption(
+                'only-contractors-names',
+                null,
+                InputOption::VALUE_NONE,
+                'Only sync names of contractors which have b2b_guid'
             )
         ;
     }
@@ -94,8 +100,15 @@ class SyncWithB2B extends Command
         $this->output   = $output;
 
         $sendInvoices = $input->getOption('send-invoices');
+        $onlyContractorsNames = $input->getOption('only-contractors-names');
 
         $output->writeln("[START]");
+
+        if ($onlyContractorsNames) {
+            $this->_syncContractorsNames();
+            $output->writeln("[END]");
+            exit(0);
+        }
 
         // sync contractors with b2b_guid for valid inn kpp
         $this->_syncContractorsValid();
@@ -124,7 +137,46 @@ class SyncWithB2B extends Command
     }
 
     /**
-     * Check and set contractor `invalid` flag to organization `invalid_inn_kpp` flag
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     */
+    public function _syncContractorsNames()
+    {
+        $this->output->writeln("==========");
+
+        /** @var OrganizationRepository $organizationRepo */
+        $organizationRepo = $this->em->getRepository(Organization::class);
+        $organizations = $organizationRepo->findWithB2bGuid();
+
+        foreach ($organizations as $organization) {
+            $b2bGuid = $organization->getB2bGuid();
+            $response = $this->b2bApi->findContractorByGuid($b2bGuid);
+
+            if ($response['http_code'] !== 200) {
+                $this->log("Catch error while getting contractor info from B2B by guid `$b2bGuid`: {$response['data']}. Skipped it!");
+                continue;
+            }
+
+            $_oldName = $organization->getName();
+            $_newName = $response['data']['title'];
+
+            /** Check that newName is not like 'физическое лицо' and update if needed */
+            if (stripos(mb_strtolower($_newName), 'физическое лицо') === FALSE && $_oldName !== $_newName) {
+                $organization->setName($_newName);
+
+                $this->em->persist($organization);
+                $this->em->flush();
+
+                $this->log("Update name of organization with b2b_guid `$b2bGuid`", [
+                    'from'  => $_oldName,
+                    'to'    => $_newName,
+                ]);
+            }
+        }
+
+    }
+
+    /**
+     * Check and set contractor `invalid` flag to organization `invalid_inn_kpp` flag and title
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      */
@@ -134,7 +186,7 @@ class SyncWithB2B extends Command
 
         /** @var OrganizationRepository $organizationRepo */
         $organizationRepo = $this->em->getRepository(Organization::class);
-        $organizations = $organizationRepo->findNotInnKppCheckedWithB2bGuid();
+        $organizations = $organizationRepo->findWithB2bGuid($onlyNotCheckedForInnKpp = true);
         $this->log("Found ".count($organizations)." organizations with b2b_guid which will be checked for valid requisites.");
 
         foreach ($organizations as $organization) {
@@ -146,15 +198,27 @@ class SyncWithB2B extends Command
                 continue;
             }
 
+            $logData = [];
+            $_oldName = $organization->getName();
+            $_newName = $response['data']['title'];
             $isInvalid = $response['data']['invalid'];
 
+            /** Check that newName is not like 'физическое лицо' and update if needed */
+            if (stripos(mb_strtolower($_newName), 'физическое лицо') === FALSE && $_oldName !== $_newName) {
+                $organization->setName($response['data']['title']);
+                $logData['title'] = $response['data']['title'];
+            }
+
+            /** Check invalid inn kpp flag */
             if (is_bool($isInvalid)) {
                 $organization->setInvalidInnKpp($isInvalid);
+                $logData['invalid'] = $isInvalid ? 'true' : 'false';
+            }
+
+            if (!empty($logData)) {
+                $this->log('Update organization (ID: '.$organization->getId().').', $logData);
                 $this->em->persist($organization);
                 $this->em->flush();
-
-                $this->log('Update organization (ID: '.$organization->getId().'). Set invalidInnKpp '.
-                    ($isInvalid ? 'true' : 'false').'.');
             }
         }
     }
