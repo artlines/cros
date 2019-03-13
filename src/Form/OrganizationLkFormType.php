@@ -32,6 +32,7 @@ class OrganizationLkFormType extends AbstractType
                     'attr' => array(
                         'class' => 'cs-theme-color-gray-dark-v3',
                         'placeholder' => 'Organization.Logo.PlaceHolder',
+                        'accept' => '.jpg,.jpeg,.png'
                     ),
                     'help' => 'Organization.Logo.Help',
                     'required' => false,
