@@ -21,6 +21,7 @@ use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -31,6 +32,10 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 
+/**
+ * Class ConferenceRegistrationController
+ * @package App\Controller
+ */
 class ConferenceRegistrationController extends AbstractController
 {
 
@@ -46,6 +51,7 @@ class ConferenceRegistrationController extends AbstractController
     /** @var LoggerInterface */
     protected $logger;
     protected $mailer;
+    protected $imageResizeError = '';
 
     public function __construct(LoggerInterface $logger, Mailer $mailer)
     {
@@ -625,7 +631,8 @@ class ConferenceRegistrationController extends AbstractController
                     $image = imagecreatefrompng($filename);
                     break;
                 default:
-                    trigger_error('Unsupported filetype!', E_USER_WARNING);
+                    $this->imageResizeError = 'Unsupported filetype!';
+                    return false;
                     break;
             }
 
@@ -657,17 +664,21 @@ class ConferenceRegistrationController extends AbstractController
                     imagepng($newImg, $filename, 0);
                     break;
                 default:
-                    trigger_error('Failed resize image!', E_USER_WARNING);
+                    $this->imageResizeError = 'Failed resize image!';
                     break;
             }
         }
-
+        return true;
     }
+
 
     /**
      * @Route("/registration-logo-edit", name="registration_edit_logo")
      * @param Request $request
      * @param Mailer $mailer
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function registrationEditLogo(Request $request, Mailer $mailer)
     {
@@ -709,23 +720,30 @@ class ConferenceRegistrationController extends AbstractController
                 $fileName = $this->generateUniqueFileName() . '.' . $file->guessExtension();
                 // Move the file to the directory where brochures are stored
                 try {
-                    $this->imageResize($file->getRealPath(), 1024);
+                    if( !$this->imageResize($file->getRealPath(), 1024) )
+                    {
+                        $form->addError(new FormError('Ошибка обработки файла: '.$this->imageResizeError ));
+                    };
+
                     $file->move(
                         self::DIRECTORY_UPLOAD . 'members/logos/',
                         $fileName
                     );
-                    $organizationNew->setLogo($fileName);
+                    if( !$form->getErrors()->count() ) {
+                        $organizationNew->setLogo($fileName);
+                        /** @var EntityManager $em */
+                        $em = $this->getDoctrine()->getManager();
+                        $em->persist($organizationNew);
+                        $em->flush();
+                        return $this->redirectToRoute('registration_show');
+                    }
+
                 } catch (FileException $e) {
-//                    $organizationNew->setLogo('');
+                    $form->addError(new FormError('Ошибка сохранения файла'));
                     // ... handle exception if something happens during file upload
                 }
 
             }
-            /** @var EntityManager $em */
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($organizationNew);
-            $em->flush();
-            return $this->redirectToRoute('registration_show');
         }
 
 
