@@ -596,6 +596,29 @@ class ConferenceRegistrationController extends AbstractController
         $this->mailSendUserCreate($conferenceMember, $conferenceMemberOld);
     }
 
+    private function _debugDumpPostData(Request $request){
+        if ($request->getMethod() == 'POST') {
+            $cloner = new VarCloner();
+            $dumper = new CliDumper();
+            $output = fopen('php://memory', 'r+b');
+            $dumper->dump($cloner->cloneVar($request), $output);
+            $dumper->dump($cloner->cloneVar($request->getContent()), $output);
+            $output = stream_get_contents($output, -1, 0);
+            $this->logger->notice('POSTDATA:' . base64_encode($output));
+        }
+    }
+
+
+    /**
+     * @Route("/registration-logo", name="registration_edit_logo")
+     * @param Request $request
+     * @param Mailer $mailer
+     */
+    public function registrationEditLogo(Request $request, Mailer $mailer, UserPasswordEncoderInterface $passwordEncoder)
+    {
+
+    }
+
     /**
      * @Route("/registration-show", name="registration_show")
      * @param Request $request
@@ -606,15 +629,7 @@ class ConferenceRegistrationController extends AbstractController
      */
     public function registrationShow(Request $request, Mailer $mailer, UserPasswordEncoderInterface $passwordEncoder)
     {
-        if ($request->getMethod() == 'POST') {
-            $cloner = new VarCloner();
-            $dumper = new CliDumper();
-            $output = fopen('php://memory', 'r+b');
-
-            $dumper->dump($cloner->cloneVar($request), $output);
-            $output = stream_get_contents($output, -1, 0);
-            $this->logger->notice('POSTDATA:' . base64_encode($output));
-        }
+        $this->_debugDumpPostData($request);
 
         /** @var User $user */
         /** @var Organization $organization */
@@ -646,7 +661,9 @@ class ConferenceRegistrationController extends AbstractController
             $CommentForm = $this->createForm(
                 CommentFormType::class
             );
+            // Возможность добавить участников
             $canAdd = false;
+            // Возможность редаетировать участников
             $canEdit = false;
             foreach ($conferenceOrganization->getConferenceMembers() as $key => $iConferenceMember) {
                 //dump('$this->getUser()',$iConferenceMember );
