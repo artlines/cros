@@ -14,7 +14,8 @@
                 <div class="card mb-2 box-shadow">
                     <div class="card-body " >
                         <div class="Aligner" style="height: 125px; width: auto; text-align: center;">
-                            {% if conferenceOrganization.organization.logo %}
+                            {% if conferenceOrganization.organization.logo
+                                and conferenceOrganization.organization.logo matches '/\.(jpg|png|jpeg|svg)$/' %}
                             <img  style="max-height: 100%; max-width: 100%;"
                              src="/uploads/members/logos/{{ conferenceOrganization.organization.logo }}"
                              alt="{{ conferenceOrganization.organization.name }}"
