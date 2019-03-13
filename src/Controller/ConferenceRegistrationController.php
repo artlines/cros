@@ -12,6 +12,7 @@ use App\Entity\Participating\User;
 use App\Form\CommentFormType;
 use App\Form\ConferenceMemberFormType;
 use App\Form\ConferenceOrganizationFormType;
+use App\Form\OrganizationLkFormType;
 use App\Repository\Abode\RoomTypeRepository;
 use App\Repository\ConferenceMemberRepository;
 use App\Repository\ConferenceOrganizationRepository;
@@ -616,14 +617,30 @@ class ConferenceRegistrationController extends AbstractController
      */
     public function registrationEditLogo(Request $request, Mailer $mailer)
     {
+        $this->_debugDumpPostData($request);
+
+        /** @var User $user */
+        /** @var Organization $organization */
+        if (!$this->getUser()) {
+            return $this->render('conference_registration/no_access.html.twig');
+        }
+
+        if (!$this->getUser()->getOrganization()) {
+            return $this->render('conference_registration/no_access.html.twig');
+        }
+
+        $organization = $this->getUser()->getOrganization();
+
+
         $form = $this->createForm(
-            ConferenceMemberFormType::class,
-            $CM == $iConferenceMember
-                ? $CM
-                : $iConferenceMember
-        )
+            OrganizationLkFormType::class
+
+        );
+
         return $this->render('conference_registration/edit_logo.html.twig', [
             'form' => $form->createView(),
+            'organization' => $organization,
+            'prefix' => self::DIRECTORY_UPLOAD . 'members/logos/',
         ]);
     }
 
