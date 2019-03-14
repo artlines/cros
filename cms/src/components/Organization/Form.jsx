@@ -69,7 +69,6 @@ class OrganizationForm extends React.Component {
 
     handleChange = (field, index = null) => event => {
         const { values, errors } = this.state;
-        const { nam } = event.target;
 
         let value;
         switch (event.target.type) {
@@ -181,7 +180,7 @@ class OrganizationForm extends React.Component {
                             <Grid item xs={12} sm={12}>
                                 <FormControl>
                                     <FormControlLabel
-                                        label={"Скрыть организацию в списке на участников сайте"}
+                                        label={"Скрыть организацию в списке участников на сайте"}
                                         control={
                                             <Switch
                                                 checked={values.hidden}
