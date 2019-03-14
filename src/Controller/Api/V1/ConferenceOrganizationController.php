@@ -133,6 +133,7 @@ class ConferenceOrganizationController extends ApiController
         $conference = $this->em->getRepository(Conference::class)
             ->findOneBy(['year' => date('Y')]);
         if (!$conference) {
+            $year = date('Y');
             return $this->badRequest("Не найдена конференция для {$year}(текущего) года.");
         }
         /** @var Organization $existOrg */
