@@ -159,9 +159,8 @@ class ConferenceOrganizationRepository extends EntityRepository
         }
 
         /** Check invited_by filter */
-        if (isset($data['invited_by'])) {
-            $where .= " AND tcoi.invited_by_id IN (:invited_by)";
-            $parameters['invited_by'] = $data['invited_by'];
+        if (isset($data['invited_by']) && is_array($data['invited_by'])) {
+            $where .= " AND tcoi.invited_by_id IN (".implode($data['invited_by'], ', ').")";
         }
 
         /** Check search string */
