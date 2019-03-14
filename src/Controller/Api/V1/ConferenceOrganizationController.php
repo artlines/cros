@@ -7,6 +7,7 @@ use App\Entity\Conference;
 use App\Entity\Participating\ConferenceOrganization;
 use App\Entity\Participating\Invoice;
 use App\Entity\Participating\Organization;
+use App\Entity\Participating\User;
 use App\Repository\ConferenceOrganizationRepository;
 use App\Repository\InvoiceRepository;
 use App\Service\Mailer;
@@ -110,6 +111,8 @@ class ConferenceOrganizationController extends ApiController
      */
     public function update($id)
     {
+        $year = date('Y');
+
         $name = $this->requestData['name'] ?? null;
         $hidden = $this->requestData['hidden'] ?? false;
         $inn = $this->requestData['inn'] ?? null;
@@ -117,6 +120,7 @@ class ConferenceOrganizationController extends ApiController
         $city = $this->requestData['city'] ?? null;
         $address = $this->requestData['address'] ?? null;
         $requisites = $this->requestData['requisites'] ?? null;
+        $invited_by_id = $this->requestData['invited_by_id'] ?? null;
 
         if (!$name || !$inn || !$kpp) {
             return $this->badRequest('Не переданы обязательные параметры.');
@@ -130,19 +134,27 @@ class ConferenceOrganizationController extends ApiController
         $organization = $conferenceOrganization->getOrganization();
 
         /** @var Conference $conference */
-        $conference = $this->em->getRepository(Conference::class)
-            ->findOneBy(['year' => date('Y')]);
+        $conference = $this->em->getRepository(Conference::class)->findOneBy(['year' => $year]);
+
         if (!$conference) {
             return $this->badRequest("Не найдена конференция для {$year}(текущего) года.");
         }
+
         /** @var Organization $existOrg */
         $existOrg = $this->em
-
             ->getRepository(Organization::class)
             ->findOrganizationInConference($conference, $inn, $kpp);
 
         if ($existOrg && $organization !== $existOrg) {
             return $this->badRequest("С такими ИНН и КПП есть организация \"{$existOrg->getName()}\"");
+        }
+
+        /**
+         * Check that user with invited_by_id exist
+         * @var User $invitedBy
+         */
+        if (!$invitedBy = $this->em->find(User::class, (int) $invited_by_id)) {
+            return $this->badRequest("Пользователь с ID: {$invited_by_id} не найден.");
         }
 
         $organization->setName($name);
@@ -154,6 +166,12 @@ class ConferenceOrganizationController extends ApiController
         $organization->setRequisites($requisites);
 
         $this->em->persist($organization);
+
+        if ($invitedBy !== $conferenceOrganization->getInvitedBy()) {
+            $conferenceOrganization->setInvitedBy($invitedBy);
+            $this->em->persist($conferenceOrganization);
+        }
+
         $this->em->flush();
 
         return $this->success();

@@ -1,4 +1,5 @@
 import React from "react";
+import {connect} from 'react-redux';
 import PropTypes from "prop-types";
 import {
     Button,
@@ -19,6 +20,8 @@ import isEmpty from 'lodash/isEmpty';
 import API from '../../libs/api';
 import ErrorMessage from "../utils/ErrorMessage";
 import ConfirmDialog from "../utils/ConfirmDialog";
+import SuggestingSelectField from "../utils/SuggestingSelectField";
+import map from "lodash/map";
 
 const api = new API();
 
@@ -30,6 +33,7 @@ class OrganizationForm extends React.Component {
             values: {
                 name: '',
                 hidden: false,
+                invited_by_id: 0,
                 inn: '',
                 kpp: '',
                 city: '',
@@ -69,16 +73,19 @@ class OrganizationForm extends React.Component {
 
     handleChange = (field, index = null) => event => {
         const { values, errors } = this.state;
-        const { nam } = event.target;
 
         let value;
-        switch (event.target.type) {
-            case 'checkbox':
-                value = event.target.checked;
-                break;
-            default:
-                value = event.target.value;
-                break;
+        if (field === 'invited_by_id') {
+            value = event.value;
+        } else {
+            switch (event.target.type) {
+                case 'checkbox':
+                    value = event.target.checked;
+                    break;
+                default:
+                    value = event.target.value;
+                    break;
+            }
         }
 
         const update = index !== null
@@ -147,7 +154,7 @@ class OrganizationForm extends React.Component {
     handleErrorSubmit = (err) => this.setState({submitting: false, submitError: err.message});
 
     render() {
-        const { initialValues, open } = this.props;
+        const { initialValues, open, managers } = this.props;
         const { values, errors, submitting, submitError } = this.state;
 
         const isUpdate = initialValues && initialValues.id;
@@ -190,6 +197,18 @@ class OrganizationForm extends React.Component {
                                         }
                                     />
                                 </FormControl>
+                            </Grid>
+                            <Grid item xs={12} sm={12} lg={3}>
+                                <SuggestingSelectField
+                                    options={map(managers, i => ({ value: i.id, label: `${i.first_name} ${i.last_name}` }))}
+                                    onChange={this.handleChange(`invited_by_id`)}
+                                    isSearchable
+                                    isMulti={false}
+                                    placeholder={`Начните вводить имя`}
+                                    label={`Ответственный менеджер`}
+                                    fullWidth
+                                    defaultInputValue={values.invited_by}
+                                />
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField
@@ -342,4 +361,9 @@ OrganizationForm.propTypes = {
     onSuccess: PropTypes.func.isRequired,
 };
 
-export default OrganizationForm;
+const mapStateToProps = state =>
+    ({
+        managers: state.system.managers.items,
+    });
+
+export default connect(mapStateToProps)(OrganizationForm);
