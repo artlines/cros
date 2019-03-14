@@ -110,6 +110,8 @@ class ConferenceOrganizationController extends ApiController
      */
     public function update($id)
     {
+        $year = date('Y');
+        
         $name = $this->requestData['name'] ?? null;
         $hidden = $this->requestData['hidden'] ?? false;
         $inn = $this->requestData['inn'] ?? null;
@@ -130,15 +132,13 @@ class ConferenceOrganizationController extends ApiController
         $organization = $conferenceOrganization->getOrganization();
 
         /** @var Conference $conference */
-        $conference = $this->em->getRepository(Conference::class)
-            ->findOneBy(['year' => date('Y')]);
+        $conference = $this->em->getRepository(Conference::class)->findOneBy(['year' => $year]);
         if (!$conference) {
-            $year = date('Y');
             return $this->badRequest("Не найдена конференция для {$year}(текущего) года.");
         }
+        
         /** @var Organization $existOrg */
         $existOrg = $this->em
-
             ->getRepository(Organization::class)
             ->findOrganizationInConference($conference, $inn, $kpp);
 
