@@ -181,7 +181,7 @@ class OrganizationForm extends React.Component {
                             <Grid item xs={12} sm={12}>
                                 <FormControl>
                                     <FormControlLabel
-                                        label={"Скрыть организацию в списке на участников сайте"}
+                                        label={"Скрыть организацию в списке участников на сайте"}
                                         control={
                                             <Switch
                                                 checked={values.hidden}
@@ -189,7 +189,6 @@ class OrganizationForm extends React.Component {
                                             />
                                         }
                                     />
-                                    <FormHelperText>Для возможности управления данными организации</FormHelperText>
                                 </FormControl>
                             </Grid>
                             <Grid item xs={12} sm={6}>
