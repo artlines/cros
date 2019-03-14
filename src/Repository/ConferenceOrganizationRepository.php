@@ -488,8 +488,9 @@ class ConferenceOrganizationRepository extends EntityRepository
                 'hidden'     => 'false',
                 'conference' => $conference,
             ])
-            ->groupBy('co.id')
+            ->groupBy('co.id, o.id')
             ->orderBy('co.priority','DESC')
+            ->orderBy('o.name','ASC')
             ->getQuery()
             ->getResult()
             ;
