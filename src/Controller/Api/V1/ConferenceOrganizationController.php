@@ -66,6 +66,7 @@ class ConferenceOrganizationController extends ApiController
         $city = $this->requestData['city'] ?? null;
         $address = $this->requestData['address'] ?? null;
         $requisites = $this->requestData['requisites'] ?? null;
+        $invited_by_id = $this->requestData['invited_by_id'] ?? null;
 
         if (!$name || !$inn || !$kpp) {
             return $this->badRequest('Не переданы обязательные параметры.');
@@ -95,6 +96,19 @@ class ConferenceOrganizationController extends ApiController
         $conferenceOrganization = new ConferenceOrganization();
         $conferenceOrganization->setOrganization($organization);
         $conferenceOrganization->setConference($conference);
+
+        /**
+         * Check that user with invited_by_id exist
+         * @var User $invitedBy
+         */
+        if ($invited_by_id && !$invitedBy = $this->em->find(User::class, (int) $invited_by_id)) {
+            return $this->badRequest("Пользователь с ID: {$invited_by_id} не найден.");
+        }
+
+        if ($invited_by_id && $invitedBy !== $conferenceOrganization->getInvitedBy()) {
+            $conferenceOrganization->setInvitedBy($invitedBy);
+            $this->em->persist($conferenceOrganization);
+        }
 
         $this->em->persist($conferenceOrganization);
         $this->em->flush();
@@ -153,8 +167,13 @@ class ConferenceOrganizationController extends ApiController
          * Check that user with invited_by_id exist
          * @var User $invitedBy
          */
-        if (!$invitedBy = $this->em->find(User::class, (int) $invited_by_id)) {
+        if ($invited_by_id && !$invitedBy = $this->em->find(User::class, (int) $invited_by_id)) {
             return $this->badRequest("Пользователь с ID: {$invited_by_id} не найден.");
+        }
+
+        if ($invited_by_id && $invitedBy !== $conferenceOrganization->getInvitedBy()) {
+            $conferenceOrganization->setInvitedBy($invitedBy);
+            $this->em->persist($conferenceOrganization);
         }
 
         $organization->setName($name);
@@ -166,11 +185,6 @@ class ConferenceOrganizationController extends ApiController
         $organization->setRequisites($requisites);
 
         $this->em->persist($organization);
-
-        if ($invitedBy !== $conferenceOrganization->getInvitedBy()) {
-            $conferenceOrganization->setInvitedBy($invitedBy);
-            $this->em->persist($conferenceOrganization);
-        }
 
         $this->em->flush();
 
