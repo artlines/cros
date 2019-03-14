@@ -297,7 +297,7 @@ class ConferenceOrganizationRepository extends EntityRepository
                      po.address,
                      po.requisites,
                      pm.id as invited_by_id,
-                     CONCAT_WS(' ', pm.last_name, pm.first_name) as invited_by
+                     CONCAT_WS(' ', pm.first_name, pm.last_name) as invited_by
               FROM participating.conference_organization pco
                 LEFT JOIN participating.organization po ON pco.organization_id = po.id
                 LEFT JOIN participating.member       pm ON pco.invited_by = pm.id
@@ -460,9 +460,15 @@ class ConferenceOrganizationRepository extends EntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findShowByConference( Conference $conference ){
-// Отображать только те организации, которые имеют заселенных участников.
-// Не показывать организации, которые имеют признак hidden.
+    /**
+     * Отображать только те организации, которые имеют заселенных участников.
+     * Не показывать организации, которые имеют признак hidden.
+     *
+     * @param Conference $conference
+     * @return mixed
+     */
+    public function findShowByConference(Conference $conference)
+    {
         return $this
             ->createQueryBuilder('co')
             ->innerJoin(
