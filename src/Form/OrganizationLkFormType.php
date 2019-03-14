@@ -2,21 +2,12 @@
 
 namespace App\Form;
 
-use App\Entity\Participating\ConferenceOrganization;
 use App\Entity\Participating\Organization;
-use App\Entity\Participating\User;
-use App\Repository\UserRepository;
-use App\Validator\InnKpp;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Length;
 
 class OrganizationLkFormType extends AbstractType
 {
@@ -48,15 +39,6 @@ class OrganizationLkFormType extends AbstractType
                     ]
                 ]
             )
-
-//            ->add('isActive')
-//            ->add('hidden')
-//            ->add('country')
-//            ->add('typePerson')
-//            ->add('email')
-//            ->add('createdAt')
-            // ['attr'=>['class'=>'row']]
-//            ->setAttribute('id','row')
         ;
 
 
