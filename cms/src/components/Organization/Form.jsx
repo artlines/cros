@@ -69,7 +69,6 @@ class OrganizationForm extends React.Component {
 
     handleChange = (field, index = null) => event => {
         const { values, errors } = this.state;
-        const { nam } = event.target;
 
         let value;
         switch (event.target.type) {
