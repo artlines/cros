@@ -14,7 +14,7 @@
                         {% if ConferenceOrganization.organization.logo
                             and ConferenceOrganization.organization.logo matches '/\.(jpg|png|jpeg|svg)$/' %}
                             <img  style="max-height: 100%; max-width: 100%;"
-                                  src="/uploads/members/logos/{{ ConferenceOrganization.organization.logo }}"
+                                  src="{{ prefix }}{{ ConferenceOrganization.organization.logo }}"
                                   alt="{{ ConferenceOrganization.organization.name }}"
                                   title="{{ ConferenceOrganization.organization.name }}"
                             />

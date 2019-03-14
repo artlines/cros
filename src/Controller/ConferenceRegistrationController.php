@@ -1003,6 +1003,7 @@ class ConferenceRegistrationController extends AbstractController
                 'submitted' => $request->getMethod() == 'POST' ? $submitted : false,
                 'canAdd' => $canAdd,
                 'canEdit' => $canEdit,
+                'prefix' => self::DIRECTORY_UPLOAD . 'members/logos/',
             ]);
         } else {
             throw $this->createNotFoundException();

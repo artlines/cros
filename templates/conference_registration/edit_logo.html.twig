@@ -27,7 +27,7 @@
                     {% if organization.logo
                         and organization.logo matches '/\.(jpg|png|jpeg|svg)$/' %}
                         <img  style="max-height: 100%; max-width: 100%;"
-                              src="/uploads/members/logos/{{ organization.logo }}"
+                              src="{{ prefix }}{{ organization.logo }}"
                               alt="{{ organization.name }}"
                               title="{{ organization.name }}"
                         />
