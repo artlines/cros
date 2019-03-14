@@ -198,7 +198,7 @@ class OrganizationForm extends React.Component {
                                     />
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={12} sm={12} lg={3}>
+                            <Grid item xs={12}>
                                 <SuggestingSelectField
                                     options={map(managers, i => ({ value: i.id, label: `${i.first_name} ${i.last_name}` }))}
                                     onChange={this.handleChange(`invited_by_id`)}
