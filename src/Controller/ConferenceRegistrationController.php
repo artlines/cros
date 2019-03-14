@@ -211,12 +211,11 @@ class ConferenceRegistrationController extends AbstractController
             $ConferenceOrganization = $this->getDoctrine()
                 ->getRepository(ConferenceOrganization::class)
                 ->findOneBy(['inviteHash' => $hash]);
-            $form = $this->createForm(
-                ConferenceOrganizationFormType::class, $ConferenceOrganization);
             if (!$ConferenceOrganization) {
                 throw $this->createNotFoundException();
             }
             if ($ConferenceOrganization->isFinish()) {
+                // Регистрация уже завершена
                 return $this->render('conference_registration/registration_success.html.twig', [
                     'ConferenceOrganization' => $ConferenceOrganization,
                     'UserPasswords' => [],
@@ -226,8 +225,11 @@ class ConferenceRegistrationController extends AbstractController
             $Conference = $ConferenceOrganization->getConference();
         } else {
             /** @var Conference $Conference */
-            $Conference = $this->getDoctrine()->getRepository(Conference::class)
-                ->findOneBy(['year' => date("Y")]);
+            $Conference = $this->getDoctrine()
+                ->getRepository(Conference::class)
+                ->findOneBy([
+                    'year' => date("Y")
+                ]);
 
             // Получаем разрешенные даты регистрации
             $reg_start = $Conference->getRegistrationStart();
@@ -241,9 +243,49 @@ class ConferenceRegistrationController extends AbstractController
                     ['conf' => $Conference]
                 );
             }
-            $form = $this->createForm(
-                ConferenceOrganizationFormType::class);
+            $ConferenceOrganization = null;
+            // Поиск отправленного приглашения по ИНН и КПП, если данные отпарвлены
+            $formData = $request->get('conference_organization_form');
+            if ($request->getMethod() == 'POST' and $formData ) {
+                $inn = isset( $formData['organization'], $formData['organization']['inn'] )
+                    ? $formData['organization']['inn']
+                    : null ;
+                $kpp = isset( $formData['organization'], $formData['organization']['kpp'] )
+                    ? $formData['organization']['kpp']
+                    : null ;
+                $organization = $inn
+                    ? $this->getDoctrine()
+                        ->getRepository(Organization::class )
+                        ->findOneBy([
+                            'inn' => $inn,
+                            'kpp' => $kpp,
+                        ])
+                    : null;
+                if ($organization) {
+                    /** @var ConferenceOrganization $ConferenceOrganization */
+                    $ConferenceOrganization = $this->getDoctrine()
+                        ->getRepository(ConferenceOrganization::class)
+                        ->findOneBy([
+                            'organization' => $organization,
+                            'conference'   => $Conference,
+                        ]);
+                }
+
+                if ($ConferenceOrganization and $ConferenceOrganization->isFinish()) {
+                    return $this->render('conference_registration/registration_success.html.twig', [
+                        'ConferenceOrganization' => $ConferenceOrganization,
+                        'UserPasswords' => [],
+                        'ended' => 1,
+                    ]);
+                }
+            }
         }
+
+        $form = $this->createForm(
+            ConferenceOrganizationFormType::class,
+            $ConferenceOrganization
+        );
+
 
         /** @var RoomTypeRepository $roomTypeRepo */
         $roomTypeRepo = $this->getDoctrine()->getRepository(RoomType::class);
