@@ -2,16 +2,11 @@
 
 namespace App\Form;
 
-use App\Entity\Abode\RoomType;
-use App\Entity\Participating\ParticipationClass;
 use App\Entity\Participating\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -152,23 +147,6 @@ class MemberFormType extends AbstractType
                     'help' => 'Контактное лицо по организационным вопросам'
                 ]
             )
-
-
-//
-//
-//            ->add('apartament', ChoiceType::class, array('label' => 'Класс участия', 'mapped' => false, 'attr' => array('class' => 'cs-theme-color-gray-dark-v3', 'data-helper' => $class_help), 'choices' => $numbers, 'choice_attr' => array('Выберите номер проживания' => array('disabled' => '')), 'data' => $apartament_id))
-//            ->add('apartament', ChoiceType::class, array('attr' => array('class' => 'cs-theme-color-gray-dark-v3'), 'label' => 'Класс участия', 'mapped' => false, 'choices' => $numbers, 'choice_attr' => array('Выберите номер проживания' => array('disabled' => '')), 'data' => $apartament_id))
-
-
-            //            ->add('isActive')
-//            ->add('password')
-//            ->add('telegram')
-//            ->add('roles')
-            //->add('nickname')
-//            ->add('sex')
-//            ->add('representative')
-//            ->add('createdAt')
-//            ->add('organization')
         ;
     }
 
