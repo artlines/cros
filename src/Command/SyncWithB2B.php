@@ -25,6 +25,9 @@ class SyncWithB2B extends Command
 {
     const CROS_SERVICE_SKU  = 'NAG-cros2019';
     const CROS_YEAR         = 2019;
+    
+    /** Sync contractors names? */
+    const SYNC_CONTRACTORS_NAMES = false;
 
     /** @var EntityManagerInterface */
     protected $em;
@@ -104,7 +107,7 @@ class SyncWithB2B extends Command
 
         $output->writeln("[START]");
 
-        if ($onlyContractorsNames) {
+        if ($onlyContractorsNames && self::SYNC_CONTRACTORS_NAMES) {
             $this->_syncContractorsNames();
             $output->writeln("[END]");
             exit(0);
@@ -204,7 +207,7 @@ class SyncWithB2B extends Command
             $isInvalid = $response['data']['invalid'];
 
             /** Check that newName is not like 'физическое лицо' and update if needed */
-            if (stripos(mb_strtolower($_newName), 'физическое лицо') === FALSE && $_oldName !== $_newName) {
+            if (self::SYNC_CONTRACTORS_NAMES && stripos(mb_strtolower($_newName), 'физическое лицо') === FALSE && $_oldName !== $_newName) {
                 $organization->setName($response['data']['title']);
                 $logData['title'] = $response['data']['title'];
             }
