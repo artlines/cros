@@ -185,6 +185,7 @@ class ConferenceRegistrationController extends AbstractController
     /**
      * @Route("/registration/{hash}", name="conference_registration_hash")
      * @Route("/registration", name="registration")
+     * @Route("/test/registration", name="registration_test", defaults={"test": true})
      * @param Request $request
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param Mailer $mailer
@@ -194,7 +195,8 @@ class ConferenceRegistrationController extends AbstractController
     public function index(
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
-        Mailer $mailer
+        Mailer $mailer,
+        $test = false
     )
     {
         if ($request->getMethod() == 'POST') {
@@ -271,19 +273,25 @@ class ConferenceRegistrationController extends AbstractController
                         ]);
                 }
 
-                if ($ConferenceOrganization and $ConferenceOrganization->isFinish()) {
+                if (0 and $ConferenceOrganization and $ConferenceOrganization->isFinish()) {
                     return $this->render('conference_registration/registration_success.html.twig', [
                         'ConferenceOrganization' => $ConferenceOrganization,
                         'UserPasswords' => [],
                         'ended' => 1,
-                    ]);
+                    ] );
                 }
             }
         }
 
         $form = $this->createForm(
             ConferenceOrganizationFormType::class,
-            $ConferenceOrganization
+            $ConferenceOrganization,
+            $test
+                ? [
+                    'csrf_protection' => false,
+                    'allow_extra_fields' => true,
+                ]
+                : []
         );
 
 
@@ -311,6 +319,16 @@ class ConferenceRegistrationController extends AbstractController
         /** @var ConferenceOrganization $ConferenceOrganization */
 
         $em = $this->getDoctrine()->getManager();
+        if ( $test and $form->isSubmitted() && !$form->isValid()) {
+            // for test
+            $er = [];
+            foreach( $form->getErrors(true) as $iError ){
+                /** @var FormError $iError */
+                $key = $iError->getOrigin()->getPropertyPath()->__toString();
+                $er[$key] = $iError->getMessage();
+            }
+            return new JsonResponse($er);
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
 
@@ -419,8 +437,9 @@ class ConferenceRegistrationController extends AbstractController
 
             $ConferenceOrganization->setFinish(true);
             $em->flush();
-
-            $em->getConnection()->commit();
+            if (!$test) {
+                $em->getConnection()->commit();
+            }
 
             $arUsers = [];
             foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
@@ -514,6 +533,9 @@ class ConferenceRegistrationController extends AbstractController
                 );
             }
             $em->flush();
+            if (!$test) {
+                $em->getConnection()->commit();
+            }
 
             return $this->render('conference_registration/registration_success.html.twig', [
                 'ConferenceOrganization' => $ConferenceOrganization,
