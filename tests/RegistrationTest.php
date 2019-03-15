@@ -125,6 +125,8 @@ class RegistrationTest extends WebTestCase
 
     public function testFindOrgByINN()
     {
+        // Проверка что организация найдена по ИНН и КПП
+
         $kernel = self::bootKernel();
         $entityManager = $kernel->getContainer()
             ->get('doctrine')
@@ -189,7 +191,18 @@ class RegistrationTest extends WebTestCase
         $this->assertSame(200, $client->getResponse()->getStatusCode());
         $error_json = json_decode($client->getResponse()->getContent(),true);
 //        dd($client->getResponse()->getContent());
-        $this->assertSame(['errors'=>['email' => 'Пользователь с такой почтой уже зарегистрирован']],$error_json);
+        $this->assertSame([
+            'conferenceOrganization' => [
+                'id'           => $testConferenceOrganization->getId(),
+                'organization' => [
+                    'id'           => $testConferenceOrganization->getOrganization()->getId(),
+                ],
+                'conference' => [
+                    'id'           => $testConferenceOrganization->getConference()->getId(),
+                ],
+            ]
+        ],$error_json);
+
 
 //        $this->assertContains('Ваша заявка принята',
 //            $crawler
