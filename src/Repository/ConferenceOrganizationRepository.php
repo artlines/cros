@@ -459,6 +459,7 @@ class ConferenceOrganizationRepository extends EntityRepository
             ->getOneOrNullResult();
     }
 
+
     /**
      * Отображать только те организации, которые имеют заселенных участников.
      * Не показывать организации, которые имеют признак hidden.
