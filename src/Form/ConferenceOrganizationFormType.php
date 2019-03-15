@@ -6,6 +6,7 @@ use App\Entity\Conference;
 use App\Entity\Participating\ConferenceOrganization;
 use App\Entity\Participating\Organization;
 use App\Repository\ConferenceRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -97,12 +98,17 @@ class ConferenceOrganizationFormType extends AbstractType
             )
 //            ->add('invitedBy')
         ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-            $user = $event->getData();
-            $form = $event->getForm();
-
-            if (!$user) {
-                return;
-            }
+            $data = $event->getData();
+                if (!$data) {
+                    return;
+                }
+//                $data['conference'] = 272;
+    //            $event->setData($data);
+//                dd($data);
+                /** @var ConferenceOrganization $conferenceOrganization */
+                $conferenceOrganization = $event;// ->getForm();
+//                dd($conferenceOrganization);;
+            //dd('POST_SET_DATA', $event);
 
             // checks whether the user has chosen to display their email or not.
             // If the data was submitted previously, the additional value that is

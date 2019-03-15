@@ -52,14 +52,17 @@ class RegistrationTest extends WebTestCase
 
 //        dd($client->getResponse());
         $this->assertSame(200, $client->getResponse()->getStatusCode());
-        $error_json = json_decode($client->getResponse()->getContent(),true);
+        $json = json_decode($client->getResponse()->getContent(),true);
 //        dd($client->getResponse()->getContent());
-        //$this->assertSame([],$error_json);
+        $this->assertArrayHasKey('conferenceOrganization',$json);
+        $this->assertArrayHasKey('id',$json['conferenceOrganization']);
+        $this->assertArrayHasKey('organization',$json['conferenceOrganization']);
+        $this->assertArrayHasKey('conference',$json['conferenceOrganization']);
 
-        $this->assertContains('Ваша заявка принята',
-            $crawler
-                ->filter('div.container p')
-                ->text());
+//        $this->assertContains('Ваша заявка принята',
+//            $crawler
+//                ->filter('div.container p')
+//                ->text());
     }
 
     public function testUserExist()
@@ -110,7 +113,7 @@ class RegistrationTest extends WebTestCase
         $this->assertSame(200, $client->getResponse()->getStatusCode());
         $error_json = json_decode($client->getResponse()->getContent(),true);
 //        dd($client->getResponse()->getContent());
-        $this->assertSame(['email' => 'Пользователь с такой почтой уже зарегистрирован'],$error_json);
+        $this->assertSame(['errors'=>['email' => 'Пользователь с такой почтой уже зарегистрирован']],$error_json);
 
 //        $this->assertContains('Ваша заявка принята',
 //            $crawler

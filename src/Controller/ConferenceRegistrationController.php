@@ -29,6 +29,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 
@@ -327,7 +331,7 @@ class ConferenceRegistrationController extends AbstractController
                 $key = $iError->getOrigin()->getPropertyPath()->__toString();
                 $er[$key] = $iError->getMessage();
             }
-            return new JsonResponse($er);
+            return new JsonResponse(['errors' => $er]);
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -437,7 +441,20 @@ class ConferenceRegistrationController extends AbstractController
 
             $ConferenceOrganization->setFinish(true);
             $em->flush();
-            if (!$test) {
+            if ($test) {
+                return new JsonResponse([
+                    'conferenceOrganization' => [
+                        'id' => $ConferenceOrganization->getId(),
+                        'organization' => [
+                            'id' => $ConferenceOrganization->getOrganization()->getId(),
+                        ],
+                        'conference' => [
+                            'id' => $ConferenceOrganization->getConference()->getId(),
+                        ]
+                    ]
+                ]);
+                    
+            } else {
                 $em->getConnection()->commit();
             }
 
