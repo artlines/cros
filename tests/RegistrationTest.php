@@ -61,8 +61,11 @@ class RegistrationTest extends WebTestCase
             )
         );
 
-        dd($client->getResponse());
+//        dd($client->getResponse());
         $this->assertSame(200, $client->getResponse()->getStatusCode());
-        $this->assertContains('Hello World', $crawler->filter('h1')->text());
+        $this->assertContains('Ваша заявка принята',
+            $crawler
+                ->filter('div.container p')
+                ->text());
     }
 }
