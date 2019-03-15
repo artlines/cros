@@ -14,12 +14,12 @@ use Doctrine\ORM\Query\Expr;
 
 class ConferenceOrganizationRepository extends EntityRepository
 {
-    const STAGE__INVITE_SENT            = 1;
-    const STAGE__REGISTRATION_COMPLETE  = 2;
-    const STAGE__MEMBERS_SETTLED        = 3;
-    const STAGE__INVOICE_SENT           = 4;
-    const STAGE__INVOICE_PAYED          = 5;
-    const STAGE__INVOICE_CANCELED       = 6;
+    const STAGE__INVITE_SENT                = 1;
+    const STAGE__REGISTRATION_COMPLETE      = 2;
+    const STAGE__MEMBERS_SETTLED            = 3;
+    const STAGE__INVOICE_MADE_AND_NOT_PAYED = 4;
+    const STAGE__INVOICE_PAYED              = 5;
+    const STAGE__INVOICE_CANCELED           = 6;
 
     public function findToMakeInvoice(int $year)
     {
@@ -191,8 +191,8 @@ class ConferenceOrganizationRepository extends EntityRepository
                 case self::STAGE__MEMBERS_SETTLED:
                     $where .= " AND tms.total_members > 0 AND tms.total_members = tms.in_room_members AND tis.invoices_count = 0";
                     break;
-                case self::STAGE__INVOICE_SENT:
-                    $where .= " AND tlii.is_sent = TRUE";
+                case self::STAGE__INVOICE_MADE_AND_NOT_PAYED:
+                    $where .= " AND tis.invoices_count != tis.invoices_payed AND tis.invoices_count > 0";
                     break;
                 case self::STAGE__INVOICE_PAYED:
                     $where .= " AND tlii.status_guid = :invoice_fully_payed_status_guid__stage";
