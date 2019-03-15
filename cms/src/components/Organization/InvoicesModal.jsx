@@ -18,18 +18,15 @@ import {
     Typography,
 } from '@material-ui/core';
 import map from 'lodash/map';
+import orderBy from 'lodash/orderBy';
 import Money from "../utils/Money";
 import DateTime from "../utils/DateTime";
 import InvoiceStatus from './InvoiceStatus';
 import {
-    Close as CloseIcon,
-    Edit as EditIcon,
     Receipt as ReceiptIcon,
 } from "@material-ui/icons";
-import FabButton from "../utils/FabButton";
 import find from "lodash/find";
 import InvoiceForm from "./InvoiceForm";
-import MakeInvoiceModal from "./MakeInvoiceModal";
 import LinearProgress from '../utils/LinearProgress';
 import API from '../../libs/api';
 
@@ -88,7 +85,7 @@ class InvoicesModal extends React.Component {
     closeForm = () => this.setState({form: {...this.state.form, open: false}});
 
     render() {
-        const { organizationId, organizationName, trigger, items, isFetching, update } = this.props;
+        const { organizationName, trigger, items, isFetching } = this.props;
         const { open, form } = this.state;
 
         return (
@@ -142,7 +139,7 @@ class InvoicesModal extends React.Component {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {map(items, item =>
+                                {map(orderBy(items, ['date'], ['desc']), item =>
                                     <TableRow key={item.id}>
                                         <TableCell>
                                             {item.number || <Typography variant={`caption`}>отсутствует</Typography>}
