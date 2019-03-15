@@ -488,10 +488,17 @@ class ConferenceOrganizationRepository extends EntityRepository
                 Expr\Join::WITH,
                 'p.conferenceMember = cm.id'
             )
+            ->innerJoin(
+                Invoice::class,
+                'i',
+                Expr\Join::WITH,
+                'i.conferenceOrganization = co.id AND i.statusGuid = :status_guid_fully_payed'
+            )
             ->where('co.conference = :conference')
             ->setParameters([
-                'hidden'     => 'false',
-                'conference' => $conference,
+                'hidden'                   => 'false',
+                'conference'               => $conference,
+                'status_guid_fully_payed'  => Invoice::STATUS_GUID__FULLY_PAYED,
             ])
             ->groupBy('co.id, o.id')
             ->orderBy('co.priority','DESC')
