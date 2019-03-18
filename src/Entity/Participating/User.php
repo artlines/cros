@@ -154,6 +154,13 @@ class User implements UserInterface
     private $photo;
 
     /**
+     * @var array
+     *
+     * @ORM\Column(name="additional_emails", type="json", options={"default":"[]"}, nullable=false)
+     */
+    private $additionalEmails;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -162,6 +169,7 @@ class User implements UserInterface
         $this->isActive         = true;
         $this->createdAt        = new \DateTime();
         $this->roles            = json_encode(["ROLE_USER"]);
+        $this->additionalEmails = json_encode([]);
     }
 
     /**
@@ -447,11 +455,11 @@ class User implements UserInterface
     /**
      * Set organization
      *
-     * @param \App\Entity\Participating\Organization $organization
+     * @param Organization $organization
      *
      * @return User
      */
-    public function setOrganization(\App\Entity\Participating\Organization $organization = null)
+    public function setOrganization(Organization $organization = null)
     {
         $this->organization = $organization;
 
@@ -461,7 +469,7 @@ class User implements UserInterface
     /**
      * Get organization
      *
-     * @return \App\Entity\Participating\Organization
+     * @return Organization
      */
     public function getOrganization()
     {
@@ -585,6 +593,22 @@ class User implements UserInterface
     public function setB2bGuid(?string $b2b_guid)
     {
         $this->b2b_guid = $b2b_guid;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAdditionalEmails(): array
+    {
+        return $this->additionalEmails;
+    }
+
+    /**
+     * @param array $additionalEmails
+     */
+    public function setAdditionalEmails(array $additionalEmails)
+    {
+        $this->additionalEmails = $additionalEmails;
     }
 
 }
