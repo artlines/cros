@@ -23,6 +23,11 @@ class ConferenceMemberFormValidator extends ConstraintValidator
         if (is_object($conferenceMember) || $conferenceMember instanceof ConferenceMember) {
             /* @var $constraint App\Validator\ConferenceMemberForm */
 
+            if($conferenceMember->getConference()==null)
+            {
+                // Форма вызвана как дочерняя, проверки делать не будем
+                return;
+            }
             $email = $conferenceMember->getUser()->getEmail();
             $em = $this->registry->getManagerForClass(\get_class($conferenceMember));
             $repository = $em->getRepository(ConferenceMember::class);

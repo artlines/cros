@@ -38,10 +38,6 @@ class ConferenceOrganizationFormType extends AbstractType
                     'required' => false,
                 )
             )
-//            ->add('sponsor')
-//            ->add('finish')
-//            ->add('approved')
-//            ->add('inviteHash')
             ->add(
                 $builder->create(
                     'organization',
@@ -50,14 +46,6 @@ class ConferenceOrganizationFormType extends AbstractType
                 )
                 ->remove('save')
             )
-//            ->add(
-//                $builder->create(
-//                    'ConferenceMembers',
-//                    ConferenceMemberFormType::class,
-//                    ['by_reference' => true]
-//                )
-//                    ->remove('save')
-//            )
 
             ->add(
                 'ConferenceMembers',
@@ -102,23 +90,19 @@ class ConferenceOrganizationFormType extends AbstractType
                 if (!$data) {
                     return;
                 }
-//                $data['conference'] = 272;
-    //            $event->setData($data);
-//                dd($data);
-                /** @var ConferenceOrganization $conferenceOrganization */
-                $conferenceOrganization = $event;// ->getForm();
-//                dd($conferenceOrganization);;
-            //dd('POST_SET_DATA', $event);
 
-            // checks whether the user has chosen to display their email or not.
-            // If the data was submitted previously, the additional value that is
-            // included in the request variables needs to be removed.
-//            if (true === $user['show_email']) {
-//                $form->add('email', EmailType::class);
-//            } else {
-//                unset($user['email']);
-//                $event->setData($user);
-//            }
+                /** @var ConferenceOrganization $data */
+
+                // Заполнение дублирующих значений в форме  conferenceOrganization и conference
+                // Перекрестных ссылки
+                foreach ($data['ConferenceMembers'] as $key => $user){
+                    $data['ConferenceMembers'][$key]['conference'] = $data['conference'];
+                    if (isset($data['conferenceOrganization'])) {
+                        $data['ConferenceMembers'][$key]['conferenceOrganization'] = $data['conferenceOrganization'];
+                    }
+                }
+                $event->setData($data);
+                /** @var ConferenceOrganization $conferenceOrganization */
         })
             ->add(
                 'save',

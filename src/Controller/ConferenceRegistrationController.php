@@ -277,7 +277,7 @@ class ConferenceRegistrationController extends AbstractController
                         ]);
                 }
 
-                if (0 and $ConferenceOrganization and $ConferenceOrganization->isFinish()) {
+                if (!$test and $ConferenceOrganization and $ConferenceOrganization->isFinish()) {
                     return $this->render('conference_registration/registration_success.html.twig', [
                         'ConferenceOrganization' => $ConferenceOrganization,
                         'UserPasswords' => [],
@@ -297,7 +297,6 @@ class ConferenceRegistrationController extends AbstractController
                 ]
                 : []
         );
-
 
         /** @var RoomTypeRepository $roomTypeRepo */
         $roomTypeRepo = $this->getDoctrine()->getRepository(RoomType::class);

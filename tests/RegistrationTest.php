@@ -21,7 +21,7 @@ class RegistrationTest extends WebTestCase
     /**
      * Проверка усакшности регистрации на открытую конференцию
      */
-    public function _testNewRegOk()
+    public function testNewRegOk()
     {
         $client = static::createClient();
         $crawler = $client->request(
@@ -76,7 +76,7 @@ class RegistrationTest extends WebTestCase
     /**
      * Проверка дубликата пользователя
      */
-    public function _testUserExist()
+    public function testUserExist()
     {
         $client = static::createClient();
         $crawler = $client->request(
@@ -189,7 +189,7 @@ class RegistrationTest extends WebTestCase
                     ),
             )
         );
-
+        dump($client->getResponse()->getContent());
         $this->assertSame(200, $client->getResponse()->getStatusCode());
         $error_json = json_decode($client->getResponse()->getContent(),true);
         $this->assertSame([
@@ -275,7 +275,7 @@ class RegistrationTest extends WebTestCase
                     ),
             )
         );
-
+        dump($client->getResponse()->getContent());
         $this->assertSame(200, $client->getResponse()->getStatusCode());
         $error_json = json_decode($client->getResponse()->getContent(),true);
         $this->assertSame(['errors'=>['inn' => "Организация 'test.organization.name' уже зарегистрирована"]],$error_json);
@@ -372,6 +372,8 @@ class RegistrationTest extends WebTestCase
                 ],
             ]
         );
+        $organization = $entityManager->merge($organization);
+        //dump($organization);
         $entityManager->remove($organization);
         $entityManager->flush();
 
