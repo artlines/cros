@@ -4,7 +4,11 @@ namespace App\Repository;
 
 use App\Entity\Conference;
 use App\Entity\Participating\ConferenceMember;
+use App\Entity\Participating\User;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -31,6 +35,40 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
             ->setParameter('email', $username)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * Using in authenticators to find
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param $email
+     * @return User|null
+     */
+    public function findActiveUserByEmail($email)
+    {
+        $em = $this->getEntityManager();
+
+        $rsm = new ResultSetMappingBuilder($em);
+        $rsm->addRootEntityFromClassMetadata(User::class, 'u');
+
+        $sql = "
+            SELECT pm.*
+            FROM participating.member pm
+            WHERE (pm.email =:email OR (:email = ANY(SELECT jsonb_array_elements_text(pm.additional_emails::jsonb))))
+              AND pm.is_active = TRUE
+            LIMIT 1
+        ";
+
+        $query = $em->createNativeQuery($sql, $rsm);
+        $query->setParameters([
+            'email' => mb_strtolower($email),
+        ]);
+
+        try {
+            return $query->getOneOrNullResult();
+        } catch (NonUniqueResultException $e) {
+            return null;
+        }
     }
 
     /**
@@ -128,161 +166,5 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
         $count = $stmt->fetchColumn();
 
         return [$items, $count];
-    }
-
-    /**
-     * @deprecated Used on symfony 3
-     *
-     * @param array $users
-     * @param int $ap
-     * @return mixed|null
-     */
-    public function findAllByUsers($users = array(), $ap = 0)
-    {
-        $ids_array = array();
-        foreach ($users as $user) {
-            $ids_array[$user->getUserId()] = $user->getUserId();
-        }
-        ksort($ids_array);
-
-        $query = $this->getEntityManager()
-            ->createQuery(
-                'SELECT u, o, uta, ai FROM App:User u
-                LEFT JOIN u.organization o
-                LEFT JOIN u.utoas uta
-                LEFT JOIN uta.apartament ai
-                LEFT JOIN ai.apartament a
-                WHERE u.id in(:ids) AND (uta.approved = :approved OR uta.approved IS NULL) ORDER BY u.id ASC'
-            )->setParameter('ids', $ids_array)->setParameter('approved', $ap);
-
-        try {
-            return $query->getResult();
-        } catch (\Doctrine\ORM\NoResultException $e) {
-            return null;
-        }
-
-    }
-
-    /**
-     * @deprecated Used on symfony 3
-     *
-     * @param $conf_id
-     * @param $year
-     * @return mixed|null
-     */
-    public function findManagers($conf_id, $year)
-    {
-        $query = $this->getEntityManager()
-            ->createQuery('
-                SELECT u FROM App:User u
-                WHERE u.roles LIKE :role
-            ')->setParameter('role', "%ROLE_MANAGER%");//->setParameter('conf', $conf_id)->setParameter('year', $year);
-
-        try {
-            return $query->getResult();
-        } catch (\Doctrine\ORM\NoResultException $e) {
-            return null;
-        }
-    }
-
-    /**
-     * @deprecated Used on symfony 3
-     *
-     * Finder for speakers
-     * @param string $find
-     * @return object|null
-     */
-    public function findUser($find)
-    {
-        $query = $this->getEntityManager()
-            ->createQuery('
-                SELECT u, o FROM App:User u
-                LEFT JOIN u.organization o
-                WHERE u.firstName IN (:find)
-                AND u.lastName IN (:find)
-            ')->setParameter('find', $find);
-        try {
-            return $query->setMaxResults(5)->getResult();
-        } catch (\Doctrine\ORM\NoResultException $e) {
-            return null;
-        }
-    }
-
-    /**
-     * @deprecated Used on symfony 3
-     *
-     * Search user
-     * @param string $string
-     * @return object|null
-     */
-    public function search($string)
-    {
-        $strings = explode(' ', $string);
-        if (count($strings) != 2) {
-            $query = $this->getEntityManager()
-                ->createQuery('
-                SELECT u, o FROM App:User u
-                LEFT JOIN u.organization o
-                WHERE u.firstName IN (:strings)
-                OR u.lastName IN (:strings)
-                OR u.middleName IN (:strings)
-                OR o.name IN (:strings)
-                OR o.name LIKE :string
-            ')->setParameter('strings', $strings)->setParameter('string', '%' . $string . '%');
-        } else {
-            $query = $this->getEntityManager()
-                ->createQuery('
-                    SELECT u, o FROM App:User u
-                    LEFT JOIN u.organization o
-                    WHERE (u.firstName IN (:strings)
-                    AND u.lastName IN (:strings))
-                    OR (u.firstName IN (:strings)
-                    AND u.middleName IN (:strings))
-                    OR (o.name LIKE :string)
-                ')->setParameter('strings', $strings)->setParameter('string', '%' . $string . '%');
-        }
-
-        try {
-            return $query->setMaxResults(5)->getResult();
-        } catch (\Doctrine\ORM\NoResultException $e) {
-            return null;
-        }
-    }
-
-    /**
-     * @deprecated Used on symfony 3
-     *
-     * Search user
-     * @param string $string
-     * @param int $offset
-     * @param int $limit
-     * @return object|null
-     */
-    public function easySearchUser($string, $offset, $limit)
-    {
-        $query = $this->getEntityManager()
-            ->createQuery('
-                    SELECT u FROM App:User u
-                    WHERE (u.firstName LIKE :string  
-                    OR u.middleName LIKE :string
-                    OR u.username LIKE :string
-                    OR u.email LIKE :string
-                    OR u.nickname LIKE :string
-                    OR u.lastName LIKE :string
-                    )
-                ')
-            ->setParameter('string', '%' . $string . '%')
-            ->setMaxResults($limit)
-            ->setFirstResult($offset);
-        $paginator = new Paginator($query, $fetchJoinCollection = true);
-        $c = count($paginator);
-        $search = new \stdClass();
-        $search->query = $query->getResult();
-        $search->count = $c;
-        try {
-            return $search;
-        } catch (\Doctrine\ORM\NoResultException $e) {
-            return null;
-        }
     }
 }
