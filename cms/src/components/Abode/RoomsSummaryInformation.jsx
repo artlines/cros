@@ -29,32 +29,32 @@ class RoomsSummaryInformation extends React.PureComponent {
                     <TableHead>
                         <TableRow>
                             <TableCell>Тип комнаты</TableCell>
-                            <TableCell style={{whiteSpace: 'no-wrap'}} numeric>Свободно комнат / мест</TableCell>
-                            <TableCell numeric>Мест в резерве</TableCell>
-                            <TableCell numeric>Мест занято</TableCell>
-                            <TableCell numeric>Мест заселено</TableCell>
-                            <TableCell numeric>Всего комнат / мест</TableCell>
+                            <TableCell style={{whiteSpace: 'no-wrap'}} align={`right`}>Свободно комнат / мест</TableCell>
+                            <TableCell align={`right`}>Мест в резерве</TableCell>
+                            <TableCell align={`right`}>Мест занято</TableCell>
+                            <TableCell align={`right`}>Мест заселено</TableCell>
+                            <TableCell align={`right`}>Всего комнат / мест</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {map(sortBy(items, 'room_type_title'), item =>
                             <TableRow key={item.room_type_id}>
                                 <TableCell>{item.room_type_title}</TableCell>
-                                <TableCell numeric>{item.free_rooms} / {item.total - item.busy - item.reserved}</TableCell>
-                                <TableCell numeric>{item.reserved}</TableCell>
-                                <TableCell numeric>{item.busy}</TableCell>
-                                <TableCell numeric>{item.populated}</TableCell>
-                                <TableCell numeric>{item.total_rooms} / {item.total}</TableCell>
+                                <TableCell align={`right`}>{item.free_rooms} / {item.total - item.busy - item.reserved}</TableCell>
+                                <TableCell align={`right`}>{item.reserved}</TableCell>
+                                <TableCell align={`right`}>{item.busy}</TableCell>
+                                <TableCell align={`right`}>{item.populated}</TableCell>
+                                <TableCell align={`right`}>{item.total_rooms} / {item.total}</TableCell>
                             </TableRow>
                         )}
                         {items.length > 0 &&
                             <TableRow key={`summary`}>
                                 <TableCell><b>Итого</b></TableCell>
-                                <TableCell numeric>{sumFreeRooms} / {sumFree}</TableCell>
-                                <TableCell numeric>{sumReserved}</TableCell>
-                                <TableCell numeric>{sumBusy}</TableCell>
-                                <TableCell numeric>{sumPopulated}</TableCell>
-                                <TableCell numeric>{sumTotalRooms} / {sumTotal}</TableCell>
+                                <TableCell align={`right`}>{sumFreeRooms} / {sumFree}</TableCell>
+                                <TableCell align={`right`}>{sumReserved}</TableCell>
+                                <TableCell align={`right`}>{sumBusy}</TableCell>
+                                <TableCell align={`right`}>{sumPopulated}</TableCell>
+                                <TableCell align={`right`}>{sumTotalRooms} / {sumTotal}</TableCell>
                             </TableRow>
                         }
                     </TableBody>
