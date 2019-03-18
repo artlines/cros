@@ -268,7 +268,7 @@ class RegistrationTest extends WebTestCase
 
         $this->assertSame(200, $client->getResponse()->getStatusCode());
         $error_json = json_decode($client->getResponse()->getContent(),true);
-        $this->assertSame(['errors'=>['inn' => "Организация '".$testConferenceOrganization->getOrganization()->getName()."' уже зарегистрирована"]],$error_json);
+        $this->assertSame(['errors'=>['inn' => "Организация 'test.organization.name' уже зарегистрирована"]],$error_json);
 
     }
 }
