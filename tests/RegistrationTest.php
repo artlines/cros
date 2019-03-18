@@ -7,8 +7,14 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class RegistrationTest extends WebTestCase
 {
+    /**
+     * Идентификатор организации с которой проводятся тесты
+     */
     const TEST_CONFERENCE_ORGANIZATION_ID = 473;
-    
+
+    /**
+     * Проверка усакшности регистрации на открытую конференцию
+     */
     public function testNewRegOk()
     {
         $client = static::createClient();
@@ -61,6 +67,9 @@ class RegistrationTest extends WebTestCase
         $this->assertArrayHasKey('conference', $json['conferenceOrganization']);
     }
 
+    /**
+     * Проверка дубликата пользователя
+     */
     public function testUserExist()
     {
         $client = static::createClient();
@@ -109,9 +118,11 @@ class RegistrationTest extends WebTestCase
         $this->assertSame(['errors'=>['email' => 'Пользователь с такой почтой уже зарегистрирован']],$error_json);
     }
 
+    /**
+     * Проверка что организация найдена по ИНН и КПП
+     */
     public function testFindOrgByINN()
     {
-        // Проверка что организация найдена по ИНН и КПП
 
         $kernel = self::bootKernel();
         $entityManager = $kernel->getContainer()
@@ -189,9 +200,11 @@ class RegistrationTest extends WebTestCase
 
     }
 
-    public function testFindOrgByINNfinish()
+    /**
+     * Проверка что организация найдена по ИНН и КПП и нельзя регистрироваться
+     */
+    public function testFindOrgByInnFinish()
     {
-        // Проверка что организация найдена по ИНН и КПП и нельзя регистрироваться
 
         $kernel = self::bootKernel();
         $entityManager = $kernel->getContainer()
