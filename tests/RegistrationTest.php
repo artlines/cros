@@ -7,21 +7,23 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class RegistrationTest extends WebTestCase
 {
+    const TEST_CONFERENCE_ORGANIZATION_ID = 473;
+    
     public function testNewRegOk()
     {
         $client = static::createClient();
         $crawler = $client->request(
             'POST',
             '/test/registration',
-            array (
+            array(
                 'conference_organization_form' =>
-                    array (
+                    array(
                         'conference' => '272',
                         'organization' =>
-                            array (
-                                'name' => 'fghfghgh',
-                                'city' => 'fghfhfh',
-                                'address' => 'xcvxcvxcv',
+                            array(
+                                'name' => 'test.organization.name',
+                                'city' => 'test.organization.city',
+                                'address' => 'test.organization.address',
                                 'inn' => '45020130891',
                                 'kpp' => '4',
                                 'requisites' => 'Тестовое наименование организации ОГРН:',
@@ -36,7 +38,7 @@ class RegistrationTest extends WebTestCase
                                     'sex' => '1',
                                     'phone' => '8(922)209-24-69',
                                     'email' => 'esuzev+3@test.com',
-                                    'post' => 'sdadasd',
+                                    'post' => 'test.user.0.post',
                                     'representative' => '1',
                                 ],
                                 'arrival' => '23.05.2019 10:00',
@@ -51,20 +53,12 @@ class RegistrationTest extends WebTestCase
             )
         );
 
-//        dd($client->getResponse());
-        $this->setName('dfdf');
         $this->assertSame(200, $client->getResponse()->getStatusCode());
-        $json = json_decode($client->getResponse()->getContent(),true);
-//        dd($client->getResponse()->getContent());
-        $this->assertArrayHasKey('conferenceOrganization',$json);
-        $this->assertArrayHasKey('id',$json['conferenceOrganization']);
-        $this->assertArrayHasKey('organization',$json['conferenceOrganization']);
-        $this->assertArrayHasKey('conference',$json['conferenceOrganization']);
-
-//        $this->assertContains('Ваша заявка принята',
-//            $crawler
-//                ->filter('div.container p')
-//                ->text());
+        $json = json_decode($client->getResponse()->getContent(), true);
+        $this->assertArrayHasKey('conferenceOrganization', $json);
+        $this->assertArrayHasKey('id', $json['conferenceOrganization']);
+        $this->assertArrayHasKey('organization', $json['conferenceOrganization']);
+        $this->assertArrayHasKey('conference', $json['conferenceOrganization']);
     }
 
     public function testUserExist()
@@ -79,9 +73,9 @@ class RegistrationTest extends WebTestCase
                         'conference' => '272',
                         'organization' =>
                             array(
-                                'name' => 'fghfghgh',
-                                'city' => 'fghfhfh',
-                                'address' => 'xcvxcvxcv',
+                                'name' => 'test.organization.name',
+                                'city' => 'test.organization.city',
+                                'address' => 'test.organization.address',
                                 'inn' => '45020130891',
                                 'kpp' => '4',
                                 'requisites' => 'Тестовое наименование организации ОГРН:',
@@ -110,17 +104,9 @@ class RegistrationTest extends WebTestCase
                     ),
             )
         );
-
-//        dd($client->getResponse());
         $this->assertSame(200, $client->getResponse()->getStatusCode());
         $error_json = json_decode($client->getResponse()->getContent(),true);
-//        dd($client->getResponse()->getContent());
         $this->assertSame(['errors'=>['email' => 'Пользователь с такой почтой уже зарегистрирован']],$error_json);
-
-//        $this->assertContains('Ваша заявка принята',
-//            $crawler
-//                ->filter('div.container p')
-//                ->text());
     }
 
     public function testFindOrgByINN()
@@ -135,10 +121,10 @@ class RegistrationTest extends WebTestCase
         /** @var ConferenceOrganization $testConferenceOrganization */
         $testConferenceOrganization = $entityManager
             ->getRepository(ConferenceOrganization::class)
-            ->findOneById(473);
+            ->findOneById(self::TEST_CONFERENCE_ORGANIZATION_ID);
         ;
 
-        $this->assertEquals(473, $testConferenceOrganization->getId() );
+        $this->assertEquals(self::TEST_CONFERENCE_ORGANIZATION_ID, $testConferenceOrganization->getId() );
 
         $testConferenceOrganization->setFinish(false);
         $entityManager->persist($testConferenceOrganization);
@@ -155,9 +141,9 @@ class RegistrationTest extends WebTestCase
                         'conference' => $testConferenceOrganization->getConference()->getId(),
                         'organization' =>
                             array (
-                                'name' => 'fghfghgh',
-                                'city' => 'fghfhfh',
-                                'address' => 'xcvxcvxcv',
+                                'name' => 'test.organization.name',
+                                'city' => 'test.organization.city',
+                                'address' => 'test.organization.address',
                                 'inn' => $testConferenceOrganization->getOrganization()->getInn(),
                                 'kpp' => $testConferenceOrganization->getOrganization()->getKpp(),
                                 'requisites' => 'Тестовое наименование организации ОГРН:',
@@ -187,10 +173,8 @@ class RegistrationTest extends WebTestCase
             )
         );
 
-//        dd($client->getResponse());
         $this->assertSame(200, $client->getResponse()->getStatusCode());
         $error_json = json_decode($client->getResponse()->getContent(),true);
-//        dd($client->getResponse()->getContent());
         $this->assertSame([
             'conferenceOrganization' => [
                 'id'           => $testConferenceOrganization->getId(),
@@ -203,11 +187,6 @@ class RegistrationTest extends WebTestCase
             ]
         ],$error_json);
 
-
-//        $this->assertContains('Ваша заявка принята',
-//            $crawler
-//                ->filter('div.container p')
-//                ->text());
     }
 
     public function testFindOrgByINNfinish()
@@ -222,10 +201,10 @@ class RegistrationTest extends WebTestCase
         /** @var ConferenceOrganization $testConferenceOrganization */
         $testConferenceOrganization = $entityManager
             ->getRepository(ConferenceOrganization::class)
-            ->findOneById(473);
+            ->findOneById(self::TEST_CONFERENCE_ORGANIZATION_ID);
         ;
 
-        $this->assertEquals(473, $testConferenceOrganization->getId() );
+        $this->assertEquals(self::TEST_CONFERENCE_ORGANIZATION_ID, $testConferenceOrganization->getId() );
 
         $testConferenceOrganization->setFinish(true);
         $entityManager->persist($testConferenceOrganization);
@@ -242,9 +221,9 @@ class RegistrationTest extends WebTestCase
                         'conference' => $testConferenceOrganization->getConference()->getId(),
                         'organization' =>
                             array (
-                                'name' => 'fghfghgh',
-                                'city' => 'fghfhfh',
-                                'address' => 'xcvxcvxcv',
+                                'name' => 'test.organization.name',
+                                'city' => 'test.organization.city',
+                                'address' => 'test.organization.address',
                                 'inn' => $testConferenceOrganization->getOrganization()->getInn(),
                                 'kpp' => $testConferenceOrganization->getOrganization()->getKpp(),
                                 'requisites' => 'Тестовое наименование организации ОГРН:',
@@ -274,17 +253,9 @@ class RegistrationTest extends WebTestCase
             )
         );
 
-//        dd($client->getResponse());
         $this->assertSame(200, $client->getResponse()->getStatusCode());
         $error_json = json_decode($client->getResponse()->getContent(),true);
-//        dd($client->getResponse()->getContent());
-        // '
         $this->assertSame(['errors'=>['inn' => "Организация '".$testConferenceOrganization->getOrganization()->getName()."' уже зарегистрирована"]],$error_json);
 
-
-//        $this->assertContains('Ваша заявка принята',
-//            $crawler
-//                ->filter('div.container p')
-//                ->text());
     }
 }
