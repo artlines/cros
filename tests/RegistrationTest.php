@@ -323,13 +323,14 @@ class RegistrationTest extends WebTestCase
         if (!$organization ) {
             $organization = new Organization();
             $organization->setname('test.name')
-                ->setInn('9999999')
-                ->setKpp('99999998');
+                ->setInn($inn)
+                ->setKpp($kpp);
         }
+
         $entityManager->persist($organization);
         $entityManager->flush();
-        $inn = $testConferenceOrganization->getOrganization()->getInn();
-        $kpp = $testConferenceOrganization->getOrganization()->getKpp();
+//        $inn = $testConferenceOrganization->getOrganization()->getInn();
+//        $kpp = $testConferenceOrganization->getOrganization()->getKpp();
         //if (!);
 
         $client = static::createClient();
@@ -372,15 +373,15 @@ class RegistrationTest extends WebTestCase
                 ],
             ]
         );
+        dd('getContent',$client->getResponse()->getContent());
         $organization = $entityManager->merge($organization);
         //dump($organization);
         $entityManager->remove($organization);
         $entityManager->flush();
 
-        dump($client->getResponse()->getContent());
         $this->assertSame(200, $client->getResponse()->getStatusCode());
         $error_json = json_decode($client->getResponse()->getContent(),true);
-        $this->assertSame(['errors'=>['inn' => "Организация 'test.organization.name' уже зарегистрирована"]],$error_json);
+        $this->assertSame(['errors'=>['inn' => "Организация 'test.organization.name' должна быть зарегистрирована"]],$error_json);
 
     }
 

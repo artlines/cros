@@ -48,7 +48,7 @@ class InnKppValidator extends ConstraintValidator
             $co = $repository->findByInnKppIsFinish($inn, $kpp, $conf_id);
             if($co){
                 $this->context->buildViolation(/*$constraint->message*/
-                    'Организация \'{{ value }}\' уже зарегистрирована'
+                    'Организация \'{{ value }}\' уже зарегистрирована'.$inn.' - '. $kpp. $co ->getId()
                 )
                     ->setParameter('{{ value }}', $co->getOrganization()->getName())
                     ->atPath('organization.inn')

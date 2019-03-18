@@ -213,6 +213,7 @@ class ConferenceRegistrationController extends AbstractController
             $this->logger->notice('POSTDATA:' . base64_encode($output));
         }
         $hash = $request->get('hash');
+        $organization = null;
         if ($hash) {
             $ConferenceOrganization = $this->getDoctrine()
                 ->getRepository(ConferenceOrganization::class)
@@ -339,8 +340,15 @@ class ConferenceRegistrationController extends AbstractController
             /** @var ConferenceOrganization $ConferenceOrganization */
             $ConferenceOrganization = $form->getData();
             $em->getConnection()->beginTransaction();
-
-            $organization = $ConferenceOrganization->getOrganization();
+            if ($organization) {
+                // Если организации была найдена ранее.
+                $newOrganization = $ConferenceOrganization->getOrganization();
+                $organization->setName($newOrganization->getName());
+                $ConferenceOrganization->setOrganization($organization);
+            }else {
+                // Или использование новой
+                $organization = $ConferenceOrganization->getOrganization();
+            }
             $files = $request->files->get('conference_organization_form');
 
             //setup Conference for conferenceMembers
