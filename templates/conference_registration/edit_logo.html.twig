@@ -1,0 +1,142 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Регистрация{% endblock %}
+
+{% block body %}
+<style>
+    .debug:before{
+        content: "begin debug"
+    }
+.debug {
+    background-color: rgba(120, 210, 94, 0.47);
+    display: none;
+}
+.noedit{
+    display: none;
+}
+
+</style>
+
+<h4>Изменение данных о компании "{{ organization.name }}"</h4>
+<div class="row">
+    <div class="col-lg-2 col-md-4">
+        <div class="card mb-3 mt-3 box-shadow">
+            <div class="card-body " >
+                <div class="Aligner" style="height: 125px; width: auto; text-align: center;">
+                    {% if organization.logo
+                        and organization.logo matches '/\.(jpg|png|jpeg|svg)$/' %}
+                        <img  style="max-height: 100%; max-width: 100%;"
+                              src="{{ prefix }}{{ organization.logo }}"
+                              alt="{{ organization.name }}"
+                              title="{{ organization.name }}"
+                        />
+                    {%  else %}
+                        <img  style="max-height: 100%; max-width: 100%;"
+                              src="/favicon.ico"
+                        />
+                    {%  endif %}
+                </div>
+            </div>
+            <div class="card-body" >
+                <p class="card-text"
+                   style="height: 3em; line-height: 1em; overflow: hidden;"
+                   title="{{ organization.name }}"
+                >
+                    {{ organization.name }}
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                    </div>
+                    <small class="text-muted">{{organization.city|default('---') }}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5 col-md-8">
+        {#{{ dump(form) }}#}
+        {{ form_start(form) }}
+            <div>{{- form_row(form.newlogo) -}}</div>
+
+        {{ form_row(form._token) }}
+        {{ form_errors(form) }}
+
+        {# ... #}
+        {{ form_end(form) }}
+    </div>
+
+    </div>
+
+
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url(/assets/fonts/glyphicons-halflings-regular.eot);
+    src: url(/assets/fonts/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype'), url(/assets/fonts/glyphicons-halflings-regular.woff) format('woff'), url(/assets/fonts/glyphicons-halflings-regular.ttf) format('truetype'), url(/assets/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg')
+}
+.glyphicon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.glyphicon-chevron-up:before {
+    content: "\e113"
+}
+
+.glyphicon-chevron-down:before {
+    content: "\e114"
+}
+.glyphicon-chevron-left:before {
+    content: "\e079";
+}
+.glyphicon-chevron-right:before {
+    content: "\e080";
+}
+</style>
+<link href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <style>
+        .Aligner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .Aligner div {
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+
+{% endblock %}
+
+{% block javascripts %}
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script defer src="https://unpkg.com/imask"></script>
+{#<script src="{{ asset('assets/cros2/assets/js/add-collection-widget.js?20180226') }}"></script>#}
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+    <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+
+<script>
+    jQuery('input[type="file"]').on( 'change', function(e){
+        var fileName = e.target.files[0]. name;
+        var id = jQuery(this).attr('id');
+        jQuery(this).parent().find('label[for='+id+']').text(fileName).attr('style','overflow: hidden');
+        //alert('The file "' + fileName + '" has been selected.' );
+    });
+
+</script>
+
+{% endblock %}
+

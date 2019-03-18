@@ -12,6 +12,7 @@ use App\Entity\Participating\User;
 use App\Form\CommentFormType;
 use App\Form\ConferenceMemberFormType;
 use App\Form\ConferenceOrganizationFormType;
+use App\Form\OrganizationLkFormType;
 use App\Repository\Abode\RoomTypeRepository;
 use App\Repository\ConferenceMemberRepository;
 use App\Repository\ConferenceOrganizationRepository;
@@ -20,6 +21,7 @@ use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,6 +32,10 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 
+/**
+ * Class ConferenceRegistrationController
+ * @package App\Controller
+ */
 class ConferenceRegistrationController extends AbstractController
 {
 
@@ -45,6 +51,7 @@ class ConferenceRegistrationController extends AbstractController
     /** @var LoggerInterface */
     protected $logger;
     protected $mailer;
+    protected $imageResizeError = '';
 
     public function __construct(LoggerInterface $logger, Mailer $mailer)
     {
@@ -596,6 +603,157 @@ class ConferenceRegistrationController extends AbstractController
         $this->mailSendUserCreate($conferenceMember, $conferenceMemberOld);
     }
 
+    private function _debugDumpPostData(Request $request){
+        if ($request->getMethod() == 'POST') {
+            $cloner = new VarCloner();
+            $dumper = new CliDumper();
+            $output = fopen('php://memory', 'r+b');
+            $dumper->dump($cloner->cloneVar($request), $output);
+            $dumper->dump($cloner->cloneVar($request->getContent()), $output);
+            $output = stream_get_contents($output, -1, 0);
+            $this->logger->notice('POSTDATA:' . base64_encode($output));
+        }
+    }
+
+    private function imageResize($filename, $maxWidth=1024)
+    {
+        if (function_exists('imagecolorallocatealpha')) {
+            $imgInfo = getimagesize($filename);
+
+            switch ($imgInfo[2]) {
+                case 1:
+                    $image = imagecreatefromgif($filename);
+                    break;
+                case 2:
+                    $image = imagecreatefromjpeg($filename);
+                    break;
+                case 3:
+                    $image = imagecreatefrompng($filename);
+                    break;
+                default:
+                    $this->imageResizeError = 'Unsupported filetype!';
+                    return false;
+                    break;
+            }
+
+            $width = imagesx($image);
+            $height = imagesy($image);
+            if ($width > $maxWidth) {
+                $coef = $maxWidth / $width;
+                $width *= $coef;
+                $height *= $coef;
+            } else {
+                return $filename;
+            }
+            $newImg = imagecreatetruecolor($width, $height);
+            imagealphablending($newImg, false);
+            imagesavealpha($newImg, true);
+            $transparent = imagecolorallocatealpha($newImg, 255, 255, 255, 127);
+            imagefilledrectangle($newImg, 0, 0, $width, $height, $transparent);
+            imagecopyresampled($newImg, $image, 0, 0, 0, 0, $width, $height,
+                $imgInfo[0], $imgInfo[1]);
+            //Generate the file, and rename it to $newfilename
+            switch ($imgInfo[2]) {
+                case 1:
+                    imagegif($newImg, $filename);
+                    break;
+                case 2:
+                    imagejpeg($newImg, $filename, 100);
+                    break;
+                case 3:
+                    imagepng($newImg, $filename, 0);
+                    break;
+                default:
+                    $this->imageResizeError = 'Failed resize image!';
+                    break;
+            }
+        }
+        return true;
+    }
+
+
+    /**
+     * @Route("/registration-logo-edit", name="registration_edit_logo")
+     * @param Request $request
+     * @param Mailer $mailer
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function registrationEditLogo(Request $request, Mailer $mailer)
+    {
+        $this->_debugDumpPostData($request);
+
+        /** @var User $user */
+        /** @var Organization $organization */
+        if (!$this->getUser()) {
+            return $this->render('conference_registration/no_access.html.twig');
+        }
+
+        if (!$this->getUser()->getOrganization()) {
+            return $this->render('conference_registration/no_access.html.twig');
+        }
+
+        $organization = $this->getUser()->getOrganization();
+
+        $form = $this->createForm(
+            OrganizationLkFormType::class,
+            $organization
+
+        );
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+
+            /** @var ConferenceOrganization $ConferenceOrganization */
+            $organizationNew = $form->getData();
+
+            $files = $request->files->get('organization_lk_form');
+            if ($files and isset(
+                    $files['newlogo']
+                )) {
+                /** @var UploadedFile $file */
+                $file = $files['newlogo'];
+//                $fileName = $organization->getId().'.'.$file->guessExtension();
+                $fileName = $this->generateUniqueFileName() . '.' . $file->guessExtension();
+                // Move the file to the directory where brochures are stored
+                try {
+                    if( !$this->imageResize($file->getRealPath(), 1024) )
+                    {
+                        $form->addError(new FormError('Ошибка обработки файла: '.$this->imageResizeError ));
+                    };
+
+                    $file->move(
+                        self::DIRECTORY_UPLOAD . 'members/logos/',
+                        $fileName
+                    );
+                    if( !$form->getErrors()->count() ) {
+                        $organizationNew->setLogo($fileName);
+                        /** @var EntityManager $em */
+                        $em = $this->getDoctrine()->getManager();
+                        $em->persist($organizationNew);
+                        $em->flush();
+                        return $this->redirectToRoute('registration_show');
+                    }
+
+                } catch (FileException $e) {
+                    $form->addError(new FormError('Ошибка сохранения файла'));
+                    // ... handle exception if something happens during file upload
+                }
+
+            }
+        }
+
+
+        return $this->render('conference_registration/edit_logo.html.twig', [
+            'form' => $form->createView(),
+            'organization' => $organization,
+            'prefix' => self::DIRECTORY_UPLOAD . 'members/logos/',
+        ]);
+    }
+
     /**
      * @Route("/registration-show", name="registration_show")
      * @param Request $request
@@ -606,15 +764,7 @@ class ConferenceRegistrationController extends AbstractController
      */
     public function registrationShow(Request $request, Mailer $mailer, UserPasswordEncoderInterface $passwordEncoder)
     {
-        if ($request->getMethod() == 'POST') {
-            $cloner = new VarCloner();
-            $dumper = new CliDumper();
-            $output = fopen('php://memory', 'r+b');
-
-            $dumper->dump($cloner->cloneVar($request), $output);
-            $output = stream_get_contents($output, -1, 0);
-            $this->logger->notice('POSTDATA:' . base64_encode($output));
-        }
+        $this->_debugDumpPostData($request);
 
         /** @var User $user */
         /** @var Organization $organization */
@@ -646,7 +796,9 @@ class ConferenceRegistrationController extends AbstractController
             $CommentForm = $this->createForm(
                 CommentFormType::class
             );
+            // Возможность добавить участников
             $canAdd = false;
+            // Возможность редаетировать участников
             $canEdit = false;
             foreach ($conferenceOrganization->getConferenceMembers() as $key => $iConferenceMember) {
                 //dump('$this->getUser()',$iConferenceMember );
@@ -851,6 +1003,7 @@ class ConferenceRegistrationController extends AbstractController
                 'submitted' => $request->getMethod() == 'POST' ? $submitted : false,
                 'canAdd' => $canAdd,
                 'canEdit' => $canEdit,
+                'prefix' => self::DIRECTORY_UPLOAD . 'members/logos/',
             ]);
         } else {
             throw $this->createNotFoundException();

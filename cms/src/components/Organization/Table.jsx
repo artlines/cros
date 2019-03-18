@@ -92,7 +92,7 @@ class OrganizationTable extends React.Component {
                                     <TableCell align={`center`}>ID</TableCell>
                                     <TableCell>Наименование</TableCell>
                                     <TableCell>Реквизиты</TableCell>
-                                    <TableCell align={`center`}>Участников<br/>всего / заселено</TableCell>
+                                    <TableCell align={`center`}>Зарегистрировано / заселено</TableCell>
                                     <TableCell align={`center`}>Счета</TableCell>
                                     <TableCell align={`center`}>Комментарии</TableCell>
                                     <TableCell> </TableCell>

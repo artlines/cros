@@ -14,12 +14,12 @@ use Doctrine\ORM\Query\Expr;
 
 class ConferenceOrganizationRepository extends EntityRepository
 {
-    const STAGE__INVITE_SENT            = 1;
-    const STAGE__REGISTRATION_COMPLETE  = 2;
-    const STAGE__MEMBERS_SETTLED        = 3;
-    const STAGE__INVOICE_SENT           = 4;
-    const STAGE__INVOICE_PAYED          = 5;
-    const STAGE__INVOICE_CANCELED       = 6;
+    const STAGE__INVITE_SENT                = 1;
+    const STAGE__REGISTRATION_COMPLETE      = 2;
+    const STAGE__MEMBERS_SETTLED            = 3;
+    const STAGE__INVOICE_MADE_AND_NOT_PAYED = 4;
+    const STAGE__INVOICE_PAYED              = 5;
+    const STAGE__INVOICE_CANCELED           = 6;
 
     public function findToMakeInvoice(int $year)
     {
@@ -159,9 +159,8 @@ class ConferenceOrganizationRepository extends EntityRepository
         }
 
         /** Check invited_by filter */
-        if (isset($data['invited_by'])) {
-            $where .= " AND tcoi.invited_by_id IN (:invited_by)";
-            $parameters['invited_by'] = $data['invited_by'];
+        if (isset($data['invited_by']) && is_array($data['invited_by'])) {
+            $where .= " AND tcoi.invited_by_id IN (".implode($data['invited_by'], ', ').")";
         }
 
         /** Check search string */
@@ -175,6 +174,11 @@ class ConferenceOrganizationRepository extends EntityRepository
             $where .= " AND tcs.comments_count != 0";
         }
 
+        /** Check flag that show only with comments */
+        if (isset($data['without_manager'])) {
+            $where .= " AND pco.invited_by IS NULL";
+        }
+
         /** Check stage filter */
         if (isset($data['stage'])) {
             switch ((int) $data['stage']) {
@@ -185,10 +189,10 @@ class ConferenceOrganizationRepository extends EntityRepository
                     $where .= " AND tms.total_members > 0 AND tms.total_members > tms.in_room_members";
                     break;
                 case self::STAGE__MEMBERS_SETTLED:
-                    $where .= " AND tms.total_members > 0 AND tms.total_members = tms.in_room_members";
+                    $where .= " AND tms.total_members > 0 AND tms.total_members = tms.in_room_members AND tis.invoices_count = 0";
                     break;
-                case self::STAGE__INVOICE_SENT:
-                    $where .= " AND tlii.is_sent = TRUE";
+                case self::STAGE__INVOICE_MADE_AND_NOT_PAYED:
+                    $where .= " AND tis.invoices_count != tis.invoices_payed AND tis.invoices_count > 0";
                     break;
                 case self::STAGE__INVOICE_PAYED:
                     $where .= " AND tlii.status_guid = :invoice_fully_payed_status_guid__stage";
@@ -292,7 +296,7 @@ class ConferenceOrganizationRepository extends EntityRepository
                      po.address,
                      po.requisites,
                      pm.id as invited_by_id,
-                     CONCAT_WS(' ', pm.last_name, pm.first_name) as invited_by
+                     CONCAT_WS(' ', pm.first_name, pm.last_name) as invited_by
               FROM participating.conference_organization pco
                 LEFT JOIN participating.organization po ON pco.organization_id = po.id
                 LEFT JOIN participating.member       pm ON pco.invited_by = pm.id
@@ -455,9 +459,16 @@ class ConferenceOrganizationRepository extends EntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findShowByConference( Conference $conference ){
-// Отображать только те организации, которые имеют заселенных участников.
-// Не показывать организации, которые имеют признак hidden.
+
+    /**
+     * Отображать только те организации, которые имеют заселенных участников.
+     * Не показывать организации, которые имеют признак hidden.
+     *
+     * @param Conference $conference
+     * @return mixed
+     */
+    public function findShowByConference(Conference $conference)
+    {
         return $this
             ->createQueryBuilder('co')
             ->innerJoin(
@@ -478,13 +489,21 @@ class ConferenceOrganizationRepository extends EntityRepository
                 Expr\Join::WITH,
                 'p.conferenceMember = cm.id'
             )
+            ->innerJoin(
+                Invoice::class,
+                'i',
+                Expr\Join::WITH,
+                'i.conferenceOrganization = co.id AND i.statusGuid = :status_guid_fully_payed'
+            )
             ->where('co.conference = :conference')
             ->setParameters([
-                'hidden'     => 'false',
-                'conference' => $conference,
+                'hidden'                   => 'false',
+                'conference'               => $conference,
+                'status_guid_fully_payed'  => Invoice::STATUS_GUID__FULLY_PAYED,
             ])
-            ->groupBy('co.id')
+            ->groupBy('co.id, o.id')
             ->orderBy('co.priority','DESC')
+            ->orderBy('o.name','ASC')
             ->getQuery()
             ->getResult()
             ;

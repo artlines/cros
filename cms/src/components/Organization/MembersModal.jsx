@@ -141,10 +141,12 @@ class MembersModal extends React.Component {
                                         <TableCell>
                                             <React.Fragment>
                                                 {item.last_name} {item.first_name} {item.middle_name}
-                                                {item.representative &&
-                                                <Tooltip title={`Представитель`}>
-                                                    <CheckCircleIcon style={{fontSize: 14, color: green[700]}}/>
-                                                </Tooltip>
+                                                {item.representative
+                                                    ?
+                                                        <Tooltip title={`Представитель`}>
+                                                            <CheckCircleIcon style={{fontSize: 14, color: green[700]}}/>
+                                                        </Tooltip>
+                                                    : ''
                                                 }
                                             </React.Fragment>
                                             <Typography variant={`caption`}>{item.post}</Typography>

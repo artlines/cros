@@ -109,11 +109,11 @@ class InvoiceRepository extends EntityRepository
         $query = $qb
             ->select('i')
             ->where($qb->expr()->isNotNull('i.orderGuid'))
-            ->andWhere('i.orderStatusGuid != :order_status_guid__canceled')
-            ->andWhere('i.statusGuid != :status_guid__fully_payed')
+            //->andWhere('i.orderStatusGuid != :order_status_guid__canceled')
+            //->andWhere('i.statusGuid != :status_guid__fully_payed')
             ->setParameters([
-                'status_guid__fully_payed'      => Invoice::STATUS_GUID__FULLY_PAYED,
-                'order_status_guid__canceled'   => Invoice::ORDER_STATUS_GUID__CANCELED,
+                //'order_status_guid__canceled'   => Invoice::ORDER_STATUS_GUID__CANCELED,
+                //'status_guid__fully_payed'      => Invoice::STATUS_GUID__FULLY_PAYED,
             ]);
 
         return $query->getQuery()->getResult();

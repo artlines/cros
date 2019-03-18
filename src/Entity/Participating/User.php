@@ -333,7 +333,7 @@ class User implements UserInterface
      *
      * @return boolean
      */
-    public function getIsActive()
+    public function isActive()
     {
         return $this->isActive;
     }
