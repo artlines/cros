@@ -129,7 +129,7 @@ class MembersModal extends React.Component {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>ФИО</TableCell>
-                                    <TableCell className={classes.noWrap}>Класс участия</TableCell>
+                                    <TableCell className={classes.noWrap}>Тип комнаты</TableCell>
                                     <TableCell>Контакты</TableCell>
                                     <TableCell>Проживание</TableCell>
                                     <TableCell align={'right'}>Действия</TableCell>
