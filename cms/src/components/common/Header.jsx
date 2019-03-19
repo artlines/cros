@@ -51,7 +51,7 @@ class Header extends React.PureComponent {
                         </Tooltip>
                         <Tooltip title={`Выйти`}>
                             <a href={`/logout`}>
-                                <IconButton>
+                                <IconButton style={btnStyle}>
                                     <PowerSettingsNewIcon/>
                                 </IconButton>
                             </a>
