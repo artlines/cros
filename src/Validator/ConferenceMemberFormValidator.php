@@ -23,6 +23,11 @@ class ConferenceMemberFormValidator extends ConstraintValidator
         if (is_object($conferenceMember) || $conferenceMember instanceof ConferenceMember) {
             /* @var $constraint App\Validator\ConferenceMemberForm */
 
+            if($conferenceMember->getConference()==null)
+            {
+                // Форма вызвана как дочерняя, проверки делать не будем
+                return;
+            }
             $email = $conferenceMember->getUser()->getEmail();
             $em = $this->registry->getManagerForClass(\get_class($conferenceMember));
             $repository = $em->getRepository(ConferenceMember::class);
@@ -43,9 +48,11 @@ class ConferenceMemberFormValidator extends ConstraintValidator
                     ->atPath("user.email")
                     ->addViolation();
             }
-
+            $conference = $conferenceMember
+                ->getConferenceOrganization()
+                ->getConference();
             $count = $conferenceMember->getConferenceOrganization()->getConferenceMembers()->count();
-            $limit = $conferenceMember->getConference()->getLimitUsersByOrg();
+            $limit = $conference->getLimitUsersByOrg();
             if ($count >= $limit
                 // Проверка что создание участника ( исключение, для редактирования )
                 and $conferenceMember->getId() < 1
@@ -55,8 +62,8 @@ class ConferenceMemberFormValidator extends ConstraintValidator
                     ->atPath("roomType")
                     ->addViolation();
             }
-            $members_count = $conferenceMember->getConference()->getConferenceMembers()->count();
-            $conferenceLimit = $conferenceMember->getConference()->getLimitUsersGlobal();
+            $members_count = $conference->getConferenceMembers()->count();
+            $conferenceLimit = $conference->getLimitUsersGlobal();
             if ($members_count >= $conferenceLimit
                 // Проверка что создание участника ( исключение, для редактирования )
                 and $conferenceMember->getId() < 1

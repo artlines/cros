@@ -80,6 +80,19 @@ class ConferenceMemberController extends ApiController
             $password = $encoder->encodePassword($member, substr(md5(random_bytes(10)), 0, 12));
             $member->setPassword($password);
             $member->setEmail($email);
+        } else {
+            /** @var ConferenceMember $conferenceMember */
+            $conferenceMember = $this->em->getRepository(ConferenceMember::class)->findOneBy([
+                'conference'    => $conferenceOrganization->getConference(),
+                'user'          => $member,
+            ]);
+
+            if ($conferenceMember) {
+                $confOrg = $conferenceMember->getConferenceOrganization();
+
+                return $this->badRequest('Пользователь с email: '.$email.' (ID: '.$member->getId().') '
+                .'уже участвует в конференции от организации '.$confOrg->getOrganization()->getName().' (ConfOrgID: '.$confOrg->getId().')');
+            }
         }
 
         /** @var RoomType $roomType */
