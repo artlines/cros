@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import ReplyIcon from "@material-ui/icons/Reply";
 import { withTheme } from "@material-ui/core/styles";
 
@@ -38,6 +39,13 @@ class Header extends React.PureComponent {
                             <a href={`/`}>
                                 <IconButton>
                                     <ExitToAppIcon/>
+                                </IconButton>
+                            </a>
+                        </Tooltip>
+                        <Tooltip title={`Выйти`}>
+                            <a href={`/logout`}>
+                                <IconButton>
+                                    <PowerSettingsNewIcon/>
                                 </IconButton>
                             </a>
                         </Tooltip>

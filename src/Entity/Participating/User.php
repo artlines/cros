@@ -169,7 +169,7 @@ class User implements UserInterface
         $this->isActive         = true;
         $this->createdAt        = new \DateTime();
         $this->roles            = json_encode(["ROLE_USER"]);
-        $this->additionalEmails = json_encode([]);
+        $this->additionalEmails = [];
     }
 
     /**
