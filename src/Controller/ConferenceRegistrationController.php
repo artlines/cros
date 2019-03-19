@@ -29,10 +29,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Encoder\XmlEncoder;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 
@@ -64,6 +60,10 @@ class ConferenceRegistrationController extends AbstractController
     }
 
 
+    /**
+     * @return bool|string
+     * @throws \Exception
+     */
     private function getRandomPassword()
     {
         return substr(md5(random_bytes(10)), -6);
@@ -260,6 +260,7 @@ class ConferenceRegistrationController extends AbstractController
                 $kpp = isset( $formData['organization'], $formData['organization']['kpp'] )
                     ? $formData['organization']['kpp']
                     : null ;
+                /** @var Organization $organization */
                 $organization = $inn
                     ? $this->getDoctrine()
                         ->getRepository(Organization::class )
@@ -321,7 +322,7 @@ class ConferenceRegistrationController extends AbstractController
 
         $form->handleRequest($request);
         /** @var ConferenceOrganization $ConferenceOrganization */
-
+        /** @var EntityManager $em */
         $em = $this->getDoctrine()->getManager();
         if ( $test and $form->isSubmitted() && !$form->isValid()) {
             // for test
@@ -449,6 +450,7 @@ class ConferenceRegistrationController extends AbstractController
             $ConferenceOrganization->setFinish(true);
             $em->flush();
             if ($test) {
+                $em->getConnection()->rollback();
                 return new JsonResponse([
                     'conferenceOrganization' => [
                         'id' => $ConferenceOrganization->getId(),
@@ -763,12 +765,11 @@ class ConferenceRegistrationController extends AbstractController
     /**
      * @Route("/registration-logo-edit", name="registration_edit_logo")
      * @param Request $request
-     * @param Mailer $mailer
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function registrationEditLogo(Request $request, Mailer $mailer)
+    public function registrationEditLogo(Request $request)
     {
         $this->_debugDumpPostData($request);
 
@@ -804,7 +805,6 @@ class ConferenceRegistrationController extends AbstractController
                 )) {
                 /** @var UploadedFile $file */
                 $file = $files['newlogo'];
-//                $fileName = $organization->getId().'.'.$file->guessExtension();
                 $fileName = $this->generateUniqueFileName() . '.' . $file->guessExtension();
                 // Move the file to the directory where brochures are stored
                 try {
@@ -849,6 +849,7 @@ class ConferenceRegistrationController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws \Exception
      */
     public function registrationShow(Request $request, Mailer $mailer, UserPasswordEncoderInterface $passwordEncoder)
     {
