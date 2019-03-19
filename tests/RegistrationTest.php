@@ -329,9 +329,6 @@ class RegistrationTest extends WebTestCase
 
         $entityManager->persist($organization);
         $entityManager->flush();
-//        $inn = $testConferenceOrganization->getOrganization()->getInn();
-//        $kpp = $testConferenceOrganization->getOrganization()->getKpp();
-        //if (!);
 
         $client = static::createClient();
         $crawler = $client->request(
@@ -373,15 +370,15 @@ class RegistrationTest extends WebTestCase
                 ],
             ]
         );
-        dd('getContent',$client->getResponse()->getContent());
-        $organization = $entityManager->merge($organization);
-        //dump($organization);
-        $entityManager->remove($organization);
-        $entityManager->flush();
-
+        dump('getContent',$client->getResponse()->getContent());
         $this->assertSame(200, $client->getResponse()->getStatusCode());
-        $error_json = json_decode($client->getResponse()->getContent(),true);
-        $this->assertSame(['errors'=>['inn' => "Организация 'test.organization.name' должна быть зарегистрирована"]],$error_json);
+        $json = json_decode($client->getResponse()->getContent(),true);
+        $this->assertArrayHasKey('conferenceOrganization', $json);
+        $this->assertArrayHasKey('id', $json['conferenceOrganization']);
+        $this->assertArrayHasKey('organization', $json['conferenceOrganization']);
+        $this->assertArrayHasKey('conference', $json['conferenceOrganization']);
+        $this->assertArrayHasKey('id', $json['conferenceOrganization']['organization']);
+        $this->assertSame($organization->getId(), $json['conferenceOrganization']['organization']['id']);
 
     }
 
