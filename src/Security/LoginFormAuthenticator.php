@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Entity\Participating\User;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -102,10 +103,18 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             throw new InvalidCsrfTokenException();
         }
 
-        $user = $this->em->getRepository(User::class)->findOneBy([
-            'email'     => $credentials['email'],
-            'isActive'  => true,
-        ]);
+//        /** @var UserRepository $userRepo */
+//        $userRepo = $this->em->getRepository(User::class);
+//
+//        $user = $userRepo->findActiveUserByEmail($credentials['email']);
+
+        /** @var User|null $user */
+        $user = $this->em->getRepository(User::class)
+            ->findOneBy([
+                'email'     => mb_strtolower($credentials['email']),
+                'isActive'  => true,
+            ]);
+
         if (!$user) {
             throw new CustomUserMessageAuthenticationException('Неверный логин или пароль');
         }
