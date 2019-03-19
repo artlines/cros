@@ -479,48 +479,89 @@ class ConferenceRegistrationController extends AbstractController
             } else {
                 $em->getConnection()->commit();
             }
-
-            $arUsers = [];
-            foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
-                $arUsers[] = [
-                    'firstName' => $conferenceMember->getUser()->getFirstName(),
-                    'middleName' => $conferenceMember->getUser()->getMiddleName(),
-                    'lastName' => $conferenceMember->getUser()->getLastName(),
-                    'post' => $conferenceMember->getUser()->getPost(),
-                    'phone' => $conferenceMember->getUser()->getPhone(),
-                    'email' => $conferenceMember->getUser()->getEmail(),
-                    'carNumber' => $conferenceMember->getCarNumber(),
-                    'roomType' => $conferenceMember->getRoomType()->getTitle(),
-                    'cost' => $conferenceMember->getRoomType()->getCost(),
-                    'arrival' => $conferenceMember->getArrival()->getTimestamp(),
-                    'leaving' => $conferenceMember->getLeaving()->getTimestamp(),
+            try {
+                $arUsers = [];
+                foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
+                    $arUsers[] = [
+                        'firstName' => $conferenceMember->getUser()->getFirstName(),
+                        'middleName' => $conferenceMember->getUser()->getMiddleName(),
+                        'lastName' => $conferenceMember->getUser()->getLastName(),
+                        'post' => $conferenceMember->getUser()->getPost(),
+                        'phone' => $conferenceMember->getUser()->getPhone(),
+                        'email' => $conferenceMember->getUser()->getEmail(),
+                        'carNumber' => $conferenceMember->getCarNumber(),
+                        'roomType' => $conferenceMember->getRoomType()->getTitle(),
+                        'cost' => $conferenceMember->getRoomType()->getCost(),
+                        'arrival' => $conferenceMember->getArrival()->getTimestamp(),
+                        'leaving' => $conferenceMember->getLeaving()->getTimestamp(),
+                    ];
+                }
+                $params_organization = [
+                    'name' => $ConferenceOrganization->getOrganization()->getName(),
+                    'inn' => $ConferenceOrganization->getOrganization()->getInn(),
+                    'kpp' => $ConferenceOrganization->getOrganization()->getKpp(),
+                    'requisites' => $ConferenceOrganization->getOrganization()->getRequisites(),
+                    'address' => $ConferenceOrganization->getOrganization()->getAddress(),
+                    'comment' => $ConferenceOrganization->getOrganization()->getComment(),
+                    'users' => $arUsers
                 ];
-            }
-            $params_organization = [
-                'name' => $ConferenceOrganization->getOrganization()->getName(),
-                'inn' => $ConferenceOrganization->getOrganization()->getInn(),
-                'kpp' => $ConferenceOrganization->getOrganization()->getKpp(),
-                'requisites' => $ConferenceOrganization->getOrganization()->getRequisites(),
-                'address' => $ConferenceOrganization->getOrganization()->getAddress(),
-                'comment' => $ConferenceOrganization->getOrganization()->getComment(),
-                'users' => $arUsers
-            ];
 
-            $mailer->setTemplateAlias(self::MAIL_SEND_REGISTERED);
-            foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
-                if ($conferenceMember->getUser()->isRepresentative()) {
-                    $comment = new Comment();
-                    $comment->setConferenceOrganization($ConferenceOrganization);
-                    $comment->setUser($conferenceMember->getUser());
-                    // NOT DO $comment->setContent($ConferenceOrganization->getNotes());
-                    $content = $request->get('conference_organization_form')['notes'];
-                    $comment->setContent($content);
-                    if ($content) {
-                        $em->persist($comment);
+                $mailer->setTemplateAlias(self::MAIL_SEND_REGISTERED);
+                foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
+                    if ($conferenceMember->getUser()->isRepresentative()) {
+                        $comment = new Comment();
+                        $comment->setConferenceOrganization($ConferenceOrganization);
+                        $comment->setUser($conferenceMember->getUser());
+                        // NOT DO $comment->setContent($ConferenceOrganization->getNotes());
+                        $content = $request->get('conference_organization_form')['notes'];
+                        $comment->setContent($content);
+                        if ($content) {
+                            $em->persist($comment);
+                        }
+                        $mailer->send(
+                            'КРОС 2019: ' . $ConferenceOrganization->getOrganization()->getName(),
+                            [
+                                'organization' => $params_organization,
+                                'conference' => [
+                                    'eventStart' => $ConferenceOrganization->getConference()->getEventStart()->getTimestamp(),
+                                    'eventFinish' => $ConferenceOrganization->getConference()->getEventFinish()->getTimestamp(),
+                                ]
+                            ],
+                            $conferenceMember->getUser()->getEmail(), null, $this->getBcc()
+                        );
                     }
+
+                }
+                $mailer->setTemplateAlias(self::MAIL_SEND_PASSWORD);
+
+                foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
+                    $item = false;
+                    foreach ($arUserPassword as $k => $item_look) {
+                        if ($item_look['email'] == $conferenceMember->getUser()->getEmail()) {
+                            $item = $arUserPassword[$k];
+                        }
+                    }
+
+                    $user = [
+                        'firstName' => $conferenceMember->getUser()->getFirstName(),
+                        'middleName' => $conferenceMember->getUser()->getMiddleName(),
+                        'lastName' => $conferenceMember->getUser()->getLastName(),
+                        'post' => $conferenceMember->getUser()->getPost(),
+                        'phone' => $conferenceMember->getUser()->getPhone(),
+                        'email' => $conferenceMember->getUser()->getEmail(),
+                        'carNumber' => $conferenceMember->getCarNumber(),
+                        'roomType' => $conferenceMember->getRoomType()->getTitle(),
+                        'cost' => $conferenceMember->getRoomType()->getCost(),
+                        'arrival' => $conferenceMember->getArrival()->getTimestamp(),
+                        'leaving' => $conferenceMember->getLeaving()->getTimestamp(),
+                    ];
+
                     $mailer->send(
-                        'КРОС 2019: ' . $ConferenceOrganization->getOrganization()->getName(),
+                        'КРОС 2019: Пароль для доступа',
                         [
+                            'user' => $user,
+                            'email' => $item['email'],
+                            'password' => $item['password'],
                             'organization' => $params_organization,
                             'conference' => [
                                 'eventStart' => $ConferenceOrganization->getConference()->getEventStart()->getTimestamp(),
@@ -530,50 +571,8 @@ class ConferenceRegistrationController extends AbstractController
                         $conferenceMember->getUser()->getEmail(), null, $this->getBcc()
                     );
                 }
-
-            }
-            $mailer->setTemplateAlias(self::MAIL_SEND_PASSWORD);
-
-            foreach ($ConferenceOrganization->getConferenceMembers() as $conferenceMember) {
-                $item = false;
-                foreach ($arUserPassword as $k => $item_look) {
-                    if ($item_look['email'] == $conferenceMember->getUser()->getEmail()) {
-                        $item = $arUserPassword[$k];
-                    }
-                }
-
-                $user = [
-                    'firstName' => $conferenceMember->getUser()->getFirstName(),
-                    'middleName' => $conferenceMember->getUser()->getMiddleName(),
-                    'lastName' => $conferenceMember->getUser()->getLastName(),
-                    'post' => $conferenceMember->getUser()->getPost(),
-                    'phone' => $conferenceMember->getUser()->getPhone(),
-                    'email' => $conferenceMember->getUser()->getEmail(),
-                    'carNumber' => $conferenceMember->getCarNumber(),
-                    'roomType' => $conferenceMember->getRoomType()->getTitle(),
-                    'cost' => $conferenceMember->getRoomType()->getCost(),
-                    'arrival' => $conferenceMember->getArrival()->getTimestamp(),
-                    'leaving' => $conferenceMember->getLeaving()->getTimestamp(),
-                ];
-
-                $mailer->send(
-                    'КРОС 2019: Пароль для доступа',
-                    [
-                        'user' => $user,
-                        'email' => $item['email'],
-                        'password' => $item['password'],
-                        'organization' => $params_organization,
-                        'conference' => [
-                            'eventStart' => $ConferenceOrganization->getConference()->getEventStart()->getTimestamp(),
-                            'eventFinish' => $ConferenceOrganization->getConference()->getEventFinish()->getTimestamp(),
-                        ]
-                    ],
-                    $conferenceMember->getUser()->getEmail(), null, $this->getBcc()
-                );
-            }
-            $em->flush();
-            if (!$test) {
-                $em->getConnection()->commit();
+            } catch (\Exception $e){
+                // Mail send Exception
             }
 
             return $this->render('conference_registration/registration_success.html.twig', [
