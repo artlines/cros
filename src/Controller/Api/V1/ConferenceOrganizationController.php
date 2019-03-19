@@ -207,12 +207,18 @@ class ConferenceOrganizationController extends ApiController
             return $this->notFound('Conference organization not found.');
         }
 
-        /** Check for invoices and members */
-        if ($conferenceOrganization->getInvoices()->count()) {
-            return $this->badRequest('У организации есть прикрепленные счета. Удалите их прежде чем удалить организацию.');
-        }
+        /** Check for members */
         if ($conferenceOrganization->getConferenceMembers()->count()) {
             return $this->badRequest('У организации есть прикрепленные участники. Удалите их прежде чем удалять организацию.');
+        }
+
+        /**
+         * Remove invoices
+         * @var Invoice[] $invoices
+         */
+        $invoices = $conferenceOrganization->getInvoices();
+        foreach ($invoices as $invoice) {
+            $this->em->remove($invoice);
         }
 
         $this->em->remove($conferenceOrganization);
