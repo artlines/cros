@@ -73,7 +73,9 @@ class InnKppValidator extends ConstraintValidator
                         ->addViolation();
 
                 }
-                $roomTypeId = $conferenceMember->getRoomType()->getId();
+                $roomTypeId = $conferenceMember->getRoomType()
+                    ? $conferenceMember->getRoomType()->getId()
+                    : 0;
                 if (isset($arFreePlaces[$roomTypeId]) and $arFreePlaces[$roomTypeId]>0) {
                     // вычитаем предполагаемое заселение.
                     $arFreePlaces[$roomTypeId] -= 1;
