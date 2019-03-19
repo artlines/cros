@@ -292,7 +292,7 @@ class ConferenceRegistrationController extends AbstractController
                         ]);
                 }
 
-                if (!$test and $ConferenceOrganization and $ConferenceOrganization->isFinish()) {
+                if (!$test and $hash and $ConferenceOrganization and $ConferenceOrganization->isFinish()) {
                     return $this->render('conference_registration/registration_success.html.twig', [
                         'ConferenceOrganization' => $ConferenceOrganization,
                         'UserPasswords' => [],
@@ -584,7 +584,9 @@ class ConferenceRegistrationController extends AbstractController
 
         return $this->render('conference_registration/index.html.twig', [
             'form' => $form->createView(),
-            'ConferenceOrganization' => $ConferenceOrganization ?? null,
+            'ConferenceOrganization' => $hash
+                ? $ConferenceOrganization ?? null
+                : null,
             'roomTypesInfo' => $roomTypesInfo,
             'Conference' => $Conference,
             'LimitUsersByOrg' => $Conference->getLimitUsersByOrg(),
