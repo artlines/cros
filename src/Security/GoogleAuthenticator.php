@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Entity\Participating\User;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\Provider\GoogleClient;
@@ -86,14 +87,16 @@ class GoogleAuthenticator extends SocialAuthenticator
         /** @var GoogleUser $googleUser */
         $googleUser = $this->getGoogleClient()->fetchUserFromToken($credentials);
 
-        /** @var User|null $user */
-        $user = $this->em->getRepository(User::class)
-            ->findOneBy([
-                'email'     => mb_strtolower($googleUser->getEmail()),
-                'isActive'  => true,
-            ]);
+        /** @var UserRepository $userRepo */
+        $userRepo = $this->em->getRepository(User::class);
 
-        return $user;
+        return $userRepo->findActiveUserByEmail($googleUser->getEmail());
+
+//        return $this->em->getRepository(User::class)
+//            ->findOneBy([
+//                'email'     => mb_strtolower($googleUser->getEmail()),
+//                'isActive'  => true,
+//            ]);
     }
 
     /**

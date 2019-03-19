@@ -5,7 +5,7 @@ import {
     TextField,
     MenuItem,
     Chip,
-    Paper, FormControl, InputLabel, Grid,
+    Paper, FormControl, InputLabel,
 } from "@material-ui/core";
 import {
     Cancel as CancelIcon,
@@ -129,7 +129,6 @@ function Placeholder(props) {
 
 function SingleValue(props) {
     const { options, data: value } = props;
-
     const data = find(options, {value});
 
     return (
@@ -178,7 +177,7 @@ const components = {
 
 class SuggestingSelectField extends React.PureComponent {
     render() {
-        const { classes, theme, fullWidth, required, label, ...props } = this.props;
+        const { classes, theme, fullWidth, required, label, isMulti, isSearchable, ...props } = this.props;
 
         const selectStyles = {
             input: base => ({
@@ -194,6 +193,8 @@ class SuggestingSelectField extends React.PureComponent {
             <FormControl fullWidth={fullWidth} required={required}>
                 <InputLabel shrink>{label}</InputLabel>
                 <Select
+                    isMulti={!!isMulti}
+                    isSearchable={!!isSearchable}
                     style={{marginTop: 20}}
                     classes={classes}
                     styles={selectStyles}

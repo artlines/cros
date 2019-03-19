@@ -109,12 +109,12 @@ class Invite extends React.Component {
                                                 <div key={i} style={{ whiteSpace: 'nowrap', padding: `2px 0` }}>
                                                     Счет&nbsp;
                                                     <Tooltip
-                                                        title={`${invoice.status === 3 ? `Оплачен` : `Не оплачен`} счет №${invoice.number} на сумму ${invoice.amount}₽`}
+                                                        title={`${invoice.payed ? `Оплачен` : `Не оплачен`} счет №${invoice.number} на сумму ${invoice.amount}₽`}
                                                     >
                                                         <span style={{
                                                             cursor: 'pointer',
-                                                            color: invoice.status === 3 ? green[700] : red[700],
-                                                            borderBottom: `1px dotted ${invoice.status === 3 ? green[700] : red[700]}`,
+                                                            color: invoice.payed ? green[700] : red[700],
+                                                            borderBottom: `1px dotted ${invoice.payed ? green[700] : red[700]}`,
                                                         }}>№{invoice.number}</span>
                                                     </Tooltip>
                                                     &nbsp;на <Money value={invoice.amount}/>

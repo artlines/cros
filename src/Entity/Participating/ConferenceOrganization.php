@@ -125,7 +125,7 @@ class ConferenceOrganization
     private $inviteData;
 
     /**
-     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Column(type="integer", nullable=false, options={"default":"0"})
      */
     private $priority = 0;
 
