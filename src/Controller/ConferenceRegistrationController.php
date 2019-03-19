@@ -79,6 +79,10 @@ class ConferenceRegistrationController extends AbstractController
         return md5(uniqid());
     }
 
+    /**
+     * Получения почты для отправки скрытой копии
+     * @return array|false|string
+     */
     private function getBcc()
     {
         return getenv('CROS_MAIL_BCC');
@@ -110,6 +114,7 @@ class ConferenceRegistrationController extends AbstractController
     }
 
     /**
+     * Проверка уникальности почты на JS
      * @Route("/conference/registration-validate-email")
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -141,6 +146,11 @@ class ConferenceRegistrationController extends AbstractController
         return new JsonResponse(['found' => false]);
     }
 
+    /**
+     * Генерация кода из Email, код самопроверяемый
+     * @param $email
+     * @return string
+     */
     public function generateCode($email)
     {
         $c = substr(md5($email), -4);
@@ -148,6 +158,7 @@ class ConferenceRegistrationController extends AbstractController
     }
 
     /**
+     * Проверка кода подтверждения почты
      * @Route("/conference/registration-validate-code")
      */
     public function validateCode(Request $request)
@@ -165,6 +176,7 @@ class ConferenceRegistrationController extends AbstractController
     }
 
     /**
+     * Отправка кода подтверждения на почту
      * @Route("/conference/registration-email-code")
      */
 
@@ -187,6 +199,7 @@ class ConferenceRegistrationController extends AbstractController
 
 
     /**
+     * Контроллер по обработки регистрации
      * @Route("/registration/{hash}", name="conference_registration_hash")
      * @Route("/registration", name="registration")
      * @Route("/test/registration", name="registration_test", defaults={"test": true})
@@ -581,6 +594,11 @@ class ConferenceRegistrationController extends AbstractController
         ]);
     }
 
+    /**
+     * Отправка пароля на почту
+     * @param ConferenceMember $conferenceMember
+     * @param string $password
+     */
     public function mailSendPassword(ConferenceMember $conferenceMember, string $password)
     {
         $Conference = $conferenceMember->getConference();
@@ -623,6 +641,11 @@ class ConferenceRegistrationController extends AbstractController
         );
     }
 
+    /**
+     * Отправка информации о регистрации или обновлении
+     * @param ConferenceMember $conferenceMember
+     * @param ConferenceMember|null $conferenceMemberOld
+     */
     public function mailSendUserCreate(ConferenceMember $conferenceMember, ?ConferenceMember $conferenceMemberOld = null)
     {
         $ConferenceOrganization = $conferenceMember->getConferenceOrganization();
@@ -688,11 +711,21 @@ class ConferenceRegistrationController extends AbstractController
         }
     }
 
+    /**
+     * Отправка информации об обновлении пользователя,
+     * Используется функция создания нового пользователя
+     * @param ConferenceMember $conferenceMember
+     * @param ConferenceMember|null $conferenceMemberOld
+     */
     public function mailSendUserUpdate(ConferenceMember $conferenceMember, ?ConferenceMember $conferenceMemberOld = null)
     {
         $this->mailSendUserCreate($conferenceMember, $conferenceMemberOld);
     }
 
+    /**
+     * Полный дамп запроса, в лог, на случай проблем с обработкой данных
+     * @param Request $request
+     */
     private function _debugDumpPostData(Request $request){
         if ($request->getMethod() == 'POST') {
             $cloner = new VarCloner();
@@ -705,6 +738,11 @@ class ConferenceRegistrationController extends AbstractController
         }
     }
 
+    /**
+     * @param $filename
+     * @param int $maxWidth
+     * @return mixed
+     */
     private function imageResize($filename, $maxWidth=1024)
     {
         if (function_exists('imagecolorallocatealpha')) {
@@ -758,7 +796,7 @@ class ConferenceRegistrationController extends AbstractController
                     break;
             }
         }
-        return true;
+        return $filename;
     }
 
 
@@ -1038,9 +1076,6 @@ class ConferenceRegistrationController extends AbstractController
                 return $this->redirectToRoute('registration_show');
             }
             $CommentForm->handleRequest($request);
-//            if ($request->request->has('conference_member_form')) {
-//
-//            }
 
             if ($CommentForm->isSubmitted() && $CommentForm->isValid()) {
 
