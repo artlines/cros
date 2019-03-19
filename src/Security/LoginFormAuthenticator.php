@@ -108,6 +108,13 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
         $user = $userRepo->findActiveUserByEmail($credentials['email']);
 
+//        /** @var User|null $user */
+//        $user = $this->em->getRepository(User::class)
+//            ->findOneBy([
+//                'email'     => mb_strtolower($credentials['email']),
+//                'isActive'  => true,
+//            ]);
+
         if (!$user) {
             throw new CustomUserMessageAuthenticationException('Неверный логин или пароль');
         }
