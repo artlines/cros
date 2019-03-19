@@ -128,8 +128,7 @@ function Placeholder(props) {
 }
 
 function SingleValue(props) {
-    const { options, data: { value } } = props;
-
+    const { options, data: value } = props;
     const data = find(options, {value});
 
     return (
