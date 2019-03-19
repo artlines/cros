@@ -40,9 +40,11 @@
                     </div>
                 </div>
             </div>
+            {% if canEdit %}
             <p style="height: 1em; line-height: 1em; overflow: hidden; text-align: center">
                 <a  href="{{ path('registration_edit_logo') }}"">Редактировать</a>
             </p>
+            {% endif %}
 
         </div>
         <div class="col-lg-10 col-md-8">
@@ -145,7 +147,7 @@
                             </tr>
                             </tbody>
                         </table>
-                        {% if  canEdit %}
+                        {% if canEdit %}
                         <button
                                 type="button"
                                 class="btn btn-primary cs-font-size-13 cs-px-10 cs-py-10 mb-0 cs-mb-20"
