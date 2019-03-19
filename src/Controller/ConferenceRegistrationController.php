@@ -696,15 +696,42 @@ class ConferenceRegistrationController extends AbstractController
 
         $organization = $this->getUser()->getOrganization();
 
-        $form = $this->createForm(
-            OrganizationLkFormType::class,
-            $organization
+        $Conference = $this->getDoctrine()
+            ->getRepository(Conference::class)
+            ->findOneBy(['year' => date("Y")]);
+        if ($organization and $Conference) {
+            /** @var ConferenceOrganization $conferenceOrganization */
+            $conferenceOrganization = $this->getDoctrine()
+                ->getRepository(ConferenceOrganization::class)
+                ->findOneBy([
+                    'organization' => $organization,
+                    'conference' => $Conference,
+                ]);
 
-        );
+            if (!$conferenceOrganization) {
+                return $this->render('conference_registration/no_access.html.twig');
+            }
 
-        $form->handleRequest($request);
+            // Возможность редактировать участников
+            $canEdit = false;
+            foreach ($conferenceOrganization->getConferenceMembers() as $key => $iConferenceMember) {
+                //dump('$this->getUser()',$iConferenceMember );
+                if ($iConferenceMember->getUser()->isRepresentative() and $iConferenceMember->getUser() == $this->getUser()) {
+                    $canEdit = true;
+                }
+            }
+            $form = $this->createForm(
+                OrganizationLkFormType::class,
+                $organization
 
-        if ($form->isSubmitted() && $form->isValid()) {
+            );
+            if ($canEdit) {
+                $form->handleRequest($request);
+
+            }
+        }
+
+        if ($canEdit && $form->isSubmitted() && $form->isValid()) {
 
 
             /** @var ConferenceOrganization $ConferenceOrganization */
@@ -798,7 +825,7 @@ class ConferenceRegistrationController extends AbstractController
             );
             // Возможность добавить участников
             $canAdd = false;
-            // Возможность редаетировать участников
+            // Возможность редактировать участников
             $canEdit = false;
             foreach ($conferenceOrganization->getConferenceMembers() as $key => $iConferenceMember) {
                 //dump('$this->getUser()',$iConferenceMember );
