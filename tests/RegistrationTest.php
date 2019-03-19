@@ -370,6 +370,10 @@ class RegistrationTest extends WebTestCase
                 ],
             ]
         );
+        $testId =  $organization->getId();
+        $organization = $entityManager->merge($organization);
+        $entityManager->remove($organization);
+        $entityManager->flush();
         dump('getContent',$client->getResponse()->getContent());
         $this->assertSame(200, $client->getResponse()->getStatusCode());
         $json = json_decode($client->getResponse()->getContent(),true);
@@ -378,7 +382,7 @@ class RegistrationTest extends WebTestCase
         $this->assertArrayHasKey('organization', $json['conferenceOrganization']);
         $this->assertArrayHasKey('conference', $json['conferenceOrganization']);
         $this->assertArrayHasKey('id', $json['conferenceOrganization']['organization']);
-        $this->assertSame($organization->getId(), $json['conferenceOrganization']['organization']['id']);
+        $this->assertSame($testId, $json['conferenceOrganization']['organization']['id']);
 
     }
 
