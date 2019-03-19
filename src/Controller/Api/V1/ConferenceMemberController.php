@@ -48,13 +48,9 @@ class ConferenceMemberController extends ApiController
         foreach ($conferenceOrganization->getConferenceMembers() as $conferenceMember) {
             $member = $conferenceMember->getUser();
 
-            $placeInfo = ['room_num' => null, 'approved' => null];
             /** @var Place $place */
             $place = $this->em->getRepository(Place::class)
                 ->findOneBy(['conferenceMember' => $conferenceMember]);
-            if ($place) {
-                $placeInfo['room_num'] = $place->getRoom()->getApartment()->getNumber();
-            }
 
             $_arrival = $conferenceMember->getArrival();
             $_leaving = $conferenceMember->getLeaving();
@@ -76,7 +72,7 @@ class ConferenceMemberController extends ApiController
                 'leaving'       => $_leaving ? $_leaving->format('Y-m-d\TH:i') : null,
                 'room_type_id'  => $roomType ? $roomType->getId() : null,
                 'room_type_cost'=> $roomType ? $roomType->getCost() : null,
-                'place'         => $placeInfo,
+                'apart_num'     => $place ? $placeInfo = $place->getRoom()->getApartment()->getNumber() : null,
             ];
         }
 

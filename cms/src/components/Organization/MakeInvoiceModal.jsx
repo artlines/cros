@@ -65,7 +65,7 @@ class MakeInvoiceModal extends React.Component {
             }
 
             /** Check that each member was settled */
-            if (!every(items, i => i.place.room_num)) {
+            if (!every(items, i => i.apart_num)) {
                 submitError = 'У организации имеются нерасселенные участники.';
                 showForm    = false;
             }

@@ -159,9 +159,9 @@ class MembersModal extends React.Component {
                                             <div className={classes.noWrap}><b>Email:</b> {item.email}</div>
                                         </TableCell>
                                         <TableCell >
-                                            {item.place.room_num
+                                            {item.apart_num
                                                 ? <div className={classes.noWrap}>
-                                                    <b>Номер:</b> {item.place.room_num}
+                                                    <b>Номер:</b> {item.apart_num}
                                                 </div>
                                                 : 'Не заселен'
                                             }
@@ -212,10 +212,7 @@ MembersModal.propTypes = {
             phone:          PropTypes.string.isRequired,
             post:           PropTypes.string,
             email:          PropTypes.string.isRequired,
-            place:          PropTypes.shape({
-                room_num: PropTypes.number,
-                approved: PropTypes.bool,
-            }),
+            apart_num:      PropTypes.number,
             room_type_id:   PropTypes.number.isRequired,
         }),
     ),
