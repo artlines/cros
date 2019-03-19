@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import {
     Collapse,
     Paper,
@@ -10,51 +11,69 @@ import {
     PersonAdd,
 } from '@material-ui/icons';
 import SpeedDialMenu from '../components/utils/SpeedDialMenu';
+import ProgramMemberForm from '../components/Conference/ProgramMemberForm';
+import participating from "../actions/participating";
 
-const actions = [
-    {
-        icon: <RecordVoiceOver/>,
-        title: 'Добавить спикера',
-        tooltipOpen: true,
-        onClick: () => console.log(`Click Add Speaker`),
-    },
-    {
-        icon: <PersonAdd/>,
-        title: 'Добавить члена комитета',
-        tooltipOpen: true,
-        onClick: () => console.log(`Click Add Program Committee Member`),
-    },
-];
+class Program extends React.Component {
+    constructor(props) {
+        super(props);
 
-function Program() {
-    const [currentTab, setTab] = React.useState(0);
-    const [showForm, setShowForm] = React.useState(false);
+        this.state = {
+            currentTab: 0,
+            isFormOpen: false,
+        };
 
-    function handleChangeTab(event, tab) {
-        setTab(tab);
+        this.actions = [
+            {
+                icon: <RecordVoiceOver/>,
+                title: 'Добавить спикера',
+                tooltipOpen: true,
+                onClick: () => this.setState({isFormOpen: true}),
+            },
+            {
+                icon: <PersonAdd/>,
+                title: 'Добавить члена комитета',
+                tooltipOpen: true,
+                onClick: () => this.setState({isFormOpen: true}),
+            },
+        ];
     }
 
-    return (
-        <React.Fragment>
-            <Paper>
-                <Tabs
-                    value={currentTab}
-                    variant={`fullWidth`}
-                    onChange={handleChangeTab}
-                    indicatorColor="primary"
-                    textColor="primary"
-                >
-                    <Tab label={`Комитет`}/>
-                    <Tab label={`Спикеры`}/>
-                    <Tab disabled label={`Расписание`}/>
-                </Tabs>
-            </Paper>
-            <Collapse in={open} unmountOnExit={true}>
+    componentDidMount() {
+        const { fetchMembers } = this.props;
+        fetchMembers();
+    }
 
-            </Collapse>
-            <SpeedDialMenu actions={actions}/>
-        </React.Fragment>
-    );
+    render() {
+        const { isFormOpen, currentTab } = this.state;
+
+        return (
+            <React.Fragment>
+                <Paper>
+                    <Tabs
+                        value={currentTab}
+                        variant={`fullWidth`}
+                        onChange={(event, tab) => this.setState({currentTab: tab})}
+                        indicatorColor="primary"
+                        textColor="primary"
+                    >
+                        <Tab label={`Комитет`}/>
+                        <Tab label={`Спикеры`}/>
+                        <Tab disabled label={`Расписание`}/>
+                    </Tabs>
+                </Paper>
+                <Collapse in={isFormOpen} unmountOnExit={true}>
+                    <ProgramMemberForm/>
+                </Collapse>
+                <SpeedDialMenu actions={this.actions}/>
+            </React.Fragment>
+        );
+    }
 }
 
-export default Program;
+const mapDispatchToProps = dispatch =>
+    ({
+        fetchMembers: (data = {}) => dispatch(participating.fetchMembers(data)),
+    });
+
+export default connect(null, mapDispatchToProps)(Program);
