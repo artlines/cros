@@ -32,6 +32,8 @@ function ProgramMemberForm({ members, onClose }) {
                                         fullWidth
                                         label={`Участник`}
                                     />
+                                </Grid>
+                                <Grid item xs={12}>
                                     <SuggestingSelectField
                                         options={map(members, i => ({ value: i.id, label: `${i.first_name} ${i.last_name}` }))}
                                         // onChange={this.handleFilterChange(`invited_by[]`)}
@@ -49,7 +51,7 @@ function ProgramMemberForm({ members, onClose }) {
                                         onChange={() => {}}
                                     />
                                 </Grid>
-                                <Grid item xs={6}>
+                                <Grid item xs={12}>
                                     <FormControl>
                                         <FormControlLabel
                                             label={"Отображать на сайте"}
