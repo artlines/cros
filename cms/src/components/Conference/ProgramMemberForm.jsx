@@ -8,7 +8,9 @@ import {
     Grid,
     Switch,
     TextField,
+    Typography,
 } from '@material-ui/core';
+import { green, red } from '@material-ui/core/colors';
 import { Formik } from 'formik';
 import WysiwygField from '../../components/utils/WysiwygField';
 import SuggestingSelectField from '../../components/utils/SuggestingSelectField';
@@ -20,19 +22,55 @@ class ProgramMemberForm extends React.Component {
         super(props);
 
         this.state = {
-            values: {
-                photo: noPhotoImg,
+            values: {},
+            photo: {
+                src: noPhotoImg,
+                width: 295,
+                height: 350,
+                recommendWidth: 295,
+                recommendHeight: 350,
             },
         };
+
+        this.photoRef = React.createRef();
+    }
+
+    componentDidUpdate(prevProps, prevState, prevContext) {
+        const { photo } = this.state;
+        const photoRef = this.photoRef.current;
+
+        /**
+         * Check that photo was updated and update its parameters
+         * @bug photoRef gives previous photo
+         * TODO
+         */
+        if (prevState.photo.src !== photo.src) {
+            this.setState({ photo: { ...photo, width: photoRef.naturalWidth, height: photoRef.naturalHeight } });
+        }
     }
 
     handlePhotoAttach = event => {
-        console.log(event.target.files);
+        if (event.target.files && event.target.files[0]) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = this.updatePhotoInfo;
+            reader.readAsDataURL(file);
+        }
+    };
+
+    updatePhotoInfo = event => {
+        this.setState({
+            photo: {
+                ...this.state.photo,
+                src: event.target.result,
+            },
+        });
     };
 
     render() {
         const { members } = this.props;
-        const { values } = this.state;
+        const { values, photo } = this.state;
 
         return (
             <React.Fragment>
@@ -40,19 +78,40 @@ class ProgramMemberForm extends React.Component {
                     <Grid item>
                         <Grid container>
                             <Grid item xs={12} md={6} style={{textAlign: 'center'}}>
-                                <Grid container>
+                                <Grid container spacing={16}>
                                     <Grid item xs={12}>
-                                        <img src={values.photo} style={{width: '100%', maxWidth: '350px'}}/>
+                                        <img ref={this.photoRef} src={photo.src} style={{width: '100%', maxWidth: '295px'}}/>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        {/*<Typography variant={`caption`}>*/}
+                                            {/*Размер текущего изображения:&nbsp;*/}
+                                            {/*<span style={{*/}
+                                                {/*color: (photo.width === photo.recommendWidth && photo.height === photo.recommendHeight)*/}
+                                                    {/*? green[700]*/}
+                                                    {/*: red[700],*/}
+                                            {/*}}>*/}
+                                                {/*{photo.width} x {photo.height}px*/}
+                                            {/*</span>*/}
+                                        {/*</Typography>*/}
+                                        <Typography variant={`caption`}>
+                                            Рекомендуемый размер изображения:&nbsp;
+                                            <span>{photo.recommendWidth} x {photo.recommendHeight}px</span>
+                                        </Typography>
                                     </Grid>
                                     <Grid item xs={12}>
                                         <input
-                                            id={`photo`}
+                                            accept={`image/*`}
+                                            id={`photo_file_upload`}
                                             style={{display: 'none'}}
                                             type={`file`}
                                             onChange={this.handlePhotoAttach}
                                         />
-                                        <label htmlFor={`photo`}>
-                                            <Button>Загрузить</Button>
+                                        <label htmlFor={`photo_file_upload`}>
+                                            <Button
+                                                component={`span`}
+                                                variant={`contained`}
+                                                disableRipple
+                                            >Загрузить</Button>
                                         </label>
                                     </Grid>
                                 </Grid>
@@ -76,7 +135,7 @@ class ProgramMemberForm extends React.Component {
                                             onChange={() => {}}
                                         />
                                     </Grid>
-                                    <Grid item xs={12}>
+                                    <Grid item xs={9}>
                                         <FormControl>
                                             <FormControlLabel
                                                 label={"Отображать на сайте"}
@@ -90,7 +149,7 @@ class ProgramMemberForm extends React.Component {
                                             {/*<FormHelperText>Для возможности управления данными организации</FormHelperText>*/}
                                         </FormControl>
                                     </Grid>
-                                    <Grid item xs={6}>
+                                    <Grid item xs={3}>
                                         <TextField
                                             fullWidth
                                             label={`Сортировка`}
