@@ -154,6 +154,20 @@ class User implements UserInterface
     private $photo;
 
     /**
+     * @var integer|null
+     *
+     * @ORM\Column(name="nag_id", type="integer", nullable=true)
+     */
+    private $nagId;
+
+    /**
+     * @var integer|null
+     *
+     * @ORM\Column(name="nag_manager_id", type="integer", nullable=true)
+     */
+    private $nagManagerId;
+
+    /**
      * @var array
      *
      * @ORM\Column(name="additional_emails", type="json", options={"default":"[]"}, nullable=false)
@@ -596,6 +610,38 @@ class User implements UserInterface
     }
 
     /**
+     * @return int|null
+     */
+    public function getNagId(): ?int
+    {
+        return $this->nagId;
+    }
+
+    /**
+     * @param int|null $nagId
+     */
+    public function setNagId(?int $nagId)
+    {
+        $this->nagId = $nagId;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getNagManagerId(): ?int
+    {
+        return $this->nagManagerId;
+    }
+
+    /**
+     * @param int|null $nagManagerId
+     */
+    public function setNagManagerId(?int $nagManagerId)
+    {
+        $this->nagManagerId = $nagManagerId;
+    }
+
+    /**
      * @return array
      */
     public function getAdditionalEmails(): array
@@ -610,5 +656,4 @@ class User implements UserInterface
     {
         $this->additionalEmails = $additionalEmails;
     }
-
 }

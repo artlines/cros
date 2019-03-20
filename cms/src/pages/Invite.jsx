@@ -15,11 +15,13 @@ import { green, red } from '@material-ui/core/colors';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import FabButton from '../components/utils/FabButton';
 import InviteForm from "../components/Organization/InviteForm";
+import MembersModal from "../components/Organization/MembersModal";
 import participating from '../actions/participating';
 import map from "lodash/map";
 import ConfirmDialog from "../components/utils/ConfirmDialog";
 import API from '../libs/api';
 import Money from "../components/utils/Money";
+import abode from "../actions/abode";
 
 const request = new API();
 
@@ -36,13 +38,12 @@ class Invite extends React.Component {
     }
 
     componentDidMount() {
+        this.props.fetchRoomTypes();
         this.update();
     }
 
     update = () => {
-        const { fetchOrganizations, user } = this.props;
-        const data = { invited_by: user.id };
-        fetchOrganizations(data);
+        this.props.fetchOrganizations({});
     };
 
     reInvite = (id) => request.get(`conference_organization/re_invite/${id}`);
@@ -83,7 +84,7 @@ class Invite extends React.Component {
                                     <TableCell>ID</TableCell>
                                     <TableCell>Наименование</TableCell>
                                     <TableCell>Реквизиты</TableCell>
-                                    <TableCell>Счета</TableCell>
+                                    <TableCell>Заказы</TableCell>
                                     <TableCell>Статус</TableCell>
                                     <TableCell align={`right`}>Повторная отправка</TableCell>
                                 </TableRow>
@@ -97,7 +98,23 @@ class Invite extends React.Component {
                                         <TableCell>
                                             {item.name}
                                             <Typography variant={`caption`}>{item.email}</Typography>
-                                            <Typography variant={`caption`}>Участников: {item.total_members}</Typography>
+                                            <Typography variant={`caption`}>Менеджер: {item.invited_by}</Typography>
+                                            <MembersModal
+                                                organizationId={item.id}
+                                                organizationName={item.name}
+                                                trigger={
+                                                    <Typography
+                                                        component={`span`}
+                                                        variant={`caption`}
+                                                        style={{
+                                                            cursor: 'pointer',
+                                                            borderBottom: `1px dotted inherit`,
+                                                        }}
+                                                    >Участников: {item.total_members}</Typography>
+                                                }
+                                                update={this.props.fetchMembers}
+                                                readOnly
+                                            />
                                         </TableCell>
                                         <TableCell>
                                             <div style={{whiteSpace: 'nowrap'}}><b>ИНН:</b> {item.inn}</div>
@@ -107,9 +124,9 @@ class Invite extends React.Component {
                                             {item.invoices.length === 0 && 'Нет счета'}
                                             {map(item.invoices, (invoice, i) =>
                                                 <div key={i} style={{ whiteSpace: 'nowrap', padding: `2px 0` }}>
-                                                    Счет&nbsp;
+                                                    Заказ&nbsp;
                                                     <Tooltip
-                                                        title={`${invoice.payed ? `Оплачен` : `Не оплачен`} счет №${invoice.number} на сумму ${invoice.amount}₽`}
+                                                        title={`${invoice.payed ? `Оплачен` : `Не оплачен`} счет заказа №${invoice.number} на сумму ${invoice.amount}₽ от ${invoice.date}`}
                                                     >
                                                         <span style={{
                                                             cursor: 'pointer',
@@ -117,7 +134,8 @@ class Invite extends React.Component {
                                                             borderBottom: `1px dotted ${invoice.payed ? green[700] : red[700]}`,
                                                         }}>№{invoice.number}</span>
                                                     </Tooltip>
-                                                    &nbsp;на <Money value={invoice.amount}/>
+                                                    &nbsp;на <Money value={invoice.amount}/><br/>от {invoice.date}
+                                                    <Typography variant={`caption`}>{invoice.status_text}</Typography>
                                                 </div>
                                             )}
                                         </TableCell>
@@ -151,9 +169,9 @@ const mapStateToProps = state =>
 
 const mapDispatchToProps = dispatch =>
     ({
-        fetchOrganizations: (data) => {
-            dispatch(participating.fetchConferenceOrganizations(data));
-        },
+        fetchOrganizations: (data) => dispatch(participating.fetchConferenceOrganizations(data)),
+        fetchMembers: (data) => dispatch(participating.fetchMembers(data)),
+        fetchRoomTypes: () => dispatch(abode.fetchRoomTypes()),
     });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Invite);
