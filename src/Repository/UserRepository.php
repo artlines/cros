@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Conference;
 use App\Entity\Participating\ConferenceMember;
 use App\Entity\Participating\User;
+use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\Query\ResultSetMapping;
@@ -35,6 +36,43 @@ class UserRepository extends EntityRepository implements UserLoaderInterface
             ->setParameter('email', $username)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * Find ids of subordinate nag users
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     *
+     * @param $user_id integer Head user id
+     * @return array Array of subordinate users items as array with `id`, ...
+     */
+    public function findNagSubordinate($user_id)
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $query = "
+            WITH RECURSIVE r as (
+              SELECT pm.id, pm.nag_id, pm.nag_manager_id
+              FROM participating.member pm
+              WHERE id = :user_id
+            
+              UNION
+            
+              SELECT pm.id, pm.nag_id, pm.nag_manager_id
+              FROM participating.member pm
+                JOIN r ON pm.nag_manager_id = r.nag_id
+            )
+            SELECT id FROM r
+        ";
+
+        try {
+            $stmt = $conn->prepare($query);
+            $stmt->execute(['user_id' => $user_id]);
+
+            return $stmt->fetchAll();
+        } catch (DBALException $e) {
+            return [];
+        }
     }
 
     /**

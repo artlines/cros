@@ -43,9 +43,7 @@ class Invite extends React.Component {
     }
 
     update = () => {
-        const { fetchOrganizations, user } = this.props;
-        const data = { invited_by: user.id };
-        fetchOrganizations(data);
+        this.props.fetchOrganizations({});
     };
 
     reInvite = (id) => request.get(`conference_organization/re_invite/${id}`);
@@ -100,6 +98,7 @@ class Invite extends React.Component {
                                         <TableCell>
                                             {item.name}
                                             <Typography variant={`caption`}>{item.email}</Typography>
+                                            <Typography variant={`caption`}>Менеджер: {item.invited_by}</Typography>
                                             <MembersModal
                                                 organizationId={item.id}
                                                 organizationName={item.name}
@@ -127,7 +126,7 @@ class Invite extends React.Component {
                                                 <div key={i} style={{ whiteSpace: 'nowrap', padding: `2px 0` }}>
                                                     Заказ&nbsp;
                                                     <Tooltip
-                                                        title={`${invoice.payed ? `Оплачен` : `Не оплачен`} счет заказа №${invoice.number} на сумму ${invoice.amount}₽`}
+                                                        title={`${invoice.payed ? `Оплачен` : `Не оплачен`} счет заказа №${invoice.number} на сумму ${invoice.amount}₽ от ${invoice.date}`}
                                                     >
                                                         <span style={{
                                                             cursor: 'pointer',
@@ -135,7 +134,7 @@ class Invite extends React.Component {
                                                             borderBottom: `1px dotted ${invoice.payed ? green[700] : red[700]}`,
                                                         }}>№{invoice.number}</span>
                                                     </Tooltip>
-                                                    &nbsp;на <Money value={invoice.amount}/>
+                                                    &nbsp;на <Money value={invoice.amount}/><br/>от {invoice.date}
                                                     <Typography variant={`caption`}>{invoice.status_text}</Typography>
                                                 </div>
                                             )}

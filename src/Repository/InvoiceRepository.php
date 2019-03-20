@@ -72,6 +72,7 @@ class InvoiceRepository extends EntityRepository
                    pi.status_text,
                    pi.num as number,
                    pi.amount as amount,
+                   to_char(pi.pay_date, 'DD.MM.YYYY') as date,
                    CASE WHEN (pi.status_id = :invoice_fully_payed_status_id OR pi.status_guid = :invoice_fully_payed_status_guid) 
                        THEN TRUE 
                        ELSE FALSE 
