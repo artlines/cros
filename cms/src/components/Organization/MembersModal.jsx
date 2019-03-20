@@ -28,6 +28,7 @@ import map from 'lodash/map';
 import find from 'lodash/find';
 import MemberForm from "./MemberForm";
 import ConfirmDialog from "../utils/ConfirmDialog";
+import Money from "../utils/Money";
 import FabButton from '../utils/FabButton';
 import LinearProgress from '../utils/LinearProgress';
 import API from '../../libs/api';
@@ -90,7 +91,7 @@ class MembersModal extends React.Component {
     closeForm = () => this.setState({form: {...this.state.form, open: false}});
 
     render() {
-        const { classes, organizationName, items, trigger, isFetching } = this.props;
+        const { classes, organizationName, items, trigger, isFetching, readOnly } = this.props;
         const { open, form } = this.state;
 
         return (
@@ -119,7 +120,7 @@ class MembersModal extends React.Component {
                                 Участники {organizationName}
                             </Grid>
                             <Grid item>
-                                <FabButton title={`Добавить участника`} onClick={this.openForm}/>
+                                {!readOnly ? <FabButton title={`Добавить участника`} onClick={this.openForm}/> : ''}
                             </Grid>
                         </Grid>
                     </DialogTitle>
@@ -132,7 +133,7 @@ class MembersModal extends React.Component {
                                     <TableCell className={classes.noWrap}>Класс участия</TableCell>
                                     <TableCell>Контакты</TableCell>
                                     <TableCell>Проживание</TableCell>
-                                    <TableCell align={'right'}>Действия</TableCell>
+                                    {!readOnly ? <TableCell align={'right'}>Действия</TableCell> : ''}
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -153,6 +154,7 @@ class MembersModal extends React.Component {
                                         </TableCell>
                                         <TableCell className={classes.noWrap}>
                                             <RoomType id={item.room_type_id}/>
+                                            <Typography variant={`caption`}><Money value={item.room_type_cost}/></Typography>
                                         </TableCell>
                                         <TableCell>
                                             <div className={classes.noWrap}><b>Телефон:</b> {item.phone}</div>
@@ -166,14 +168,17 @@ class MembersModal extends React.Component {
                                                 : 'Не заселен'
                                             }
                                         </TableCell>
-                                        <TableCell align={'right'}>
-                                                    <Button onClick={() => this.openForm(item.id)}><EditIcon/></Button>
+                                        {!readOnly
+                                            ? <TableCell align={'right'}>
+                                                <Button onClick={() => this.openForm(item.id)}><EditIcon/></Button>
 
-                                                    <ConfirmDialog
-                                                        trigger={<Button><CloseIcon/></Button>}
-                                                        onConfirm={() => this.delete(item.id)}
-                                                    />
-                                        </TableCell>
+                                                <ConfirmDialog
+                                                    trigger={<Button><CloseIcon/></Button>}
+                                                    onConfirm={() => this.delete(item.id)}
+                                                />
+                                            </TableCell>
+                                            : ''
+                                        }
                                     </TableRow>
                                 )}
                             </TableBody>
@@ -216,11 +221,18 @@ MembersModal.propTypes = {
                 room_num: PropTypes.number,
                 approved: PropTypes.bool,
             }),
-            room_type_id:   PropTypes.number.isRequired,
+            room_type_id:   PropTypes.number,
+            room_type_cost: PropTypes.number,
         }),
     ),
 
     classes: PropTypes.object.isRequired,
+
+    readOnly: PropTypes.bool,
+};
+
+MembersModal.defaultProps = {
+    readOnly: false,
 };
 
 const mapStateToProps = state => ({
