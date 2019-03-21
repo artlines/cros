@@ -18,7 +18,7 @@ import {
     Typography,
 } from '@material-ui/core';
 import {withStyles} from '@material-ui/core/styles';
-import { blue, green } from '@material-ui/core/colors';
+import { green } from '@material-ui/core/colors';
 import {
     Close as CloseIcon,
     Edit as EditIcon,
