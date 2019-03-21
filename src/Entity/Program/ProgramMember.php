@@ -80,6 +80,13 @@ class Member
     private $ordering;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="publish", type="boolean", nullable=false, options={"default":"0"})
+     */
+    private $publish;
+
+    /**
      * @return int
      */
     public function getId()
@@ -197,5 +204,21 @@ class Member
     public function setOrdering(int $ordering)
     {
         $this->ordering = $ordering;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPublish()
+    {
+        return $this->publish;
+    }
+
+    /**
+     * @param bool $publish
+     */
+    public function setPublish(bool $publish)
+    {
+        $this->publish = $publish;
     }
 }

@@ -19,6 +19,7 @@ final class Version20190321113036 extends AbstractMigration
         $this->addSql('CREATE TABLE program.program_member (id SERIAL NOT NULL, conference_member_id INT NOT NULL, type VARCHAR(255) NOT NULL, photo_original TEXT DEFAULT NULL, photo_big TEXT DEFAULT NULL, photo_small TEXT DEFAULT NULL, description TEXT DEFAULT NULL, ordering INT DEFAULT 100 NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_65729700393B8266 ON program.program_member (conference_member_id)');
         $this->addSql('ALTER TABLE program.program_member ADD CONSTRAINT FK_65729700393B8266 FOREIGN KEY (conference_member_id) REFERENCES participating.conference_member (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE program.program_member ADD publish BOOLEAN DEFAULT \'false\' NOT NULL');
     }
 
     public function down(Schema $schema) : void
