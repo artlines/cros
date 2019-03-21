@@ -131,7 +131,17 @@ class Organizations extends React.Component {
                     </Grid>
                     <Grid item xs={12} sm={6} lg={3}>
                         <SuggestingSelectField
-                            options={map(managers, i => ({ value: i.id, label: `${i.first_name} ${i.last_name}` }))}
+                            options={[
+                                {
+                                    value: '-1',
+                                    label: 'Не определен'
+                                },
+                                ...map(managers, i => ({
+                                    value: i.id,
+                                    label: `${i.first_name} ${i.last_name}`
+                                }))
+                            ]}
+
                             onChange={this.handleFilterChange(`invited_by[]`)}
                             isSearchable
                             isMulti
