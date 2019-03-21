@@ -14,6 +14,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { emphasize } from "@material-ui/core/styles/colorManipulator";
 import classNames from "classnames";
 import find from 'lodash/find';
+import isNumber from 'lodash/isNumber';
 
 const styles = theme => ({
     root: {
@@ -128,9 +129,10 @@ function Placeholder(props) {
 }
 
 function SingleValue(props) {
-    const { options, data: { value } } = props;
+    const { options, data: value } = props;
+    const id = isNumber(value) ? value : value.value;
 
-    const data = find(options, {value});
+    const data = find(options, {value: id});
 
     return (
         <Typography className={props.selectProps.classes.singleValue} {...props.innerProps}>

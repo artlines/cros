@@ -135,7 +135,7 @@ class ConferenceOrganizationRepository extends EntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $year = (int) date('Y');
-        $limit = 100;
+        $limit = 1000;
         $offset = 0;
         $where = 'TRUE';
 

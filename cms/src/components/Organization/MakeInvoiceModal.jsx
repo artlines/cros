@@ -187,7 +187,7 @@ class MakeInvoiceModal extends React.Component {
                             variant={"contained"}
                             color={"primary"}
                             type={"submit"}
-                            disabled={isFetching || submitting || submitError}
+                            disabled={!!(isFetching || submitting || submitError)}
                             onClick={this.handleSubmit}
                         >
                             Выставить счет
