@@ -187,6 +187,19 @@ class B2BApi
     }
 
     /**
+     * Return orders info about invoices
+     * @author Ivan Slyusar i.slyusar@nag.ru
+     * @param $invoices
+     * @return array
+     */
+    public function getOrdersInvoicesInfo($invoices)
+    {
+        $result = $this->_executeCurl("orders/info", $invoices, Request::METHOD_POST);
+
+        return $result;
+    }
+
+    /**
      * Return order information
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru

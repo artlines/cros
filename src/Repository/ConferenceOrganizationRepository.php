@@ -112,10 +112,14 @@ class ConferenceOrganizationRepository extends EntityRepository
         ];
 
         $query = $qb
-            ->select('co')
+            ->select('co, cm, u')
             ->leftJoin(Organization::class, 'o', Expr\Join::WITH, 'co.organization = o')
             ->leftJoin(Conference::class, 'c', Expr\Join::WITH, 'co.conference = c')
+            ->leftJoin('co.conferenceMembers', 'cm')
+            ->leftJoin('cm.user', 'u')
             ->where('c.year = :year')
+            ->andWhere('u.representative = true')
+            ->andWhere('u.b2b_guid is not null')
             ->andWhere($qb->expr()->orX(
                 $qb->expr()->eq('o.invalidInnKpp', ':invalidInnKpp'),
                 $qb->expr()->isNull('o.invalidInnKpp')
