@@ -116,6 +116,26 @@
                             </li>
                         </ul>
                     </div>
+                    {% if not app.user %}
+                        <div class=" text-right login-main cs-pos-rel">
+                            {{ render(path('login')) }}
+                        </div>
+                    {% endif %}
+
+                    {% if is_granted('ROLE_USER') %}
+                        <div class=" text-right login-main">
+                            <a href="{{ path('registration_show') }}" class="cs-py-5 cs-font-size-11  cs-z-index-4 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+                                &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;ЛИЧНЫЙ КАБИНЕТ&nbsp;
+                            </a>
+                        </div>
+                    {% endif %}
+                    {% if is_granted('ROLE_CMS_USER') %}
+                        <div class=" text-right login-main">
+                            <a href="/cms" class="cs-py-5 cs-font-size-11  cs-z-index-4 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+                                &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;CMS&nbsp;
+                            </a>
+                        </div>
+                    {% endif %}
                     <!— End Navigation —>
                     <!-- End Responsive Toggle Button -->
                 </div>
@@ -130,38 +150,20 @@
         <div class="home_video__block">
             <div class="home_video__container cs-bg-secondary_block">
                 <video autoplay="autoplay" loop="loop" muted="muted" poster="/uploads/cros-2019/bg_video_poster.jpg">
-                    <source src="/uploads/cros-2019/bg_video.mp4" type="video/mp4">
+                    <source src="http://cros.nag.ru/uploads/cros-2019/bg_video.mp4" type="video/mp4">
                     <source src="/uploads/cros-2019/bg_video.webm" type='video/webm'>
                 </video>
             </div>
         </div>
 
-        <div class="home_content__block cs-pt-100">
-            {% if not app.user %}
-                <div class="container text-right login-main cs-pos-rel">
-                    {{ render(path('login')) }}
-                </div>
-            {% endif %}
-
-            {% if is_granted('ROLE_USER') %}
-                <div class="container text-right login-main">
-                    <a href="{{ path('registration_show') }}" class="cs-py-5 cs-font-size-11  cs-z-index-4 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
-                        &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;ЛИЧНЫЙ КАБИНЕТ&nbsp;
-                    </a>
-                </div>
-            {% endif %}
-            {% if is_granted('ROLE_CMS_USER') %}
-                <div class="container text-right login-main">
-                    <a href="/cms" class="cs-py-5 cs-font-size-11  cs-z-index-4 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
-                        &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;CMS&nbsp;
-                    </a>
-                </div>
-            {% endif %}
+        <div class="home_content__block">
             <!-- cs-max-width-750  -->
-            <div class="container u-bg-overlay__inner cs-color-white mb-0 home_content__info_container">
-                <div style="padding: 20px;" class="cs-bg-darkblue-opacity-0_5">
+            <div class="container u-bg-overlay__inner cs-color-white mb-0 home_content__info_container"
+                 style="margin-right:0; width:500px; padding:0; height:100%"
+            >
+                <div style="padding: 20px; height:100%;  background-color: rgba(255, 255, 255, .7)!important; " >
                 <div class="row cs-mb-0 d-flex flex-column flex-md-row justify-content-around align-items-center h-100 cs-mb-100--md">
-                    <div class="col-md-6 text-left d-flex flex-column align-items-baseline">
+                    <div class="col-md-12 text-left d-flex flex-column align-items-baseline">
                         <div class="d-flex flex-column align-items-baseline">
                             <div class="cs-font-size-40 cs-font-size-40--md cs-font-size-60--xl cs-font-size-80--xxl cs-font-weight-700 cs-line-height-1">КРОС-2019</div>
                             <div class="cs-font-size-20 cs-font-size-20--xl cs-font-size-40--xxl cs-font-weight-700 cs-line-height-1 cs-mb-10 cs-mb-15--lg">22-25 мая</div>
@@ -179,7 +181,7 @@
                             {#</p>#}
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         {{ render(controller('App\\Controller\\Site\\DefaultController:countdown', { mainPage: true })) }}
                         {#<p class="cs-font-size-27 mb-0 cs-color-white text-right">nag.ru представляет</p>#}
                         {#<h1 class="text-right text-uppercase h2 cs-font-weight-700 cs-font-size-40 cs-font-size-60--md cs-color-white">#}
