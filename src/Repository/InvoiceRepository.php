@@ -102,14 +102,16 @@ class InvoiceRepository extends EntityRepository
      * Get invoices which need synchronize with b2b
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @author Ivan Slyusar i.slyusar@nag,ru
+     * @param string $select
      * @return Invoice[]
      */
-    public function getWithOrderGuidToSync()
+    public function getWithOrderGuidToSync($select = 'i')
     {
         $qb = $this->createQueryBuilder('i');
 
         $query = $qb
-            ->select('i')
+            ->select($select)
             ->where($qb->expr()->isNotNull('i.orderGuid'))
             //->andWhere('i.orderStatusGuid != :order_status_guid__canceled')
             //->andWhere('i.statusGuid != :status_guid__fully_payed')
