@@ -319,7 +319,7 @@ class ConferenceOrganizationRepository extends EntityRepository
                      po.address,
                      po.requisites,
                      pm.id as invited_by_id,
-                     CONCAT_WS(' ', pm.first_name, pm.last_name) as invited_by
+                     CONCAT_WS(' ', pm.last_name, pm.first_name) as invited_by
               FROM participating.conference_organization pco
                 LEFT JOIN participating.organization po ON pco.organization_id = po.id
                 LEFT JOIN participating.member       pm ON pco.invited_by = pm.id
@@ -381,7 +381,7 @@ class ConferenceOrganizationRepository extends EntityRepository
         ";
 
         $queryC = $query;
-        $query .= " ORDER BY pco.id LIMIT $limit OFFSET $offset";
+        $query .= " ORDER BY tcoi.invited_by LIMIT $limit OFFSET $offset";
 
         $stmt = $conn->prepare($queryC);
         $stmt->execute($parameters);
