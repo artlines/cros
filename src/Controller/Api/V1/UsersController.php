@@ -58,7 +58,14 @@ class UsersController extends ApiController
     public function managers()
     {
         /** @var User[] $users */
-        $users = $this->em->getRepository(User::class)->findBy(['roles' => '["ROLE_SALES_MANAGER"]']);
+        $users = $this->em
+            ->getRepository(User::class)
+            ->findBy([
+                'roles' => '["ROLE_SALES_MANAGER"]'
+            ],[
+                'lastName'=>'ASC',
+                'firstName'=>'ASC'
+            ]);
 
         $items = [];
         foreach ($users as $user) {
