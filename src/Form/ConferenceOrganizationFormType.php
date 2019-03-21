@@ -6,6 +6,7 @@ use App\Entity\Conference;
 use App\Entity\Participating\ConferenceOrganization;
 use App\Entity\Participating\Organization;
 use App\Repository\ConferenceRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -37,10 +38,6 @@ class ConferenceOrganizationFormType extends AbstractType
                     'required' => false,
                 )
             )
-//            ->add('sponsor')
-//            ->add('finish')
-//            ->add('approved')
-//            ->add('inviteHash')
             ->add(
                 $builder->create(
                     'organization',
@@ -49,14 +46,6 @@ class ConferenceOrganizationFormType extends AbstractType
                 )
                 ->remove('save')
             )
-//            ->add(
-//                $builder->create(
-//                    'ConferenceMembers',
-//                    ConferenceMemberFormType::class,
-//                    ['by_reference' => true]
-//                )
-//                    ->remove('save')
-//            )
 
             ->add(
                 'ConferenceMembers',
@@ -97,22 +86,23 @@ class ConferenceOrganizationFormType extends AbstractType
             )
 //            ->add('invitedBy')
         ->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
-            $user = $event->getData();
-            $form = $event->getForm();
+            $data = $event->getData();
+                if (!$data) {
+                    return;
+                }
 
-            if (!$user) {
-                return;
-            }
+                /** @var ConferenceOrganization $data */
 
-            // checks whether the user has chosen to display their email or not.
-            // If the data was submitted previously, the additional value that is
-            // included in the request variables needs to be removed.
-//            if (true === $user['show_email']) {
-//                $form->add('email', EmailType::class);
-//            } else {
-//                unset($user['email']);
-//                $event->setData($user);
-//            }
+                // Заполнение дублирующих значений в форме  conferenceOrganization и conference
+                // Перекрестных ссылки
+                foreach ($data['ConferenceMembers'] as $key => $user){
+                    $data['ConferenceMembers'][$key]['conference'] = $data['conference'];
+                    if (isset($data['conferenceOrganization'])) {
+                        $data['ConferenceMembers'][$key]['conferenceOrganization'] = $data['conferenceOrganization'];
+                    }
+                }
+                $event->setData($data);
+                /** @var ConferenceOrganization $conferenceOrganization */
         })
             ->add(
                 'save',

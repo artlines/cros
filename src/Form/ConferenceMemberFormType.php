@@ -163,6 +163,7 @@ class ConferenceMemberFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => ConferenceMember::class,
+            'allow_extra_fields' => true,
             'constraints' => [
                 new ConferenceMemberForm()
             ]

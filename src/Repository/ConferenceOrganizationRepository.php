@@ -112,10 +112,14 @@ class ConferenceOrganizationRepository extends EntityRepository
         ];
 
         $query = $qb
-            ->select('co')
+            ->select('co, cm, u')
             ->leftJoin(Organization::class, 'o', Expr\Join::WITH, 'co.organization = o')
             ->leftJoin(Conference::class, 'c', Expr\Join::WITH, 'co.conference = c')
+            ->leftJoin('co.conferenceMembers', 'cm')
+            ->leftJoin('cm.user', 'u')
             ->where('c.year = :year')
+            ->andWhere('u.representative = true')
+            ->andWhere('u.b2b_guid is not null')
             ->andWhere($qb->expr()->orX(
                 $qb->expr()->eq('o.invalidInnKpp', ':invalidInnKpp'),
                 $qb->expr()->isNull('o.invalidInnKpp')
@@ -135,7 +139,7 @@ class ConferenceOrganizationRepository extends EntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $year = (int) date('Y');
-        $limit = 100;
+        $limit = 1000;
         $offset = 0;
         $where = 'TRUE';
 
@@ -157,11 +161,33 @@ class ConferenceOrganizationRepository extends EntityRepository
                   OR tms.total_members != tms.in_room_members
                 )";
         }
+        // проверяем выбор для "не определено"
+        // Исключаем его, если указано.
+        // Если конструкция более сложная, тогда исключаем её из массива данных
 
+        $closeOR = false;
+
+        if (isset($data['invited_by'])) {
+            if (false !== $key = array_search(-1, $data['invited_by'])) {
+                unset($data['invited_by'][$key]);
+                if( 0 == count($data['invited_by']) ){
+                    unset($data['invited_by']);
+                    $where .= " AND tcoi.invited_by_id IS NULL";
+                } else {
+                    $where .= " AND ( tcoi.invited_by_id IS NULL OR TRUE ";
+                    $closeOR = ")";
+                }
+            }
+        }
         /** Check invited_by filter */
         if (isset($data['invited_by'])) {
             $_invited_by = is_array($data['invited_by']) ? $data['invited_by'] : [$data['invited_by']];
             $where .= " AND tcoi.invited_by_id IN (".implode($_invited_by, ', ').")";
+        }
+
+        // Закрывавающая конструкция, если определена
+        if ($closeOR){
+            $where .= $closeOR;
         }
 
         /** Check search string */
@@ -297,7 +323,7 @@ class ConferenceOrganizationRepository extends EntityRepository
                      po.address,
                      po.requisites,
                      pm.id as invited_by_id,
-                     CONCAT_WS(' ', pm.first_name, pm.last_name) as invited_by
+                     CONCAT_WS(' ', pm.last_name, pm.first_name) as invited_by
               FROM participating.conference_organization pco
                 LEFT JOIN participating.organization po ON pco.organization_id = po.id
                 LEFT JOIN participating.member       pm ON pco.invited_by = pm.id
@@ -359,7 +385,7 @@ class ConferenceOrganizationRepository extends EntityRepository
         ";
 
         $queryC = $query;
-        $query .= " ORDER BY pco.id LIMIT $limit OFFSET $offset";
+        $query .= " ORDER BY tcoi.invited_by LIMIT $limit OFFSET $offset";
 
         $stmt = $conn->prepare($queryC);
         $stmt->execute($parameters);

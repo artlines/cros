@@ -58,7 +58,14 @@ class UsersController extends ApiController
     public function managers()
     {
         /** @var User[] $users */
-        $users = $this->em->getRepository(User::class)->findBy(['roles' => '["ROLE_SALES_MANAGER"]']);
+        $users = $this->em
+            ->getRepository(User::class)
+            ->findBy([
+                'roles' => '["ROLE_SALES_MANAGER"]'
+            ],[
+                'lastName'=>'ASC',
+                'firstName'=>'ASC'
+            ]);
 
         $items = [];
         foreach ($users as $user) {
@@ -159,6 +166,7 @@ class UsersController extends ApiController
         $user->setRoles([$role]);
         $user->setMiddleName($middle_name);
         $user->setPost($post);
+        $user->setPassword('not');
 
         if (is_bool($is_active)) {
             $user->setIsActive($is_active);

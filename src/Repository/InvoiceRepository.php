@@ -69,8 +69,10 @@ class InvoiceRepository extends EntityRepository
                    pco.id as conf_org_id,
                    pi.id as id,
                    pi.status_id as status,
+                   pi.status_text,
                    pi.num as number,
                    pi.amount as amount,
+                   to_char(pi.pay_date, 'DD.MM.YYYY') as date,
                    CASE WHEN (pi.status_id = :invoice_fully_payed_status_id OR pi.status_guid = :invoice_fully_payed_status_guid) 
                        THEN TRUE 
                        ELSE FALSE 
@@ -100,14 +102,16 @@ class InvoiceRepository extends EntityRepository
      * Get invoices which need synchronize with b2b
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @author Ivan Slyusar i.slyusar@nag,ru
+     * @param string $select
      * @return Invoice[]
      */
-    public function getWithOrderGuidToSync()
+    public function getWithOrderGuidToSync($select = 'i')
     {
         $qb = $this->createQueryBuilder('i');
 
         $query = $qb
-            ->select('i')
+            ->select($select)
             ->where($qb->expr()->isNotNull('i.orderGuid'))
             //->andWhere('i.orderStatusGuid != :order_status_guid__canceled')
             //->andWhere('i.statusGuid != :status_guid__fully_payed')

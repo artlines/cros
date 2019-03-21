@@ -347,16 +347,8 @@ class SyncWithB2B extends Command
             foreach ($conferenceMembers as $conferenceMember) {
                 $user = $conferenceMember->getUser();
                 $user_b2bGuid = $user->getB2bGuid();
-
-                if ($user->isRepresentative() && $user_b2bGuid) {
-                    $this->log("Found participating user from organization (ID: ".$organization->getId().") with b2b_guid `$user_b2bGuid`.");
-                    $crosUsers[] = $user_b2bGuid;
-                }
-            }
-
-            if (empty($crosUsers)) {
-                $this->log("Organization (ID: ".$organization->getId().") has not participating users. Skipped it!");
-                continue;
+                $this->log("Found participating user from organization (ID: ".$organization->getId().") with b2b_guid `$user_b2bGuid`.");
+                $crosUsers[] = $user_b2bGuid;
             }
 
             $b2bUsersResponse = $this->b2bApi->getContractorUsers($org_b2bGuid);
@@ -373,7 +365,7 @@ class SyncWithB2B extends Command
             $needAddUsers = array_diff($crosUsers, $b2bUsers);
 
             if (empty($needAddUsers)) {
-                $this->log("Organization (ID: ".$organization->getId().") doesn't need to add users to B2B. Skipped it!");
+                $this->log("Organization (ID: ".$organization->getId().") users yet synchronized to B2B. Skipped it!");
                 continue;
             }
 
@@ -396,6 +388,9 @@ class SyncWithB2B extends Command
      * Check invoice status
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @author Ivan Slyusar i.slyusar@nag.ru
+     * @return void
+     * @throws \Doctrine\ORM\ORMException
      */
     private function _checkInvoicesStatus()
     {
@@ -403,33 +398,78 @@ class SyncWithB2B extends Command
 
         /** @var InvoiceRepository $invoiceRepo */
         $invoiceRepo = $this->em->getRepository(Invoice::class);
-        $invoices = $invoiceRepo->getWithOrderGuidToSync();
+        $invoices = $invoiceRepo->getWithOrderGuidToSync('i.id, i.orderGuid as guid');
+
+        if (empty($invoices)) {
+            $this->log("Not found invoices to sync.");
+            return;
+        }
+
         $this->log("Found ".count($invoices)." invoices to sync.");
 
-        foreach ($invoices as $invoice) {
-            $guid = $invoice->getOrderGuid();
-            $this->log("Check Invoice (ID: {$invoice->getId()}).");
+        $str_ids = implode(
+            ', ',
+            array_map(function ($invoice) {
+                return '"'.$invoice['id'].'"';
+            }, $invoices
+            )
+        );
 
-            $infoResponse = $this->b2bApi->getOrderInfo($guid);
+        $this->log(
+            'Check Invoices (IDS: '.$str_ids.')'
+        );
 
-            if ($infoResponse['http_code'] !== 200) {
-                $this->log("Catch error while trying to sync information about Invoice (ID: {$invoice->getId()})."
-                    ." Error: {$infoResponse['data']} | Skipped it!", ['guid' => $guid]);
+        $infoResponse = $this->b2bApi->getOrdersInvoicesInfo($invoices);
+
+        $data = $infoResponse['data'];
+
+        if ($infoResponse['http_code'] !== 200) {
+            $this->log('Catch error while trying to sync information about Invoices (IDS: '.$str_ids.').'
+                .' Error: '.$data.' | Skipped it!');
+            return;
+        }
+
+        $good_ids = array_map(
+            function ($info) {
+                return $info['id'];
+            },
+            array_values($data)
+        );
+
+        $bad_ids = [];
+
+        foreach ($invoices as $invoice){
+            if (!in_array($invoice['id'], $good_ids)) {
+                $bad_ids[] = $invoice['id'];
                 continue;
             }
 
-            $invoice->setNumber($infoResponse['data']['order_number']);
-            $invoice->setOrderStatusGuid($infoResponse['data']['order_status_guid']);
-            $invoice->setStatusGuid($infoResponse['data']['payment_status_guid']);
-            $invoice->setStatusText($infoResponse['data']['payment_status']);
-            $invoice->setAccountTarget($infoResponse['data']['account_target']);
-
-            if ($infoResponse['data']['order_amount']) {
-                $invoice->setAmount($infoResponse['data']['order_amount'] / 100);
-            }
+            $id = $data[$invoice['guid']]['id'];
+            $info = $data[$invoice['guid']]['info'];
+            $invoice = $this->em->getReference(Invoice::class, $id);
+            $invoice->setNumber($info['order_number']);
+            $invoice->setOrderStatusGuid($info['order_status_guid']);
+            $invoice->setStatusGuid($info['payment_status_guid']);
+            $invoice->setStatusText($info['payment_status']);
+            $invoice->setAccountTarget($info['account_target']);
+            $invoice->setAmount($info['order_amount'] / 100);
 
             $this->em->persist($invoice);
             $this->em->flush();
+
+        }
+
+        if (!empty($bad_ids)) {
+            $this->log('Not found invoices info (IDS: '
+                .implode(
+                    ', ',
+                    array_map(
+                        function ($invoice) {
+                            return '"'.$invoice['id'].'"';
+                            },
+                        $bad_ids
+                    )
+                ).')');
         }
     }
 

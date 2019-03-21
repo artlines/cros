@@ -10,6 +10,7 @@ use App\Entity\Participating\Organization;
 use App\Entity\Participating\User;
 use App\Repository\ConferenceOrganizationRepository;
 use App\Repository\InvoiceRepository;
+use App\Repository\UserRepository;
 use App\Service\Mailer;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -33,13 +34,56 @@ class ConferenceOrganizationController extends ApiController
      */
     public function getAll()
     {
+
         /** @var ConferenceOrganizationRepository $confOrgRepo */
         $confOrgRepo = $this->em->getRepository(ConferenceOrganization::class);
         /** @var InvoiceRepository $invoiceRepo */
         $invoiceRepo = $this->em->getRepository(Invoice::class);
+        /** @var UserRepository $userRepo */
+        $userRepo = $this->em->getRepository(User::class);
+
+        $params = $this->requestData;
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        /**
+         * Check user role
+         *
+         * If ROLE_ADMINISTRATOR then nothing
+         * If ROLE_SALES_MANAGER then set invited_by to array of self and subordinate users ids
+         * If ROLE_CMS_USER then set invited by to array with self id
+         */
+        $roles = $user->getRoles();
+
+        if (in_array('ROLE_ADMINISTRATOR', $roles)) {
+            // nothing
+        } elseif (in_array('ROLE_SALES_MANAGER', $roles)) {
+            $subordinateIds = [];
+            $subordinates = $userRepo->findNagSubordinate($user->getId());
+            foreach ($subordinates as $subordinate) {
+                $subordinateIds[] = $subordinate['id'];
+            }
+
+            if (isset($params['invited_by'])) {
+                if (!is_array($params['invited_by'])) {
+                    $params['invited_by'] = [$params['invited_by']];
+                }
+
+                $filtered = array_filter($params['invited_by'], function($e) use ($subordinateIds) {
+                    return in_array($e, $subordinateIds);
+                });
+
+                $params['invited_by'] = $filtered;
+            } else {
+                $params['invited_by'] = $subordinateIds;
+            }
+        } else {
+            $params['invited_by'] = $user->getId();
+        }
 
         /** @var ConferenceOrganization[] $conferenceOrganizations */
-        list($items, $totalCount) = $confOrgRepo->searchByNative($this->requestData);
+        list($items, $totalCount) = $confOrgRepo->searchByNative($params);
 
         $invoices = $invoiceRepo->getInvoicesGroupByConfOrganization();
 
@@ -207,12 +251,18 @@ class ConferenceOrganizationController extends ApiController
             return $this->notFound('Conference organization not found.');
         }
 
-        /** Check for invoices and members */
-        if ($conferenceOrganization->getInvoices()->count()) {
-            return $this->badRequest('У организации есть прикрепленные счета. Удалите их прежде чем удалить организацию.');
-        }
+        /** Check for members */
         if ($conferenceOrganization->getConferenceMembers()->count()) {
             return $this->badRequest('У организации есть прикрепленные участники. Удалите их прежде чем удалять организацию.');
+        }
+
+        /**
+         * Remove invoices
+         * @var Invoice[] $invoices
+         */
+        $invoices = $conferenceOrganization->getInvoices();
+        foreach ($invoices as $invoice) {
+            $this->em->remove($invoice);
         }
 
         $this->em->remove($conferenceOrganization);
