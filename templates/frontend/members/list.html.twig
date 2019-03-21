@@ -10,7 +10,7 @@
     {% else %}
         <div class="row">
         {% for key,conferenceOrganization in conferenceOrganizations %}
-            <div class="col-lg-2 col-md-4">
+            <div class="col-lg-2 col-md-4" style="min-width: 210px !important">
                 <div class="card mb-3 mt-3 box-shadow">
                     <div class="card-body " >
                         <div class="Aligner" style="height: 125px; width: auto; text-align: center;">
@@ -21,6 +21,7 @@
                              alt="{{ conferenceOrganization.organization.name }}"
                              title="{{ conferenceOrganization.organization.name }}"
                             />
+
                             {%  else %}
                                 <img  style="max-height: 100%; max-width: 100%;"
                                       src="/favicon.ico"
@@ -30,15 +31,24 @@
                     </div>
                         <div class="card-body" >
                         <p class="card-text"
-                           style="height: 3em; line-height: 1em; overflow: hidden;"
-                           title="{{ conferenceOrganization.organization.name }}"
+                          style="height: 3em; line-height: 1em; overflow: hidden;
+                          {% if conferenceOrganization.organization.name|length > 14 %}
+                            font-size: 0.8rem
+                          {% endif %}"
+
+                          title="{{ conferenceOrganization.organization.name }}"
                         >
                             {{ conferenceOrganization.organization.name }}
                         </p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
                             </div>
-                            <small class="text-muted">{{conferenceOrganization.organization.city|default('---') }}</small>
+                            <small
+                                    class="text-muted"
+                                   style="text-align: center; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;"
+                                    title="{{conferenceOrganization.organization.city|default('---') }}"
+                            >
+                                {{conferenceOrganization.organization.city|default('---') }}</small>
                         </div>
                     </div>
                 </div>
