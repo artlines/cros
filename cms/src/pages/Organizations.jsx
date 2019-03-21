@@ -138,7 +138,7 @@ class Organizations extends React.Component {
                                 },
                                 ...map(managers, i => ({
                                     value: i.id,
-                                    label: `${i.first_name} ${i.last_name}`
+                                    label: `${i.last_name} ${i.first_name}`
                                 }))
                             ]}
 
