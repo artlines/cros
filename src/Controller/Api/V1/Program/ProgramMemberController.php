@@ -36,6 +36,8 @@ class ProgramMemberController extends ApiController
      * @Route("program_member/new", name="program_member__new", methods={"POST"})
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param FileManager $fileManager
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function new(FileManager $fileManager)
     {
@@ -63,6 +65,11 @@ class ProgramMemberController extends ApiController
             return $this->notFound('Conference member with ID '.$conferenceMemberId.' not found.');
         }
 
+        /** Check that member has been already added as {$type} */
+        if ($this->em->getRepository(ProgramMember::class)->findOneBy(['type' => $type, 'conferenceMember' => $conferenceMember])) {
+            return $this->badRequest('Пользователь уже добавлен.');
+        }
+
         $programMember = new ProgramMember();
         $programMember->setConferenceMember($conferenceMember);
         $programMember->setDescription($description);
@@ -86,6 +93,7 @@ class ProgramMemberController extends ApiController
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
      * @param $id
+     * @param FileManager $fileManager
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function edit($id, FileManager $fileManager)
