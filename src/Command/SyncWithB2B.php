@@ -323,6 +323,7 @@ class SyncWithB2B extends Command
      * Make ties between users and contractors
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @author Ivan Slyusar i.slyusar@nag.ru
      */
     private function _syncUsersToContractor()
     {
@@ -333,55 +334,96 @@ class SyncWithB2B extends Command
         $conferenceOrganizations = $conferenceOrganizationRepo->findWhereInnKppNotInvalidAndB2bGuidExist(self::CROS_YEAR);
         $this->log("Found ".count($conferenceOrganizations)." conference organizations which will be synchronized.");
 
-        /** @var ConferenceOrganization $conferenceOrganization */
-        foreach ($conferenceOrganizations as $conferenceOrganization) {
-            $organization = $conferenceOrganization->getOrganization();
-            $org_b2bGuid = $organization->getB2bGuid();
+        $org_ids = [];
 
-            $this->output->writeln("*");
-            $this->log("[Process organization (ID: ".$organization->getId().") with b2b_guid `$org_b2bGuid`.]");
+        $crosUsers = [];
 
-            $conferenceMembers = $conferenceOrganization->getConferenceMembers();
+        $update_users = [];
 
-            $crosUsers = [];
-            foreach ($conferenceMembers as $conferenceMember) {
-                $user = $conferenceMember->getUser();
-                $user_b2bGuid = $user->getB2bGuid();
-                $this->log("Found participating user from organization (ID: ".$organization->getId().") with b2b_guid `$user_b2bGuid`.");
-                $crosUsers[] = $user_b2bGuid;
-            }
+        // Собираем гуиды организаций и их пользователей для синхронизации
+        $org_guids = array_map(
+            function ($conf_org) use (&$org_ids, &$crosUsers, &$update_users) {
+                /** @var ConferenceOrganization $conf_org */
+                /** @var Organization $org */
+                $org = $conf_org->getOrganization();
+                $org_ids[] = $org->getId();
+                $conf_members = $conf_org->getConferenceMembers();
+                foreach ($conf_members as $conf_member) {
+                    $conf_user = $conf_member->getUser();
+                    $crosUsers[] = $conf_user->getB2bGuid();
+                    $update_users[$org->getB2bGuid()][] = $conf_user->getB2bGuid();
+                }
+                return $org->getB2bGuid();
+            },
+            $conferenceOrganizations
+        );
 
-            $b2bUsersResponse = $this->b2bApi->getContractorUsers($org_b2bGuid);
-            if ($b2bUsersResponse['http_code'] !== 200) {
-                $this->log("Catch error while getting contractor users from B2B to Organization. Skipped it!", [
-                    'id'        => $organization->getId(),
-                    'b2b_guid'  => $organization->getB2bGuid(),
-                    'error'     => $b2bUsersResponse['data'],
-                ]);
-                continue;
-            }
+        $str_ids = implode(
+            ', ',
+            array_map(function ($id) {
+                return '"'.$id.'"';
+            }, $org_ids
+            )
+        );
 
-            $b2bUsers = $b2bUsersResponse['data']['users_guids'];
-            $needAddUsers = array_diff($crosUsers, $b2bUsers);
+        $str_guids = implode(
+            ', ',
+            array_map(function ($guid) {
+                return '"'.$guid.'"';
+            }, $crosUsers)
+        );
 
-            if (empty($needAddUsers)) {
-                $this->log("Organization (ID: ".$organization->getId().") users yet synchronized to B2B. Skipped it!");
-                continue;
-            }
+        $this->output->writeln("*");
+        $this->log('Process organizations (IDS: '.$str_ids.')');
+        $this->log('users (GUIDS: '.$str_guids.')');
 
-            $updateResponse = $this->b2bApi->updateContractorUsers($org_b2bGuid, ['users_guids' => $needAddUsers]);
-            if ($updateResponse['http_code'] !== 200) {
-                $this->log("Catch error while update contractor users on B2B. Skipped it!", [
-                    'id'                => $organization->getId(),
-                    'b2b_guid'          => $organization->getB2bGuid(),
-                    'need_add_users'    => $needAddUsers,
-                    'error'             => $b2bUsersResponse['data'],
-                ]);
-                continue;
-            }
+        // Получаем привязанных к компании пользователей на магазине
+        $b2bUsersResponse = $this->b2bApi->getContractorsUsers($org_guids);
 
-            $this->log("Updated contractor users for Organization (ID: ".$organization->getId().") with b2b_guid `$org_b2bGuid`.");
+        if ($b2bUsersResponse['http_code'] !== 200) {
+            $this->log("Catch error while getting contractor users from B2B to Organization. Skipped it!", [
+                'error'     => $b2bUsersResponse['data'],
+            ]);
+            return;
         }
+
+        $shop_user_guids = $b2bUsersResponse['data'];
+
+        // Получаем непривязанных пользователей
+        $needAddUsers = array_diff($crosUsers, $shop_user_guids);
+
+        if (empty($needAddUsers)) {
+            $this->log("Users yet synchronized to b2b");
+            return;
+        }
+
+        $updated_org_count = 0;
+        $updated_users_count = 0;
+
+        // Привязываем пользователей к организациям
+        foreach ($update_users as $org_guid => $users) {
+            $update_users_guids = [];
+            foreach ($users as $user) {
+                if (in_array($user, $needAddUsers)) {
+                    $update_users_guids[] = $user;
+                }
+            }
+            if (!empty($update_users_guids)) {
+                $updateResponse = $this->b2bApi->updateContractorUsers($org_guid, ['users_guids' => $update_users_guids]);
+                if ($updateResponse['http_code'] !== 200) {
+                    $this->log("Catch error while update contractor users on B2B. Skipped it!", [
+                        'b2b_guid' => $org_guid,
+                        'need_add_users' => $update_users_guids,
+                        'error' => $b2bUsersResponse['data'],
+                    ]);
+                    continue;
+                }
+                $updated_org_count++;
+                $updated_users_count += count($update_users_guids);
+            }
+        }
+
+        $this->log("Updated ".$updated_org_count." of ".count($org_guids)." Organizations with ".$updated_users_count." users");
     }
 
     /**
