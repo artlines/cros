@@ -40,7 +40,7 @@ class ProgramMemberTable extends React.PureComponent {
                                 <img style={{maxWidth: '180px'}} src={item.photo_original}/>
                             </TableCell>
                             <TableCell>
-                                <b>ФИО:</b> {item.last_name} {item.first_name}
+                                <b>ФИО:</b> {item.last_name} {item.first_name} {item.middle_name}
                                 <br/>
                                 <b>Организация:</b> {item.org_name}
                             </TableCell>
@@ -71,6 +71,7 @@ ProgramMemberTable.propTypes = {
             id:             PropTypes.number.isRequired,
             last_name:      PropTypes.string.isRequired,
             first_name:     PropTypes.string.isRequired,
+            middle_name:    PropTypes.string,
             org_name:       PropTypes.string.isRequired,
             photo_original: PropTypes.string,
             publish:        PropTypes.bool.isRequired,

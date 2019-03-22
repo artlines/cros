@@ -8,6 +8,7 @@ import Invite from "../pages/Invite";
 import Users from "../pages/Users";
 import Conferences from "../pages/Conferences";
 import Program from "../pages/Program";
+import Report from "../pages/Report";
 import NotFound from "../pages/NotFound";
 import {
     PeopleOutlined as People,
@@ -18,6 +19,7 @@ import {
     SettingsApplicationsOutlined as SettingsApplications,
     EventSeatOutlined as EventSeat,
     EventNoteOutlined as EventNote,
+    FilterListOutlined as FilterList,
 } from "@material-ui/icons";
 
 export default [
@@ -121,6 +123,17 @@ export default [
             title: "Пользователи",
         },
         role: "ROLE_ADMINISTRATOR",
+    },
+    {
+        path: "/cms/report",
+        Component: Report,
+        exact: true,
+        title: "Отчеты",
+        menuItem: {
+            Icon: FilterList,
+            title: "Отчеты",
+        },
+        role: "ROLE_SETTLEMENT_MANAGER",
     },
     {
         path: "*",

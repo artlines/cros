@@ -30,6 +30,7 @@ class ProgramMemberRepository extends EntityRepository
                    pcm.id as conference_member_id,
                    pm.last_name,
                    pm.first_name,
+                   pm.middle_name,
                    po.name as org_name,
                    ppm.photo_original,
                    ppm.publish,
