@@ -6,6 +6,6 @@
 #}{{ row['last_name'] }} {{ row['middle_name'] }} {{ row['first_name'] }};{#
 #}{{ row['post'] }};{{ row['phone'] }};{{ row['email'] }};{{ row['title'] }};{#
 #}{{ row['cost'] }};{{ row['mngr_name'] }};{{ row['number'] }};{{ row['summa'] }};{#
-#}{{ row['status']|replace({'"': '', "'": '', ",": '|'}) }};{{ row['notes']|replace({'"': '', "'": '', '«': '', '»': '', ',': '', '&': 'and'}) }}
+#}{{ row['status']|replace({'"': '', "'": '', ",": '|'}) }};{{ row['notes']|replace({"\r\n": ' | '})|replace({'"': '', "'": '', '«': '', '»': '', ',': '', '&': 'and'}) }}
     {% endfor %}{#
 #}{% endblock %}
