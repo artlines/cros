@@ -34,10 +34,10 @@
 <style>
     .home_content__marked-text{
         display: inline-block;
-        -webkit-transform-origin: 20% 40%;
-        -ms-transform-origin: 20% 40%;
-        transform-origin: 0 65%;
-        transform: scaleY(1.6);
+        /*-webkit-transform-origin: 20% 40%;*/
+        /*-ms-transform-origin: 20% 40%;*/
+        /*transform-origin: 0 65%;*/
+        /*transform: scaleY(1.6);*/
         color: inherit !important;
         margin-left: 37px;
     }
@@ -55,11 +55,13 @@
     .home_content__marked-block{
         font-family: 'BaronNeue' , Helvetica, Arial, sans-serif;
     }
-    .home_content__marked-block .scale{
+
+    .scale{
+        display: inline-block;
         text-transform: uppercase;
         transform-origin: 0 65%;
-        transform: scaleX(0.6);
-        width: calc(100% / 0.6);
+        transform: scaleY(1.5);
+        /*line-height: 150% !important;*/
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
@@ -195,7 +197,8 @@
             <div class="container u-bg-overlay__inner mb-0 home_content__info_container"
                  style="
                  margin-right:0;
-                 width:450px;
+                 width:30%;
+                 min-width: 320px;
                  padding: 80px 0 0;
                  height:100%;
                  margin-top: 0;
@@ -205,34 +208,34 @@
             >
                 <div style="padding: 20px; height:100%;  background-color: rgba(255, 255, 255, .7)!important; " >
                 <div class="row cs-mb-0 d-flex flex-column flex-md-row justify-content-around h-75 cs-mb-100--md">
-                    <div class="col-md-12 text-left d-flex flex-column align-items-baseline">
+                    <div class="col-md-12 text-center text-md-left d-flex flex-column align-items-baseline">
                         <div class="d-flex flex-column align-items-baseline home_content__marked-block">
                             <div class="scale cs-font-size-40 cs-font-size-40--md cs-font-size-60--xl cs-font-size-80--xxl cs-font-weight-700 cs-line-height-1">
                                 КРОС-2019
                             </div>
-                            <div class="scale cs-font-size-20 cs-font-size-20--xl cs-font-size-35--xxl cs-font-weight-700 cs-line-height-1">
+                            <div class="scale cs-font-size-20 cs-font-size-20--xl cs-font-size-35--xxl cs-font-weight-700 cs-line-height-2">
                                 22-25 мая
                             </div>
-                            <div class="scale cs-font-size-default cs-font-size-20--xl">
+                            <div class="scale cs-font-size-default cs-font-size-16--xl">
                                 г. Сочи, Красная Поляна, отель "Поляна 1389"
                             </div>
                             <div class="cs-mb-20">
-                                <a class="btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-12 cs-color-white cs-color-white--hover cs-bg-2019 cs-bg-2019--hover cs-brd-none rounded-0 cs-px-20 cs-py-15 mb-0" href="{{ path('registration') }}">Регистрация</a>
+                                <a class="btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-12 cs-color-white cs-color-white--hover cs-bg-2019 cs-bg-2019--hover cs-brd-none rounded-0 cs-px-20 cs-py-15 mb-0 cs-mt-15" href="{{ path('registration') }}">Регистрация</a>
                                 {#<a class="btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-12 cs-color-white cs-color-white--hover cs-bg-2019 cs-bg-2019--hover cs-brd-none rounded-0 cs-px-20 cs-py-15 mb-0 cs-mt-15" href="https://www.youtube.com/watch?v=YIOyXgZFSA8">Смотреть видео</a>#}
-                                <a href="https://www.youtube.com/watch?&playlist=YIOyXgZFSA8&v=YIOyXgZFSA8&rel=0&controls=0&showinfo=0&autoplay=1" class="js-fancybox btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-12 cs-color-white cs-color-white--hover cs-bg-2019 cs-bg-2019--hover cs-brd-none rounded-0 cs-px-20 cs-py-15 mb-0">Смотреть видео</a>
+                                <a href="https://www.youtube.com/watch?&playlist=YIOyXgZFSA8&v=YIOyXgZFSA8&rel=0&controls=0&showinfo=0&autoplay=1" class="js-fancybox btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-12 cs-color-white cs-color-white--hover cs-bg-2019 cs-bg-2019--hover cs-brd-none rounded-0 cs-px-20 cs-py-15 mb-0 cs-mt-15">Смотреть видео</a>
                             </div>
-                            <div class="cs-font-size-20 cs-font-size-20--md cs-font-size-30--xl">
-                                <div class="scale">
-                                <span class="home_content__marked-text cs-font-size-40--xl ">3</span>
+                            <div class="cs-font-size-16 cs-font-size-16--md  cs-line-height-2">
+                                <div class="">
+                                <span class="scale home_content__marked-text cs-font-size-20--md cs-font-size-20--xl ">3</span>
                                 дня
-                                <span class="home_content__marked-text cs-font-size-40--xl">800+</span>
+                                <span class="scale home_content__marked-text cs-font-size-20--md cs-font-size-20--xl">800+</span>
                                 участников
-                                <span class="home_content__marked-text cs-font-size-40--xl">30+</span>
+                                <span class="scale home_content__marked-text cs-font-size-20--md cs-font-size-20--xl">30+</span>
                                 докладчиков
                                 </div>
                             </div>
-                            <hr class="" />
-                            <div class="scale cs-font-tr cs-font-size-default cs-font-size-20--xl cs-font-size-27--xxl cs-font-weight-700 cs-line-height-1">
+                            <hr class="cs-mb-20" />
+                            <div class="scale cs-font-tr cs-font-size-default cs-font-size-16--xl cs-font-weight-700 cs-line-height-1">
                                 <span>Трансформируйся для побед</span>
                             </div>
                             {#<p class="cs-font-size-20 mb-0 cs-color-white">#}
