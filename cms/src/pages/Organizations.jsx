@@ -177,12 +177,12 @@ class Organizations extends React.Component {
                     <Grid item xs={12} sm={6} lg={3}>
                         <FormControl>
                             <FormControlLabel
-                                label={"Нет ответственного"}
+                                label={"Нет представителя"}
                                 control={
-                                    <Switch onChange={this.handleFilterChange('without_manager')} />
+                                    <Switch onChange={this.handleFilterChange('without_representative')} />
                                 }
                             />
-                            <FormHelperText>Не указан ответственный менеджер</FormHelperText>
+                            <FormHelperText>Только те, где не указан ни один представитель</FormHelperText>
                         </FormControl>
                     </Grid>
                     <Grid item xs={12}>
