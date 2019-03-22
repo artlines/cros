@@ -1,15 +1,22 @@
 
 {% if mainPage %}
 	{% set cd_digit_container_style = 'd-inline-block cs-font-size-12 cs-brd-left cs-px-40--md cs-py-15' %}
-    {% set cd_digit_style = 'cs-font-size-15 cs-font-size-20--md  cs-line-height-1 cs-font-size-20--md cs-font-weight-700 cs-mb-5' %}
+    {% set cd_digit_style = 'num cs-font-size-50--xxl' %}
 {% else %}
     {% set cd_digit_container_style = 'd-inline-block cs-font-size-12 cs-brd-left cs-px-5 cs-py-15' %}
     {% set cd_digit_style = 'cs-font-size-15 cs-font-size-20--md cs-font-weight-300 cs-line-height-1 cs-mb-5' %}
 {% endif %}
 
 {% if text %}
-	<div class="{% if mainPage %}cs-font-size-21 scale cs-color-black cs-font-weight-700 text-center text-md-left{% else %}cs-font-size-18 text-right text-md-center{% endif %} text-uppercase">
-		{{ text }}
+	<div class="{% if mainPage %}
+	cs-font-size-60--xxl cs-font-weight-300
+{% else %}
+	cs-font-size-18 text-right text-md-center
+{% endif %}
+">
+		<div class="cs-font-size-60--xxl cs-font-weight-300">
+			<span >{{ text }}</span>
+		</div>
 	</div>
 {% endif %}
 <!-- Countdown v4 -->
@@ -28,19 +35,19 @@
 		 data-minutes-format="%M"
 		 data-seconds-format="%S">
 		<div class=" {{ cd_digit_container_style }}">
-			<span class="scale js-cd-days {{ cd_digit_style }}">0</span>
-			<span>Дней</span>
+			<span class="js-cd-days {{ cd_digit_style }}">0</span>
+			<span class="name">Дней</span>
 		</div>
 		<div class="{{ cd_digit_container_style }}">
-			<span class="scale js-cd-hours {{ cd_digit_style }}">0</span>
-			<span>Часов</span>
+			<span class="js-cd-hours {{ cd_digit_style }}">0</span>
+			<span class="name">Часов</span>
 		</div>
 		<div class="{{ cd_digit_container_style }}">
-			<span class="scale js-cd-minutes {{ cd_digit_style }}">0</span>
+			<span class="js-cd-minutes {{ cd_digit_style }}">0</span>
 			<span>Минут</span>
 		</div>
 		<div class="{{ cd_digit_container_style }}">
-			<span class="scale js-cd-seconds {{ cd_digit_style }}">0</span>
+			<span class="js-cd-seconds {{ cd_digit_style }}">0</span>
 			<span>Секунд</span>
 		</div>
 	</div>

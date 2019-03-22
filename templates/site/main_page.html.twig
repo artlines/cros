@@ -152,6 +152,10 @@
     .num {
         color: #37536b;
     }
+
+    .name {
+        padding-right: 30px;
+    }
     .mainBlock h2{
         color: #37536b;
         padding: 0;
@@ -211,39 +215,46 @@
             <div style="/*background:grey*/" class="d-flex align-items-end flex-column">
                 <div class="mainBlock text-uppercase">
 
-                <h2 class="scale cs-font-size-40 cs-font-size-40--md cs-font-size-60--xl cs-font-size-100--xxl">
-                    КРОС-2019
-                </h2>
-                <div class="scale cs-font-size-20 cs-font-size-60--xxl">
-                    22-25 мая
-                </div>
-                <div class="scale cs-font-size-20 cs-font-size-20--xxl">
-                    г. Сочи, Красная Поляна, отель "Поляна 1389"
-                </div>
-                <div class="cs-mb-20">
-                    <a class="btn btn-lg text-uppercase u-btn-green cs-font-weight-700
-                    cs-font-size-12 cs-color-white cs-color-white--hover
-                    cs-bg-2019 cs-bg-2019--hover cs-brd-none
-                    rounded-0 cs-px-20 cs-py-15 mb-0" href="{{ path('registration') }}">Регистрация</a>
-                    {#<a class="btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-12 cs-color-white cs-color-white--hover cs-bg-2019 cs-bg-2019--hover cs-brd-none rounded-0 cs-px-20 cs-py-15 mb-0 cs-mt-15" href="https://www.youtube.com/watch?v=YIOyXgZFSA8">Смотреть видео</a>#}
-                    <a href="https://www.youtube.com/watch?&playlist=YIOyXgZFSA8&v=YIOyXgZFSA8&rel=0&controls=0&showinfo=0&autoplay=1"
-                       class="js-fancybox btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-12 cs-color-white cs-color-white--hover cs-bg-2019 cs-bg-2019--hover cs-brd-none rounded-0 cs-px-20 cs-py-15 mb-0">Смотреть видео</a>
-                </div>
-                <div class="cs-mt-5">
-                    <div class="" >
-                        <span class="num cs-font-size-50--xxl">3</span><span class="name">дня</span>
-                        <span class="num cs-font-size-50--xxl">800+</span><span class="name">участников</span>
-                        <span class="num cs-font-size-50--xxl">30+</span><span class="name">докладчиков</span>
+                    <h2 class="scale cs-font-size-40 cs-font-size-40--md cs-font-size-60--xl cs-font-size-100--xxl">
+                        КРОС-2019
+                    </h2>
+                    <div class="scale cs-font-size-20 cs-font-size-60--xxl">
+                        22-25 мая
+                    </div>
+                    <div class="scale cs-font-size-20 cs-font-size-20--xxl">
+                        г. Сочи, Красная Поляна, отель "Поляна 1389"
+                    </div>
+                    <div class="cs-mb-20">
+                        <a class="btn btn-lg text-uppercase u-btn-green cs-font-weight-700
+                        cs-font-size-12 cs-color-white cs-color-white--hover
+                        cs-bg-2019 cs-bg-2019--hover cs-brd-none
+                        rounded-0 cs-px-20 cs-py-15 mb-0" href="{{ path('registration') }}">Регистрация</a>
+                        {#<a class="btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-12 cs-color-white cs-color-white--hover cs-bg-2019 cs-bg-2019--hover cs-brd-none rounded-0 cs-px-20 cs-py-15 mb-0 cs-mt-15" href="https://www.youtube.com/watch?v=YIOyXgZFSA8">Смотреть видео</a>#}
+                        <a href="https://www.youtube.com/watch?&playlist=YIOyXgZFSA8&v=YIOyXgZFSA8&rel=0&controls=0&showinfo=0&autoplay=1"
+                           class="js-fancybox btn btn-lg text-uppercase u-btn-green cs-font-weight-700 cs-font-size-12 cs-color-white cs-color-white--hover cs-bg-2019 cs-bg-2019--hover cs-brd-none rounded-0 cs-px-20 cs-py-15 mb-0">Смотреть видео</a>
+                    </div>
+                    <div class="cs-mt-5">
+                        <div class="" >
+                            <span class="num cs-font-size-50--xxl">3</span><span class="name">дня</span>
+                            <span class="num cs-font-size-50--xxl">800+</span><span class="name">участников</span>
+                            <span class="num cs-font-size-50--xxl">30+</span><span class="name">докладчиков</span>
+                        </div>
+                    </div>
+                    <hr class="cs-mb-10" />
+                    <div class="cs-font-size-60--xxl cs-font-weight-300">
+                        <span >Трансформируйся для побед</span>
+                    </div>
+                    <div style="padding-top: 22rem; padding-bottom: 10rem">
+                    {#<p class="cs-font-size-20 mb-0 cs-color-white">#}
+                    {#</p>#}
+                    {{ render(controller('App\\Controller\\Site\\DefaultController:countdown', { mainPage: true })) }}
+                    {#<p class="cs-font-size-27 mb-0 cs-color-white text-right">nag.ru представляет</p>#}
+                    {#<h1 class="text-right text-uppercase h2 cs-font-weight-700 cs-font-size-40 cs-font-size-60--md cs-color-white">#}
+                    {#КРОС-2019#}
+                    {#</h1>#}
+                    {#<p class="cs-font-size-27 cs-mb-30 cs-mb-70--md cs-color-white text-right">22-24 мая 2019</p>#}
                     </div>
                 </div>
-                <hr class="cs-mb-10" />
-                <div class="cs-font-size-60--xxl cs-font-weight-300">
-                    <span >Трансформируйся для побед</span>
-                </div>
-                {#<p class="cs-font-size-20 mb-0 cs-color-white">#}
-                {#</p>#}
-                </div>
-
             </div>
         </div>
 
