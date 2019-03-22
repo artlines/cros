@@ -9,10 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
  * Class ProgramMember
  * @package App\Entity\Participating
  *
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\Program\ProgramMemberRepository")
  * @ORM\Table(schema="program", name="program_member")
  */
-class Member
+class ProgramMember
 {
     const TYPE_SPEAKER      = 'speaker';
     const TYPE_COMMITTEE    = 'committee';
