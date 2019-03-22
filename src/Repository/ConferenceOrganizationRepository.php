@@ -161,33 +161,21 @@ class ConferenceOrganizationRepository extends EntityRepository
                   OR tms.total_members != tms.in_room_members
                 )";
         }
-        // проверяем выбор для "не определено"
-        // Исключаем его, если указано.
-        // Если конструкция более сложная, тогда исключаем её из массива данных
 
-        $closeOR = false;
-
-        if (isset($data['invited_by'])) {
-            if (false !== $key = array_search(-1, $data['invited_by'])) {
-                unset($data['invited_by'][$key]);
-                if( 0 == count($data['invited_by']) ){
-                    unset($data['invited_by']);
-                    $where .= " AND tcoi.invited_by_id IS NULL";
-                } else {
-                    $where .= " AND ( tcoi.invited_by_id IS NULL OR TRUE ";
-                    $closeOR = ")";
-                }
-            }
-        }
         /** Check invited_by filter */
         if (isset($data['invited_by'])) {
             $_invited_by = is_array($data['invited_by']) ? $data['invited_by'] : [$data['invited_by']];
-            $where .= " AND tcoi.invited_by_id IN (".implode($_invited_by, ', ').")";
-        }
 
-        // Закрывавающая конструкция, если определена
-        if ($closeOR){
-            $where .= $closeOR;
+            if (false !== $key = array_search(-1, $_invited_by)) {
+                unset($_invited_by[$key]);
+
+                if (0 === count($_invited_by)) {
+                    unset($_invited_by);
+                    $where .= " AND tcoi.invited_by_id IS NULL";
+                } else {
+                    $where .= " AND (tcoi.invited_by_id IS NULL OR tcoi.invited_by_id IN (".implode($_invited_by, ', ')."))";
+                }
+            }
         }
 
         /** Check search string */
@@ -201,9 +189,9 @@ class ConferenceOrganizationRepository extends EntityRepository
             $where .= " AND tcs.comments_count != 0";
         }
 
-        /** Check flag that show only with comments */
-        if (isset($data['without_manager'])) {
-            $where .= " AND pco.invited_by IS NULL";
+        /** Check flag that show only without representative */
+        if (isset($data['without_representative'])) {
+            $where .= " AND tms.representative_members = 0";
         }
 
         /** Check stage filter */
