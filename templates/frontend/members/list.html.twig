@@ -21,6 +21,7 @@
                              alt="{{ conferenceOrganization.organization.name }}"
                              title="{{ conferenceOrganization.organization.name }}"
                             />
+
                             {%  else %}
                                 <img  style="max-height: 100%; max-width: 100%;"
                                       src="/favicon.ico"
@@ -28,17 +29,26 @@
                             {%  endif %}
                         </div>
                     </div>
-                        <div class="card-body" >
+                        <div class="card-body" style="padding-left: 1rem; padding-right:0.25rem">
                         <p class="card-text"
-                           style="height: 3em; line-height: 1em; overflow: hidden;"
-                           title="{{ conferenceOrganization.organization.name }}"
+                          style="height: 3rem; line-height: 1rem; overflow: hidden;
+                          {% if conferenceOrganization.organization.name|length > 14 %}
+                            font-size: 0.8em
+                          {% endif %}"
+
+                          title="{{ conferenceOrganization.organization.name }}"
                         >
                             {{ conferenceOrganization.organization.name }}
                         </p>
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
                             </div>
-                            <small class="text-muted">{{conferenceOrganization.organization.city|default('---') }}</small>
+                            <small
+                                    class="text-muted"
+                                   style="padding-right: 0.75rem; text-align: center; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;"
+                                    title="{{conferenceOrganization.organization.city|default('---') }}"
+                            >
+                                {{conferenceOrganization.organization.city|default('---') }}</small>
                         </div>
                     </div>
                 </div>
