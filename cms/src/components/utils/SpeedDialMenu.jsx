@@ -7,14 +7,13 @@ import {
 } from '@material-ui/lab';
 
 const style = {
-    position: 'absolute',
-    bottom: '20px',
+    position: 'fixed',
+    bottom: '30px',
     right: '20px',
 };
 
-function SpeedDialMenu({ actions }) {
+function SpeedDialMenu({ actions, hidden }) {
     const [open, setOpen] = React.useState(false);
-    const [hidden, setHidden] = React.useState(false);
 
     function handleOpen() {
         !hidden && setOpen(true);
