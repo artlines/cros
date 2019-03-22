@@ -8,6 +8,7 @@ import {
     TableBody,
     TableRow,
     TableCell,
+    TextField,
     Typography,
     Tooltip,
 } from '@material-ui/core';
@@ -21,6 +22,7 @@ import map from "lodash/map";
 import ConfirmDialog from "../components/utils/ConfirmDialog";
 import API from '../libs/api';
 import Money from "../components/utils/Money";
+import LinearProgress from "../components/utils/LinearProgress";
 import abode from "../actions/abode";
 
 const request = new API();
@@ -34,7 +36,10 @@ class Invite extends React.Component {
                 open: false,
                 initialValues: {},
             },
+            search: null,
         };
+
+        this.searchTimeout = null;
     }
 
     componentDidMount() {
@@ -43,13 +48,22 @@ class Invite extends React.Component {
     }
 
     update = () => {
-        this.props.fetchOrganizations({});
+        const { search } = this.state;
+        this.props.fetchOrganizations({search});
     };
 
     reInvite = (id) => request.get(`conference_organization/re_invite/${id}`);
 
     openForm = () => this.setState({form: {...this.state.form, open: true}});
     closeForm = () => this.setState({form: {...this.state.form, open: false}});
+
+    handleSearchChange = event => {
+        this.setState({search: event.target.value});
+        clearTimeout(this.searchTimeout);
+        this.searchTimeout = setTimeout(() => {
+            this.update();
+        }, 350);
+    };
 
     render() {
         const { organization: { items, isFetching } } = this.props;
@@ -64,10 +78,20 @@ class Invite extends React.Component {
                     onSuccess={this.update}
                 />
                 <Grid container spacing={16}>
+                    <Grid item xs={12}>
+                        <LinearProgress show={isFetching}/>
+                    </Grid>
                     <Grid xs={12} item>
                         <Grid container justify={`space-between`} alignItems={`center`}>
                             <Grid item>
-                                <Typography variant={`h4`}>Рассылка приглашений</Typography>
+                                <TextField
+                                    name={`search`}
+                                    fullWidth
+                                    label={`Поиск`}
+                                    helperText={`Поиск по наименованию организации, ИНН или ФИО сотрудника`}
+                                    InputLabelProps={{shrink: true}}
+                                    onChange={this.handleSearchChange}
+                                />
                             </Grid>
                             <Grid item>
                                 <FabButton
