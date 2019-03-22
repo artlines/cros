@@ -45,6 +45,16 @@
         margin-left: 0;
     }
 
+    /*@font-face {*/
+        /*font-family: 'BaronNeue';*/
+        /*font-style: normal;*/
+        /*font-weight: normal;*/
+        /*src: local('BaronNeue'), url('assets/fonts/Baron Neue Black.otf') format('opentype');*/
+    /*}*/
+
+    .home_content__marked-block{
+        font-family: 'BaronNeue' , Helvetica, Arial, sans-serif;
+    }
     .home_content__marked-block .scale{
         text-transform: uppercase;
         transform-origin: 0 65%;
@@ -52,11 +62,13 @@
         width: calc(100% / 0.6);
         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
+
 </style>
 <main>
     <header id="js-header" class="u-header u-header--sticky-top u-header--change-appearance g-z-index-9999"
             data-header-fix-moment="100">
-        <div class="u-header__section cs-bg-darkblue-opacity-0_5 cs-transition-0_3 cs-py-0"
+        <div style="height: 80px"
+             class="u-header__section cs-bg-darkblue-opacity-0_5 cs-transition-0_3 cs-py-0"
              data-header-fix-moment-exclude="light-theme cs-bg-darkblue-opacity-0_5"
              data-header-fix-moment-classes="dark-theme cs-bg-white-opacity-0_9" id="test">
             <nav class="navbar navbar-expand-lg cs-py-0">
@@ -184,7 +196,7 @@
                  style="
                  margin-right:0;
                  width:450px;
-                 padding:0;
+                 padding: 80px 0 0;
                  height:100%;
                  margin-top: 0;
                  color: #37536b;
@@ -192,7 +204,7 @@
 
             >
                 <div style="padding: 20px; height:100%;  background-color: rgba(255, 255, 255, .7)!important; " >
-                <div class="row cs-mb-0 d-flex flex-column flex-md-row justify-content-around align-items-center h-75 cs-mb-100--md">
+                <div class="row cs-mb-0 d-flex flex-column flex-md-row justify-content-around h-75 cs-mb-100--md">
                     <div class="col-md-12 text-left d-flex flex-column align-items-baseline">
                         <div class="d-flex flex-column align-items-baseline home_content__marked-block">
                             <div class="scale cs-font-size-40 cs-font-size-40--md cs-font-size-60--xl cs-font-size-80--xxl cs-font-weight-700 cs-line-height-1">
