@@ -4,6 +4,7 @@ import system from "./system";
 import abode from "./abode";
 import resettlement from "./resettlement";
 import participating from "./participating";
+import program from "./program";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -13,6 +14,7 @@ const store = createStore(
         abode,
         resettlement,
         participating,
+        program,
     }),
     composeEnhancers(
         applyMiddleware(reduxThunk),

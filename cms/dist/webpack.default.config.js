@@ -12,7 +12,7 @@ module.exports = {
                     plugins: ['@babel/plugin-proposal-class-properties']
                 }
             },
-            { test: /\.(png|woff|woff2|eot|ttf|svg)(\?\S*)?$/, loader: 'url-loader?limit=100000' },
+            { test: /\.(png|jpg|woff|woff2|eot|ttf|svg)(\?\S*)?$/, loader: 'url-loader?limit=100000' },
             {
                 test: /\.(s*)css$/,
                 loader: 'style-loader!css-loader'

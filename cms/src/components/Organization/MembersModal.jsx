@@ -18,7 +18,7 @@ import {
     Typography,
 } from '@material-ui/core';
 import {withStyles} from '@material-ui/core/styles';
-import { blue, green } from '@material-ui/core/colors';
+import { green } from '@material-ui/core/colors';
 import {
     Close as CloseIcon,
     Edit as EditIcon,
@@ -130,7 +130,7 @@ class MembersModal extends React.Component {
                             <TableHead>
                                 <TableRow>
                                     <TableCell>ФИО</TableCell>
-                                    <TableCell className={classes.noWrap}>Класс участия</TableCell>
+                                    <TableCell className={classes.noWrap}>Тип комнаты</TableCell>
                                     <TableCell>Контакты</TableCell>
                                     <TableCell>Проживание</TableCell>
                                     {!readOnly ? <TableCell align={'right'}>Действия</TableCell> : ''}
@@ -161,9 +161,9 @@ class MembersModal extends React.Component {
                                             <div className={classes.noWrap}><b>Email:</b> {item.email}</div>
                                         </TableCell>
                                         <TableCell >
-                                            {item.place.room_num
+                                            {item.apart_num
                                                 ? <div className={classes.noWrap}>
-                                                    <b>Номер:</b> {item.place.room_num}
+                                                    <b>Номер:</b> {item.apart_num}
                                                 </div>
                                                 : 'Не заселен'
                                             }
@@ -217,11 +217,8 @@ MembersModal.propTypes = {
             phone:          PropTypes.string.isRequired,
             post:           PropTypes.string,
             email:          PropTypes.string.isRequired,
-            place:          PropTypes.shape({
-                room_num: PropTypes.number,
-                approved: PropTypes.bool,
-            }),
-            room_type_id:   PropTypes.number,
+            apart_num:      PropTypes.number,
+            room_type_id:   PropTypes.number.isRequired,
             room_type_cost: PropTypes.number,
         }),
     ),

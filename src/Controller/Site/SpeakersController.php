@@ -4,6 +4,8 @@ namespace App\Controller\Site;
 
 use App\Entity\Conference;
 use App\Entity\Participating\Speaker;
+use App\Entity\Program\ProgramMember;
+use App\Repository\Program\ProgramMemberRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,15 +22,18 @@ class SpeakersController extends AbstractController
      */
     public function speakers(EntityManagerInterface $em)
     {
+        return $this->redirectToRoute('info', ['alias' => 'become-speaker']);
+
+        /** @var Conference $conference */
         $conference = $em->getRepository(Conference::class)->findBy([], ['year' => 'DESC'], 1)[0];
 
-        /** @var Speaker[] $speakers */
-        $speakers = $em->getRepository(Speaker::class)
-            ->findBy(['publish' => true, 'conference' => $conference]);
+        /** @var ProgramMemberRepository $programMembersRepo */
+        $programMembersRepo = $em->getRepository(ProgramMember::class);
 
-        if (empty($speakers)) {
-            return $this->redirectToRoute('info', ['alias' => 'become-speaker']);
-        }
+        $speakers = $programMembersRepo->findByData([
+            'type' => ProgramMember::TYPE_SPEAKER,
+            'year' => $conference->getYear(),
+        ]);
 
         $speakerList = [];
         foreach ($speakers as $key => $speaker) {

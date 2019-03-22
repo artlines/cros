@@ -32,53 +32,12 @@ class ConferenceMemberController extends ApiController
      */
     public function getAll()
     {
-        $conference_organization_id = $this->requestData['conference_organization_id'] ?? null;
+        $year = date('Y');
 
-        if (!$conference_organization_id) {
-            return $this->badRequest('conference_organization_id not set');
-        }
+        /** @var ConferenceMemberRepository $conferenceMemberRepo */
+        $conferenceMemberRepo = $this->em->getRepository(ConferenceMember::class);
 
-        /** @var ConferenceOrganization $conferenceOrganization */
-        $conferenceOrganization = $this->em->find(ConferenceOrganization::class, $conference_organization_id);
-        if (!$conferenceOrganization) {
-            return $this->notFound('Conference Organization not found.');
-        }
-
-        $items = [];
-        foreach ($conferenceOrganization->getConferenceMembers() as $conferenceMember) {
-            $member = $conferenceMember->getUser();
-
-            $placeInfo = ['room_num' => null, 'approved' => null];
-            /** @var Place $place */
-            $place = $this->em->getRepository(Place::class)
-                ->findOneBy(['conferenceMember' => $conferenceMember]);
-            if ($place) {
-                $placeInfo['room_num'] = $place->getRoom()->getApartment()->getNumber();
-            }
-
-            $_arrival = $conferenceMember->getArrival();
-            $_leaving = $conferenceMember->getLeaving();
-
-            $roomType = $conferenceMember->getRoomType();
-
-            $items[] = [
-                'id'            => $conferenceMember->getId(),
-                'first_name'    => $member->getFirstName(),
-                'last_name'     => $member->getLastName(),
-                'middle_name'   => $member->getMiddleName(),
-                'post'          => $member->getPost(),
-                'phone'         => $member->getPhone(),
-                'email'         => $member->getEmail(),
-                'sex'           => $member->getSex(),
-                'car_number'    => $conferenceMember->getCarNumber(),
-                'representative'=> $member->isRepresentative()? 1 : 0,
-                'arrival'       => $_arrival ? $_arrival->format('Y-m-d\TH:i') : null,
-                'leaving'       => $_leaving ? $_leaving->format('Y-m-d\TH:i') : null,
-                'room_type_id'  => $roomType ? $roomType->getId() : null,
-                'room_type_cost'=> $roomType ? $roomType->getCost() : null,
-                'place'         => $placeInfo,
-            ];
-        }
+        $items = $conferenceMemberRepo->getMembersInfo($year, $this->requestData);
 
         return $this->success(['items' => $items]);
     }
