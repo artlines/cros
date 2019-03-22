@@ -36,7 +36,6 @@ class Invite extends React.Component {
                 open: false,
                 initialValues: {},
             },
-            search: null,
         };
 
         this.searchTimeout = null;
@@ -47,9 +46,8 @@ class Invite extends React.Component {
         this.update();
     }
 
-    update = () => {
-        const { search } = this.state;
-        this.props.fetchOrganizations({search});
+    update = (data) => {
+        this.props.fetchOrganizations(data);
     };
 
     reInvite = (id) => request.get(`conference_organization/re_invite/${id}`);
@@ -58,10 +56,10 @@ class Invite extends React.Component {
     closeForm = () => this.setState({form: {...this.state.form, open: false}});
 
     handleSearchChange = event => {
-        this.setState({search: event.target.value});
+        const search = event.target.value;
         clearTimeout(this.searchTimeout);
         this.searchTimeout = setTimeout(() => {
-            this.update();
+            this.update({search});
         }, 350);
     };
 
