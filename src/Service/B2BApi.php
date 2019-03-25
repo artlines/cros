@@ -100,6 +100,20 @@ class B2BApi
     }
 
     /**
+     * Return contractors users fixed_guids
+     *
+     * @author Ivan Slyusar i.slyusar@nag.ru
+     * @param $guids
+     * @return array
+     */
+    public function getContractorsUsers($guids)
+    {
+        $result = $this->_executeCurl("contractors/users", $guids, Request::METHOD_POST);
+
+        return $result;
+    }
+
+    /**
      * Return contractor users fixed_guids
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
