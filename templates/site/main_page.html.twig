@@ -115,7 +115,7 @@
                                 <a href="javascript:void(0)" class="nav-link p-0">+7 (343) 379 98 38</a>
                             </li>
                         {% if not app.user %}
-                            <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg">
+                            <li class="nav-item cs-mx-15--lg cs-mb-7 cs-mb-0--lg" >
                                 {{ render(path('login')) }}
                             </li>
                         {% endif %}
@@ -145,6 +145,9 @@
     <!-- Section Content -->
 
     <style>
+        div.login-open{
+            top: 84px;
+        }
         .cs-bg-darkblue-opacity-0_5 .navbar {
             min-height: 6rem;
         }
@@ -261,6 +264,20 @@
         }
         .mainBlock h2:after{
             background: none;
+        }
+
+        .home_video__block {
+            height: 100vh;
+            height: calc(var(--vh, 1vh) * 100);
+        }
+        .home_video__container {
+            height: 100vh;
+            min-height: calc(var(--vh, 1vh) * 100);
+            overflow: hidden;
+        }
+        .home_video__container video {
+            height: 100vh;
+            height: calc(var(--vh, 1vh) * 100);
         }
     </style>
     <section id="home"
