@@ -22,10 +22,6 @@ class CommitteeController extends AbstractController
      */
     public function list(Request $request, EntityManagerInterface $em)
     {
-        if ($request->get('auth', null) !== 'ochoquo7PheilauZ9eoleoyah4xae8os') {
-            return $this->redirectToRoute('info', ['alias' => 'become-speaker']);
-        }
-
         /** @var Conference $conference */
         $conference = $em->getRepository(Conference::class)->findBy([], ['year' => 'DESC'], 1)[0];
 
@@ -64,10 +60,6 @@ class CommitteeController extends AbstractController
      */
     public function card($id, Request $request, EntityManagerInterface $em)
     {
-        if ($request->get('auth', null) !== 'ochoquo7PheilauZ9eoleoyah4xae8os') {
-            return $this->redirectToRoute('info', ['alias' => 'become-speaker']);
-        }
-
         /** @var Conference $conference */
         $conference = $em->getRepository(Conference::class)->findBy([], ['year' => 'DESC'], 1)[0];
 
