@@ -49,6 +49,14 @@ class DefaultController extends AbstractController
         ]);
     }
 
+    /**
+     * Generates countdown widget
+     * Used as include in other templates
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param bool $mainPage
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function countdown($mainPage = false)
     {
         /** @var ConferenceRepository $confRepo */
@@ -109,7 +117,7 @@ class DefaultController extends AbstractController
                 break;
         }
 
-        return $this->render('default/countdown.html.twig', [
+        return $this->render('site/common/_countdown.html.twig', [
             'countdown_date'    => $countdown_date,
             'text'              => $text,
             'mainPage'          => $mainPage
@@ -137,8 +145,8 @@ class DefaultController extends AbstractController
     {
         $content = file_get_contents('https://shop.nag.ru/policies/privacy');
 
-        return $this->render('security/privacy.html.twig', array(
+        return $this->render('security/privacy.html.twig', [
             'content' => $content,
-        ));
+        ]);
     }
 }

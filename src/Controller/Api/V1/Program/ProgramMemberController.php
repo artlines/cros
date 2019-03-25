@@ -135,4 +135,24 @@ class ProgramMemberController extends ApiController
 
         return $this->success();
     }
+
+    /**
+     * @Route("program_member/{id}", requirements={"id":"\d+"}, name="program_member__delete", methods={"DELETE"})
+     *
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function delete($id)
+    {
+        /** @var ProgramMember $programMember */
+        if (!$programMember = $this->em->find(ProgramMember::class, $id)) {
+            return $this->notFound('Program member with ID ' . $id . ' not found.');
+        }
+
+        $this->em->remove($programMember);
+        $this->em->flush();
+
+        return $this->success();
+    }
 }
