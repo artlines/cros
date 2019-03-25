@@ -10,7 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
  * Class ConferenceController
  * @package App\Controller\Api\V1
  *
- * @IsGranted("ROLE_ADMINISTRATOR")
+ * @IsGranted("ROLE_CONTENT_MANAGER")
  * @Route("/api/v1/", name="api_v1__conference_")
  */
 class ConferenceController extends ApiController

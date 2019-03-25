@@ -15,8 +15,16 @@ export default {
 
     fetchConferences: () => {
         return dispatch => {
-            dispatch({ type: PARTICIPATING.REQUEST_CONFERENCE });
+            dispatch({ type: PARTICIPATING.REQUEST_CONFERENCES });
             request.get(`conference`)
+                .then(payload => dispatch({ type: PARTICIPATING.RECEIVE_CONFERENCES, payload }));
+        };
+    },
+
+    fetchConferenceArchive: (id) => {
+        return dispatch => {
+            dispatch({ type: PARTICIPATING.REQUEST_CONFERENCE });
+            request.get(`conference/${id}/archive`)
                 .then(payload => dispatch({ type: PARTICIPATING.RECEIVE_CONFERENCE, payload }));
         };
     },
