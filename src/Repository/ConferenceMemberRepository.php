@@ -39,18 +39,20 @@ class ConferenceMemberRepository extends EntityRepository
                    to_char(pcm.leaving, 'YYYY-MM-DD\"T\"HH24:MI') as leaving,
                    art.id as room_type_id,
                    art.cost as room_type_cost,
-                   aa.number as apart_num
+                   aa.number as apart_num,
+                   po.name as org_name
             FROM participating.conference_member pcm
-              INNER JOIN public.conference   pc ON pcm.conference_id = pc.id AND pc.year =:year
-              LEFT JOIN participating.member pm ON pcm.user_id = pm.id
-              LEFT JOIN abode.room_type     art ON pcm.room_type_id = art.id
-              LEFT JOIN abode.place          ap ON pcm.id = ap.conference_member_id
-              LEFT JOIN abode.room           ar ON ap.room_id = ar.id
-              LEFT JOIN abode.apartment      aa ON ar.apartment_id = aa.id
+              INNER JOIN public.conference         pc ON pcm.conference_id = pc.id AND pc.year =:year
+              LEFT JOIN participating.member       pm ON pcm.user_id = pm.id
+              LEFT JOIN abode.room_type           art ON pcm.room_type_id = art.id
+              LEFT JOIN abode.place                ap ON pcm.id = ap.conference_member_id
+              LEFT JOIN abode.room                 ar ON ap.room_id = ar.id
+              LEFT JOIN abode.apartment            aa ON ar.apartment_id = aa.id
+              LEFT JOIN participating.organization po ON pm.organization_id = po.id
             WHERE $where
         ";
 
-        $query .= " ORDER BY pcm.id DESC";
+        $query .= " ORDER BY pm.first_name, pm.last_name";
 
         $stmt = $conn->prepare($query);
 
