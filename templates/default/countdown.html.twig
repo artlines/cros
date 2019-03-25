@@ -1,38 +1,53 @@
 
 {% if mainPage %}
-	{% set cd_digit_container_style = 'd-inline-block cs-font-size-12 cs-brd-left cs-px-10 cs-px-40--md cs-py-15' %}
-    {% set cd_digit_style = 'cs-font-size-20 cs-font-size-40--md cs-font-weight-700 cs-line-height-1 cs-mb-5' %}
+	{% set cd_digit_container_style = 'd-inline-block cs-font-size-12 cs-brd-left cs-px-40--md cs-py-15' %}
+    {% set cd_digit_style = 'num cs-font-size-50--xxl' %}
 {% else %}
     {% set cd_digit_container_style = 'd-inline-block cs-font-size-12 cs-brd-left cs-px-5 cs-py-15' %}
     {% set cd_digit_style = 'cs-font-size-15 cs-font-size-20--md cs-font-weight-300 cs-line-height-1 cs-mb-5' %}
 {% endif %}
 
 {% if text %}
-	<div class="{% if mainPage %}cs-font-size-23 text-center text-md-right{% else %}cs-font-size-18 text-right text-md-center{% endif %} text-uppercase">{{ text }}</div>
+	<div class="{% if mainPage %}
+	cs-font-size-60--xxl cs-font-weight-300
+{% else %}
+	cs-font-size-18 text-right text-md-center
+{% endif %}
+">
+		<div class="cs-font-size-60--xxl cs-font-weight-300">
+			<span >{{ text }}</span>
+		</div>
+	</div>
 {% endif %}
 <!-- Countdown v4 -->
+<style>
+	/*.scale{*/
+		/*transform-origin: 0 65%;*/
+		/*transform: scaleY(1.6);*/
+	/*}*/
+</style>
 {% if countdown_date %}
-	<div class="js-countdown{% if mainPage %} text-center text-md-right text-uppercase{% else %} text-right d-flex justify-content-between{% endif %} u-countdown-v4"
+	<div class="js-countdown{% if mainPage %} text-center text-md-left text-uppercase{% else %} text-right d-flex justify-content-between{% endif %} u-countdown-v4"
 		 data-end-date="{{ countdown_date|date("Y/m/d H:i:s") }}"
 		 data-month-format="%m"
 		 data-days-format="%D"
 		 data-hours-format="%H"
 		 data-minutes-format="%M"
 		 data-seconds-format="%S">
-		<div class="{{ cd_digit_container_style }}">
-			<div class="js-cd-days {{ cd_digit_style }}">0</div>
-			<span>Дней</span>
+		<div class=" {{ cd_digit_container_style }}">
+			<span class="js-cd-days {{ cd_digit_style }}">0</span>
+			<span class="name">Дней</span>
 		</div>
 		<div class="{{ cd_digit_container_style }}">
-			<div class="js-cd-hours {{ cd_digit_style }}">0</div>
-			<span>Часов</span>
+			<span class="js-cd-hours {{ cd_digit_style }}">0</span>
+			<span class="name">Часов</span>
 		</div>
 		<div class="{{ cd_digit_container_style }}">
-			<div class="js-cd-minutes {{ cd_digit_style }}">0</div>
-			<span>Минут</span>
+			<span class="js-cd-minutes {{ cd_digit_style }}">0</span>
+			<span class="name">Минут</span>
 		</div>
 		<div class="{{ cd_digit_container_style }}">
-			<div class="js-cd-seconds {{ cd_digit_style }}">0</div>
+			<span class="js-cd-seconds {{ cd_digit_style }}">0</span>
 			<span>Секунд</span>
 		</div>
 	</div>
