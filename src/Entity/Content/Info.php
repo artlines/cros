@@ -9,10 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
  * Info
  *
  * @ORM\Table(schema="content", name="info")
- * @ORM\Entity(repositoryClass="App\Repository\InfoRepository")
+ * @ORM\Entity()
  */
 class Info
 {
+    const ALIAS__ARCHIVE = 'result';
+
     /**
      * @var int
      *

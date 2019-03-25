@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
+ * Use to save files that gives from CKEditor downloader
+ *
  * Class AttachmentController
  * @package App\Controller\Api\V1
  *

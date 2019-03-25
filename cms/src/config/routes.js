@@ -7,6 +7,7 @@ import Organizations from "../pages/Organizations";
 import Invite from "../pages/Invite";
 import Users from "../pages/Users";
 import Conferences from "../pages/Conferences";
+import Archive from "../pages/Conference/Archive";
 import Program from "../pages/Program";
 import Report from "../pages/Report";
 import NotFound from "../pages/NotFound";
@@ -42,7 +43,14 @@ export default [
             Icon: EventSeat,
             title: "Конференции",
         },
-        role: "ROLE_ADMINISTRATOR",
+        role: "ROLE_CONTENT_MANAGER",
+    },
+    {
+        path: "/cms/conference/:id/archive",
+        Component: Archive,
+        exact: true,
+        title: "Архив",
+        role: "ROLE_CONTENT_MANAGER",
     },
     {
         path: "/cms/program",
