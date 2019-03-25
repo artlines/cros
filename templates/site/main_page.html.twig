@@ -224,7 +224,7 @@
 
         @media screen and (orientation: landscape) {
             div.mainBlock{
-                padding-bottom: 32px;
+                padding-bottom: 16px;
             }
         }
 
@@ -254,9 +254,24 @@
         }
 
 
-        @media screen and (-webkit-min-device-pixel-ratio: 1.5) {
+        @media screen
+        and (-webkit-min-device-pixel-ratio: 1.5)
+        and (orientation: portrait)
+        {
             div.mainBlock {
                 padding-bottom: 128px;
+            }
+            .mainBlock div{
+                /*background: red;*/
+            }
+        }
+
+        @media screen
+        and (-webkit-min-device-pixel-ratio: 1.5)
+        and (orientation: landscape)
+        {
+            div.mainBlock {
+                padding-bottom: 100px;
             }
             .mainBlock div{
                 /*background: red;*/
@@ -279,9 +294,6 @@
             div.mainBlock {
                 padding-bottom: 64px;
             }
-            .mainBlock div{
-                background: red;
-            }
         }
         @media screen
         and (-webkit-min-device-pixel-ratio: 2.5)
@@ -289,6 +301,27 @@
         {
             div.mainBlock {
                 padding-bottom: 64px;
+            }
+            .mainBlock div{
+                /*background: red;*/
+            }
+        }
+
+        .flex-select {
+            flex-direction: column;
+        }
+
+        @media screen
+        and (max-height: 600px)
+        /*and (-webkit-min-device-pixel-ratio: 2.5)*/
+        and (orientation: landscape )
+        {
+            .flex-select {
+                flex-direction: row;
+            }
+            .mainBlock .mt-auto {
+                /*background: red;*/
+                margin-bottom: auto!important;
             }
             .mainBlock div{
                 /*background: red;*/
@@ -339,16 +372,16 @@
     >
         <div class="home_video__block">
             <div class="home_video__container cs-bg-secondary_block">
-                <video autoplay="autoplay" loop="loop" muted="muted" poster="/uploads/cros-2019/bg_video_poster.jpg">
+                <video autoplay="autoplay" loop="loop" muted="muted" poster="http://cros.nag.ru/uploads/cros-2019/bg_video_poster.jpg">
                     <source src="http://cros.nag.ru/uploads/cros-2019/bg_video.mp4" type="video/mp4">
-                    <source src="/uploads/cros-2019/bg_video.webm" type='video/webm'>
+                    <source src="http://cros.nag.ru/uploads/cros-2019/bg_video.webm" type='video/webm'>
                 </video>
             </div>
         </div>
         <div class="home_content__block h-100 d-md-flex" style="padding-top: 6rem;" >
             <!-- cs-max-width-750  -->
             <div style="/*background:grey*/" class="mainBlock d-flex ml-md-auto mr-md-0 m-sm-0 h-100">
-                <div class=" text-uppercase d-flex flex-column align-items-end" >
+                <div class=" text-uppercase d-flex flex-select align-items-end" >
                     <div style="/*background: red; opacity: 0.5*/" class="w-100 text-center text-md-left">
 
                     <h2 class="scale cs-font-size-40 cs-font-size-40--md cs-font-size-60--xl cs-font-size-100--xxl">
