@@ -8,6 +8,57 @@ use Doctrine\ORM\EntityRepository;
 
 class ConferenceMemberRepository extends EntityRepository
 {
+    public function getMembersInfo($year, array $data = [])
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $where = 'TRUE';
+        $parameters = [
+            'year' => $year,
+        ];
+
+        /** If passed conference_organization_id filter */
+        if (isset($data['conference_organization_id'])) {
+            $parameters['conf_org_id'] = (int) $data['conference_organization_id'];
+            $where .= " AND pcm.conference_organization_id = :conf_org_id";
+        }
+
+        $query = "
+            SELECT
+                   pcm.id,
+                   pm.first_name,
+                   pm.last_name,
+                   pm.middle_name,
+                   pm.post,
+                   pm.phone,
+                   pm.email,
+                   pm.sex,
+                   pcm.car_number,
+                   pm.representative,
+                   to_char(pcm.arrival, 'YYYY-MM-DD\"T\"HH24:MI') as arrival,
+                   to_char(pcm.leaving, 'YYYY-MM-DD\"T\"HH24:MI') as leaving,
+                   art.id as room_type_id,
+                   art.cost as room_type_cost,
+                   aa.number as apart_num
+            FROM participating.conference_member pcm
+              INNER JOIN public.conference   pc ON pcm.conference_id = pc.id AND pc.year =:year
+              LEFT JOIN participating.member pm ON pcm.user_id = pm.id
+              LEFT JOIN abode.room_type     art ON pcm.room_type_id = art.id
+              LEFT JOIN abode.place          ap ON pcm.id = ap.conference_member_id
+              LEFT JOIN abode.room           ar ON ap.room_id = ar.id
+              LEFT JOIN abode.apartment      aa ON ar.apartment_id = aa.id
+            WHERE $where
+        ";
+
+        $query .= " ORDER BY pcm.id DESC";
+
+        $stmt = $conn->prepare($query);
+
+        $stmt->execute($parameters);
+
+        return $stmt->fetchAll();
+    }
+
     public function getNotSettled($year, $housing_id = null)
     {
         $conn = $this->getEntityManager()->getConnection();

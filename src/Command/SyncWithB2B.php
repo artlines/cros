@@ -323,6 +323,7 @@ class SyncWithB2B extends Command
      * Make ties between users and contractors
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @author Ivan Slyusar i.slyusar@nag.ru
      */
     private function _syncUsersToContractor()
     {
@@ -333,69 +334,105 @@ class SyncWithB2B extends Command
         $conferenceOrganizations = $conferenceOrganizationRepo->findWhereInnKppNotInvalidAndB2bGuidExist(self::CROS_YEAR);
         $this->log("Found ".count($conferenceOrganizations)." conference organizations which will be synchronized.");
 
-        /** @var ConferenceOrganization $conferenceOrganization */
-        foreach ($conferenceOrganizations as $conferenceOrganization) {
-            $organization = $conferenceOrganization->getOrganization();
-            $org_b2bGuid = $organization->getB2bGuid();
+        $org_ids = [];
 
-            $this->output->writeln("*");
-            $this->log("[Process organization (ID: ".$organization->getId().") with b2b_guid `$org_b2bGuid`.]");
+        $crosUsers = [];
 
-            $conferenceMembers = $conferenceOrganization->getConferenceMembers();
+        $update_users = [];
 
-            $crosUsers = [];
-            foreach ($conferenceMembers as $conferenceMember) {
-                $user = $conferenceMember->getUser();
-                $user_b2bGuid = $user->getB2bGuid();
+        // Собираем гуиды организаций и их пользователей для синхронизации
+        $org_guids = array_map(
+            function ($conf_org) use (&$org_ids, &$crosUsers, &$update_users) {
+                /** @var ConferenceOrganization $conf_org */
+                /** @var Organization $org */
+                $org = $conf_org->getOrganization();
+                $org_ids[] = $org->getId();
+                $conf_members = $conf_org->getConferenceMembers();
+                foreach ($conf_members as $conf_member) {
+                    $conf_user = $conf_member->getUser();
+                    $crosUsers[] = $conf_user->getB2bGuid();
+                    $update_users[$org->getB2bGuid()][] = $conf_user->getB2bGuid();
+                }
+                return $org->getB2bGuid();
+            },
+            $conferenceOrganizations
+        );
 
-                if ($user->isRepresentative() && $user_b2bGuid) {
-                    $this->log("Found participating user from organization (ID: ".$organization->getId().") with b2b_guid `$user_b2bGuid`.");
-                    $crosUsers[] = $user_b2bGuid;
+        $str_ids = implode(
+            ', ',
+            array_map(function ($id) {
+                return '"'.$id.'"';
+            }, $org_ids
+            )
+        );
+
+        $str_guids = implode(
+            ', ',
+            array_map(function ($guid) {
+                return '"'.$guid.'"';
+            }, $crosUsers)
+        );
+
+        $this->output->writeln("*");
+        $this->log('Process organizations (IDS: '.$str_ids.')');
+        $this->log('users (GUIDS: '.$str_guids.')');
+
+        // Получаем привязанных к компании пользователей на магазине
+        $b2bUsersResponse = $this->b2bApi->getContractorsUsers($org_guids);
+
+        if ($b2bUsersResponse['http_code'] !== 200) {
+            $this->log("Catch error while getting contractor users from B2B to Organization. Skipped it!", [
+                'error'     => $b2bUsersResponse['data'],
+            ]);
+            return;
+        }
+
+        $shop_user_guids = $b2bUsersResponse['data'];
+
+        // Получаем непривязанных пользователей
+        $needAddUsers = array_diff($crosUsers, $shop_user_guids);
+
+        if (empty($needAddUsers)) {
+            $this->log("Users yet synchronized to b2b");
+            return;
+        }
+
+        $updated_org_count = 0;
+        $updated_users_count = 0;
+
+        // Привязываем пользователей к организациям
+        foreach ($update_users as $org_guid => $users) {
+            $update_users_guids = [];
+            foreach ($users as $user) {
+                if (in_array($user, $needAddUsers)) {
+                    $update_users_guids[] = $user;
                 }
             }
-
-            if (empty($crosUsers)) {
-                $this->log("Organization (ID: ".$organization->getId().") has not participating users. Skipped it!");
-                continue;
+            if (!empty($update_users_guids)) {
+                $updateResponse = $this->b2bApi->updateContractorUsers($org_guid, ['users_guids' => $update_users_guids]);
+                if ($updateResponse['http_code'] !== 200) {
+                    $this->log("Catch error while update contractor users on B2B. Skipped it!", [
+                        'b2b_guid' => $org_guid,
+                        'need_add_users' => $update_users_guids,
+                        'error' => $b2bUsersResponse['data'],
+                    ]);
+                    continue;
+                }
+                $updated_org_count++;
+                $updated_users_count += count($update_users_guids);
             }
-
-            $b2bUsersResponse = $this->b2bApi->getContractorUsers($org_b2bGuid);
-            if ($b2bUsersResponse['http_code'] !== 200) {
-                $this->log("Catch error while getting contractor users from B2B to Organization. Skipped it!", [
-                    'id'        => $organization->getId(),
-                    'b2b_guid'  => $organization->getB2bGuid(),
-                    'error'     => $b2bUsersResponse['data'],
-                ]);
-                continue;
-            }
-
-            $b2bUsers = $b2bUsersResponse['data']['users_guids'];
-            $needAddUsers = array_diff($crosUsers, $b2bUsers);
-
-            if (empty($needAddUsers)) {
-                $this->log("Organization (ID: ".$organization->getId().") doesn't need to add users to B2B. Skipped it!");
-                continue;
-            }
-
-            $updateResponse = $this->b2bApi->updateContractorUsers($org_b2bGuid, ['users_guids' => $needAddUsers]);
-            if ($updateResponse['http_code'] !== 200) {
-                $this->log("Catch error while update contractor users on B2B. Skipped it!", [
-                    'id'                => $organization->getId(),
-                    'b2b_guid'          => $organization->getB2bGuid(),
-                    'need_add_users'    => $needAddUsers,
-                    'error'             => $b2bUsersResponse['data'],
-                ]);
-                continue;
-            }
-
-            $this->log("Updated contractor users for Organization (ID: ".$organization->getId().") with b2b_guid `$org_b2bGuid`.");
         }
+
+        $this->log("Updated ".$updated_org_count." of ".count($org_guids)." Organizations with ".$updated_users_count." users");
     }
 
     /**
      * Check invoice status
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @author Ivan Slyusar i.slyusar@nag.ru
+     * @return void
+     * @throws \Doctrine\ORM\ORMException
      */
     private function _checkInvoicesStatus()
     {
@@ -403,33 +440,78 @@ class SyncWithB2B extends Command
 
         /** @var InvoiceRepository $invoiceRepo */
         $invoiceRepo = $this->em->getRepository(Invoice::class);
-        $invoices = $invoiceRepo->getWithOrderGuidToSync();
+        $invoices = $invoiceRepo->getWithOrderGuidToSync('i.id, i.orderGuid as guid');
+
+        if (empty($invoices)) {
+            $this->log("Not found invoices to sync.");
+            return;
+        }
+
         $this->log("Found ".count($invoices)." invoices to sync.");
 
-        foreach ($invoices as $invoice) {
-            $guid = $invoice->getOrderGuid();
-            $this->log("Check Invoice (ID: {$invoice->getId()}).");
+        $str_ids = implode(
+            ', ',
+            array_map(function ($invoice) {
+                return '"'.$invoice['id'].'"';
+            }, $invoices
+            )
+        );
 
-            $infoResponse = $this->b2bApi->getOrderInfo($guid);
+        $this->log(
+            'Check Invoices (IDS: '.$str_ids.')'
+        );
 
-            if ($infoResponse['http_code'] !== 200) {
-                $this->log("Catch error while trying to sync information about Invoice (ID: {$invoice->getId()})."
-                    ." Error: {$infoResponse['data']} | Skipped it!", ['guid' => $guid]);
+        $infoResponse = $this->b2bApi->getOrdersInvoicesInfo($invoices);
+
+        $data = $infoResponse['data'];
+
+        if ($infoResponse['http_code'] !== 200) {
+            $this->log('Catch error while trying to sync information about Invoices (IDS: '.$str_ids.').'
+                .' Error: '.$data.' | Skipped it!');
+            return;
+        }
+
+        $good_ids = array_map(
+            function ($info) {
+                return $info['id'];
+            },
+            array_values($data)
+        );
+
+        $bad_ids = [];
+
+        foreach ($invoices as $invoice){
+            if (!in_array($invoice['id'], $good_ids)) {
+                $bad_ids[] = $invoice['id'];
                 continue;
             }
 
-            $invoice->setNumber($infoResponse['data']['order_number']);
-            $invoice->setOrderStatusGuid($infoResponse['data']['order_status_guid']);
-            $invoice->setStatusGuid($infoResponse['data']['payment_status_guid']);
-            $invoice->setStatusText($infoResponse['data']['payment_status']);
-            $invoice->setAccountTarget($infoResponse['data']['account_target']);
-
-            if ($infoResponse['data']['order_amount']) {
-                $invoice->setAmount($infoResponse['data']['order_amount'] / 100);
-            }
+            $id = $data[$invoice['guid']]['id'];
+            $info = $data[$invoice['guid']]['info'];
+            $invoice = $this->em->getReference(Invoice::class, $id);
+            $invoice->setNumber($info['order_number']);
+            $invoice->setOrderStatusGuid($info['order_status_guid']);
+            $invoice->setStatusGuid($info['payment_status_guid']);
+            $invoice->setStatusText($info['payment_status']);
+            $invoice->setAccountTarget($info['account_target']);
+            $invoice->setAmount($info['order_amount'] / 100);
 
             $this->em->persist($invoice);
             $this->em->flush();
+
+        }
+
+        if (!empty($bad_ids)) {
+            $this->log('Not found invoices info (IDS: '
+                .implode(
+                    ', ',
+                    array_map(
+                        function ($invoice) {
+                            return '"'.$invoice['id'].'"';
+                            },
+                        $bad_ids
+                    )
+                ).')');
         }
     }
 

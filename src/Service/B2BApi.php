@@ -100,6 +100,20 @@ class B2BApi
     }
 
     /**
+     * Return contractors users fixed_guids
+     *
+     * @author Ivan Slyusar i.slyusar@nag.ru
+     * @param $guids
+     * @return array
+     */
+    public function getContractorsUsers($guids)
+    {
+        $result = $this->_executeCurl("contractors/users", $guids, Request::METHOD_POST);
+
+        return $result;
+    }
+
+    /**
      * Return contractor users fixed_guids
      *
      * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
@@ -182,6 +196,19 @@ class B2BApi
     public function createOrder($data)
     {
         $result = $this->_executeCurl('order/new', $data, Request::METHOD_POST);
+
+        return $result;
+    }
+
+    /**
+     * Return orders info about invoices
+     * @author Ivan Slyusar i.slyusar@nag.ru
+     * @param $invoices
+     * @return array
+     */
+    public function getOrdersInvoicesInfo($invoices)
+    {
+        $result = $this->_executeCurl("orders/info", $invoices, Request::METHOD_POST);
 
         return $result;
     }
