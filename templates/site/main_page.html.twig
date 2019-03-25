@@ -78,7 +78,7 @@
                                 ><span class="d-lg-none d-xl-inline">О Крос</span></a>
                                 <!-- Submenu -->
                                 <ul class="cs-sub-menu-home cs-sub-menu list-unstyled cs-mt-20 cs-mt-10--lcs--scrolling u-shadow-v18 cs-font-weight-700 cs-font-size-12 nav-submenu-2" id="nav-submenu-2"
-                                    aria-labelledby="nav-link-2" style="margin-top: 0px;">
+                                    aria-labelledby="nav-link-2" style="margin-top: 0;">
                                     <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('info', {'alias': 'targets'}) }}">Что такое КРОС</a></li>
                                     <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('info', {'alias': 'organize'}) }}">Место проведения</a></li>
                                     <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('info', {'alias': 'sponsors'}) }}">Спонсоры</a></li>
@@ -96,7 +96,7 @@
                                 >Участие<span class="d-lg-none d-xl-inline"> в КРОС</span></a>
                                 <!-- Submenu -->
                                 <ul class="cs-sub-menu-home cs-sub-menu list-unstyled cs-mt-20 cs-mt-10--lcs--scrolling u-shadow-v18 cs-font-weight-700 cs-font-size-12 nav-submenu-1" id="nav-submenu-1"
-                                    aria-labelledby="nav-link-2" style="margin-top: 0px;">
+                                    aria-labelledby="nav-link-2" style="margin-top: 0">
                                     {#<li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('members') }}">Участники</a></li>#}
                                     <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('price') }}">Стоимость участия</a></li>
                                     <li class="dropdown-item p-0"><a class="nav-link-2 py-3 px-5 rounded-0 d-block" href="{{ path('registration') }}">Регистрация</a></li>
@@ -115,6 +115,20 @@
                                 <a href="javascript:void(0)" class="nav-link p-0">+7 (343) 379 98 38</a>
                             </li>
                         </ul>
+                        {% if not app.user %}
+                            {{ render(path('login')) }}
+                        {% endif %}
+
+                        {% if is_granted('ROLE_USER') %}
+                            <a href="{{ path('registration_show') }}" class="cs-py-5 cs-font-size-11  cs-z-index-4 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+                                &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;ЛИЧНЫЙ КАБИНЕТ&nbsp;
+                            </a>
+                        {% endif %}
+                        {% if is_granted('ROLE_CMS_USER') %}
+                            <a href="/cms" class="cs-py-5 cs-font-size-11  cs-z-index-4 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">
+                                &nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;CMS&nbsp;
+                            </a>
+                        {% endif %}
                     </div>
                     <!— End Navigation —>
                     <!-- End Responsive Toggle Button -->
@@ -124,96 +138,139 @@
     </header>
     <!-- Section Content -->
 
-<style>
-    .mainBlock{
-        font-family: 'Roboto Condensed', sans-serif;
-        padding: 32px 64px 128px;
-        background-color: rgba(255, 255, 255, .7)!important;
-        color:#010101
-    }
-    .mainBlock .cs-font-size-100--xxl{
-         font-size: 7.9rem !important;
-         line-height: 80%;
-    }
+    <style>
+        .mainBlock{
+            font-family: 'Roboto Condensed', sans-serif;
+            background-color: rgba(255, 255, 255, .7)!important;
+            color:#010101;
 
-    .mainBlock .cs-font-size-60--xxl {
-        font-size: 2rem !important;
-        line-height: 120%;
-    }
+        }
 
-    .mainBlock .cs-font-size-20--xxl {
-        font-size: 1.2rem !important;
-        line-height: 200%;
-    }
-    .mainBlock .cs-font-size-50--xxl {
-        font-size: 4rem !important;
-        line-height: 110%;
-    }
-    .num {
-        color: #37536b;
-    }
 
-    .name {
-        padding-right: 30px;
-    }
-    .mainBlock h2{
-        color: #37536b;
-        padding: 0;
-        margin: 0;
-    }
-    .mainBlock hr{
-        margin-bottom: 0.2rem !important;
-        margin-top: 1.5rem;
-        border: 0 none;
-        border-top: 1px dashed #6a6a6a;
-        background: none;
-        height:0;
-    }
-    .mainBlock h2:after{
-        background: none;
-    }
-</style>
+        .mainBlock{
+            padding: 32px 32px 32px;
+        }
+
+        .mainBlock .cs-font-size-100--xxl{
+            font-size: 3.95rem !important;
+            line-height: 80%;
+        }
+
+        .mainBlock .cs-font-size-60--xxl {
+            font-size: 1rem !important;
+            line-height: 120%;
+        }
+
+        .mainBlock .cs-font-size-20--xxl {
+            font-size: 1rem !important;
+            line-height: 200%;
+        }
+        .mainBlock .cs-font-size-50--xxl {
+            font-size: 2rem !important;
+            line-height: 110%;
+        }
+
+
+        @media (min-width: 768px) {
+            .mainBlock{
+                padding: 32px 32px 32px;
+            }
+
+            .mainBlock .cs-font-size-100--xxl{
+                font-size: 6.58rem !important;
+                line-height: 80%;
+            }
+
+            .mainBlock .cs-font-size-60--xxl {
+                font-size: 1.66rem !important;
+                line-height: 120%;
+            }
+
+            .mainBlock .cs-font-size-20--xxl {
+                font-size: 1rem !important;
+                line-height: 200%;
+            }
+            .mainBlock .cs-font-size-50--xxl {
+                font-size: 3.3rem !important;
+                line-height: 110%;
+            }
+
+        }
+
+
+        @media (min-width: 1398px) {
+            .mainBlock{
+                padding: 32px 64px 32px;
+            }
+
+            .mainBlock .cs-font-size-100--xxl{
+                font-size: 7.9rem !important;
+                line-height: 80%;
+            }
+
+            .mainBlock .cs-font-size-60--xxl {
+                font-size: 2rem !important;
+                line-height: 120%;
+            }
+
+            .mainBlock .cs-font-size-20--xxl {
+                font-size: 1.2rem !important;
+                line-height: 200%;
+            }
+            .mainBlock .cs-font-size-50--xxl {
+                font-size: 4rem !important;
+                line-height: 110%;
+            }
+        }
+
+        @media (min-width: 1800px) {
+            .mainBlock{
+                padding: 32px 64px 128px;
+            }
+        }
+
+
+        .num {
+            color: #37536b;
+        }
+
+        .name {
+            padding-right: 30px;
+        }
+        .mainBlock h2{
+            color: #37536b;
+            padding: 0;
+            margin: 0;
+        }
+        .mainBlock hr{
+            margin-bottom: 0.2rem !important;
+            margin-top: 1.5rem;
+            border: 0 none;
+            border-top: 1px dashed #6a6a6a;
+            background: none;
+            height:0;
+        }
+        .mainBlock h2:after{
+            background: none;
+        }
+    </style>
     <section id="home"
              class="cs-bg-img-hero cs-pos-rel"
              style="min-height: 410px;" {# background-image: url({{ asset('assets/cros2/img/cros_main_1920.jpg') }}); #}
     >
         <div class="home_video__block">
             <div class="home_video__container cs-bg-secondary_block">
-                {% if hash %}
-                    <img src="/4.jpg">
-                {% else %}
                 <video autoplay="autoplay" loop="loop" muted="muted" poster="/uploads/cros-2019/bg_video_poster.jpg">
                     <source src="http://cros.nag.ru/uploads/cros-2019/bg_video.mp4" type="video/mp4">
                     <source src="/uploads/cros-2019/bg_video.webm" type='video/webm'>
                 </video>
-                {% endif %}
             </div>
         </div>
-        <div class="home_content__block h-100" style="padding-top: 6rem" >
-
-            {#{% if not app.user %}#}
-                {#<div class="container text-right login-main cs-pos-rel">#}
-                    {#{{ render(path('login')) }}#}
-                {#</div>#}
-            {#{% endif %}#}
-
-            {#{% if is_granted('ROLE_USER') %}#}
-                {#<div class="container text-right login-main">#}
-                    {#<a href="{{ path('registration_show') }}" class="cs-py-5 cs-font-size-11  cs-z-index-4 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">#}
-                        {#&nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;ЛИЧНЫЙ КАБИНЕТ&nbsp;#}
-                    {#</a>#}
-                {#</div>#}
-            {#{% endif %}#}
-            {#{% if is_granted('ROLE_CMS_USER') %}#}
-                {#<div class="container text-right login-main">#}
-                    {#<a href="/cms" class="cs-py-5 cs-font-size-11  cs-z-index-4 cs-font-weight-700" style="background:#5c97bf;padding:5px;border-radius:20px;color:white;">#}
-                        {#&nbsp;<i class="fa fa-key"></i>&nbsp;&nbsp;CMS&nbsp;#}
-                    {#</a>#}
-                {#</div>#}
-            {#{% endif %}#}
+        <div class="home_content__block h-100 d-md-flex" style="padding-top: 6rem;" >
             <!-- cs-max-width-750  -->
-            <div style="/*background:grey*/" class="d-flex align-items-end flex-column">
-                <div class="mainBlock text-uppercase">
+            <div style="/*background:grey*/" class="mainBlock d-flex ml-md-auto mr-md-0 m-sm-0 h-100">
+                <div class=" text-uppercase d-flex flex-column align-items-end" >
+                    <div style="/*background: red; opacity: 0.5*/" class="w-100 text-center text-md-left">
 
                     <h2 class="scale cs-font-size-40 cs-font-size-40--md cs-font-size-60--xl cs-font-size-100--xxl">
                         КРОС-2019
@@ -244,7 +301,8 @@
                     <div class="cs-font-size-60--xxl cs-font-weight-300">
                         <span >Трансформируйся для побед</span>
                     </div>
-                    <div style="padding-top: 22rem; padding-bottom: 10rem">
+                </div>
+                <div class="text-uppercase w-100 mt-auto" style="/*background: green; opacity: 0.5*/" >
                     {#<p class="cs-font-size-20 mb-0 cs-color-white">#}
                     {#</p>#}
                     {{ render(controller('App\\Controller\\Site\\DefaultController:countdown', { mainPage: true })) }}
