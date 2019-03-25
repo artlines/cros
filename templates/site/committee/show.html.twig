@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ firstname }} {{ lastname }} - Программный комитет{% endblock %}
+
+{% block header_title %}Программный комитет{% endblock %}
+
+{% block page_image %}info_terms{% endblock %}
+
+{% block body %}
+    <h2>{{ firstname }} {{ lastname }}</h2>
+    <div class="row no-gutters cs-pb-30">
+        <div class="col-sm-3 col-lg-3">
+            <img src="{{ asset(avatar) }}" class="img-fluid" alt="" title="Участники КРОС"/>
+        </div>
+        <div class="col-sm-8 col-lg-8 w-100 pl-3 text-justify">
+            <p class="mb-0">
+            <div class="row no-gutters">
+                <div class="col-xs-2">
+                    <b> Компания: </b>
+                </div>
+                <div class="col-sm-8 col-lg-8 w-100 pl-3">
+                    {{ orgname }}
+                </div>
+            </div>
+            {{ description|raw }}
+            <br>
+            <a href="{{ path('committee_list') }}" class="btn btn-success">
+                Посмотреть всех
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}

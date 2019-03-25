@@ -23,11 +23,11 @@ class WysiwygField extends React.PureComponent {
     }
 
     render() {
-        const { name, label, helperText, onChange, value, error, required } = this.props;
+        const { name, label, helperText, onChange, value, error, required, fullWidth } = this.props;
 
         return (
             <React.Fragment>
-                <FormControl error={error} required={required}>
+                <FormControl error={error} required={required} fullWidth={fullWidth}>
                     <InputLabel htmlFor={name} required={required} shrink>{label}</InputLabel>
                     {/*<Input disableUnderline multiline name={name} onChange={onChange} value={value}/>*/}
                     <div style={{ marginTop: 20 }}>
@@ -56,6 +56,11 @@ WysiwygField.propTypes = {
     helperText: PropTypes.string,
     error:      PropTypes.bool,
     required:   PropTypes.bool,
+    fullWidth:  PropTypes.bool,
+};
+
+WysiwygField.defaultProps = {
+    fullWidth: false,
 };
 
 export default WysiwygField;
