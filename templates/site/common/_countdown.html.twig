@@ -8,15 +8,14 @@
 {% endif %}
 
 {% if text %}
-	<div class="{% if mainPage %}
-	cs-font-size-60--xxl cs-font-weight-300
-{% else %}
-	cs-font-size-18 text-right text-md-center
-{% endif %}
-">
-		<div class="cs-font-size-60--xxl cs-font-weight-300 text-center text-md-left">
-			<span >{{ text }}</span>
-		</div>
+	<div
+		{% if mainPage %}
+			class="cs-font-size-60--xxl cs-font-weight-300 cs-font-weight-300 text-center text-md-left"
+		{% else %}
+			class="cs-font-size-18 text-right text-md-center"
+		{% endif %}
+	>
+		<span >{{ text }}</span>
 	</div>
 {% endif %}
 <!-- Countdown v4 -->
@@ -27,13 +26,19 @@
 	/*}*/
 </style>
 {% if countdown_date %}
-	<div class="js-countdown{% if mainPage %} text-center text-md-left text-uppercase{% else %} text-right d-flex justify-content-between{% endif %} u-countdown-v4"
+	<div
+		{% if mainPage %}
+		class="js-countdown text-center text-md-left text-uppercase u-countdown-v4"
+		{% else %}
+		class="js-countdown text-right d-flex justify-content-between u-countdown-v4"
+		{% endif %}
 		 data-end-date="{{ countdown_date|date("Y/m/d H:i:s") }}"
 		 data-month-format="%m"
 		 data-days-format="%D"
 		 data-hours-format="%H"
 		 data-minutes-format="%M"
-		 data-seconds-format="%S">
+		 data-seconds-format="%S"
+	>
 		<div class=" {{ cd_digit_container_style }}">
 			<span class="js-cd-days {{ cd_digit_style }}">0</span>
 			<span class="name">Дней</span>
