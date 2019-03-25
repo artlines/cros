@@ -23,4 +23,4 @@ const Root = () => {
 
 ReactDOM.render(<Root/>, document.getElementById("root"));
 
-module.hot.accept();
+module.hot && module.hot.accept();

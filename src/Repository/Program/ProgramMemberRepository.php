@@ -13,15 +13,27 @@ class ProgramMemberRepository extends EntityRepository
         $where = "TRUE";
         $parameters = ['year' => date('Y')];
 
-        /** Check year param */
+        /** Check `id` param */
+        if (isset($data['id'])) {
+            $parameters['id'] = (int) $data['id'];
+            $where .= " AND ppm.id = :id";
+        }
+
+        /** Check `year` param */
         if (isset($data['year'])) {
             $parameters['year'] = (int) $data['year'];
         }
 
-        /** Check type param */
+        /** Check `type` param */
         if (isset($data['type'])) {
             $where .= " AND ppm.type = :type";
             $parameters['type'] = $data['type'];
+        }
+
+        /** Check `publish` param */
+        if (isset($data['publish'])) {
+            $where .= " AND ppm.publish = :publish";
+            $parameters['publish'] = (bool) $data['publish'];
         }
 
         $query = "
