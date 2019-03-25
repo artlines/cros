@@ -206,7 +206,7 @@ class ProgramMemberForm extends React.Component {
                                     </Grid>
                                 </Grid>
                             </Grid>
-                            <Grid item xs={12} md={6} style={{textAlign: 'center'}}>
+                            <Grid item xs={12} md={6}>
                                 <Grid container spacing={16}>
                                     <Grid item xs={12}>
                                         <SuggestingSelectField
@@ -244,6 +244,7 @@ class ProgramMemberForm extends React.Component {
                                     </Grid>
                                     <Grid item xs={12}>
                                         <WysiwygField
+                                            fullWidth
                                             label={`Описание`}
                                             name={`description`}
                                             onChange={this.handleChange(`description`)}
