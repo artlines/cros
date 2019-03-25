@@ -163,7 +163,7 @@
         }
 
         .mainBlock{
-            padding: 16px 8px 64px;
+            padding: 16px 8px 128px;
         }
 
         .mainBlock .cs-font-size-100--xxl{
@@ -215,11 +215,21 @@
             }
 
         }
+        @media screen and (orientation: portrait) {
+            div.mainBlock{
+                padding-bottom: 128px;
+            }
+        }
 
+        @media screen and (orientation: landscape) {
+            div.mainBlock{
+                padding-bottom: 128px;
+            }
+        }
 
         @media (min-width: 1398px) {
             .mainBlock{
-                padding: 32px 64px 64px;
+                padding: 32px 64px 128px;
             }
 
             .mainBlock .cs-font-size-100--xxl{
