@@ -158,9 +158,12 @@
 
         }
 
+        .name {
+            padding-right: 10px;
+        }
 
         .mainBlock{
-            padding: 32px 32px 128px;
+            padding: 16px 8px 64px;
         }
 
         .mainBlock .cs-font-size-100--xxl{
@@ -184,6 +187,10 @@
 
 
         @media (min-width: 768px) {
+            .name {
+                padding-right: 30px;
+            }
+
             .mainBlock{
                 padding: 32px 32px 32px;
             }
@@ -237,7 +244,7 @@
 
         @media (min-width: 1800px) {
             .mainBlock{
-                padding: 32px 64px 128px;
+                /*padding: 32px 64px 128px;*/
             }
         }
 
@@ -246,9 +253,6 @@
             color: #37536b;
         }
 
-        .name {
-            padding-right: 30px;
-        }
         .mainBlock h2{
             color: #37536b;
             padding: 0;
@@ -278,6 +282,9 @@
         .home_video__container video {
             height: 100vh;
             height: calc(var(--vh, 1vh) * 100);
+        }
+        .cs-pb-0{
+            padding-bottom: 0!important;
         }
     </style>
     <section id="home"
@@ -328,7 +335,7 @@
                         <span >Трансформируйся для побед</span>
                     </div>
                 </div>
-                <div class="text-uppercase w-100 mt-auto" style="/*background: green; opacity: 0.5*/" >
+                <div class="text-uppercase w-100 mt-auto cs-pt-20" style="/*background: green; opacity: 0.5*/" >
                     {#<p class="cs-font-size-20 mb-0 cs-color-white">#}
                     {#</p>#}
                     {{ render(controller('App\\Controller\\Site\\DefaultController:countdown', { mainPage: true })) }}
