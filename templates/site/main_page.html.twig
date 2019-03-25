@@ -163,7 +163,7 @@
         }
 
         .mainBlock{
-            padding: 16px 8px 128px;
+            padding: 16px 8px 64px;
         }
 
         .mainBlock .cs-font-size-100--xxl{
@@ -215,21 +215,22 @@
             }
 
         }
+
         @media screen and (orientation: portrait) {
             div.mainBlock{
-                padding-bottom: 128px;
+                padding-bottom: 32px;
             }
         }
 
         @media screen and (orientation: landscape) {
             div.mainBlock{
-                padding-bottom: 128px;
+                padding-bottom: 32px;
             }
         }
 
         @media (min-width: 1398px) {
             .mainBlock{
-                padding: 32px 64px 128px;
+                padding: 32px 64px 32px;
             }
 
             .mainBlock .cs-font-size-100--xxl{
@@ -252,12 +253,47 @@
             }
         }
 
-        @media (min-width: 1800px) {
-            .mainBlock{
-                /*padding: 32px 64px 128px;*/
+
+        @media screen and (-webkit-min-device-pixel-ratio: 1.5) {
+            div.mainBlock {
+                padding-bottom: 128px;
+            }
+            .mainBlock div{
+                /*background: red;*/
             }
         }
 
+        @media screen and (-webkit-min-device-pixel-ratio: 2.5) {
+            div.mainBlock {
+                padding-bottom: 64px;
+            }
+            .mainBlock div{
+                /*background: red;*/
+            }
+        }
+
+        @media screen
+        and (-webkit-min-device-pixel-ratio: 2.5)
+        and (orientation: landscape)
+        {
+            div.mainBlock {
+                padding-bottom: 64px;
+            }
+            .mainBlock div{
+                background: red;
+            }
+        }
+        @media screen
+        and (-webkit-min-device-pixel-ratio: 2.5)
+        and (orientation: portrait)
+        {
+            div.mainBlock {
+                padding-bottom: 64px;
+            }
+            .mainBlock div{
+                /*background: red;*/
+            }
+        }
 
         .num {
             color: #37536b;
