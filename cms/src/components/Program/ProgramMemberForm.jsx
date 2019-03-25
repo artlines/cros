@@ -46,15 +46,23 @@ class ProgramMemberForm extends React.Component {
                 recommendWidth: 295,
                 recommendHeight: 350,
             },
+            membersOptions: [],
         };
     }
 
     componentDidMount() {
-        const { initialValues } = this.props;
+        const { initialValues, members } = this.props;
         const { values } = this.state;
-        !!initialValues && this.setState({
-            values: {...values, ...initialValues},
-        });
+
+        let newState = {
+            membersOptions: map(members, i => ({ value: i.id, label: `${i.first_name} ${i.last_name} / ${i.org_name}` })),
+        };
+
+        if (!!initialValues) {
+            newState.values = {...values, ...initialValues};
+        }
+
+        this.setState(newState);
     }
 
     componentDidUpdate(prevProps, prevState, prevContext) {
@@ -167,8 +175,8 @@ class ProgramMemberForm extends React.Component {
     };
 
     render() {
-        const { initialValues, members } = this.props;
-        const { values, errors, submitting, submitError, photo } = this.state;
+        const { initialValues } = this.props;
+        const { values, errors, submitting, submitError, photo, membersOptions } = this.state;
 
         const isUpdate = initialValues.id || false;
 
@@ -210,7 +218,7 @@ class ProgramMemberForm extends React.Component {
                                 <Grid container spacing={16}>
                                     <Grid item xs={12}>
                                         <SuggestingSelectField
-                                            options={map(members, i => ({ value: i.id, label: `${i.first_name} ${i.last_name}` }))}
+                                            options={membersOptions}
                                             onChange={this.handleChange(`conference_member_id`)}
                                             isSearchable
                                             placeholder={`Начните вводить имя`}
