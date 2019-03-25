@@ -32,7 +32,7 @@ class FileManager
     {
         $this->fs = $filesystem;
 
-        $this->uploadPath = '/uploads/crs-'.date('Y').'/';
+        $this->uploadPath = '/uploads/cros-'.date('Y').'/';
         $this->publicDir  = $parameterBag->get('public_dir');
     }
 

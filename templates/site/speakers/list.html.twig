@@ -29,7 +29,7 @@
                         {% for spec in list %}
                             <div class=" col-xs-2 col-md-3 col-sm-6">
                                 <div class="card mb-4 box-shadow">
-                                    <img src="{{ asset('uploads/speakers/'~ spec.AvatarSmall) }}" class="img-fluid prohibit-changes-images">
+                                    <img src="{{ asset(spec.AvatarSmall) }}" class="img-fluid prohibit-changes-images">
                                     <div class="card-body">
                                         <p class="card-text text-center">
                                             <b>{{ spec.SpeakerFirstName }} {{ spec.SpeakerLastName}}</b>

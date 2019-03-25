@@ -13,6 +13,7 @@ import {
 import { Formik } from 'formik';
 import WysiwygField from '../utils/WysiwygField';
 import ErrorMessage from '../utils/ErrorMessage';
+import ConfirmDialog from '../utils/ConfirmDialog';
 import SuggestingSelectField from '../utils/SuggestingSelectField';
 import noPhotoImg from '../../theme/images/no_photo.jpg';
 import map from "lodash/map";
@@ -131,6 +132,12 @@ class ProgramMemberForm extends React.Component {
         }
     };
 
+    handleDelete = id => {
+        api.delete(`program_member/${id}`)
+            .then(this.handleSuccessSubmit)
+            .catch(this.handleErrorSubmit);
+    };
+
     handleSuccessSubmit = () => {
         this.props.onSuccess();
         this.props.onClose();
@@ -163,7 +170,7 @@ class ProgramMemberForm extends React.Component {
         const { initialValues, members } = this.props;
         const { values, errors, submitting, submitError, photo } = this.state;
 
-        const isUpdate = Boolean(initialValues.id);
+        const isUpdate = initialValues.id || false;
 
         return (
             <React.Fragment>
@@ -250,6 +257,22 @@ class ProgramMemberForm extends React.Component {
                             </Grid>
                             <Grid item xs={12}>
                                 <Grid container spacing={16} justify={`center`} direction={`row`}>
+                                    <Grid item>
+                                        {isUpdate &&
+                                        <ConfirmDialog
+                                            onConfirm={() => this.handleDelete(isUpdate)}
+                                            trigger={
+                                                <Button
+                                                    disabled={submitting}
+                                                    variant="contained"
+                                                    color="red"
+                                                    size={`large`}
+                                                >Удалить</Button>
+                                            }
+                                        />
+                                        }
+
+                                    </Grid>
                                     <Grid item>
                                         <Button
                                             disabled={submitting}

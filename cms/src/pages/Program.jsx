@@ -109,10 +109,10 @@ class Program extends React.Component {
                     <Grid item xs={12}>
                         <Paper>
                             {currentTab === 0 &&
-                            <ProgramMemberTable onEdit={this.handleFormEdit} items={speaker.items}/>
+                            <ProgramMemberTable onEdit={this.handleFormEdit} items={committee.items}/>
                             }
                             {currentTab === 1 &&
-                            <ProgramMemberTable onEdit={this.handleFormEdit} items={committee.items}/>
+                            <ProgramMemberTable onEdit={this.handleFormEdit} items={speaker.items}/>
                             }
                         </Paper>
                     </Grid>
