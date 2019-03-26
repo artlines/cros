@@ -32,7 +32,6 @@ class Archive extends React.Component {
         const { item } = this.props.conference;
 
         if (!isEqual(prevProps.conference.item, item)) {
-            console.log(`componentDidUpdate rewrite content`);
             this.setState({content: item.content});
         }
     }
