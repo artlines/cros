@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import participating from '../../actions/participating';
 import isEqual from 'lodash/isEqual';
 import WysiwygField from "../../components/utils/WysiwygField";
+import LinearProgress from "../../components/utils/LinearProgress";
 import ErrorMessage from "../../components/utils/ErrorMessage";
 import {
     Grid,
@@ -59,10 +60,14 @@ class Archive extends React.Component {
     handleErrorSubmit = (err) => this.setState({submitting: false, submitError: err.message});
 
     render() {
+        const { conference: { item: { isFetching } } } = this.props;
         const { content, submitting, submitError } = this.state;
 
         return (
             <Grid container spacing={16} style={{textAlign: 'center'}}>
+                <Grid xs={12} item>
+                    <LinearProgress show={isFetching || submitting}/>
+                </Grid>
                 <Grid xs={12} item>
                     <WysiwygField height={450} fullWidth name={`content`} label={`Архив`} onChange={this.handleChange} value={content}/>
                 </Grid>

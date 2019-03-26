@@ -17,6 +17,7 @@ class WysiwygField extends React.PureComponent {
         let config = {
             filebrowserUploadUrl: `${api.getApiHost()}/attachment/upload_public`,
             baseFloatZIndex: 102000,
+            allowedContent: true,
         };
 
         height && (config.height = height);
