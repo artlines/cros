@@ -43,6 +43,12 @@ class FileManager
         $this->publicDir  = $parameterBag->get('public_dir');
     }
 
+    /**
+     * @author Evgeny Nachuychenko e.nachuychenko@nag.ru
+     * @param UploadedFile $file
+     * @param null $type
+     * @return string
+     */
     public function uploadFile(UploadedFile $file, $type = null)
     {
         $now = new \DateTime();
@@ -52,18 +58,17 @@ class FileManager
             : $this->uploadPath . $now->format("Y") . '/' . $now->format("m") . '/';
 
         $filename = $file->getClientOriginalName() . '.'
-            . hash('sha256', $file->getClientOriginalName()) . '.' . $file->guessExtension();
+            . substr(hash('sha256', $file->getClientOriginalName()), 0, 20) . '.' . $file->guessExtension();
 
         if (!$this->fs->exists($this->publicDir.$uploadPath)) {
             $this->fs->mkdir($this->publicDir.$uploadPath);
         }
 
-        $pathname = $uploadPath.$filename;
         $savePath = $this->publicDir.$uploadPath;
 
         $file->move($savePath, $filename);
 
-        return $pathname;
+        return $uploadPath.$filename;
     }
 
     /**
