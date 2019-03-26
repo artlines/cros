@@ -11,6 +11,9 @@ export const PARTICIPATING = {
     REQUEST_CONFERENCE: "PARTICIPATING_REQUEST_CONFERENCE",
     RECEIVE_CONFERENCE: "PARTICIPATING_RECEIVE_CONFERENCE",
 
+    REQUEST_CONFERENCES: "PARTICIPATING_REQUEST_CONFERENCES",
+    RECEIVE_CONFERENCES: "PARTICIPATING_RECEIVE_CONFERENCES",
+
     REQUEST_CONFERENCE_ORGANIZATIONS: "PARTICIPATING_REQUEST_CONFERENCE_ORGANIZATIONS",
     RECEIVE_CONFERENCE_ORGANIZATIONS: "PARTICIPATING_RECEIVE_CONFERENCE_ORGANIZATIONS",
 
@@ -64,11 +67,31 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 conference: {
+                    item: {
+                        isFetching: true,
+                    },
+                },
+            };
+        case PARTICIPATING.RECEIVE_CONFERENCE:
+            return {
+                ...state,
+                conference: {
+                    item: {
+                        isFetching: false,
+                        ...payload,
+                    },
+                },
+            };
+
+        case PARTICIPATING.REQUEST_CONFERENCES:
+            return {
+                ...state,
+                conference: {
                     ...state.conference,
                     isFetching: true,
                 }
             };
-        case PARTICIPATING.RECEIVE_CONFERENCE:
+        case PARTICIPATING.RECEIVE_CONFERENCES:
             return {
                 ...state,
                 conference: {

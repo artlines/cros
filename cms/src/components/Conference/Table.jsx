@@ -9,14 +9,17 @@ import {
     IconButton,
     Grid,
     Paper,
+    Tooltip,
 } from '@material-ui/core';
 import map from 'lodash/map';
 import sortBy from 'lodash/sortBy';
 import LinearProgress from '../utils/LinearProgress';
 import {
     Edit as EditIcon,
+    Archive as ArchiveIcon,
 } from "@material-ui/icons";
 import DateTime from "../utils/DateTime";
+import MoreMenu from "../utils/MoreMenu";
 
 class ConferenceTable extends React.PureComponent {
 
@@ -25,7 +28,6 @@ class ConferenceTable extends React.PureComponent {
 
         return (
             <React.Fragment>
-
                 <Grid container spacing={16}>
                     <Grid item xs={12}>
                         <LinearProgress show={isFetching}/>
@@ -55,8 +57,19 @@ class ConferenceTable extends React.PureComponent {
                                             <TableCell><DateTime withTime value={item.event_finish}/></TableCell>
                                             <TableCell>{item.users_limit_global || 'не указан'}</TableCell>
                                             <TableCell>{item.users_limit_by_org || 'не указан'}</TableCell>
-                                            <TableCell>
-                                                <IconButton onClick={() => onEdit(item.id)}><EditIcon/></IconButton>
+                                            <TableCell style={{whiteSpace: 'nowrap'}}>
+                                                <Tooltip title={`Изменить`}>
+                                                    <IconButton onClick={() => onEdit(item.id)}><EditIcon/></IconButton>
+                                                </Tooltip>
+                                                <MoreMenu
+                                                    items={[
+                                                        {
+                                                            title: `Архив`,
+                                                            icon: ArchiveIcon,
+                                                            href: `/cms/conference/${item.id}/archive`,
+                                                        },
+                                                    ]}
+                                                />
                                             </TableCell>
                                         </TableRow>
                                     )}
