@@ -15,10 +15,10 @@ module.exports = {
     },
     devServer: {
         hot: true,
-        port: '5506',
+        port: '5509',
         host: '127.0.0.1',
         index: 'index.html',
-        public: 'https://cros-eugene.nag.how',
+        public: 'https://cros-artur.nag.how',
         overlay: {
             warnings: true,
             errors: true

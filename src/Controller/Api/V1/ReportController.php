@@ -4,6 +4,7 @@ namespace App\Controller\Api\V1;
 
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use App\Entity\Participating\ConferenceMember;
 
 /**
  * Class RoomController
@@ -78,6 +79,61 @@ class ReportController extends ApiController
         return $report;
     }
 
+    /**
+     * @Route("/hotel", name="hotel")
+     */
+    public function hotel()
+    {
+        $parameters = [ ];
+        $conn = $this->em->getConnection();
+        $query = "";
+
+        $stmt = $conn->prepare($query);
+        $stmt->execute($parameters);
+
+        $result = $stmt->fetchAll();
+        $report = $this->_calculateResponse('hotel', 'По форме отеля', $result);
+
+        return $report;
+    }
+
+    /**
+     * @Route("/security", name="security")
+     */
+    public function security()
+    {
+        $parameters = [
+            'year' => date('Y'),
+        ];
+
+        $conn = $this->em->getConnection();
+
+        $query = "
+            SELECT 
+                   org.name, 
+                   memb.last_name, 
+                   memb.first_name, 
+                   memb.middle_name, 
+                   cmem.car_number, 
+                   cmem.arrival, 
+                   cmem.leaving 
+            FROM participating.conference_member cmem
+              INNER JOIN participating.conference_organization  corg ON cmem.conference_organization_id = corg.organization_id
+              INNER JOIN participating.organization             org  ON corg.organization_id = org.id
+              INNER JOIN public.conference                      conf ON conf.id = corg.conference_id
+              INNER JOIN participating.member                   memb ON memb.id = cmem.user_id
+            WHERE conf.year = :year
+        ";
+
+        $stmt = $conn->prepare($query);
+        $stmt->execute($parameters);
+        $result = $stmt->fetchAll();
+
+        $report = $this->_calculateResponse('security', 'Для охраны', $result);
+
+        return $report;
+    }
+
     private function _calculateResponse($alias, $filename, $data)
     {
         header('Content-Description: File Transfer');
@@ -87,9 +143,7 @@ class ReportController extends ApiController
         header('Cache-Control: must-revalidate');
         header('Pragma: public');
         header('Content-Type: text/html; charset=windows-1251');
-
         $response = $this->render('report/'.$alias.'.html.twig', ['data' => $data]);
-
         $response->setCharset("WINDOWS-1251");
         $response->setContent(mb_convert_encoding($response->getContent(), "WINDOWS-1251", "UTF-8"));
 

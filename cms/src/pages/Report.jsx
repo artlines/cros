@@ -1,8 +1,13 @@
 import React from "react";
 import {
-    Button,
-    Grid,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+    Paper,
 } from "@material-ui/core";
+import SaveAlt from "@material-ui/icons/SaveAlt";
 
 class Report extends React.Component {
     constructor(props) {
@@ -10,22 +15,38 @@ class Report extends React.Component {
     }
 
     render() {
-
         return (
-            <Grid container spacing={16}>
-                <Grid item xs={12} md={4}>
-                    <Button
-                        variant={`contained`}
-                        color={`primary`}
-                        size={`large`}
-                        onClick={() => window.open('/api/v1/report/summary', '_blank').focus()}
-                    >
-                        Сводный отчет
-                    </Button>
-                </Grid>
-            </Grid>
+            <Paper>
+                <Table>
+                <TableHead>
+                    <TableRow>
+                    <TableCell>Название</TableCell>
+                    <TableCell>Скачать</TableCell>
+                </TableRow>
+                </TableHead>
+                    <TableBody>
+                        <TableRow>
+                            <TableCell component="th" scope="row">
+                                Сводный отчет
+                            </TableCell>
+                            <TableCell><a href="/api/v1/report/summary" target={"_blank"}><SaveAlt /></a></TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell component="th" scope="row">
+                                По форме отеля
+                            </TableCell>
+                            <TableCell><a href="/api/v1/report/hotel" target={"_blank"}><SaveAlt /></a></TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell component="th" scope="row">
+                                Для охраны
+                            </TableCell>
+                            <TableCell><a href="/api/v1/report/security" target={"_blank"}><SaveAlt /></a></TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </Paper>
         );
     }
 }
-
 export default Report;

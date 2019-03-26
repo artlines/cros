@@ -1,0 +1,10 @@
+{% block body %}
+ФИО;Организация;Номер авто;Дата заезда;Дата выезда
+{% for member in data %}{#
+#}{{ member.last_name }} {{ member.first_name }} {{ member.middle_name }};{#
+#}{{ member.name|replace({'"': '', "'": '', '«': '', '»': '', ',': '', '&': 'and'}) }};{#
+#}{% if member.car_number %}{{ user.car_number }}{% else %}-{% endif %};{#
+#}{% if member.arrival %}{{ member.arrival|date("d.m.Y") }}{% else %}Дата заезда неизвестна{% endif %};{#
+#}{% if member.leaving %}{{ member.leaving|date("d.m.Y") }}{% else %}Дата выезда неизвестна{% endif %};
+{% endfor %}
+{% endblock %}
