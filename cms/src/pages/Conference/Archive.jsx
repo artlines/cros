@@ -63,13 +63,13 @@ class Archive extends React.Component {
 
         return (
             <Grid container spacing={16} style={{textAlign: 'center'}}>
-                <Grid xs={12}>
-                    <WysiwygField fullWidth name={`content`} label={`Архив`} onChange={this.handleChange} value={content}/>
+                <Grid xs={12} item>
+                    <WysiwygField height={450} fullWidth name={`content`} label={`Архив`} onChange={this.handleChange} value={content}/>
                 </Grid>
-                <Grid xs={12}>
+                <Grid xs={12} item>
                     {submitError && <ErrorMessage description={submitError} extended={true}/>}
                 </Grid>
-                <Grid xs={12}>
+                <Grid xs={12} item>
                     <Button disabled={submitting} size={`large`} variant={`contained`} color={`primary`} onClick={this.handleSubmit}>Сохранить</Button>
                 </Grid>
             </Grid>
