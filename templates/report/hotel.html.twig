@@ -1,8 +1,8 @@
 {% block body %}
-Корпус;Номер комнаты;;Категория номера;Количество гостей;ФИО;Компания
+Корпус;Номер;Категория номера;Номер комнаты;ФИО;Компания
 {% for row in data %}{#
-#}{{ row['corpus'] }};{{ row['ap_num'] }};;{{ row['category'] }};{{ row['places'] }};{#
-#}{{ row['fio'] }};{#
-#}{{ row['org_name']|replace({'"': '', "'": '', '«': '', '»': '', ',': '', '&': 'and'}) }}
+#}{{ row['title'] }};{{ row['number'] }};{{ row['code'] }};{{ row['room'] }};{#
+#}{{ row['last_name']}} {{ row['first_name']}} {{ row['middle_name']}};{#
+#}{{ row['name']|replace({'"': '', "'": '', '«': '', '»': '', ',': '', '&': 'and'}) }}
 {% endfor %}
 {% endblock %}

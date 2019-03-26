@@ -84,14 +84,44 @@ class ReportController extends ApiController
      */
     public function hotel()
     {
-        $parameters = [ ];
+        $parameters = [
+            'year' => date('Y'),
+        ];
+
         $conn = $this->em->getConnection();
-        $query = "";
+
+        $query = "
+            SELECT
+              org.name,
+              hsng.title,
+              aprt.number,
+              aprtt.code,
+              mem.first_name,
+              mem.last_name,
+              mem.middle_name,
+              DENSE_RANK () OVER (
+                PARTITION BY room.apartment_id
+                ORDER BY
+                  room.id
+                ) as room
+            FROM abode.place place
+              LEFT JOIN participating.conference_member        cmem ON cmem.id = place.conference_member_id
+              LEFT JOIN participating.conference_organization  corg ON cmem.conference_organization_id = corg.organization_id
+              LEFT JOIN participating.organization             org  ON corg.organization_id = org.id
+              LEFT JOIN public.conference                      conf ON conf.id = corg.conference_id
+              LEFT JOIN participating.member                   mem ON mem.id = cmem.user_id
+              LEFT JOIN abode.room_type                        rmtp ON rmtp.id = cmem.room_type_id
+              LEFT JOIN abode.room                             room ON room.id = place.room_id
+              LEFT JOIN abode.apartment                        aprt ON aprt.id = room.apartment_id
+              LEFT JOIN abode.apartment_type                   aprtt ON aprtt.id = aprt.type_id
+              LEFT JOIN abode.housing                          hsng ON aprt.housing_id = hsng.id
+              WHERE conf.year = :year
+        ";
 
         $stmt = $conn->prepare($query);
         $stmt->execute($parameters);
-
         $result = $stmt->fetchAll();
+
         $report = $this->_calculateResponse('hotel', 'По форме отеля', $result);
 
         return $report;
